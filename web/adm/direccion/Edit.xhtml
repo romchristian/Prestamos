@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DireccionEditDlg" widgetVar="DireccionEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditDireccionTitle}">
+            <h:form id="DireccionEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{direccionController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditDireccionLabel_cliente}" for="cliente" />
+                        <p:selectOneMenu id="cliente" value="#{direccionController.selected.cliente}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{clienteController.itemsAvailableSelectOne}"
+                                           var="clienteItem"
+                                           itemValue="#{clienteItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditDireccionLabel_estado}" for="estado" />
+                        <p:inputText id="estado" value="#{direccionController.selected.estado}" title="#{bundle.EditDireccionTitle_estado}" />
+                        <p:outputLabel value="#{bundle.EditDireccionLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{direccionController.selected.id}" title="#{bundle.EditDireccionTitle_id}" />
+                        <p:outputLabel value="#{bundle.EditDireccionLabel_direccion}" for="direccion" />
+                        <p:inputText id="direccion" value="#{direccionController.selected.direccion}" title="#{bundle.EditDireccionTitle_direccion}" />
+                        <p:outputLabel value="#{bundle.EditDireccionLabel_tipo}" for="tipo" />
+                        <p:inputText id="tipo" value="#{direccionController.selected.tipo}" title="#{bundle.EditDireccionTitle_tipo}" />
+                        <p:outputLabel value="#{bundle.EditDireccionLabel_nrocasa}" for="nrocasa" />
+                        <p:inputText id="nrocasa" value="#{direccionController.selected.nrocasa}" title="#{bundle.EditDireccionTitle_nrocasa}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{direccionController.update}" value="#{bundle.Save}" update="display,:DireccionListForm:datalist,:growl" oncomplete="handleSubmit(args, 'DireccionEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="DireccionEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

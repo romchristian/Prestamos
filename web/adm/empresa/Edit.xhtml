@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="EmpresaEditDlg" widgetVar="EmpresaEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditEmpresaTitle}">
+            <h:form id="EmpresaEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{empresaController.selected != null}">
+                        
+                        <p:outputLabel value="#{bundle.CreateEmpresaLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{empresaController.selected.id}" title="#{bundle.CreateEmpresaTitle_id}" disabled="true"/>
+                        
+                        <p:outputLabel value="#{bundle.CreateEmpresaLabel_razonSocial}" for="razonSocial" />
+                        <p:inputText id="razonSocial" value="#{empresaController.selected.razonSocial}" title="#{bundle.CreateEmpresaTitle_razonSocial}" />
+                        
+                        <p:outputLabel value="#{bundle.CreateEmpresaLabel_ruc}" for="ruc" />
+                        <p:inputText id="ruc" value="#{empresaController.selected.ruc}" title="#{bundle.CreateEmpresaTitle_ruc}" />
+                        
+                        <p:outputLabel value="#{bundle.CreateEmpresaLabel_dv}" for="dv" />
+                        <p:inputText id="dv" value="#{empresaController.selected.dv}" title="#{bundle.CreateEmpresaTitle_dv}" />
+                        
+                        <p:outputLabel value="#{bundle.CreateEmpresaLabel_nombreRepLegal}" for="nombreRepLegal" />
+                        <p:inputText id="nombreRepLegal" value="#{empresaController.selected.nombreRepLegal}" title="#{bundle.CreateEmpresaTitle_nombreRepLegal}" />
+                        
+                        <p:outputLabel value="#{bundle.CreateEmpresaLabel_rucRepLegal}" for="rucRepLegal" />
+                        <p:inputText id="rucRepLegal" value="#{empresaController.selected.rucRepLegal}" title="#{bundle.CreateEmpresaTitle_rucRepLegal}" />
+                        
+                        <p:outputLabel value="#{bundle.CreateEmpresaLabel_dvRepLegal}" for="dvRepLegal" />
+                        <p:inputText id="dvRepLegal" value="#{empresaController.selected.dvRepLegal}" title="#{bundle.CreateEmpresaTitle_dvRepLegal}" />
+                        
+                        <p:outputLabel value="#{bundle.CreateEmpresaLabel_estado}" for="estado" />
+                        <p:inputText id="estado" value="#{empresaController.selected.estado}" title="#{bundle.CreateEmpresaTitle_estado}" />
+                    
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{empresaController.update}" value="#{bundle.Save}" update="display,:EmpresaListForm:datalist,:growl" oncomplete="handleSubmit(args, 'EmpresaEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="EmpresaEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

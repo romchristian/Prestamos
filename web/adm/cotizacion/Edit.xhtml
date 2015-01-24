@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CotizacionEditDlg" widgetVar="CotizacionEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditCotizacionTitle}">
+            <h:form id="CotizacionEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{cotizacionController.selected != null}">
+                        
+                        <p:outputLabel value="#{bundle.EditCotizacionLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{cotizacionController.selected.id}" title="#{bundle.EditCotizacionTitle_id}" disabled="true"/>
+                        
+                        <p:outputLabel value="#{bundle.EditCotizacionLabel_moneda}" for="moneda" />
+                        <p:selectOneMenu id="moneda" value="#{cotizacionController.selected.moneda}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"
+                                           var="monedaItem"
+                                           itemValue="#{monedaItem}"/>
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel value="#{bundle.EditCotizacionLabel_compra}" for="compra" />
+                        <p:inputText id="compra" value="#{cotizacionController.selected.compra}" title="#{bundle.EditCotizacionTitle_compra}" />
+                                                
+                        <p:outputLabel value="#{bundle.EditCotizacionLabel_venta}" for="venta" />
+                        <p:inputText id="venta" value="#{cotizacionController.selected.venta}" title="#{bundle.EditCotizacionTitle_venta}" />
+                        
+                        <p:outputLabel value="#{bundle.EditCotizacionLabel_vigencia}" for="vigencia" />
+                        <p:calendar id="vigencia" pattern="MM/dd/yyyy" value="#{cotizacionController.selected.vigencia}" title="#{bundle.EditCotizacionTitle_vigencia}"  showOn="button"/>
+                        
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{cotizacionController.update}" value="#{bundle.Save}" update="display,:CotizacionListForm:datalist,:growl" oncomplete="handleSubmit(args, 'CotizacionEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="CotizacionEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

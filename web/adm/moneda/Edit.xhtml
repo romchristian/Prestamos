@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="MonedaEditDlg" widgetVar="MonedaEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditMonedaTitle}">
+            <h:form id="MonedaEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{monedaController.selected != null}">
+                        
+                        <p:outputLabel value="#{bundle.CreateMonedaLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{monedaController.selected.id}" title="#{bundle.CreateMonedaTitle_id}" disabled="true"/>
+                        
+                        <p:outputLabel value="#{bundle.CreateMonedaLabel_nombre}" for="nombre" />
+                        <p:inputText id="nombre" value="#{monedaController.selected.nombre}" title="#{bundle.CreateMonedaTitle_nombre}" />
+
+                        <p:outputLabel value="#{bundle.CreateMonedaLabel_abreviacion}" for="abreviacion" />
+                        <p:inputText id="abreviacion" value="#{monedaController.selected.abreviacion}" title="#{bundle.CreateMonedaTitle_abreviacion}" />
+                        
+                        <p:outputLabel value="#{bundle.CreateMonedaLabel_decimales}" for="decimales" />
+                        <p:inputText id="decimales" value="#{monedaController.selected.decimales}" title="#{bundle.CreateMonedaTitle_decimales}" />
+                        
+                        <p:outputLabel value="#{bundle.CreateMonedaLabel_estado}" for="estado" />
+                        <p:inputText id="estado" value="#{monedaController.selected.estado}" title="#{bundle.CreateMonedaTitle_estado}" />
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{monedaController.update}" value="#{bundle.Save}" update="display,:MonedaListForm:datalist,:growl" oncomplete="handleSubmit(args, 'MonedaEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="MonedaEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

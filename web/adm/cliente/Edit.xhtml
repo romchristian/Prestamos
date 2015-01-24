@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ClienteEditDlg" widgetVar="ClienteEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditClienteTitle}">
+            <h:form id="ClienteEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{clienteController.selected != null}">
+                        <p:panel header="Datos Básicos" toggleable="false" collapsed="false">
+
+                            <h:outputText value="Documento"/>
+                            <p:separator/>
+
+                            <p:panelGrid columns="5">
+                                <h:outputText value="Tipo Doc."/>
+                                <h:selectOneMenu value="#{clienteController.selected.tipoDocumento}">
+                                    <f:selectItems value="#{productorEnums.obtTiposDoc()}"/>
+                                </h:selectOneMenu>
+                                <p:spacer width="20" height="0"/>
+
+                                <p:outputLabel value="# documento" for="nrodoc" id="lblnrodoc"/>
+                                <p:inputText value="#{clienteController.selected.nroDocumento}" 
+                                             id="nrodoc" validator="#{validadorCedula.validateCedula}" validatorMessage="El documento ya existe!"
+                                             required="true">
+                                    <p:ajax event="blur" update="nrodoc lblnrodoc @(.mensajes)" process="nrodoc"/>
+                                </p:inputText>
+
+                                <h:outputText value="Vigencia Documento"/>
+                                <p:calendar value="#{clienteController.selected.vigencia}" id="vigencia" required="true"
+                                            locale="#{formato.locale}" pattern="dd/MM/yyyy"/>
+                                <p:spacer width="20" height="0"/>
+
+
+
+                            </p:panelGrid>
+
+                            <h:panelGrid columns="1" width="100%">
+                                <p:spacer height="5" width="0"/>
+                                <h:outputText value="Persona"/>
+                                <p:separator/>
+                            </h:panelGrid>
+
+
+                            <p:panelGrid columns="6">
+                                <p:outputLabel value="Primer Nombre" for="primerNombre" id="lblprimerNombre"/>
+                                <p:inputText value="#{clienteController.selected.primerNombre}" required="true" id="primerNombre">
+                                    <p:ajax event="blur" update="primerNombre lblprimerNombre @(.mensajes)"/>
+                                </p:inputText>
+                                <p:outputLabel value="Segundo Nombre" for="segundoNombre" id="lblsegundoNombre"/>
+                                <p:inputText value="#{clienteController.selected.segundoNombre}"  id="segundoNombre">
+                                    <p:ajax event="blur" update="segundoNombre lblsegundoNombre @(.mensajes)"/>
+                                </p:inputText>
+                                <p:spacer width="20" height="0"/>
+                                <p:spacer width="20" height="0"/>
+
+                                <p:outputLabel value="Primer Apellido" for="primerApellido" id="lblprimerApellido"/>            
+                                <p:inputText value="#{clienteController.selected.primerApellido}" required="true" id="primerApellido">
+                                    <p:ajax event="blur" update="primerApellido lblprimerApellido @(.mensajes)"/>
+                                </p:inputText>
+                                <p:outputLabel value="Segundo Apellido" for="segundoApellido" id="lblsegundoApellido"/>
+                                <p:inputText value="#{clienteController.selected.segundoApellido}"  id="segundoApellido">
+                                    <p:ajax event="blur" update="segundoApellido lblsegundoApellido @(.mensajes)"/>
+                                </p:inputText>
+                                <p:outputLabel value="Nacionalidad" for="nacionalidad"/>
+                                <p:inputText value="#{clienteController.selected.nacionalidad}" id="nacionalidad"/>
+
+
+
+                                <p:outputLabel value="Sexo" for="sexo"/>
+                                <h:selectOneMenu value="#{clienteController.selected.sexo}" id="sexo">
+                                    <f:selectItems value="#{productorEnums.obtSexo()}"/>
+                                </h:selectOneMenu>
+
+
+                                <p:outputLabel value="Estado Civil" for="estadocivil"/>
+                                <h:selectOneMenu value="#{clienteController.selected.estadoCivil}" id="estadocivil">
+                                    <f:selectItems value="#{productorEnums.obtEstadosCivil()}"/>
+                                </h:selectOneMenu>
+
+
+                                <p:outputLabel value="Fecha Nac" for="fechaNacimiento"/>
+                                <p:calendar value="#{clienteController.selected.fechaNac}" id="fechaNacimiento" required="true"
+                                            locale="#{formato.locale}" pattern="dd/MM/yyyy"/>
+
+                                <p:outputLabel value="Linea de Crédito" for="lineadecredito"/>
+                                <p:inputText value="#{clienteController.selected.lineaDeCredito}" id="lineadecredito"/>
+
+                                <p:outputLabel value="#{bundle.CreateClienteLabel_categoria}" for="categoria" /> 
+                                <p:selectOneMenu id="categoria" value="#{clienteController.selected.categoria}" >
+                                    <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"
+                                                   var="categoriaItem"
+                                                   itemValue="#{categoriaItem}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="#{bundle.CreateClienteLabel_sucursal}" for="sucursal" /> 
+                                <p:selectOneMenu id="sucursal" value="#{sucursalController.selected.nombre}" >
+                                    <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"
+                                                   var="sucursalItem"
+                                                   itemValue="#{sucursalItem}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel/>
+
+                            </p:panelGrid>
+
+
+                        </p:panel>
+
+                        <p:tabView>
+                            <p:tab title="Direcciones">
+
+                            </p:tab>
+
+                            <p:tab title="Teléfonos de Contacto">
+                                TELEFONOS
+                            </p:tab>
+                            <p:tab title="Laborales">
+                                LABORALES
+                            </p:tab>
+                            <p:tab title="Referencias">
+                                REFERENCIAS
+                            </p:tab>
+                        </p:tabView>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{clienteController.update}" value="#{bundle.Save}" update="display,:ClienteListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ClienteEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ClienteEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <title><ui:insert name="title">Default Title</ui:insert></title>
+        </f:facet>
+
+
+        <h:outputStylesheet library="css" name="myapp.css"/>
+        <h:outputStylesheet library="css" name="default.css"/>
+        <h:outputStylesheet library="css" name="tableLayout.css"/>
+
+
+
+        <h:outputStylesheet library="css" name="jsfcrud.css"/>
+        <h:outputScript library="js" name="jsfcrud.js"/>
+    </h:head>
+
+    <h:body style="height: 100%">
+
+        <p:growl id="growl" life="3000" />
+
+
+        <div class="ui-grid ui-grid-responsive" style="height: 100%">
+            <div class="ui-grid-row" style="height: 100%">
+                <div class="ui-grid-col-2" style="height: 800px; background-color: #ddd">
+                    <br/>
+                    <br/>
+
+                    <h:form id="menuForm" style="height: 100%;">
+
+                        <h:outputText value="Prestamos" style="font-size: 14px;color: #0077b3; padding-left: 10px;font-weight: bold;margin-bottom: 10px"/>
+                        <br/>
+
+                        <ul>
+                            <li><h:link  value="Datos de Clientes" outcome="/adm/cliente/List.xhtml" /></li>
+                            
+                        </ul>
+                        <br/>
+                        
+                        <h:outputText value="Configuracion" style="font-size: 14px;color: #0077b3; padding-left: 10px;font-weight: bold;margin-bottom: 10px"/>
+                        <br/>
+
+                        <ul>
+                            <li><h:link  value="Empresa" outcome="/adm/empresa/List.xhtml" /></li>
+                            <li><h:link  value="Sucursal" outcome="/adm/sucursal/List.xhtml" /></li>
+                            <li><h:link  value="Cotizacion" outcome="/adm/cotizacion/List.xhtml" /></li>
+                            <li><h:link  value="Moneda" outcome="/adm/moneda/List.xhtml" /></li>
+                            <li><h:link  value="ImpuestoIVA" outcome="/adm/impuestoIVA/List.xhtml" /></li>
+                            <li><h:link  value="Categoria de Clientes" outcome="/adm/categoria/List.xhtml" /></li>
+                            
+                        </ul>
+
+
+
+
+                    </h:form>
+                </div>
+                <div class="ui-grid-col-10" style="padding: 20px">
+                    <div>
+                        <h2><ui:insert name="title">Default Title</ui:insert></h2>
+                    </div>
+                    <ui:insert name="body"/>
+                </div>
+            </div>
+        </div>
+
+
+    </h:body>
+
+</html>
