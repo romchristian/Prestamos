@@ -6,6 +6,7 @@ import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
 import py.gestionpymes.prestamos.adm.dao.ClienteFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -18,7 +19,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import py.gestionpymes.prestamos.adm.persistencia.CompDetDirecciones;
+import py.gestionpymes.prestamos.adm.persistencia.Direccion;
+import py.gestionpymes.prestamos.prestamos.persistencia.ActividadLaboral;
+import py.gestionpymes.prestamos.prestamos.persistencia.ContactoTelefonico;
+import py.gestionpymes.prestamos.prestamos.persistencia.ReferenciaCliente;
 
 @Named("clienteController")
 @SessionScoped
@@ -28,7 +32,109 @@ public class ClienteController implements Serializable {
     private py.gestionpymes.prestamos.adm.dao.ClienteFacade ejbFacade;
     private List<Cliente> items = null;
     private Cliente selected;
-    private CompDetDirecciones compDetDirecciones;
+    private Direccion direccionSeleccionada;
+    private ActividadLaboral actividadLaboralSelecccionada;
+    private ContactoTelefonico contactoTelefonicoSeleccionado;
+    private ReferenciaCliente referenciaClienteSeleccionada;
+
+    public ReferenciaCliente getReferenciaClienteSeleccionada() {
+        if (referenciaClienteSeleccionada == null) {
+            referenciaClienteSeleccionada = new ReferenciaCliente();
+        }
+
+        return referenciaClienteSeleccionada;
+    }
+
+    public void setReferenciaClienteSeleccionada(ReferenciaCliente referenciaClienteSeleccionada) {
+        this.referenciaClienteSeleccionada = referenciaClienteSeleccionada;
+    }
+
+    public void agregaReferenciaClienteSelecionada() {
+        if (selected.getReferenciaClientes() == null) {
+            selected.setReferenciaClientes(new ArrayList<ReferenciaCliente>());
+        }
+        referenciaClienteSeleccionada.setCliente(selected);
+        selected.getReferenciaClientes().add(referenciaClienteSeleccionada);
+        referenciaClienteSeleccionada = new ReferenciaCliente();
+    }
+
+    public void removerReferenciaClienteSelecionada(ReferenciaCliente a) {
+        selected.getReferenciaClientes().remove(a);
+    }
+
+    public ContactoTelefonico getContactoTelefonicoSeleccionado() {
+
+        if (contactoTelefonicoSeleccionado == null) {
+            contactoTelefonicoSeleccionado = new ContactoTelefonico();
+        }
+
+        return contactoTelefonicoSeleccionado;
+    }
+
+    public void setContactoTelefonicoSeleccionado(ContactoTelefonico contactoTelefonicoSeleccionado) {
+        this.contactoTelefonicoSeleccionado = contactoTelefonicoSeleccionado;
+    }
+
+    public void agregaContactoTelefonicoSeleccionado() {
+        if (selected.getContactoTelefonicos() == null) {
+            selected.setContactoTelefonicos(new ArrayList<ContactoTelefonico>());
+        }
+        contactoTelefonicoSeleccionado.setCliente(selected);
+        selected.getContactoTelefonicos().add(contactoTelefonicoSeleccionado);
+        contactoTelefonicoSeleccionado = new ContactoTelefonico();
+    }
+
+    public void removerContactoTelefonicoSeleccionado(ContactoTelefonico a) {
+        selected.getContactoTelefonicos().remove(a);
+    }
+
+    public ActividadLaboral getActividadLaboralSelecccionada() {
+        if (actividadLaboralSelecccionada == null) {
+            actividadLaboralSelecccionada = new ActividadLaboral();
+        }
+        return actividadLaboralSelecccionada;
+    }
+
+    public void setActividadLaboralSelecccionada(ActividadLaboral actividadLaboralSelecccionada) {
+        this.actividadLaboralSelecccionada = actividadLaboralSelecccionada;
+    }
+
+    public void agregaActividadLaboralSeleccionada() {
+        if (selected.getActividadesLaborales() == null) {
+            selected.setActividadesLaborales(new ArrayList<ActividadLaboral>());
+        }
+        actividadLaboralSelecccionada.setCliente(selected);
+        selected.getActividadesLaborales().add(actividadLaboralSelecccionada);
+        actividadLaboralSelecccionada = new ActividadLaboral();
+    }
+
+    public void removerActividadLaboralSeleccionada(ActividadLaboral a) {
+        selected.getActividadesLaborales().remove(a);
+    }
+
+    public Direccion getDireccionSeleccionada() {
+        if (direccionSeleccionada == null) {
+            direccionSeleccionada = new Direccion();
+        }
+        return direccionSeleccionada;
+    }
+
+    public void setDireccionSeleccionada(Direccion direccionSeleccionada) {
+        this.direccionSeleccionada = direccionSeleccionada;
+    }
+
+    public void agregaDireccion() {
+        if (selected.getDirecciones() == null) {
+            selected.setDirecciones(new ArrayList<Direccion>());
+        }
+        direccionSeleccionada.setCliente(selected);
+        selected.getDirecciones().add(direccionSeleccionada);
+        direccionSeleccionada = new Direccion();
+    }
+
+    public void removerDireccion(Direccion d) {
+        selected.getDirecciones().remove(d);
+    }
 
     public ClienteController() {
     }

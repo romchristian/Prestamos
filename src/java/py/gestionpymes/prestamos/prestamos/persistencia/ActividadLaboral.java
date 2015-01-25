@@ -42,6 +42,13 @@ public class ActividadLaboral implements Serializable {
     @Enumerated(EnumType.STRING)
     private Estado estado;
 
+    public ActividadLaboral() {
+        
+        this.estado=Estado.ACTIVO;
+    }
+    
+    
+
     public Cliente getCliente() {
         return cliente;
     }

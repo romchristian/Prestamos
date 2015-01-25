@@ -14,15 +14,13 @@ import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDocumento;
  * @author christian
  */
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@SequenceGenerator(name="persona_seq",sequenceName="persona_seq",allocationSize=1)
 public class Persona implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(generator="persona_seq",strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+    @Column(updatable = false)
     private String nroDocumento;
     @Version
     private Long version;
@@ -34,6 +32,7 @@ public class Persona implements Serializable {
     private TipoDocumento tipoDocumento;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date vigencia;
+    @Enumerated(EnumType.STRING)
     private Estado estado;
 
     public Long getId() {

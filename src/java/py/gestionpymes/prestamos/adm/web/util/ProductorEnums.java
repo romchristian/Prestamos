@@ -15,12 +15,15 @@ import py.gestionpymes.prestamos.adm.persistencia.TipoPersona;
 import py.gestionpymes.prestamos.prestamos.persistencia.PeriodoPago;
 import py.gestionpymes.prestamos.prestamos.persistencia.SistemaAmortizacion;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.Calificacion;
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.CicloIngreso;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoCivil;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoContactoTelefonico;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.Sexo;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoContactoTelefonico;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDireccion;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDocumento;
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoEmpresa;
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoReferencia;
 
 
 /**
@@ -51,6 +54,25 @@ public class ProductorEnums implements Serializable {
         return R;
     }
 
+    public SelectItem[] obtTiposEmpresas() {
+        SelectItem[] R = new SelectItem[TipoEmpresa.values().length];
+        TipoEmpresa[] lista = TipoEmpresa.values();
+        for (int i = 0; i < lista.length; i++) {
+            TipoEmpresa tp = lista[i];
+            R[i] = new SelectItem(tp, tp.toString());
+        }
+        return R;
+    }
+    
+    public SelectItem[] obtCicloIngresos() {
+        SelectItem[] R = new SelectItem[CicloIngreso.values().length];
+        CicloIngreso[] lista = CicloIngreso.values();
+        for (int i = 0; i < lista.length; i++) {
+            CicloIngreso tp = lista[i];
+            R[i] = new SelectItem(tp, tp.toString());
+        }
+        return R;
+    }
 
     public SelectItem[] obtSexo() {
         SelectItem[] R = new SelectItem[Sexo.values().length];
@@ -62,7 +84,15 @@ public class ProductorEnums implements Serializable {
         return R;
     }
 
-    
+    public SelectItem[] obtTipoReferencia() {
+        SelectItem[] R = new SelectItem[TipoReferencia.values().length];
+        TipoReferencia[] lista = TipoReferencia.values();
+        for (int i = 0; i < lista.length; i++) {
+            TipoReferencia tp = lista[i];
+            R[i] = new SelectItem(tp, tp.toString());
+        }
+        return R;
+    }
 
     public SelectItem[] obtTiposDoc() {
         SelectItem[] R = new SelectItem[TipoDocumento.values().length];
@@ -120,9 +150,7 @@ public class ProductorEnums implements Serializable {
         return R;
     }
     
- 
-
-   
+  
     public SelectItem[] obtTiposContactosTelefonicos() {
         SelectItem[] R = new SelectItem[TipoContactoTelefonico.values().length];
         TipoContactoTelefonico[] lista = TipoContactoTelefonico.values();

@@ -4,6 +4,7 @@
  */
 package py.gestionpymes.prestamos.prestamos.persistencia;
 
+import java.math.BigDecimal;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoCivil;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.Sexo;
 import java.util.ArrayList;
@@ -11,7 +12,9 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 import py.gestionpymes.prestamos.adm.persistencia.Direccion;
+import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Persona;
+import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
 import py.gestionpymes.prestamos.prestamos.persistencia.validadores.SoloLetras;
 
 /**
@@ -21,7 +24,6 @@ import py.gestionpymes.prestamos.prestamos.persistencia.validadores.SoloLetras;
 @Entity
 @NamedQueries({
     @NamedQuery(name = Cliente.TODOS, query = "select c from Cliente c")})
-@PrimaryKeyJoinColumn(name="ID", referencedColumnName="")
 public class Cliente extends Persona {
 
     public static final String TODOS = "package py.gestionpymes.clientes.persistencia.Cliente.TODOS";
@@ -51,15 +53,16 @@ public class Cliente extends Persona {
     @OneToMany(mappedBy = "cliente")
     private List<Prestamo> prestamos;
     //datos requeridos para solicitud y analisis
-    private double lineaDeCredito;
+    private BigDecimal lineaDeCredito;
     @ManyToOne
     private Categoria categoria;
    
     private String nacionalidad;
-
-    public Cliente() {
-    }
-
+    
+ 
+    
+    
+    
     public EstadoCivil getEstadoCivil() {
         return estadoCivil;
     }
@@ -160,13 +163,15 @@ public class Cliente extends Persona {
     }
 
     //modifica para que corra por debajo
-    public double getLineaDeCredito() {
+
+    public BigDecimal getLineaDeCredito() {
         return lineaDeCredito;
     }
 
-    public void setLineaDeCredito(double lineaDeCredito) {
+    public void setLineaDeCredito(BigDecimal lineaDeCredito) {
         this.lineaDeCredito = lineaDeCredito;
     }
+    
 
     //modificar para que corra por debajo
     public Categoria getCategoria() {
