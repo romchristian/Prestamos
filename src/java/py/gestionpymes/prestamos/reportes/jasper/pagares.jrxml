@@ -1,29 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-
-<jasperReport name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-    <background>
-        <band/>
-    </background>
-    <title>
-        <band height="79"/>
-    </title>
-    <pageHeader>
-        <band height="35"/>
-    </pageHeader>
-    <columnHeader>
-        <band height="61"/>
-    </columnHeader>
-    <detail>
-        <band height="125"/>
-    </detail>
-    <columnFooter>
-        <band height="45"/>
-    </columnFooter>
-    <pageFooter>
-        <band height="54"/>
-    </pageFooter>
-    <summary>
-        <band height="42"/>
-    </summary>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6ea7e56b-e942-4eeb-8282-2bdd2a4b61aa">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="nroDocumento" class="java.lang.String"/>
+	<field name="nroPagare" class="java.lang.String"/>
+	<field name="vencimiento" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="370" splitType="Stretch">
+			<staticText>
+				<reportElement x="143" y="3" width="260" height="32" uuid="4b251d97-7848-4227-964c-b2a3a364b04e"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PAGARÉ A LA ORDEN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="36" width="16" height="20" uuid="c6863d8e-5507-44e3-a8c9-c0d4f281d5aa"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nº]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="63" width="104" height="20" uuid="a280e330-df3a-4329-9da0-3613cc9a732d"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VENCIMIENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="364" y="38" width="142" height="20" uuid="b531c0af-d70c-4800-b690-5cdded07a8e9"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Asuncion,  de     de   20]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="364" y="63" width="174" height="33" uuid="f7dbd87c-9947-44fa-958f-34300a725169"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="367" y="66" width="36" height="33" uuid="b73d4dfe-fe75-43f6-a2fd-057ad8768d66"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GS.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="277" width="100" height="20" uuid="109f3f35-e304-48b9-9e0e-4e077a92cefa"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deudor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="277" width="100" height="20" uuid="05d56731-bfc8-4a6d-baf6-99d0c89dba64"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Co-Deudor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="297" width="100" height="20" uuid="8497b634-937f-435e-8b90-7964eda49b35"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CI:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="297" width="100" height="20" uuid="970edebb-cf2e-4812-8a77-2fad1b4040cc"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CI:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="317" width="100" height="20" uuid="30b62fc8-1c0b-4600-ae38-a18fb0e7d842"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOMICILIO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="317" width="100" height="20" uuid="3ef4cbb6-b899-4fed-8d94-d900f3d2e3a7"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOMICILIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="337" width="100" height="20" uuid="986efd65-e487-4e5c-ac34-735af16ab895"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONYUGE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="337" width="100" height="20" uuid="1f344b89-10ba-46de-a296-0b419d77daac"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONYUGE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="275" width="100" height="20" uuid="aac1b681-3b0e-4f75-afe9-cfbf15491629"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FIRMAS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="111" width="555" height="164" uuid="06b313b7-0cd1-4d8a-8bd0-306d81fbdeb0"/>
+				<text><![CDATA[El día , PAGAREMOS solidariamente y sin protesto a................................................., ó a su orden, la suma
+de Guaraníes......................................... La mora se producirá por el mero vencimiento de la obligación, 
+sin necesidad de protesto ni de ningún requerimiento judicial o extrajudicial. La falta de pago de este documento
+ a su vencimiento originará automáticamente un interés punitorio del por ciento (  %) mensual, además del interés 
+moratorio del por ciento ( %) mensual, que se devengarán hasta  la cancelación total de la deuda, sin que ello 
+implique novación, prorroga ni espera. En caso de demanda judicial (cobro judicial) la  liquidación de los 
+ intereses moratorios y punitorios,  se realizará en la etapa judicial prevista en los arts. 475 y 501 del Cód. 
+ Procesal Civil. En caso que deba instaurarse  una acción para el cobro de este documento, o el mismo deba ser 
+ cobrado  a requerimiento de un abogado, el firmante se  obliga a pagar honorarios razonables al mismo, 
+ incurridos a niveles de pre litigio, prejudiciales, de  apelación o quiebra,  a fin de efectuar  dicho cobro 
+ y todos los demás costos decobranza. Toda persona interviniente en este documento se somete a la jurisdicción 
+ y competencia de los jueces y tribunales de Asunción]]></text>
+			</staticText>
+		</band>
+	</detail>
 </jasperReport>
