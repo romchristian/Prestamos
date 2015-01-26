@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:gpymes="http://java.sun.com/jsf/composite/gpymes">
+
+    <ui:define name="title">
+        Cobro de cuotas
+    </ui:define>
+    <ui:define name="body">
+
+        <h:form id="formCobroCuota">
+
+
+            <h:panelGroup>
+                <h:panelGrid columns="2">
+                    <h:outputText value="Elige un cliente"/>
+                    <p:spacer></p:spacer>
+                    <gpymes:autoCompleteCliente elegido="#{cobraCuotaBean.cliente}"/>
+                    <p:commandButton icon="ui-icon-search" value="Buscar" action="#{cobraCuotaBean.buscaPrestamos()}" update="@(.escuchaSeleccionCuota)"/>
+                </h:panelGrid>
+
+                <p:outputPanel styleClass="escuchaSeleccionCuota">
+                    <h:outputText value="#{cobraCuotaBean.totalAPagar}" style="font-size: 20pt; font-weight: bold">
+                        <f:convertNumber locale="#{formato.locale}"/>
+                    </h:outputText>
+                </p:outputPanel>
+
+                <p:treeTable value="#{cobraCuotaBean.root}" var="p"
+                             styleClass="escuchaSeleccionCuota">
+
+
+                    <p:column style="width:150px">
+                        <f:facet name="header">
+                            Prestamo
+                        </f:facet>
+                        <h:outputText value="#{p.descPrestamo}" />
+                    </p:column>
+
+                    <p:column style="width:150px">
+                        <f:facet name="header">
+                            Cuota
+                        </f:facet>
+                        <h:outputText value="#{p.descDetPrestamo}" />
+                    </p:column>
+
+                    <p:column style="width:100px">
+                        <f:facet name="header">
+                            Vencimiento
+                        </f:facet>
+                        <h:outputText value="#{p.fechaVencimiento}">
+                            <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="width:100px">
+                        <f:facet name="header">
+                            Monto Cuota
+                        </f:facet>
+                        <h:outputText value="#{p.montoCuota}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="width:100px">
+                        <f:facet name="header">
+                            Días Mora
+                        </f:facet>
+                        <h:outputText value="#{p.diasMora}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="width:100px">
+                        <f:facet name="header">
+                            Monto Mora
+                        </f:facet>
+                        <h:outputText value="#{p.montoMora}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="width:100px">
+                        <f:facet name="header">
+                            Monto Pago
+                        </f:facet>
+                        <h:inputText value="#{p.montoPago}" rendered="#{(not p.esPrestamo) and p.modoEdicion}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:inputText>
+                        <h:outputText value="#{p.montoPago}" rendered="#{(not p.esPrestamo) and (not p.modoEdicion)}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="width:100px" styleClass="text-align:center">
+                        <f:facet name="header">
+                            Pagar
+                        </f:facet>
+                        <h:panelGroup style="text-align: center" rendered="#{not p.esPrestamo}">
+                            <p:selectBooleanCheckbox value="#{p.seleccionado}">  
+                                <p:ajax update="@(.escuchaSeleccionCuota)" listener="#{cobraCuotaBean.selecciona()}"/>  
+                            </p:selectBooleanCheckbox>
+                        </h:panelGroup>
+
+                    </p:column>
+
+
+
+                </p:treeTable>
+
+            </h:panelGroup>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

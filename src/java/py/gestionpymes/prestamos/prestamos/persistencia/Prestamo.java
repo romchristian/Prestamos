@@ -27,11 +27,11 @@ public class Prestamo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Version
-    private Long version;
+    
     @ManyToOne
     private Cliente cliente;
-    private double capital = 1000000d;
+    private double montoPrestamo = 1000000d;;
+    private double capital; 
     private int plazo = 12;
     private int tasa = 24;
     @Enumerated(EnumType.STRING)
@@ -45,13 +45,15 @@ public class Prestamo implements Serializable {
     private double totalIntereses;
     private double totalOperacion;
     @Enumerated(EnumType.STRING)
-    private SistemaAmortizacion sistemaAmortizacion = SistemaAmortizacion.FRANCES;
+    private SistemaAmortizacion sistemaAmortizacion ;
     @Transient
     private Sistema sistema;
     private EstadoPrestamo estado;
+    private boolean firmaPagare;
 
     public Prestamo() {
         this.estado = EstadoPrestamo.PENDIENTE_DESEMBOLSO;
+        this.sistemaAmortizacion = SistemaAmortizacion.FRANCES;
     }
 
     public void setSistema(Sistema sistema) {
@@ -72,6 +74,24 @@ public class Prestamo implements Serializable {
         return sistema;
     }
 
+    public boolean isFirmaPagare() {
+        return firmaPagare;
+    }
+
+    public void setFirmaPagare(boolean firmaPagare) {
+        this.firmaPagare = firmaPagare;
+    }
+
+    
+    
+    public double getMontoPrestamo() {
+        return montoPrestamo;
+    }
+
+    public void setMontoPrestamo(double montoPrestamo) {
+        this.montoPrestamo = montoPrestamo;
+    }
+    
     public EstadoPrestamo getEstado() {
         return estado;
     }
@@ -81,7 +101,7 @@ public class Prestamo implements Serializable {
     }
 
     public double getCapital() {
-        return capital + gastos;
+        return montoPrestamo + gastos;
     }
 
     public void setCapital(double capital) {
@@ -205,14 +225,7 @@ public class Prestamo implements Serializable {
         this.id = id;
     }
 
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
+  
     @Override
     public int hashCode() {
         int hash = 0;

@@ -9,5 +9,5 @@ package py.gestionpymes.prestamos.prestamos.persistencia;
  * @author christian
  */
 public enum EstadoPrestamo {
- PENDIENTE_DESEMBOLSO, DESEMBOLSADO    
+ PENDIENTE_DESEMBOLSO, EN_DESEMBOLSO,VIGENTE;
 }

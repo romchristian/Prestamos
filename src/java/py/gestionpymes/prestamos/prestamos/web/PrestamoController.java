@@ -12,15 +12,18 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.view.ViewScoped;
 
 import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
+import py.gestionpymes.prestamos.prestamos.persistencia.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 
 /**
@@ -28,13 +31,29 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
  * @author christian
  */
 @Named("prestamoController")
-@SessionScoped
+@ViewScoped
 public class PrestamoController implements Serializable {
 
     @EJB
     private py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO ejbFacade;
     private List<Prestamo> items = null;
     private Prestamo selected;
+    private long id;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void cargaDatos() {
+        if (id > 0) {
+            selected = getPrestamo(id);
+        }
+
+    }
 
     public String calcular() {
         selected.setSistema(null);
@@ -43,14 +62,33 @@ public class PrestamoController implements Serializable {
         return null;
     }
 
+    public void imprimePagare() {
+
+    }
+
     public void desembolsa() {
         ejbFacade.desembolsa(selected);
+    }
+
+    public void confirmaPagare() {
+        selected.setFirmaPagare(true);
+        selected.setEstado(EstadoPrestamo.EN_DESEMBOLSO);
+        ejbFacade.edit(selected);
+    }
+
+    public void anulaConfimacion() {
+        selected.setFirmaPagare(false);
+        selected.setEstado(EstadoPrestamo.PENDIENTE_DESEMBOLSO);
+        ejbFacade.edit(selected);
     }
 
     public PrestamoController() {
     }
 
     public Prestamo getSelected() {
+        if (selected == null) {
+            selected = new Prestamo();
+        }
         return selected;
     }
 
@@ -68,17 +106,19 @@ public class PrestamoController implements Serializable {
         return ejbFacade;
     }
 
-    public Prestamo prepareCreate() {
+    public String prepareCreate() {
         selected = new Prestamo();
         initializeEmbeddableKey();
-        return selected;
+        return "Create.xhtml?faces-redirect=true";
     }
 
-    public void create() {
+    public String create() {
         persist(PersistAction.CREATE, "El prestamo se creo EXITOSAMENTE!");
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
+
+        return "List.xhtml?faces-redirect=true";
     }
 
     public void update() {

@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+                template="/template.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{prestamoController.id}"/>
+        <f:viewAction action="#{prestamoController.cargaDatos()}"/>
+    </f:metadata>
+    
+    <ui:define name="title">
+        Editar Nuevo Prestamo
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form id="PrestamoEditForm">
+            <h:panelGroup id="display">
+
+                <p:panel  id="panelCliente" style="background-color: #ddd">
+
+
+                    <table>
+                        <tr>
+                            <td width="90%">
+                                <h:panelGrid columns="4">
+                                    <h:outputText value="Nro Documento"/>
+                                    <h:outputText value="#{prestamoController.selected.cliente.nroDocumento}"/>
+
+                                    <h:outputText value="Cliente: "/>
+                                    <h:outputText value="#{prestamoController.selected.cliente.primerNombre} #{prestamoController.selected.cliente.primerApellido}"
+                                                  styleClass="clienteSeleccionado"/>
+                                </h:panelGrid>
+
+                            </td>
+                            <td width="10%">
+                                <h:panelGrid columns="2">
+                                    <p:commandButton action="#{prestamoController.create}" value="#{bundle.Save}" update="display,:growl"  styleClass="btn btn-danger"/>
+                                    <p:commandButton value="#{bundle.Cancel}"  action="List.xhtml?faces-redirect=true"/>
+                                </h:panelGrid>
+                            </td>
+                        </tr>
+                    </table>    
+
+                </p:panel>
+
+
+                <p:panel id="panelDatos">
+
+
+                    <h:panelGrid columns="4">
+
+                        <h:outputText value="Monto Préstamo"/>
+                        <h:inputText value="#{prestamoController.selected.montoPrestamo}"  id="montoPrestamo">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:inputText>
+
+                        <h:outputText value="Capital"/>
+                        <h:inputText value="#{prestamoController.selected.capital}"  id="montoCapital" disabled="true"/>
+
+
+                        <h:outputText value="Monto Gastos"/>
+                        <h:inputText value="#{prestamoController.selected.gastos}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:inputText>
+                        <h:outputText value="Plazo"/>
+                        <h:inputText value="#{prestamoController.selected.plazo}"/>
+                        <h:outputText value="Tasa"/>
+                        <h:inputText value="#{prestamoController.selected.tasa}">
+
+                        </h:inputText>
+                        <h:outputText value="Periodicidad de Pago"/>
+                        <h:selectOneMenu value="#{prestamoController.selected.periodoPago}">
+                            <f:selectItems value="#{productorEnums.obtPeriodosPago()}"/>
+                        </h:selectOneMenu>
+                        <h:outputText value="Sistema de Amotización"/>
+                        <p:selectOneMenu value="#{prestamoController.selected.sistemaAmortizacion}">
+
+                            <f:selectItem itemLabel="FRANCES" itemValue="FRANCES"/>
+                            <f:selectItem itemLabel="INTERES SIMPLE" itemValue="INTERES_SIMPLE"/>
+
+                        </p:selectOneMenu>
+                        <h:outputText value="Monto Cuota"/>
+                        <h:inputText value="#{prestamoController.selected.montoCuota}" disabled="true">
+                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                        </h:inputText>
+                        <p:spacer/>
+                        <p:spacer/>
+                        <h:outputText value="Total Interes"/>
+                        <h:inputText value="#{prestamoController.selected.totalIntereses}" disabled="true">
+                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                        </h:inputText>
+                        <p:spacer/>
+                        <p:spacer/>
+                        <h:outputText value="Total Operacion"/>
+                        <h:inputText value="#{prestamoController.selected.totalOperacion}" disabled="true">
+                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                        </h:inputText>
+
+                        <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="display"/>
+                    </h:panelGrid>
+
+                </p:panel>
+                <p:dataTable value="#{prestamoController.selected.detalles}" var="d" id="tablaDetalles">
+                    <p:column headerText="Cuota">
+                        <h:outputText value="#{d.nroCuota}"/>
+                    </p:column>
+                    <p:column headerText="Saldo Capital">
+                        <h:outputText value="#{d.saldoCapital}">
+                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Monto cuota">
+                        <h:outputText value="#{d.montoCuota}">
+                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Vencimiento">
+                        <h:outputText value="#{d.fechaVencimiento}">
+                            <f:convertDateTime pattern="#{formato.patronFecha}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Cuota Capital">
+                        <h:outputText value="#{d.cuotaCapital}">
+                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Cuota Interes">
+                        <h:outputText value="#{d.cuotaInteres}">
+                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+
+
+
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+

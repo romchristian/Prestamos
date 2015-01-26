@@ -55,7 +55,7 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
 
         detCuentaClienteDAO.create(op);
 
-        prestamo.setEstado(EstadoPrestamo.DESEMBOLSADO);
+        prestamo.setEstado(EstadoPrestamo.VIGENTE);
         edit(prestamo);
 
         return prestamo;

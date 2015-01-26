@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:gpymes="http://java.sun.com/jsf/composite/gpymes">
+
+    <ui:define name="title">
+        Listado de Prestamos
+    </ui:define>
+    <ui:define name="body">
+
+        <h:form id="PrestamoListForm">
+
+            <p:dataTable id="datalist" value="#{prestamoController.items}" var="p"
+                         selectionMode="single" selection="#{prestamoController.selected}"
+                         paginator="true"
+                         rowKey="#{p.id}"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         >
+
+                <p:ajax event="rowSelect"   update="createButton editButton imprimirButton confirmarButton cancelarButton desembolsarButton"/>
+                <p:ajax event="rowUnselect" update="createButton editButton imprimirButton confirmarButton cancelarButton desembolsarButton"/>
+
+                <p:column>
+                    <f:facet name="header">
+                        Descripción
+                    </f:facet>
+                    <h:outputText value="Prestamo nro: #{p.id}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Estado
+                    </f:facet>
+                    <h:outputText value="#{p.estado}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Pagare Firmado
+                    </f:facet>
+                    <h:outputText value="#{p.firmaPagare == true ? 'SI': 'NO'}"/>
+                </p:column>
+
+                <f:facet name="footer">
+                    <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" action="#{prestamoController.prepareCreate}" />
+
+                    <p:button id="editButton" value="#{bundle.Edit}"  outcome="Edit.xhtml"
+                              disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO'? 'false':'true'}">
+                        <f:param name="id" value="#{prestamoController.selected.id == null ? 0:prestamoController.selected.id }"/>
+                    </p:button>
+                    
+                    <p:commandButton id="imprimirButton" action="#{prestamoController.imprimePagare()}" value="Imprimir Pagare" update="datalist"
+                                     disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO'? 'false':'true'}"/>
+                    <p:commandButton id="confirmarButton" action="#{prestamoController.confirmaPagare()}" value="Confirmar Firma" update="datalist"
+                                     disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO'? 'false':'true'}"/>
+                    <p:commandButton id="cancelarButton" action="#{prestamoController.anulaConfimacion()}" value="Cancelar Pagare" update="datalist"
+                                     disabled="#{prestamoController.selected.estado == 'EN_DESEMBOLSO'? 'false':'true'}"/>
+                    <p:commandButton id="desembolsarButton" action="#{prestamoController.desembolsa()}" value="Desembolsa" update="datalist"
+                                     disabled="#{prestamoController.selected.estado == 'EN_DESEMBOLSO'? 'false':'true'}"/>
+                </f:facet>
+            </p:dataTable>
+        </h:form>
+
+
+
+        <!--        <ui:include src="Edit.xhtml"/>
+                <ui:include src="View.xhtml"/>-->
+    </ui:define>
+
+</ui:composition>

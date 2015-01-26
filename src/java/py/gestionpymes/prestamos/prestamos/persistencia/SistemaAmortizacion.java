@@ -9,5 +9,6 @@ package py.gestionpymes.prestamos.prestamos.persistencia;
  * @author ACER
  */
 public enum SistemaAmortizacion {
- INTERES_SIMPLE, FRANCES   
+
+    INTERES_SIMPLE, FRANCES;
 }

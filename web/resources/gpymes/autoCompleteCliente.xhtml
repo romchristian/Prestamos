@@ -8,6 +8,8 @@
     <cc:interface> 
         <cc:attribute name="elegido" type="py.gestionpymes.prestamos.prestamos.persistencia.Cliente"/>
         <cc:attribute name="id" />
+        
+        
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
@@ -16,7 +18,9 @@
 
         <p:autoComplete value="#{cc.attrs.elegido}"  id="#{cc.attrs.id}"
                         completeMethod="#{autoCompleteCliente.completar}"
-                        forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}"/>
+                        forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}">
+             
+        </p:autoComplete>
 
 
     </cc:implementation>
