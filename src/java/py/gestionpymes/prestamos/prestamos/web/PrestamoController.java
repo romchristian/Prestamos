@@ -1,9 +1,8 @@
-package py.gestionpymes.prestamos.adm.web;
-
-import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
-import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
-import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
-import py.gestionpymes.prestamos.adm.dao.ClienteFacade;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package py.gestionpymes.prestamos.prestamos.web;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,32 +11,50 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import py.gestionpymes.prestamos.adm.persistencia.CompDetDirecciones;
 
-@Named("clienteController")
+import javax.inject.Named;
+import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
+import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
+import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
+import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
+
+/**
+ *
+ * @author christian
+ */
+@Named("prestamoController")
 @SessionScoped
-public class ClienteController implements Serializable {
+public class PrestamoController implements Serializable {
 
     @EJB
-    private py.gestionpymes.prestamos.adm.dao.ClienteFacade ejbFacade;
-    private List<Cliente> items = null;
-    private Cliente selected;
-    private CompDetDirecciones compDetDirecciones;
+    private py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO ejbFacade;
+    private List<Prestamo> items = null;
+    private Prestamo selected;
 
-    public ClienteController() {
+    public String calcular() {
+        selected.setSistema(null);
+        selected.setDetalles(null);
+        selected.getDetalles();
+        return null;
     }
 
-    public Cliente getSelected() {
+    public void desembolsa() {
+        ejbFacade.desembolsa(selected);
+    }
+
+    public PrestamoController() {
+    }
+
+    public Prestamo getSelected() {
         return selected;
     }
 
-    public void setSelected(Cliente selected) {
+    public void setSelected(Prestamo selected) {
         this.selected = selected;
     }
 
@@ -47,36 +64,36 @@ public class ClienteController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private ClienteFacade getFacade() {
+    private PrestamoDAO getFacade() {
         return ejbFacade;
     }
 
-    public Cliente prepareCreate() {
-        selected = new Cliente();
+    public Prestamo prepareCreate() {
+        selected = new Prestamo();
         initializeEmbeddableKey();
         return selected;
     }
 
     public void create() {
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("ClienteCreated"));
+        persist(PersistAction.CREATE, "El prestamo se creo EXITOSAMENTE!");
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
 
     public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("ClienteUpdated"));
+        persist(PersistAction.UPDATE, "El prestamo se actualizo se creO EXITOSAMENTE!");
     }
 
     public void destroy() {
-        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("ClienteDeleted"));
+        persist(PersistAction.DELETE, "El prestamo se elimino se creO EXITOSAMENTE!");
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
 
-    public List<Cliente> getItems() {
+    public List<Prestamo> getItems() {
         if (items == null) {
             items = getFacade().findAll();
         }
@@ -87,12 +104,9 @@ public class ClienteController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction == PersistAction.CREATE) {
-                    getFacade().create(selected);
-                }else if (persistAction != PersistAction.DELETE) {
+                if (persistAction != PersistAction.DELETE) {
                     getFacade().edit(selected);
-                }
-                else {
+                } else {
                     getFacade().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
@@ -114,29 +128,29 @@ public class ClienteController implements Serializable {
         }
     }
 
-    public Cliente getCliente(java.lang.Long id) {
+    public Prestamo getPrestamo(java.lang.Long id) {
         return getFacade().find(id);
     }
 
-    public List<Cliente> getItemsAvailableSelectMany() {
+    public List<Prestamo> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }
 
-    public List<Cliente> getItemsAvailableSelectOne() {
+    public List<Prestamo> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
 
-    @FacesConverter(forClass = Cliente.class)
-    public static class ClienteControllerConverter implements Converter {
+    @FacesConverter(forClass = Prestamo.class)
+    public static class PrestamoControllerConverter implements Converter {
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            ClienteController controller = (ClienteController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "clienteController");
-            return controller.getCliente(getKey(value));
+            PrestamoController controller = (PrestamoController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "categoriaController");
+            return controller.getPrestamo(getKey(value));
         }
 
         java.lang.Long getKey(String value) {
@@ -156,11 +170,11 @@ public class ClienteController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Cliente) {
-                Cliente o = (Cliente) object;
+            if (object instanceof Prestamo) {
+                Prestamo o = (Prestamo) object;
                 return getStringKey(o.getId());
             } else {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Cliente.class.getName()});
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Prestamo.class.getName()});
                 return null;
             }
         }

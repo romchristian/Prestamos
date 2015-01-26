@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+                
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <p:dialog id="PrestamoCreateDlg" widgetVar="PrestamoCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Crear nuevo Prestamo">
+        <h:form id="PrestamoCreateForm">
+            <h:panelGroup id="display">
+                <h:panelGrid columns="4">
+
+                    <h:outputText value="Nro Documento"/>
+                    <gp:autoCompleteCliente elegido="#{prestamoController.selected.cliente}"/>
+                    <p:spacer/>
+                    <p:spacer/>
+
+                    <h:outputText value="Monto Préstamo"/>
+                    <p:inputText value="#{prestamoController.selected.capital}"  id="montoPrestamo">
+                        <p:ajax event="blur" update="montoPrestamo"/>
+                        <f:convertNumber locale="#{formato.locale}"/>
+                    </p:inputText>
+                    <h:outputText value="Monto Gastos"/>
+                    <h:inputText value="#{prestamoController.selected.gastos}">
+                        <f:convertNumber locale="#{formato.locale}"/>
+                    </h:inputText>
+                    <h:outputText value="Plazo"/>
+                    <h:inputText value="#{prestamoController.selected.plazo}"/>
+                    <h:outputText value="Tasa"/>
+                    <h:inputText value="#{prestamoController.selected.tasa}"/>
+                    <h:outputText value="Periodicidad de Pago"/>
+                    <h:selectOneMenu value="#{prestamoController.selected.periodoPago}">
+                        <f:selectItems value="#{productorEnums.obtPeriodosPago()}"/>
+                    </h:selectOneMenu>
+                    <h:outputText value="Sitema de Amotización"/>
+<!--                    <p:selectOneMenu value="#{prestamoController.selected.sistemaAmortizacion}">
+                        <f:selectItems value="#{productorEnums.obtSistemasAmortizacion()}"/>
+                    </p:selectOneMenu>-->
+                    <h:outputText value="Monto Cuota"/>
+                    <h:inputText value="#{prestamoController.selected.montoCuota}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                    </h:inputText>
+                    <p:spacer/>
+                    <p:spacer/>
+                    <h:outputText value="Total Interes"/>
+                    <h:inputText value="#{prestamoController.selected.totalIntereses}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                    </h:inputText>
+                    <p:spacer/>
+                    <p:spacer/>
+                    <h:outputText value="Total Operacion"/>
+                    <h:inputText value="#{prestamoController.selected.totalOperacion}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                    </h:inputText>
+                    <p:spacer/>
+                    <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="tablaDetalles"/>
+                </h:panelGrid>
+                <p:dataTable value="#{prestamoController.selected.detalles}" var="d" id="tablaDetalles">
+                    <p:column headerText="Cuota">
+                        <h:outputText value="#{d.nroCuota}"/>
+                    </p:column>
+                    <p:column headerText="Saldo Capital">
+                        <h:outputText value="#{d.saldoCapital}">
+                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Monto cuota">
+                        <h:outputText value="#{d.montoCuota}">
+                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Vencimiento">
+                        <h:outputText value="#{d.fechaVencimiento}">
+                            <f:convertDateTime pattern="#{formato.patronFecha}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Cuota Capital">
+                        <h:outputText value="#{d.cuotaCapital}">
+                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Cuota Interes">
+                        <h:outputText value="#{d.cuotaInteres}">
+                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+                
+                
+                <p:commandButton actionListener="#{prestamoController.create}" value="#{bundle.Save}" update="display,:PrestamoListForm:datalist,:growl" oncomplete="handleSubmit(args,'PrestamoCreateDialog');"/>
+                <p:commandButton value="#{bundle.Cancel}" onclick="PrestamoCreateDialog.hide()"/>
+            </h:panelGroup>
+        </h:form>
+    </p:dialog>
+
+</ui:composition>
+
