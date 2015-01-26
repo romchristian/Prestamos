@@ -14,7 +14,7 @@
             <title><ui:insert name="title">Default Title</ui:insert></title>
         </f:facet>
 
-        
+
 
         <h:outputStylesheet library="css" name="myapp.css"/>
         <h:outputStylesheet library="css" name="default.css"/>
@@ -25,84 +25,152 @@
         <h:outputStylesheet library="css" name="jsfcrud.css"/>
         <h:outputScript library="js" name="jsfcrud.js"/>
 
-        <script type="text/javascript">
-            PrimeFaces.locales['es'] = {
-                closeText: 'Cerrar',
-                prevText: 'Anterior',
-                nextText: 'Siguiente',
-                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
-                weekHeader: 'Semana',
-                firstDay: 1,
-                isRTL: false,
-                showMonthAfterYear: false,
-                yearSuffix: '',
-                timeOnlyTitle: 'Sólo hora',
-                timeText: 'Tiempo',
-                hourText: 'Hora',
-                minuteText: 'Minuto',
-                secondText: 'Segundo',
-                currentText: 'Fecha actual',
-                ampm: false,
-                month: 'Mes',
-                week: 'Semana',
-                day: 'Día',
-                allDayText: 'Todo el día'
-            };
-        </script>
+        <style type="text/css">
+            #wrapper {
+
+                left: 260px;
+                position: absolute;
+                top: 70px;
+                padding-right: 20px;
+                z-index: 1;
+                height: 80%;
+                overflow: auto;
+
+            }
+
+            #header{
+                background: rgb(30,87,153); /* Old browsers */
+                background: -moz-linear-gradient(45deg, rgba(30,87,153,1) 0%, rgba(41,137,216,1) 50%, rgba(32,124,202,1) 51%, rgba(125,185,232,1) 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(30,87,153,1)), color-stop(50%,rgba(41,137,216,1)), color-stop(51%,rgba(32,124,202,1)), color-stop(100%,rgba(125,185,232,1))); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(45deg, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* Chrome10+,Safari5.1+ */
+                background: -o-linear-gradient(45deg, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* Opera 11.10+ */
+                background: -ms-linear-gradient(45deg, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* IE10+ */
+                background: linear-gradient(45deg, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* W3C */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+                width:100%;
+                position:fixed;
+                top:0px;
+                height:50px;
+
+                color: white;
+                left: 240px;
+                z-index: 2;
+                margin:0px auto;
+                padding-left:  25px
+            }
+
+            #sidebar{
+                background: rgb(246,248,249); /* Old browsers */
+                background: -moz-linear-gradient(45deg, rgba(246,248,249,1) 0%, rgba(229,235,238,1) 50%, rgba(215,222,227,1) 51%, rgba(245,247,249,1) 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(246,248,249,1)), color-stop(50%,rgba(229,235,238,1)), color-stop(51%,rgba(215,222,227,1)), color-stop(100%,rgba(245,247,249,1))); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(45deg, rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 51%,rgba(245,247,249,1) 100%); /* Chrome10+,Safari5.1+ */
+                background: -o-linear-gradient(45deg, rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 51%,rgba(245,247,249,1) 100%); /* Opera 11.10+ */
+                background: -ms-linear-gradient(45deg, rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 51%,rgba(245,247,249,1) 100%); /* IE10+ */
+                background: linear-gradient(45deg, rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 51%,rgba(245,247,249,1) 100%); /* W3C */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f8f9', endColorstr='#f5f7f9',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+                border-top: 1px solid black;
+                padding:30px;
+
+                position: absolute;
+                top: 0;
+                left: 0;
+                top: 0;
+                height: 80%;
+
+            }
+
+            #titulo{
+                height: 50px;
+                background-color: #ddd;
+            }
+
+        </style>
     </h:head>
 
-    <h:body style="height: 100%">
+    <h:body style="padding: 0;margin: 0;">
 
         <p:growl id="growl" life="3000" />
 
 
-        <div class="ui-grid ui-grid-responsive" style="height: 100%">
-            <div class="ui-grid-row" style="height: 100%">
-                <div class="ui-grid-col-2" style="height: 800px; background-color: #ddd">
-                    <br/>
-                    <br/>
 
-                    <h:form id="menuForm" style="height: 100%;">
+        <div id="sidebar">
+            <h:form id="menuForm" style="padding: 0;margin: 0;">
 
-                        <h:outputText value="Prestamos" style="font-size: 14px;color: #0077b3; padding-left: 10px;font-weight: bold;margin-bottom: 10px"/>
-                        <br/>
+                <h:outputText value="Prestamos" style="font-size: 14px;color: #0077b3; padding-left: 10px;font-weight: bold;margin-bottom: 10px"/>
+                <br/>
 
-                        <ul>
-                            <li><h:link  value="Datos de Clientes" outcome="/adm/cliente/List.xhtml" /></li>
+                <ul>
+                    <li><h:link  value="Datos de Clientes" outcome="/adm/cliente/List.xhtml" /></li>
+                    <li><h:link  value="Prestamos" outcome="/prestamos/prestamo/List.xhtml" /></li>
+                    <li><h:link  value="Cobro Cuotas" outcome="/prestamos/prestamo/cobraCuota.xhtml" /></li>
+                </ul>
+                <br/>
 
-                        </ul>
-                        <br/>
+                <h:outputText value="Configuracion" style="font-size: 14px;color: #0077b3; padding-left: 10px;font-weight: bold;margin-bottom: 10px"/>
+                <br/>
 
-                        <h:outputText value="Configuracion" style="font-size: 14px;color: #0077b3; padding-left: 10px;font-weight: bold;margin-bottom: 10px"/>
-                        <br/>
+                <ul>
+                    <li><h:link  value="Empresa" outcome="/adm/empresa/List.xhtml" /></li>
+                    <li><h:link  value="Sucursal" outcome="/adm/sucursal/List.xhtml" /></li>
+                    <li><h:link  value="Cotizacion" outcome="/adm/cotizacion/List.xhtml" /></li>
+                    <li><h:link  value="Moneda" outcome="/adm/moneda/List.xhtml" /></li>
+                    <li><h:link  value="ImpuestoIVA" outcome="/adm/impuestoIVA/List.xhtml" /></li>
+                    <li><h:link  value="Categoria de Clientes" outcome="/adm/categoria/List.xhtml" /></li>
 
-                        <ul>
-                            <li><h:link  value="Empresa" outcome="/adm/empresa/List.xhtml" /></li>
-                            <li><h:link  value="Sucursal" outcome="/adm/sucursal/List.xhtml" /></li>
-                            <li><h:link  value="Cotizacion" outcome="/adm/cotizacion/List.xhtml" /></li>
-                            <li><h:link  value="Moneda" outcome="/adm/moneda/List.xhtml" /></li>
-                            <li><h:link  value="ImpuestoIVA" outcome="/adm/impuestoIVA/List.xhtml" /></li>
-                            <li><h:link  value="Categoria de Clientes" outcome="/adm/categoria/List.xhtml" /></li>
-
-                        </ul>
-
-
-
-
-                    </h:form>
-                </div>
-                <div class="ui-grid-col-10" style="padding: 20px">
-                    <div>
-                        <h2><ui:insert name="title">Default Title</ui:insert></h2>
-                    </div>
-                    <ui:insert name="body"/>
-                </div>
-            </div>
+                </ul>
+            </h:form>
         </div>
+
+        <div id="header">
+            <h2><ui:insert name="title">Default Title</ui:insert></h2>
+        </div>
+
+        <div id="wrapper">
+            <div>
+
+
+
+                <h:panelGroup>
+                    <ui:insert name="body"/>
+                </h:panelGroup>
+
+            </div>
+
+        </div>
+
+
+        <!--        <div class="ui-grid ui-grid-responsive" style="height: 100%;padding: 0;margin: 0;">
+                    <div class="ui-grid-row" style="height: 100%;padding: 0;margin: 0;">
+                        <div class="ui-grid-col-2" style="background-color: #ddd;-moz-background-size: cover;
+                             -webkit-background-size: cover;
+                             -o-background-size: cover;
+                             background-size: cover;padding: 0;margin: 0;">
+                            <br/>
+                            <br/>
+        
+        
+                        </div>
+                        <div class="ui-grid-col-10" style="padding: 0px;margin: 0;height: 100%">
+                            <div style="
+                                 width:100%;
+                                 position:fixed;
+                                 top:0px;
+                                 height:50px;
+                                 background:#F0F0F0;
+                                 border:1px solid #CCC;
+        
+                                 margin:0px auto;
+                                 padding-left:  10px">
+                                <h2><ui:insert name="title">Default Title</ui:insert></h2>
+                            </div>
+                            <div style="overflow: auto; padding: 20px;margin-top: 50px;height: 100%">
+                                <ui:insert name="body"/>
+                            </div>
+        
+                        </div>
+                    </div>
+                </div>-->
 
 
     </h:body>

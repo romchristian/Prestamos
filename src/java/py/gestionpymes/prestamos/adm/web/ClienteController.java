@@ -193,9 +193,12 @@ public class ClienteController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != PersistAction.DELETE) {
+                if (persistAction == PersistAction.CREATE) {
+                    getFacade().create(selected);
+                }else if (persistAction != PersistAction.DELETE) {
                     getFacade().edit(selected);
-                } else {
+                }
+                else {
                     getFacade().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);

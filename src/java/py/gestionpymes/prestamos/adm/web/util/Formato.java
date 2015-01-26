@@ -22,7 +22,7 @@ public class Formato implements Serializable {
     private Locale locale;
     private String patronFecha = "dd/MM/yyyy";
     private String patronFechaHora = "dd/MM/yyyy hh:mm";
-    
+   
 
     @PostConstruct
     private void init() {
@@ -44,6 +44,7 @@ public class Formato implements Serializable {
     public void setPatronFecha(String patronFecha) {
         this.patronFecha = patronFecha;
     }
+
 
     public String getPatronFechaHora() {
         return patronFechaHora;

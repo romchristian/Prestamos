@@ -44,6 +44,7 @@ public class Prestamo implements Serializable {
     private double montoCuota;
     private double totalIntereses;
     private double totalOperacion;
+    @Enumerated(EnumType.STRING)
     private SistemaAmortizacion sistemaAmortizacion = SistemaAmortizacion.FRANCES;
     @Transient
     private Sistema sistema;
@@ -164,6 +165,8 @@ public class Prestamo implements Serializable {
     public void setSistemaAmortizacion(SistemaAmortizacion sistemaAmortizacion) {
         this.sistemaAmortizacion = sistemaAmortizacion;
     }
+
+    
 
     public int getTasa() {
         return tasa;

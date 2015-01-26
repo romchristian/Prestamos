@@ -5,9 +5,11 @@
  */
 package py.gestionpymes.prestamos.adm.dao;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import py.gestionpymes.prestamos.prestamos.dao.CuentaClienteDAO;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
 
 /**
@@ -18,6 +20,8 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
 public class ClienteFacade extends AbstractFacade<Cliente> {
     @PersistenceContext(unitName = "PrestamosPU")
     private EntityManager em;
+     @EJB
+    private CuentaClienteDAO cuentaClienteDAO;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -27,5 +31,13 @@ public class ClienteFacade extends AbstractFacade<Cliente> {
     public ClienteFacade() {
         super(Cliente.class);
     }
+
+    @Override
+    public void create(Cliente entity) {
+        super.create(entity); 
+        cuentaClienteDAO.create(entity);
+    }
+    
+    
     
 }
