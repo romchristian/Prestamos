@@ -52,8 +52,9 @@
                         <f:param name="id" value="#{prestamoController.selected.id == null ? 0:prestamoController.selected.id }"/>
                     </p:button>
                     
-                    <p:commandButton id="imprimirButton" action="#{prestamoController.imprimePagare()}" value="Imprimir Pagare" update="datalist"
-                                     disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO'? 'false':'true'}"/>
+                    <p:commandButton id="imprimirButton" action="#{prestamoController.imprimePagare()}" value="Imprimir Pagare" ajax="false"
+                                     />
+<!--                    disabled="{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO'? 'false':'true'}"-->
                     <p:commandButton id="confirmarButton" action="#{prestamoController.confirmaPagare()}" value="Confirmar Firma" update="datalist"
                                      disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO'? 'false':'true'}"/>
                     <p:commandButton id="cancelarButton" action="#{prestamoController.anulaConfimacion()}" value="Cancelar Pagare" update="datalist"

@@ -29,7 +29,7 @@
 
                             <h:outputText value="Vigencia Documento"/>
                             <p:calendar value="#{clienteController.selected.vigencia}" id="vigencia" required="true"
-                                        locale="#{formato.locale}" pattern="dd/MM/yyyy"/>
+                                        locale="es" pattern="dd/MM/yyyy"/>
                             <p:spacer width="20" height="0"/>
 
                         </p:panelGrid>
@@ -80,7 +80,7 @@
 
                             <p:outputLabel value="Fecha Nac" for="fechaNacimiento"/>
                             <p:calendar value="#{clienteController.selected.fechaNac}" id="fechaNacimiento" required="true"
-                                        locale="#{formato.locale}" pattern="dd/MM/yyyy"/>
+                                        locale="es" pattern="dd/MM/yyyy"/>
 
                             <p:outputLabel value="Linea de Crédito" for="lineadecredito"/>
                             <p:inputText value="#{clienteController.selected.lineaDeCredito}" id="lineadecredito"/>
@@ -227,7 +227,7 @@
                                     </p:column>
                                     <p:column headerText="INGRESO">
                                         <h:outputText value="#{d.ingreso}">
-                                            <f:convertNumber locale="#{formato.locale}"/>                                            
+                                            <f:convertNumber locale="es"/>                                            
                                         </h:outputText> 
                                     </p:column>
                                     <p:column headerText="CICLO">
@@ -238,7 +238,7 @@
                                     </p:column>
                                     <p:column headerText="FECHA INGRESO">
                                         <h:outputText value="#{d.fechaIngreso}">
-                                            <f:convertDateTime pattern="#{formato.patronFecha}" locale="#{formato.locale}"/>                                            
+                                            <f:convertDateTime pattern="#{formato.patronFecha}" locale="es"/>                                            
                                         </h:outputText> 
                                     </p:column>
                                     <p:column headerText="ACCION">

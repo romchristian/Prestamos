@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -15,11 +16,16 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import py.gestionpymes.prestamos.adm.dao.MonedaFacade;
+import py.gestionpymes.prestamos.prestamos.dao.CobranzaDAO;
+import py.gestionpymes.prestamos.prestamos.dao.PagoDAO;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
+import py.gestionpymes.prestamos.prestamos.persistencia.CobroCuota;
+import py.gestionpymes.prestamos.prestamos.persistencia.DetCobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
+import py.gestionpymes.prestamos.prestamos.persistencia.Efectivo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
-
 
 /**
  *
@@ -31,15 +37,57 @@ public class CobraCuotaBean implements Serializable {
 
     @EJB
     private PrestamoDAO prestamoDAO;
+    @EJB
+    private MonedaFacade monedaDAO;
+    @EJB
+    private CobranzaDAO cobranzaDAO;
+    @EJB
+    private PagoDAO pagoDAO;
+
     private TreeNode root;
     private Cliente cliente;
     private List<TreeCuota> seleccionados = new ArrayList<TreeCuota>();
     private List<TreeCuota> disponibles;
     private double totalAPagar;
-    
-    
+    private TreeCuota cuotaSeleccionada;
+
+    public TreeCuota getCuotaSeleccionada() {
+        return cuotaSeleccionada;
+    }
+
+    public void setCuotaSeleccionada(TreeCuota cuotaSeleccionada) {
+        this.cuotaSeleccionada = cuotaSeleccionada;
+    }
+
+    public void paga() {
+
+        for (TreeCuota t : seleccionados) {
+            CobroCuota cc = new CobroCuota(t.getPrestamo());
+
+            Efectivo efe = new Efectivo();
+            efe.setFecha(new Date());
+            efe.setMoneda(monedaDAO.find("Guaraníes"));
+            efe.setMonto(t.getMontoPago());
+            pagoDAO.create(efe);
+            DetCobroCuota dcc = new DetCobroCuota();
+            dcc.setCobroCuota(cc);
+            dcc.setPago(efe);
+            dcc.setMonto(efe.getMonto());
+            if (!t.isEsPrestamo()) {
+                dcc.setDetPrestamo(t.getDetPrestamo());
+            }
+            dcc.setFecha(new Date());
+            List<DetCobroCuota> detallesCobro = new ArrayList<DetCobroCuota>();
+            detallesCobro.add(dcc);
+            cc.setDetalles(detallesCobro);
+            cobranzaDAO.create(cc);
+        } 
+
+        
+    }
+
     @PostConstruct
-    public void init(){
+    public void init() {
         cargaPrestamos();
     }
 
@@ -111,20 +159,17 @@ public class CobraCuotaBean implements Serializable {
     }
 
     public void selecciona() {
+        cuotaSeleccionada.setSeleccionado(true);
 
         seleccionados = new ArrayList<TreeCuota>();
-        for(TreeCuota cuota: disponibles){
-            if(cuota.isSeleccionado()){
+        for (TreeCuota cuota : disponibles) {
+            if (cuota.isSeleccionado()) {
                 cuota.setMontoPago(cuota.getMontoCuota());
                 seleccionados.add(cuota);
-            }else{
+            } else {
                 cuota.setMontoPago(0d);
             }
         }
-        
-        
-
     }
 
-    
 }

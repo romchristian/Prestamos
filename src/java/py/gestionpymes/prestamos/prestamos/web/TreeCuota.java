@@ -25,7 +25,7 @@ public class TreeCuota {
     private Double montoCuota;
     private Integer diasMora;
     private Double montoMora;
-    private Double montoPago;
+    private double montoPago;
     private Double saldoCuota;
     private boolean esPrestamo;
     private boolean cancelado;
@@ -143,13 +143,15 @@ public class TreeCuota {
         this.montoMora = montoMora;
     }
 
-    public Double getMontoPago() {
+    public double getMontoPago() {
         return montoPago;
     }
 
-    public void setMontoPago(Double montoPago) {
+    public void setMontoPago(double montoPago) {
         this.montoPago = montoPago;
     }
+
+    
 
     public int getNroCuota() {
         return nroCuota;

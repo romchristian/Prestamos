@@ -5,6 +5,8 @@
 package py.gestionpymes.prestamos.prestamos.web;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -18,13 +20,16 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 
 import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
+import py.gestionpymes.prestamos.prestamos.persistencia.DetCobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
+import py.gestionpymes.prestamos.reportes.jasper.ReporteController;
 
 /**
  *
@@ -39,7 +44,9 @@ public class PrestamoController implements Serializable {
     private List<Prestamo> items = null;
     private Prestamo selected;
     private long id;
-
+    @Inject
+    private ReporteController reporteController;
+   
     public long getId() {
         return id;
     }
@@ -63,7 +70,11 @@ public class PrestamoController implements Serializable {
     }
 
     public void imprimePagare() {
-
+       
+        List<Pagare> data = new ArrayList<>();
+       
+        data.add(new Pagare(25655845D));
+        reporteController.generaPDF(new HashMap(),data ,"reportes/prestamos/pagares.jasper");
     }
 
     public void desembolsa() {
