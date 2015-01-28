@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import javax.persistence.*;
+import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 
 /**
  *
@@ -38,12 +39,15 @@ public class DetPrestamo implements Serializable {
     private double saldoCuota;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date ultimoPago;
+    @ManyToOne
+    private Moneda moneda;
 
     public DetPrestamo() {
     }
 
     public DetPrestamo(Prestamo prestamo, int nroCuota, double cuotaCapital, double cuotaInteres, double saldoCapital) {
         this.prestamo = prestamo;
+        this.moneda = prestamo.getMoneda();
         this.nroCuota = nroCuota;
         this.cuotaCapital = cuotaCapital;
         this.cuotaInteres = cuotaInteres;
@@ -184,7 +188,7 @@ public class DetPrestamo implements Serializable {
 
     public boolean afectaSaldoCuota(double monto) {
         boolean R = false;
-        if (monto <= saldoCuota) {
+        if ((monto + montoMora) <= saldoCuota) {
             saldoCuota -= monto;
             R = true;
             ultimoPago = new Date();

@@ -8,6 +8,8 @@ import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoOperacion;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
+import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
+import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 
 /**
  *
@@ -23,14 +25,45 @@ public abstract class DetCuentaCliente<T> implements Serializable {
     private CuentaCliente cuentaCliente;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fecha = new Date();
+    @Enumerated(EnumType.STRING)
     private TipoOperacion tipoOperacion;
     private String descripcion;
     
     private double montoCredito;
     private double montoDebito;
+    @ManyToOne
+    private Prestamo prestamo;
+    @ManyToOne
+    private Moneda moneda;
+    @ManyToOne
+    private Cotizacion cotizacion;
+
+    public Moneda getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(Moneda moneda) {
+        this.moneda = moneda;
+    }
+
+    public Cotizacion getCotizacion() {
+        return cotizacion;
+    }
+
+    public void setCotizacion(Cotizacion cotizacion) {
+        this.cotizacion = cotizacion;
+    }
+
+    
+    
+    public Prestamo getPrestamo() {
+        return prestamo;
+    }
+
+    public void setPrestamo(Prestamo prestamo) {
+        this.prestamo = prestamo;
+    }
   
-    
-    
 
     public Long getId() {
         return id;

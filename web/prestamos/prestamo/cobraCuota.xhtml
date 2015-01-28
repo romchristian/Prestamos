@@ -117,7 +117,7 @@
 
                 </p:treeTable>
 
-                <p:dialog id="dialog" header="Detalle de Cuota" showEffect="fade" widgetVar="cuotaDialog"  resizable="false">
+                <p:dialog id="dialog" header="Detalle de Cuota" showEffect="fade" widgetVar="cuotaDialog"  modal="true" resizable="false" appendTo="@(body)" position="bottom">
                     <p:outputPanel id="cuotaPanel">
                         <p:panelGrid  columns="2" columnClasses="label,value">
                             <h:outputLabel for="nroCuota" value="Nro: " />
@@ -128,6 +128,11 @@
 
                             <h:outputLabel for="montoPago" value="Monto Pago: " />
                             <p:inputText id="montoPago" value="#{cobraCuotaBean.cuotaSeleccionada.montoPago}" style="font-weight:bold" />
+                            
+                            <h:outputLabel for="moneda" value="Moneda: " />
+                            <p:selectOneMenu value="#{cobraCuotaBean.cuotaSeleccionada.moneda}">
+                                <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
+                            </p:selectOneMenu>
 
                             <h:outputLabel for="saldoCuota" value="Saldo: " />
                             <h:outputText id="saldoCuota" value="#{cobraCuotaBean.cuotaSeleccionada.saldoCuota}" style="font-weight:bold" />

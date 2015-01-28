@@ -46,7 +46,7 @@ public class PrestamoController implements Serializable {
     private long id;
     @Inject
     private ReporteController reporteController;
-   
+
     public long getId() {
         return id;
     }
@@ -70,11 +70,11 @@ public class PrestamoController implements Serializable {
     }
 
     public void imprimePagare() {
-       
+
         List<Pagare> data = new ArrayList<>();
-       
+
         data.add(new Pagare(25655845D));
-        reporteController.generaPDF(new HashMap(),data ,"reportes/prestamos/pagares.jasper");
+        reporteController.generaPDF(new HashMap(), data, "reportes/prestamos/pagares.jasper");
     }
 
     public void desembolsa() {
@@ -105,6 +105,10 @@ public class PrestamoController implements Serializable {
 
     public void setSelected(Prestamo selected) {
         this.selected = selected;
+    }
+
+    public boolean haySeleccion() {
+        return getSelected().getId() != null;
     }
 
     protected void setEmbeddableKeys() {

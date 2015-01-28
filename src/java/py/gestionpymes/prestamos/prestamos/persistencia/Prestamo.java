@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
+import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
+import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 
 /**
  *
@@ -50,12 +52,34 @@ public class Prestamo implements Serializable {
     private Sistema sistema;
     private EstadoPrestamo estado;
     private boolean firmaPagare;
+    @ManyToOne
+    private Moneda moneda;
+    @ManyToOne
+    private Cotizacion cotizacion;
 
     public Prestamo() {
         this.estado = EstadoPrestamo.PENDIENTE_DESEMBOLSO;
         this.sistemaAmortizacion = SistemaAmortizacion.FRANCES;
     }
 
+    public Moneda getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(Moneda moneda) {
+        this.moneda = moneda;
+    }
+
+    public Cotizacion getCotizacion() {
+        return cotizacion;
+    }
+
+    public void setCotizacion(Cotizacion cotizacion) {
+        this.cotizacion = cotizacion;
+    }
+
+    
+    
     public void setSistema(Sistema sistema) {
         this.sistema = sistema;
     }

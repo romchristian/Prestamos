@@ -29,6 +29,26 @@ public class DetCobroCuota implements Serializable {
     private Pago pago;
     @ManyToOne
     private DetPrestamo detPrestamo;
+    @ManyToOne
+    private Moneda moneda;
+    @ManyToOne
+    private Cotizacion cotizacion;
+
+    public Moneda getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(Moneda moneda) {
+        this.moneda = moneda;
+    }
+
+    public Cotizacion getCotizacion() {
+        return cotizacion;
+    }
+
+    public void setCotizacion(Cotizacion cotizacion) {
+        this.cotizacion = cotizacion;
+    }
     
     
     @ManyToOne

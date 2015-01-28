@@ -22,16 +22,35 @@ public abstract class Recibo implements Serializable {
     private Long id;
     private String nro;
     private String concepto;
+    
+    
 
     public Recibo() {
     }
 
     public Recibo(String concepto) {
         this.concepto = concepto;
+        
     }
 
     public Recibo(String nro, String concepto) {
         this.nro = nro;
+        this.concepto = concepto;
+    }
+
+    public String getNro() {
+        return nro;
+    }
+
+    public void setNro(String nro) {
+        this.nro = nro;
+    }
+
+    public String getConcepto() {
+        return concepto;
+    }
+
+    public void setConcepto(String concepto) {
         this.concepto = concepto;
     }
     

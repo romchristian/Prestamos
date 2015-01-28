@@ -5,6 +5,8 @@
 package py.gestionpymes.prestamos.prestamos.web;
 
 import java.util.Date;
+import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
+import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 
@@ -17,6 +19,8 @@ public class TreeCuota {
     private Prestamo prestamo;
     
     private DetPrestamo detPrestamo;
+    private Moneda moneda;
+    
     
     private String descPrestamo;
     private String descDetPrestamo;
@@ -25,17 +29,23 @@ public class TreeCuota {
     private Double montoCuota;
     private Integer diasMora;
     private Double montoMora;
-    private double montoPago;
+    private Double montoPago;
     private Double saldoCuota;
     private boolean esPrestamo;
     private boolean cancelado;
     private boolean modoEdicion;
     private boolean seleccionado;
 
+    public TreeCuota() {
+    }
+
+    
+    
     public TreeCuota(Prestamo prestamo) {
         this.prestamo = prestamo;
         this.descPrestamo = "Prestamo # " + prestamo.getId();
         this.esPrestamo = true;
+        this.moneda = prestamo.getMoneda();
     }
 
     public TreeCuota(DetPrestamo detPrestamo) {
@@ -48,6 +58,8 @@ public class TreeCuota {
         this.montoMora = detPrestamo.getMontoMora();
         this.montoPago = detPrestamo.getMontoPago();
         this.saldoCuota = detPrestamo.getSaldoCuota();
+        this.prestamo = detPrestamo.getPrestamo();
+        this.moneda = detPrestamo.getPrestamo().getMoneda();
         this.esPrestamo = false;
         this.cancelado = true;
     }
@@ -143,11 +155,11 @@ public class TreeCuota {
         this.montoMora = montoMora;
     }
 
-    public double getMontoPago() {
+    public Double getMontoPago() {
         return montoPago;
     }
 
-    public void setMontoPago(double montoPago) {
+    public void setMontoPago(Double montoPago) {
         this.montoPago = montoPago;
     }
 
@@ -175,6 +187,14 @@ public class TreeCuota {
 
     public void setSaldoCuota(Double saldoCuota) {
         this.saldoCuota = saldoCuota;
+    }
+
+    public Moneda getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(Moneda moneda) {
+        this.moneda = moneda;
     }
 
     

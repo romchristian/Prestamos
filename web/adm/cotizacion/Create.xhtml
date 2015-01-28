@@ -30,7 +30,7 @@
                         <p:inputText id="venta" value="#{cotizacionController.selected.venta}" title="#{bundle.CreateCotizacionTitle_venta}" />
                         
                         <p:outputLabel value="#{bundle.CreateCotizacionLabel_vigencia}" for="vigencia" />
-                        <p:calendar id="vigencia" pattern="MM/dd/yyyy" value="#{cotizacionController.selected.vigencia}" title="#{bundle.EditCotizacionTitle_vigencia}"  showOn="button"/>
+                        <p:calendar id="vigencia" pattern="MM/dd/yyyy" value="#{cotizacionController.selected.vigencia}" title="#{bundle.EditCotizacionTitle_vigencia}"  showOn="button" locale="es" lang="es"/>
                         
                     </p:panelGrid>
                     <p:commandButton actionListener="#{cotizacionController.create}" value="#{bundle.Save}" update="display,:CotizacionListForm:datalist,:growl" oncomplete="handleSubmit(args,'CotizacionCreateDialog');"/>

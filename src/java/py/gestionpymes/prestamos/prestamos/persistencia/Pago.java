@@ -7,6 +7,7 @@ package py.gestionpymes.prestamos.prestamos.persistencia;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
+import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 
 /**
@@ -23,10 +24,19 @@ public abstract class Pago implements Serializable {
     private double monto;
     @ManyToOne
     private Moneda moneda;
+    @ManyToOne
+    private Cotizacion cotizacion;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fecha;
-    
 
+    public Cotizacion getCotizacion() {
+        return cotizacion;
+    }
+
+    public void setCotizacion(Cotizacion cotizacion) {
+        this.cotizacion = cotizacion;
+    }
+    
     public Long getId() {
         return id;
     }

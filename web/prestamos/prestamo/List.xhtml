@@ -17,13 +17,32 @@
             <p:dataTable id="datalist" value="#{prestamoController.items}" var="p"
                          selectionMode="single" selection="#{prestamoController.selected}"
                          paginator="true"
+                         paginatorPosition="bottom"
+                         paginatorAlwaysVisible="false"
                          rowKey="#{p.id}"
                          rows="10"
-                         rowsPerPageTemplate="10,20,30,40,50"
-                         >
+                         rowsPerPageTemplate="10,20,30,40,50">
 
                 <p:ajax event="rowSelect"   update="createButton editButton imprimirButton confirmarButton cancelarButton desembolsarButton"/>
                 <p:ajax event="rowUnselect" update="createButton editButton imprimirButton confirmarButton cancelarButton desembolsarButton"/>
+
+                <f:facet name="header">
+                    <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" action="#{prestamoController.prepareCreate}" />
+
+                    <p:button id="editButton" value="#{bundle.Edit}"  outcome="Edit.xhtml"
+                              disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion() ? 'false':'true'}">
+                        <f:param name="id" value="#{prestamoController.selected.id == null ? 0:prestamoController.selected.id }"/>
+                    </p:button>
+
+                    <p:commandButton id="imprimirButton" action="#{prestamoController.imprimePagare()}" value="Imprimir Pagare" ajax="false"
+                                     disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"/>
+                    <p:commandButton id="confirmarButton" action="#{prestamoController.confirmaPagare()}" value="Confirmar Firma" update="datalist"
+                                     disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"/>
+                    <p:commandButton id="cancelarButton" action="#{prestamoController.anulaConfimacion()}" value="Cancelar Pagare" update="datalist"
+                                     disabled="#{prestamoController.selected.estado == 'EN_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"/>
+                    <p:commandButton id="desembolsarButton" action="#{prestamoController.desembolsa()}" value="Desembolsa" update="datalist"
+                                     disabled="#{prestamoController.selected.estado == 'EN_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"/>
+                </f:facet>
 
                 <p:column>
                     <f:facet name="header">
@@ -44,24 +63,7 @@
                     <h:outputText value="#{p.firmaPagare == true ? 'SI': 'NO'}"/>
                 </p:column>
 
-                <f:facet name="footer">
-                    <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" action="#{prestamoController.prepareCreate}" />
 
-                    <p:button id="editButton" value="#{bundle.Edit}"  outcome="Edit.xhtml"
-                              disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO'? 'false':'true'}">
-                        <f:param name="id" value="#{prestamoController.selected.id == null ? 0:prestamoController.selected.id }"/>
-                    </p:button>
-                    
-                    <p:commandButton id="imprimirButton" action="#{prestamoController.imprimePagare()}" value="Imprimir Pagare" ajax="false"
-                                     />
-<!--                    disabled="{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO'? 'false':'true'}"-->
-                    <p:commandButton id="confirmarButton" action="#{prestamoController.confirmaPagare()}" value="Confirmar Firma" update="datalist"
-                                     disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO'? 'false':'true'}"/>
-                    <p:commandButton id="cancelarButton" action="#{prestamoController.anulaConfimacion()}" value="Cancelar Pagare" update="datalist"
-                                     disabled="#{prestamoController.selected.estado == 'EN_DESEMBOLSO'? 'false':'true'}"/>
-                    <p:commandButton id="desembolsarButton" action="#{prestamoController.desembolsa()}" value="Desembolsa" update="datalist"
-                                     disabled="#{prestamoController.selected.estado == 'EN_DESEMBOLSO'? 'false':'true'}"/>
-                </f:facet>
             </p:dataTable>
         </h:form>
 

@@ -25,6 +25,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.CobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetCobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Efectivo;
+import py.gestionpymes.prestamos.prestamos.persistencia.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 
 /**
@@ -52,6 +53,9 @@ public class CobraCuotaBean implements Serializable {
     private TreeCuota cuotaSeleccionada;
 
     public TreeCuota getCuotaSeleccionada() {
+        if(cuotaSeleccionada == null){
+            cuotaSeleccionada = new TreeCuota();
+        }
         return cuotaSeleccionada;
     }
 
@@ -66,20 +70,21 @@ public class CobraCuotaBean implements Serializable {
 
             Efectivo efe = new Efectivo();
             efe.setFecha(new Date());
-            efe.setMoneda(monedaDAO.find("Guaraníes"));
+            efe.setMoneda(t.getMoneda());
             efe.setMonto(t.getMontoPago());
             pagoDAO.create(efe);
+            
             DetCobroCuota dcc = new DetCobroCuota();
             dcc.setCobroCuota(cc);
             dcc.setPago(efe);
+            dcc.setMoneda(t.getMoneda());
             dcc.setMonto(efe.getMonto());
             if (!t.isEsPrestamo()) {
                 dcc.setDetPrestamo(t.getDetPrestamo());
             }
             dcc.setFecha(new Date());
-            List<DetCobroCuota> detallesCobro = new ArrayList<DetCobroCuota>();
-            detallesCobro.add(dcc);
-            cc.setDetalles(detallesCobro);
+            cc.getDetalles().add(dcc);
+            
             cobranzaDAO.create(cc);
         } 
 
@@ -145,7 +150,7 @@ public class CobraCuotaBean implements Serializable {
             }
         };
 
-        for (Prestamo p : prestamoDAO.findAll(cliente)) {
+        for (Prestamo p : prestamoDAO.findAllClienteEstado(cliente,EstadoPrestamo.VIGENTE)) {
             TreeNode nodoPrestamo = new DefaultTreeNode(new TreeCuota(p), root);
 
             Collections.sort(p.getDetalles(), comp);

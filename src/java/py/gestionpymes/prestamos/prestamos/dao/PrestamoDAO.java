@@ -41,6 +41,21 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
     public List<Prestamo> findAll(Cliente cliente) {
         return em.createQuery("SELECT p from Prestamo p where p.cliente = :cliente").setParameter("cliente", cliente).getResultList();
     }
+    
+    public List<Prestamo> findAllClienteEstado(Cliente cliente, EstadoPrestamo estado) {
+        return em.createQuery("SELECT p from Prestamo p where p.cliente = :cliente and p.estado = :estado")
+                .setParameter("cliente", cliente)
+                .setParameter("estado", estado)
+                .getResultList();
+    }
+    
+    public List<Prestamo> findAllEstado(EstadoPrestamo estado) {
+        return em.createQuery("SELECT p from Prestamo p where  p.estado = :estado")
+                .setParameter("estado", estado)
+                .getResultList();
+    }
+    
+    
 
     public Prestamo desembolsa(Prestamo prestamo) {
 
@@ -48,6 +63,14 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
 
         CuentaCliente cc = (CuentaCliente) em.createQuery("select c from CuentaCliente c where c.cliente = :cliente")
                 .setParameter("cliente", prestamo.getCliente()).getSingleResult();
+        
+        Integer ultmoid = 0;
+        try {
+            ultmoid = (Integer) em.createQuery("SELECT MAX(r.id) FROM Recibo r").getSingleResult();
+        } catch (Exception e) {
+        }
+        
+        
 
         op.setCuentaCliente(cc);
         //HACER: La fecha del desembolso debe ser igual a la fecha del prestamo

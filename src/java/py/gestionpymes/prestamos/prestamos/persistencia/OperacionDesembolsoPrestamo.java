@@ -16,8 +16,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 @Entity
 public class OperacionDesembolsoPrestamo extends DetCuentaCliente<Prestamo> {
 
-    @ManyToOne
-    private Prestamo prestamo;
+    
     
     public OperacionDesembolsoPrestamo() {
         setTipoOperacion(TipoOperacion.PRESTAMO);
@@ -25,24 +24,19 @@ public class OperacionDesembolsoPrestamo extends DetCuentaCliente<Prestamo> {
 
     public OperacionDesembolsoPrestamo(Prestamo prestamo) {
         this();
-        this.prestamo = prestamo;
+        setPrestamo(prestamo);
+        setMoneda(prestamo.getMoneda());
         setMontoCredito(prestamo.getTotalOperacion());
         setMontoDebito(0d);
         setDescripcion("Desembolso prestamo nro " + prestamo.getId());
         
     }
 
-    public Prestamo getPrestamo() {
-        return prestamo;
-    }
-
-    public void setPrestamo(Prestamo prestamo) {
-        this.prestamo = prestamo;
-    }
+    
 
     @Override
     public Prestamo getReferencia() {
-        return prestamo;
+        return getPrestamo();
     }
 
     

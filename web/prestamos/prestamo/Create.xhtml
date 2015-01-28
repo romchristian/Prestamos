@@ -85,12 +85,17 @@
                             <f:selectItem itemLabel="INTERES SIMPLE" itemValue="INTERES_SIMPLE"/>
 
                         </p:selectOneMenu>
+                        
                         <h:outputText value="Monto Cuota"/>
                         <h:inputText value="#{prestamoController.selected.montoCuota}" disabled="true">
                             <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
                         </h:inputText>
-                        <p:spacer/>
-                        <p:spacer/>
+                        
+                        <h:outputText value="Moneda"/>
+                        <p:selectOneMenu value="#{prestamoController.selected.moneda}">
+                            <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
+                        </p:selectOneMenu>
+                        
                         <h:outputText value="Total Interes"/>
                         <h:inputText value="#{prestamoController.selected.totalIntereses}" disabled="true">
                             <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
@@ -101,6 +106,7 @@
                         <h:inputText value="#{prestamoController.selected.totalOperacion}" disabled="true">
                             <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
                         </h:inputText>
+                        
                         
                         <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="display"/>
                     </h:panelGrid>
