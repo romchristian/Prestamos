@@ -6,9 +6,21 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition>
 
-        <p:dialog id="ClienteEditDlg" widgetVar="ClienteEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditClienteTitle}">
+
+    <ui:composition template="/template.xhtml">
+
+        <f:metadata>
+            <f:viewParam name="id" value="#{clienteController.id}"/>
+            <f:viewAction action="#{clienteController.cargaDatos()}"/>
+        </f:metadata>
+
+        <ui:define name="title">
+            <h:outputText value="Editar Cliente"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+
             <h:form id="ClienteEditForm">
                 <h:panelGroup id="display" rendered="#{clienteController.selected != null}">
 
@@ -20,12 +32,12 @@
                         <p:panelGrid columns="5" rendered="#{clienteController.selected != null}">
                             <h:outputText value="Tipo Doc."/>
                             <h:outputText value="#{clienteController.selected.tipoDocumento}" />
-                               
+
                             <p:spacer width="20" height="0"/>
 
                             <p:outputLabel value="# documento" for="nrodoc" id="lblnrodoc"/>
                             <h:outputText value="#{clienteController.selected.nroDocumento}" id="nrodoc"/>
-                            
+
 
                             <h:outputText value="Vigencia Documento"/>
                             <p:calendar value="#{clienteController.selected.vigencia}" id="vigencia" required="true"
@@ -143,10 +155,10 @@
                             </p:panel>
 
                         </p:tab>
-                        
+
                         <p:tab title="Teléfonos de Contacto">
 
-                             <p:panel styleClass="panelTelefonos">
+                            <p:panel styleClass="panelTelefonos">
 
 
                                 <p:panelGrid columns="7">                                
@@ -160,10 +172,10 @@
 
                                     <p:outputLabel value="Principal" for="principal" />
                                     <p:selectBooleanCheckbox value="#{clienteController.contactoTelefonicoSeleccionado.principal}" id="principal" />
-                                    
+
                                     <p:commandButton value="Agregar" update="@(.panelTelefonos)" action="#{clienteController.agregaContactoTelefonicoSeleccionado()}"/>
                                 </p:panelGrid>   
-                                 <p:dataTable value="#{clienteController.selected.contactoTelefonicos}" var="d" id="tablaTelefonos">
+                                <p:dataTable value="#{clienteController.selected.contactoTelefonicos}" var="d" id="tablaTelefonos">
                                     <p:column headerText="TIPO">
                                         #{d.tipo}
                                     </p:column>
@@ -247,11 +259,11 @@
                                 </p:dataTable>
                             </p:panel>
                         </p:tab>
-                        
-                        
+
+
                         <p:tab title="Referencias">
 
-                              <p:panel styleClass="panelReferencias">
+                            <p:panel styleClass="panelReferencias">
 
 
                                 <p:panelGrid columns="7">                                
@@ -265,10 +277,10 @@
 
                                     <p:outputLabel value="Numero" for="numeroRef" />
                                     <p:inputText value="#{clienteController.referenciaClienteSeleccionada.telefono}" id="numeroRef" />
-                                    
+
                                     <p:commandButton value="Agregar" update="@(.panelReferencias)" action="#{clienteController.agregaReferenciaClienteSelecionada()}"/>
                                 </p:panelGrid>   
-                                  <p:dataTable value="#{clienteController.selected.referenciaClientes}" var="d" id="tablaReferencias">
+                                <p:dataTable value="#{clienteController.selected.referenciaClientes}" var="d" id="tablaReferencias">
                                     <p:column headerText="TIPO">
                                         #{d.tipo}
                                     </p:column>
@@ -286,11 +298,14 @@
                         </p:tab>
                     </p:tabView>
 
-                    <p:commandButton actionListener="#{clienteController.update}" value="#{bundle.Save}" update="display,:ClienteListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ClienteEditDialog');"/>
-                    <p:commandButton value="#{bundle.Cancel}" onclick="ClienteEditDialog.hide()"/>
+                    <p:commandButton action="#{clienteController.update}" value="#{bundle.Save}" update="display,:growl"/>
+                    <p:button value="#{bundle.Cancel}" outcome="List"/>
                 </h:panelGroup>
             </h:form>
-        </p:dialog>
+
+        </ui:define>
+
+
 
     </ui:composition>
 </html>

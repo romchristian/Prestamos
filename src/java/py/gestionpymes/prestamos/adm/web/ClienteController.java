@@ -14,18 +14,18 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.view.ViewScoped;
 import py.gestionpymes.prestamos.adm.persistencia.Direccion;
 import py.gestionpymes.prestamos.prestamos.persistencia.ActividadLaboral;
 import py.gestionpymes.prestamos.prestamos.persistencia.ContactoTelefonico;
 import py.gestionpymes.prestamos.prestamos.persistencia.ReferenciaCliente;
 
 @Named("clienteController")
-@SessionScoped
+@ViewScoped
 public class ClienteController implements Serializable {
 
     @EJB
@@ -36,6 +36,21 @@ public class ClienteController implements Serializable {
     private ActividadLaboral actividadLaboralSelecccionada;
     private ContactoTelefonico contactoTelefonicoSeleccionado;
     private ReferenciaCliente referenciaClienteSeleccionada;
+    
+    private long id;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    
+    
+    public void cargaDatos(){
+        selected = getCliente(id);
+    }
 
     public ReferenciaCliente getReferenciaClienteSeleccionada() {
         if (referenciaClienteSeleccionada == null) {
@@ -140,6 +155,7 @@ public class ClienteController implements Serializable {
     }
 
     public Cliente getSelected() {
+        
         return selected;
     }
 
@@ -157,21 +173,22 @@ public class ClienteController implements Serializable {
         return ejbFacade;
     }
 
-    public Cliente prepareCreate() {
+    public void prepareCreate() {
         selected = new Cliente();
-        initializeEmbeddableKey();
-        return selected;
+      
     }
 
-    public void create() {
+    public String create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("ClienteCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
+        return "List.xhtml?faces-redirect=true";
     }
 
-    public void update() {
+    public String update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("ClienteUpdated"));
+        return "List.xhtml?faces-redirect=true";
     }
 
     public void destroy() {
@@ -195,10 +212,9 @@ public class ClienteController implements Serializable {
             try {
                 if (persistAction == PersistAction.CREATE) {
                     getFacade().create(selected);
-                }else if (persistAction != PersistAction.DELETE) {
+                } else if (persistAction != PersistAction.DELETE) {
                     getFacade().edit(selected);
-                }
-                else {
+                } else {
                     getFacade().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);

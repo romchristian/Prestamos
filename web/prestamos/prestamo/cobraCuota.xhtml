@@ -117,7 +117,7 @@
 
                 </p:treeTable>
 
-                <p:dialog id="dialog" header="Detalle de Cuota" showEffect="fade" widgetVar="cuotaDialog"  modal="true" resizable="false" appendTo="@(body)" position="bottom">
+                <p:dialog id="dialog" header="Detalle de Cuota" showEffect="fade" widgetVar="cuotaDialog"  modal="true" resizable="false" appendTo="@(body)">
                     <p:outputPanel id="cuotaPanel">
                         <p:panelGrid  columns="2" columnClasses="label,value">
                             <h:outputLabel for="nroCuota" value="Nro: " />
@@ -130,7 +130,7 @@
                             <p:inputText id="montoPago" value="#{cobraCuotaBean.cuotaSeleccionada.montoPago}" style="font-weight:bold" />
                             
                             <h:outputLabel for="moneda" value="Moneda: " />
-                            <p:selectOneMenu value="#{cobraCuotaBean.cuotaSeleccionada.moneda}">
+                            <p:selectOneMenu value="#{cobraCuotaBean.cuotaSeleccionada.moneda}" id="moneda">
                                 <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
                             </p:selectOneMenu>
 
@@ -138,7 +138,7 @@
                             <h:outputText id="saldoCuota" value="#{cobraCuotaBean.cuotaSeleccionada.saldoCuota}" style="font-weight:bold" />
                         </p:panelGrid>
 
-                        <p:commandButton actionListener="#{cobraCuotaBean.selecciona()}" value="#{bundle.Save}" update="cuotaPanel,:formCobroCuota:treeDataList,:growl" oncomplete="handleSubmit(args,'cuotaDialog');"/>
+                        <p:commandButton actionListener="#{cobraCuotaBean.selecciona()}" value="#{bundle.Save}" update="cuotaPanel,@(.escuchaSeleccionCuota),:growl" oncomplete="handleSubmit(args,'cuotaDialog');" />
                         <p:commandButton value="#{bundle.Cancel}" onclick="cuotaDialog.hide()"/>
                     </p:outputPanel>
                 </p:dialog>

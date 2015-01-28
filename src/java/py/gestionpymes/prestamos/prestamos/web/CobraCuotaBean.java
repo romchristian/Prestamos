@@ -65,20 +65,23 @@ public class CobraCuotaBean implements Serializable {
 
     public void paga() {
 
+        System.out.println("Paga");
         for (TreeCuota t : seleccionados) {
             CobroCuota cc = new CobroCuota(t.getPrestamo());
-
+System.out.println("Paga 1");
             Efectivo efe = new Efectivo();
             efe.setFecha(new Date());
             efe.setMoneda(t.getMoneda());
             efe.setMonto(t.getMontoPago());
             pagoDAO.create(efe);
             
+            System.out.println("Paga 2");
             DetCobroCuota dcc = new DetCobroCuota();
             dcc.setCobroCuota(cc);
             dcc.setPago(efe);
             dcc.setMoneda(t.getMoneda());
             dcc.setMonto(efe.getMonto());
+            System.out.println("Paga 3");
             if (!t.isEsPrestamo()) {
                 dcc.setDetPrestamo(t.getDetPrestamo());
             }
@@ -86,6 +89,7 @@ public class CobraCuotaBean implements Serializable {
             cc.getDetalles().add(dcc);
             
             cobranzaDAO.create(cc);
+            System.out.println("Paga 4");
         } 
 
         
@@ -164,8 +168,9 @@ public class CobraCuotaBean implements Serializable {
     }
 
     public void selecciona() {
+        System.out.println("En selcciona");
         cuotaSeleccionada.setSeleccionado(true);
-
+        
         seleccionados = new ArrayList<TreeCuota>();
         for (TreeCuota cuota : disponibles) {
             if (cuota.isSeleccionado()) {
