@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
 import py.gestionpymes.prestamos.adm.dao.AbstractFacade;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.CuentaCliente;
-import py.gestionpymes.prestamos.prestamos.persistencia.EstadoCuenta;
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoCuenta;
 
 /**
  *

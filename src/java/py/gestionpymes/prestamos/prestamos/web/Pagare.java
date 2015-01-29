@@ -42,6 +42,15 @@ public class Pagare {
 
     public Pagare(Double monto) {
         this.monto = monto;
+        this.nro = 1;
+        this.vencimiento= new Date(2015, 1, 28);
+        this.empresaNombre = "CREDI";
+        this.empresaRuc="800021544-2";
+        this.deudor = "Juan Perez";
+        this.deudorDoc = "2.254.788";
+        this.deudorDireccion="Calle1 casi Calle2";
+        this.deudorConyuge="Juan de Arco";
+        this.deudorConyugeDoc="3.658.744";
     }
     
     

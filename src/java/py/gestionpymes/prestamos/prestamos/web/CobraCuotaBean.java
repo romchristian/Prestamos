@@ -8,24 +8,28 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.FacesValidator;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import py.gestionpymes.prestamos.adm.dao.MonedaFacade;
 import py.gestionpymes.prestamos.prestamos.dao.CobranzaDAO;
-import py.gestionpymes.prestamos.prestamos.dao.PagoDAO;
+import py.gestionpymes.prestamos.prestamos.dao.PagoExcedidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
-import py.gestionpymes.prestamos.prestamos.persistencia.CobroCuota;
-import py.gestionpymes.prestamos.prestamos.persistencia.DetCobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
-import py.gestionpymes.prestamos.prestamos.persistencia.Efectivo;
-import py.gestionpymes.prestamos.prestamos.persistencia.EstadoPrestamo;
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 
 /**
@@ -42,8 +46,6 @@ public class CobraCuotaBean implements Serializable {
     private MonedaFacade monedaDAO;
     @EJB
     private CobranzaDAO cobranzaDAO;
-    @EJB
-    private PagoDAO pagoDAO;
 
     private TreeNode root;
     private Cliente cliente;
@@ -51,48 +53,44 @@ public class CobraCuotaBean implements Serializable {
     private List<TreeCuota> disponibles;
     private double totalAPagar;
     private TreeCuota cuotaSeleccionada;
+    private Double montoActual;
+
+    public Double getMontoActual() {
+        return montoActual;
+    }
+
+    public void setMontoActual(Double montoActual) {
+        this.montoActual = montoActual;
+    }
 
     public TreeCuota getCuotaSeleccionada() {
-        if(cuotaSeleccionada == null){
+        if (cuotaSeleccionada == null) {
             cuotaSeleccionada = new TreeCuota();
         }
         return cuotaSeleccionada;
     }
 
     public void setCuotaSeleccionada(TreeCuota cuotaSeleccionada) {
+
         this.cuotaSeleccionada = cuotaSeleccionada;
+        montoActual = cuotaSeleccionada.getSaldoCuota();
     }
 
     public void paga() {
+        try {
+            for (TreeCuota t : seleccionados) {
 
-        System.out.println("Paga");
-        for (TreeCuota t : seleccionados) {
-            CobroCuota cc = new CobroCuota(t.getPrestamo());
-System.out.println("Paga 1");
-            Efectivo efe = new Efectivo();
-            efe.setFecha(new Date());
-            efe.setMoneda(t.getMoneda());
-            efe.setMonto(t.getMontoPago());
-            pagoDAO.create(efe);
-            
-            System.out.println("Paga 2");
-            DetCobroCuota dcc = new DetCobroCuota();
-            dcc.setCobroCuota(cc);
-            dcc.setPago(efe);
-            dcc.setMoneda(t.getMoneda());
-            dcc.setMonto(efe.getMonto());
-            System.out.println("Paga 3");
-            if (!t.isEsPrestamo()) {
-                dcc.setDetPrestamo(t.getDetPrestamo());
+                cobranzaDAO.create(t);
+                t.setSeleccionado(false);
+
             }
-            dcc.setFecha(new Date());
-            cc.getDetalles().add(dcc);
-            
-            cobranzaDAO.create(cc);
-            System.out.println("Paga 4");
-        } 
 
-        
+            seleccionados.clear();
+            cargaPrestamos();
+        } catch (PagoExcedidoException ex) {
+            Logger.getLogger(CobraCuotaBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @PostConstruct
@@ -154,7 +152,7 @@ System.out.println("Paga 1");
             }
         };
 
-        for (Prestamo p : prestamoDAO.findAllClienteEstado(cliente,EstadoPrestamo.VIGENTE)) {
+        for (Prestamo p : prestamoDAO.findAllClienteEstado(cliente, EstadoPrestamo.VIGENTE)) {
             TreeNode nodoPrestamo = new DefaultTreeNode(new TreeCuota(p), root);
 
             Collections.sort(p.getDetalles(), comp);
@@ -167,19 +165,36 @@ System.out.println("Paga 1");
         }
     }
 
-    public void selecciona() {
+    public void agregaAPagar() {
         System.out.println("En selcciona");
-        cuotaSeleccionada.setSeleccionado(true);
-        
-        seleccionados = new ArrayList<TreeCuota>();
-        for (TreeCuota cuota : disponibles) {
-            if (cuota.isSeleccionado()) {
-                cuota.setMontoPago(cuota.getMontoCuota());
-                seleccionados.add(cuota);
-            } else {
-                cuota.setMontoPago(0d);
-            }
+
+        if (seleccionados == null) {
+            seleccionados = new ArrayList<TreeCuota>();
         }
+
+        cuotaSeleccionada.setMontoPago(montoActual);
+
+        seleccionados.add(cuotaSeleccionada);
+
+        montoActual = 0D;
     }
 
+    @FacesValidator(value = "pagoValidator")
+    public static class PagoValidator implements Validator {
+
+        @Override
+        public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+            if (value instanceof Double) {
+                Double montoPago = (Double) value;
+
+                CobraCuotaBean controller = (CobraCuotaBean) context.getApplication().getELResolver().
+                        getValue(context.getELContext(), null, "cobraCuotaBean");
+                if (montoPago > (controller.getCuotaSeleccionada().getSaldoCuota() + controller.getCuotaSeleccionada().getMontoMora())) {
+                    FacesMessage msg = new FacesMessage("El pago excede el monto de la cuota");
+                    throw new ValidatorException(msg);
+                }
+            }
+        }
+
+    }
 }

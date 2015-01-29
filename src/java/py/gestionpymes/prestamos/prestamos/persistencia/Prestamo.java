@@ -4,6 +4,7 @@
  */
 package py.gestionpymes.prestamos.prestamos.persistencia;
 
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;

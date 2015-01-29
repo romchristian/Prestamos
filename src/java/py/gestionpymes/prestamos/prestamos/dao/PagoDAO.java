@@ -28,4 +28,6 @@ public class PagoDAO extends AbstractFacade<Pago> {
     public PagoDAO() {
         super(Pago.class);
     }
+    
+    
 }

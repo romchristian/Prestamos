@@ -1,154 +1,314 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6ea7e56b-e942-4eeb-8282-2bdd2a4b61aa">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<field name="monto" class="java.lang.Double"/>
 	<field name="montoLetras" class="java.lang.String"/>
+	<field name="dia" class="java.lang.String"/>
+	<field name="mesLetra" class="java.lang.String"/>
+	<field name="anio" class="java.lang.Integer"/>
+	<field name="mesNumero" class="java.lang.Integer"/>
+	<field name="nro" class="java.lang.Integer"/>
+	<field name="cantidadPagares" class="java.lang.Integer"/>
+	<field name="empresaNombre" class="java.lang.String"/>
+	<field name="empresaRuc" class="java.lang.String"/>
+	<field name="deudor" class="java.lang.String"/>
+	<field name="deudorDoc" class="java.lang.String"/>
+	<field name="deudorDireccion" class="java.lang.String"/>
+	<field name="deudorConyuge" class="java.lang.String"/>
+	<field name="deudorConyugeDoc" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
 		<band height="493" splitType="Stretch">
 			<staticText>
-				<reportElement x="143" y="3" width="260" height="32" uuid="4b251d97-7848-4227-964c-b2a3a364b04e"/>
+				<reportElement x="143" y="3" width="220" height="25" uuid="4b251d97-7848-4227-964c-b2a3a364b04e"/>
 				<textElement textAlignment="Center">
-					<font size="24" isBold="true"/>
+					<font fontName="Times New Roman" size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PAGARÉ A LA ORDEN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="36" width="16" height="20" uuid="c6863d8e-5507-44e3-a8c9-c0d4f281d5aa"/>
+				<reportElement x="15" y="32" width="16" height="15" uuid="c6863d8e-5507-44e3-a8c9-c0d4f281d5aa"/>
 				<textElement>
-					<font size="14" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Nº]]></text>
+				<text><![CDATA[Nº:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="14" y="63" width="104" height="20" uuid="a280e330-df3a-4329-9da0-3613cc9a732d"/>
+				<reportElement x="14" y="59" width="181" height="16" uuid="a280e330-df3a-4329-9da0-3613cc9a732d"/>
 				<textElement>
-					<font size="14" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[VENCIMIENTO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="364" y="38" width="142" height="20" uuid="b531c0af-d70c-4800-b690-5cdded07a8e9"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[Asuncion,  de     de   20]]></text>
+				<text><![CDATA[VENCIMIENTO:        /         /]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="364" y="63" width="174" height="33" uuid="f7dbd87c-9947-44fa-958f-34300a725169"/>
+				<reportElement x="364" y="38" width="170" height="30" uuid="f7dbd87c-9947-44fa-958f-34300a725169"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="367" y="66" width="36" height="33" uuid="b73d4dfe-fe75-43f6-a2fd-057ad8768d66"/>
+				<reportElement x="366" y="39" width="30" height="25" uuid="b73d4dfe-fe75-43f6-a2fd-057ad8768d66"/>
 				<textElement>
-					<font size="20" isBold="true"/>
+					<font fontName="Times New Roman" size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[GS.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="95" y="359" width="100" height="20" uuid="109f3f35-e304-48b9-9e0e-4e077a92cefa"/>
+				<reportElement x="4" y="373" width="100" height="20" uuid="109f3f35-e304-48b9-9e0e-4e077a92cefa"/>
 				<textElement>
-					<font size="14" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Deudor:]]></text>
+				<text><![CDATA[DEUDOR:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="351" y="359" width="100" height="20" uuid="05d56731-bfc8-4a6d-baf6-99d0c89dba64"/>
+				<reportElement x="4" y="433" width="100" height="20" uuid="05d56731-bfc8-4a6d-baf6-99d0c89dba64"/>
 				<textElement>
-					<font size="14" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Co-Deudor:]]></text>
+				<text><![CDATA[CO-DEUDOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="95" y="379" width="100" height="20" uuid="8497b634-937f-435e-8b90-7964eda49b35"/>
+				<reportElement x="279" y="374" width="276" height="20" uuid="8497b634-937f-435e-8b90-7964eda49b35"/>
 				<textElement>
-					<font size="14" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[CI:]]></text>
+				<text><![CDATA[FIRMA:.............................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="351" y="379" width="100" height="20" uuid="970edebb-cf2e-4812-8a77-2fad1b4040cc"/>
+				<reportElement x="4" y="393" width="100" height="20" uuid="30b62fc8-1c0b-4600-ae38-a18fb0e7d842"/>
 				<textElement>
-					<font size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[CI:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="95" y="399" width="100" height="20" uuid="30b62fc8-1c0b-4600-ae38-a18fb0e7d842"/>
-				<textElement>
-					<font size="14" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DOMICILIO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="351" y="399" width="100" height="20" uuid="3ef4cbb6-b899-4fed-8d94-d900f3d2e3a7"/>
+				<reportElement x="4" y="453" width="100" height="20" uuid="3ef4cbb6-b899-4fed-8d94-d900f3d2e3a7"/>
 				<textElement>
-					<font size="14" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DOMICILIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="95" y="419" width="100" height="20" uuid="986efd65-e487-4e5c-ac34-735af16ab895"/>
+				<reportElement x="4" y="413" width="100" height="20" uuid="986efd65-e487-4e5c-ac34-735af16ab895"/>
 				<textElement>
-					<font size="14" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CONYUGE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="351" y="419" width="100" height="20" uuid="1f344b89-10ba-46de-a296-0b419d77daac"/>
+				<reportElement x="7" y="473" width="100" height="20" uuid="1f344b89-10ba-46de-a296-0b419d77daac"/>
 				<textElement>
-					<font size="14" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CONYUGE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="9" y="357" width="100" height="20" uuid="aac1b681-3b0e-4f75-afe9-cfbf15491629"/>
+				<reportElement x="0" y="216" width="555" height="152" uuid="06b313b7-0cd1-4d8a-8bd0-306d81fbdeb0"/>
 				<textElement>
-					<font size="14" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="false"/>
 				</textElement>
-				<text><![CDATA[FIRMAS:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="193" width="555" height="164" uuid="06b313b7-0cd1-4d8a-8bd0-306d81fbdeb0"/>
-				<text><![CDATA[El día , PAGAREMOS solidariamente y sin protesto a................................................., ó a su orden, la suma
-de Guaraníes......................................... La mora se producirá por el mero vencimiento de la obligación, 
-sin necesidad de protesto ni de ningún requerimiento judicial o extrajudicial. La falta de pago de este documento
- a su vencimiento originará automáticamente un interés punitorio del por ciento (  %) mensual, además del interés 
-moratorio del por ciento ( %) mensual, que se devengarán hasta  la cancelación total de la deuda, sin que ello 
-implique novación, prorroga ni espera. En caso de demanda judicial (cobro judicial) la  liquidación de los 
- intereses moratorios y punitorios,  se realizará en la etapa judicial prevista en los arts. 475 y 501 del Cód. 
- Procesal Civil. En caso que deba instaurarse  una acción para el cobro de este documento, o el mismo deba ser 
- cobrado  a requerimiento de un abogado, el firmante se  obliga a pagar honorarios razonables al mismo, 
- incurridos a niveles de pre litigio, prejudiciales, de  apelación o quiebra,  a fin de efectuar  dicho cobro 
- y todos los demás costos decobranza. Toda persona interviniente en este documento se somete a la jurisdicción 
- y competencia de los jueces y tribunales de Asunción]]></text>
+				<text><![CDATA[RECONOZCO/CEMOS QUE LA FALTA DE PAGO DEL CAPITAL Y/O INTERESES COMPESATORIOS Y/O CUALQUIER OTRO GASTO RELACIONADO CON CUALQUIERA DE LAS OBLIGACIONES CONTRAIDAS CONSTITUIRA A EL/LOS DEUDORES EN MORA, DANDO LA POTESTAD A LA EMPRESA O AL TENEDOR DE ESTE PAGARE A HACER USO DE PLENO DE DERECHO DEL ART. 424 DEL CODIGO CIVIL PARAGUAYO, SIN NECESIDAD DE INTERPELACION JUDICIAL O EXTRAJUDICIAL ALGUNA, POR LO CUAL TODOS LOS PLAZOS DECAEN AUTOMATICAMENTE TORNANDOSE EXIGIBLES (CAPITAL, CAPITAL E INTERESE O INTERESES SOLAMENTE) SE APLICARÁ DESDE EL DIA DE SU VENCIMIENTO, UN INTERES MORATORIO SIMILAR A LA TASA PACTADA ORIGINALMENTE, MAS UN INTERES PUNITORIO ADICIONAL, ESTABLECIDO POR LAS REGULACIONES EMANADAS DEL BANCO CENTRAL DEL PARAGUAY, ESTE INTERES SERÁ EXIGIBLE JUNTAMENTE CON EL CAPITAL, LOS INTERESES COMPENSATORIOS Y/O PUNITORIOS ADEUDADOS. A TODOS LOS EFECTOS JUIDICOS ACEPTO/AMOS Y FACILITAMOS EN FORMA EXPRESA Y DE MANERA IRREVOCABLE A PRORROGAR CUALQUIER OTRA JURISDICCION QUE PUDIERAN CORRESPONDER, CONSTITUYENDO COMO DOMICILIO ESPECIAL EN EL/LOS LUGAR/ES INDICADOS AL PIE DEL PRESENTE TITULO OBLIGACIONAL DONDE SE TENDRÁN POR VÁLIDAS TODAS LAS NOTIFICACIONES QUE SE LLEGAREN A PRACTICAR; YA SEA POR LA VÍA DE LAS LLAMADAS TELEFÓNICAS, NOTAS DE RECLAMO O TELEGRAMA COLACIONADO.]]></text>
 			</staticText>
 			<textField pattern="#,##0">
-				<reportElement x="404" y="67" width="131" height="30" uuid="99fa8d85-c77d-400d-bb1d-c7c140ffd118"/>
+				<reportElement x="398" y="40" width="133" height="25" uuid="99fa8d85-c77d-400d-bb1d-c7c140ffd118"/>
 				<textElement>
-					<font size="18" isBold="true"/>
+					<font fontName="Times New Roman" size="18" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="0" y="149" width="555" height="31" backcolor="#CCCCCC" uuid="8c5f4e6f-4587-4dd8-88af-1dd501abc0eb"/>
+				<reportElement x="81" y="157" width="468" height="31" backcolor="#CCCCCC" uuid="8c5f4e6f-4587-4dd8-88af-1dd501abc0eb"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement x="9" y="156" width="540" height="20" uuid="f190f83b-ec99-42a1-8dbe-1f72f1a9df92"/>
+				<reportElement x="90" y="162" width="453" height="20" uuid="f190f83b-ec99-42a1-8dbe-1f72f1a9df92"/>
 				<textElement>
 					<font fontName="Times New Roman" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{montoLetras}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="195" y="92" width="50" height="20" uuid="89fea5f2-7cf1-47f0-96b4-b85311ab45e2"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Asunción,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="116" width="545" height="32" uuid="ec49c66a-af4e-42ae-b679-e3c5098fcb0b"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[El día     del mes de            de        , PAGARE (MOS) solidariamente y sin protesto alguno a la orden de,
+                                               con C.I. Y/O R.U.C. N°                                                  LA SUMA DE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="157" width="77" height="20" uuid="e5ba156c-bb45-4bf1-a35a-46fd3fbc53eb"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GUARANIES:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="196" width="555" height="20" uuid="99c681f5-1acf-4df7-99eb-4be98f0817a9"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[POR IGUAL VALOR RECIBIDO EN EFECTIVO A MI/NUESTRA ENTERA SATISFACCIÓN.------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="92" width="20" height="20" uuid="b8f8357e-0b92-493a-84e4-775a5ff20276"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="354" y="92" width="13" height="20" uuid="5ce1312a-081b-42cf-ac40-58cddd3c1763"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="252" y="92" width="24" height="20" uuid="46a7a4bc-2505-4d24-a2a8-e383ce9b4221"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="301" y="92" width="50" height="20" uuid="edc52b71-d87d-4960-93e8-addba7aa4190"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mesLetra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="92" width="50" height="20" uuid="96628070-62fc-49f5-9080-89b98022c0aa"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="32" y="31" width="25" height="20" uuid="0a3862e4-94ae-47ee-8ecc-daf8ed74d96e"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="57" y="34" width="10" height="15" uuid="f103679b-567a-4ad3-b942-8a34461708f0"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="67" y="32" width="25" height="20" uuid="f4ffa7d9-987d-48aa-999c-99b888fecbe3"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidadPagares}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="104" y="373" width="175" height="20" uuid="7b65c01c-e872-45a8-978c-15dc926823ca"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deudor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="35" y="117" width="17" height="15" uuid="562ebe7b-5758-4d1a-a447-99ddc2ee8718"/>
+				<textElement>
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="117" width="39" height="15" uuid="390af702-7bb9-4554-aa58-c774f5e89415"/>
+				<textElement>
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mesLetra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="157" y="117" width="27" height="15" uuid="c51c9e66-1690-44e1-8e60-e31287db4d42"/>
+				<textElement>
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="133" width="142" height="15" uuid="d83cd8a7-c964-43a7-99ea-eedfd5976737"/>
+				<textElement>
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{empresaNombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="289" y="133" width="142" height="15" uuid="38fa4393-2901-4c77-b1d8-d89a3eceba07"/>
+				<textElement>
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{empresaRuc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="393" width="100" height="20" uuid="d1a94ce0-0b0e-419a-a74d-1e5c9fb567b7"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CI:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="104" y="393" width="175" height="20" uuid="a1e393d6-0360-4f23-a235-24e2cf0bb5b9"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deudorDireccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="381" y="394" width="175" height="20" uuid="016deae8-18fc-45d5-a092-e2ce6357a00d"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deudorDoc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="104" y="413" width="175" height="20" uuid="dd782885-af18-45ff-82ff-1785f8b543bc"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deudorConyuge}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="413" width="276" height="20" uuid="d2bc933c-653a-4c39-a7c4-ddbc20e633a2"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FIRMA:.............................................]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="381" y="434" width="175" height="20" uuid="8ad29529-3172-4d44-a978-9f14eb668c51"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deudorConyugeDoc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="433" width="100" height="20" uuid="cfee2935-1013-4acb-8dbb-a7f5ad5cf305"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CI:]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>

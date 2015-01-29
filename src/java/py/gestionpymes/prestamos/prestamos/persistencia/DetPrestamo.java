@@ -10,7 +10,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import javax.persistence.*;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoDetPrestamo;
 
 /**
  *
@@ -41,11 +44,14 @@ public class DetPrestamo implements Serializable {
     private Date ultimoPago;
     @ManyToOne
     private Moneda moneda;
+    private EstadoDetPrestamo estado;
 
     public DetPrestamo() {
+        this.estado = EstadoDetPrestamo.PENDIENTE;
     }
 
     public DetPrestamo(Prestamo prestamo, int nroCuota, double cuotaCapital, double cuotaInteres, double saldoCapital) {
+        this();
         this.prestamo = prestamo;
         this.moneda = prestamo.getMoneda();
         this.nroCuota = nroCuota;
@@ -79,6 +85,22 @@ public class DetPrestamo implements Serializable {
         this.version = version;
     }
 
+    public Moneda getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(Moneda moneda) {
+        this.moneda = moneda;
+    }
+
+    public EstadoDetPrestamo getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoDetPrestamo estado) {
+        this.estado = estado;
+    }
+
     public Long getId() {
         return id;
     }
@@ -88,6 +110,10 @@ public class DetPrestamo implements Serializable {
     }
 
     public int getDiasMora() {
+        
+        if (estado == EstadoDetPrestamo.PENDIENTE) {
+            diasMora = Days.daysBetween(new DateTime(fechaVencimiento), new DateTime(new Date())).getDays();
+        }
         return diasMora;
     }
 
@@ -97,7 +123,6 @@ public class DetPrestamo implements Serializable {
 
     public Date getFechaVencimiento() {
         //TODO Calcular fecha vencimiento
-
 
         return fechaVencimiento;
     }
@@ -151,6 +176,7 @@ public class DetPrestamo implements Serializable {
     }
 
     public void setMontoPago(double montoPago) {
+      
         this.montoPago = montoPago;
     }
 
@@ -188,10 +214,18 @@ public class DetPrestamo implements Serializable {
 
     public boolean afectaSaldoCuota(double monto) {
         boolean R = false;
-        if ((monto + montoMora) <= saldoCuota) {
+        if ((saldoCuota + montoMora) >= monto) {
+            
+            montoPago += monto;
             saldoCuota -= monto;
             R = true;
             ultimoPago = new Date();
+            
+             if (saldoCuota == 0) {
+                estado = EstadoDetPrestamo.CANCELADO;
+                setDiasMora(Days.daysBetween(new DateTime(fechaVencimiento), new DateTime(new Date())).getDays());
+            }
+            
         }
         return R;
     }

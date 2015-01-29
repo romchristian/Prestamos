@@ -20,6 +20,9 @@
 
             <h:form id="ClienteCreateForm">
                 <h:panelGroup id="display">
+                    <p:commandButton action="#{clienteController.create}" value="#{bundle.Save}" update="display,:growl"/>
+                    <p:button value="#{bundle.Cancel}" outcome="List"/>
+                    
                     <p:panel header="Datos Básicos" toggleable="false" collapsed="false" >
 
                         <h:outputText value="Documento"/>
@@ -297,8 +300,7 @@
                             </p:panel>
                         </p:tab>
                     </p:tabView>
-                    <p:commandButton action="#{clienteController.create}" value="#{bundle.Save}" update="display,:growl"/>
-                    <p:button value="#{bundle.Cancel}" outcome="List"/>
+                    
                 </h:panelGroup>
             </h:form>
 
