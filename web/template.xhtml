@@ -26,33 +26,76 @@
         <h:outputScript library="js" name="jsfcrud.js"/>
 
         <style type="text/css">
+
+            @font-face {
+                font-family: 'Exo';
+                font-style: normal;
+                font-weight: 100;
+                src: local('Exo Thin'), local('Exo-Thin'), url(#{resource['font/bSEuBfAK9i16rKak_EdKNA.woff2']}) format('woff2'), url(#{resource['font/qyfp0OSqk7TET2opvcMBmw.woff']}) format('woff');
+            }
+            @font-face {
+                font-family: 'Exo';
+                font-style: normal;
+                font-weight: 200;
+                src: local('Exo ExtraLight'), local('Exo-ExtraLight'), url(#{resource['font/lA-XzkxvFbAS7qSN5Rm7dw.woff2']}) format('woff2'), url(#{resource['font/z1hPnoJcXaXYata_d2utlw.woff']}) format('woff');
+            }
+            @font-face {
+                font-family: 'Exo';
+                font-style: normal;
+                font-weight: 400;
+                src: local('Exo Regular'), local('Exo-Regular'), url(#{resource['font/kA_pX0U45Eb7PbHijV1x2w.woff2']}) format('woff2'), url(#{resource['font/wocyXRLWPo2Av-yUTmmbTA.woff']}) format('woff');
+            }
+            
+
             #wrapper {
 
-                left: 260px;
+                left: 263px;
                 position: absolute;
-                top: 70px;
+                top: 117px;
                 padding-right: 20px;
                 z-index: 1;
-                height: 80%;
+                height: 90%;
                 overflow: auto;
 
             }
 
-            #header{
-                background: rgb(30,87,153); /* Old browsers */
-                background: -moz-linear-gradient(45deg, rgba(30,87,153,1) 0%, rgba(41,137,216,1) 50%, rgba(32,124,202,1) 51%, rgba(125,185,232,1) 100%); /* FF3.6+ */
-                background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(30,87,153,1)), color-stop(50%,rgba(41,137,216,1)), color-stop(51%,rgba(32,124,202,1)), color-stop(100%,rgba(125,185,232,1))); /* Chrome,Safari4+ */
-                background: -webkit-linear-gradient(45deg, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* Chrome10+,Safari5.1+ */
-                background: -o-linear-gradient(45deg, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* Opera 11.10+ */
-                background: -ms-linear-gradient(45deg, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* IE10+ */
-                background: linear-gradient(45deg, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* W3C */
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+
+            #bar{
+                background: rgba(31,29,89,1);
+                background: -moz-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
+                background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(31,29,89,1)), color-stop(100%, rgba(120,118,196,1)));
+                background: -webkit-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
+                background: -o-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
+                background: -ms-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
+                background: linear-gradient(135deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f1d59', endColorstr='#7876c4', GradientType=1 );
                 width:100%;
                 position:fixed;
                 top:0px;
-                height:50px;
+                height:45px;
+                font-family: 'Exo', sans-serif;
+                color: #fff;
+                font-size: 27px;
+                font-weight: bold;
+                left: 0px;
+                z-index: 3;
+                margin:0px auto;
+                padding-left:  25px
+            }
 
-                color: white;
+            #bar span{
+                color: #33ccFF !important;
+            }
+
+            #header{
+
+                width:100%;
+                position:fixed;
+                top:45px;
+                height:50px;
+                font-family: 'Exo', sans-serif;
+                color: #444;
                 left: 240px;
                 z-index: 2;
                 margin:0px auto;
@@ -60,23 +103,22 @@
             }
 
             #sidebar{
-                background: rgb(246,248,249); /* Old browsers */
-                background: -moz-linear-gradient(45deg, rgba(246,248,249,1) 0%, rgba(229,235,238,1) 50%, rgba(215,222,227,1) 51%, rgba(245,247,249,1) 100%); /* FF3.6+ */
-                background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(246,248,249,1)), color-stop(50%,rgba(229,235,238,1)), color-stop(51%,rgba(215,222,227,1)), color-stop(100%,rgba(245,247,249,1))); /* Chrome,Safari4+ */
-                background: -webkit-linear-gradient(45deg, rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 51%,rgba(245,247,249,1) 100%); /* Chrome10+,Safari5.1+ */
-                background: -o-linear-gradient(45deg, rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 51%,rgba(245,247,249,1) 100%); /* Opera 11.10+ */
-                background: -ms-linear-gradient(45deg, rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 51%,rgba(245,247,249,1) 100%); /* IE10+ */
-                background: linear-gradient(45deg, rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 51%,rgba(245,247,249,1) 100%); /* W3C */
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f8f9', endColorstr='#f5f7f9',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-
+                background: rgba(254,254,254,1);
+                background: -moz-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                background: -webkit-gradient(left top, right top, color-stop(0%, rgba(254,254,254,1)), color-stop(72%, rgba(219,219,219,0.9)), color-stop(99%, rgba(209,209,209,0.86)), color-stop(100%, rgba(226,226,226,0.86)));
+                background: -webkit-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                background: -o-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                background: -ms-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                background: linear-gradient(to right, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e2e2e2', GradientType=1 );
                 border-top: 1px solid black;
                 padding:30px;
-
+                font-family: 'Exo', sans-serif;
                 position: absolute;
-                top: 0;
+                top: 45px;
                 left: 0;
-                top: 0;
-                height: 80%;
+
+                height: 90%;
 
             }
 
@@ -93,32 +135,16 @@
         <p:growl id="growl" life="3000" />
 
 
+        <div id="bar">
+            <div>Idea<span>Pymes - </span> <span style="color: #1fcf5f!important;">Préstamos</span></div>
+            <h:form>
+                <div style="color: white!important;position: absolute;top:10px; left: calc(100% - 250px);font-size: 15px">Usuario: #{request.userPrincipal} - <h:commandLink style="color: white;" action="#{autenticador.logout()}" value="Salir"/></div>
+            </h:form>
+        </div>
 
         <div id="sidebar">
             <h:form id="menuForm" style="padding: 0;margin: 0;">
-
-                <h:outputText value="Prestamos" style="font-size: 14px;color: #0077b3; padding-left: 10px;font-weight: bold;margin-bottom: 10px"/>
-                <br/>
-
-                <ul>
-                    <li><h:link  value="Datos de Clientes" outcome="/adm/cliente/List.xhtml" /></li>
-                    <li><h:link  value="Prestamos" outcome="/prestamos/prestamo/List.xhtml" /></li>
-                    <li><h:link  value="Cobro Cuotas" outcome="/prestamos/prestamo/cobraCuota.xhtml" /></li>
-                </ul>
-                <br/>
-
-                <h:outputText value="Configuracion" style="font-size: 14px;color: #0077b3; padding-left: 10px;font-weight: bold;margin-bottom: 10px"/>
-                <br/>
-
-                <ul>
-                    <li><h:link  value="Empresa" outcome="/adm/empresa/List.xhtml" /></li>
-                    <li><h:link  value="Sucursal" outcome="/adm/sucursal/List.xhtml" /></li>
-                    <li><h:link  value="Cotizacion" outcome="/adm/cotizacion/List.xhtml" /></li>
-                    <li><h:link  value="Moneda" outcome="/adm/moneda/List.xhtml" /></li>
-                    <li><h:link  value="ImpuestoIVA" outcome="/adm/impuestoIVA/List.xhtml" /></li>
-                    <li><h:link  value="Categoria de Clientes" outcome="/adm/categoria/List.xhtml" /></li>
-
-                </ul>
+                <ui:include src="/menu.xhtml"/>
             </h:form>
         </div>
 
