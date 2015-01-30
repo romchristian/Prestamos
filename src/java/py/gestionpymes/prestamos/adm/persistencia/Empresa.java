@@ -22,7 +22,7 @@ public class Empresa implements Serializable {
     public static final String TODOS = "package py.gestionpymes.jpa.adm.Empresa.TODOS";
     public static final String POR_RAZON_SOCIAL = "package py.gestionpymes.jpa.adm.Empresa.POR_RAZON_SOCIAL";
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Version
     private Long version;

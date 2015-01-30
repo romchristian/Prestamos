@@ -19,10 +19,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import py.gestionpymes.prestamos.adm.persistencia.Direccion;
 import py.gestionpymes.prestamos.prestamos.persistencia.ActividadLaboral;
 import py.gestionpymes.prestamos.prestamos.persistencia.ContactoTelefonico;
 import py.gestionpymes.prestamos.prestamos.persistencia.ReferenciaCliente;
+import py.gestionpymes.prestamos.prestamos.web.AutoCompleteCliente;
 
 @Named("clienteController")
 @ViewScoped
@@ -36,6 +38,8 @@ public class ClienteController implements Serializable {
     private ActividadLaboral actividadLaboralSelecccionada;
     private ContactoTelefonico contactoTelefonicoSeleccionado;
     private ReferenciaCliente referenciaClienteSeleccionada;
+    @Inject
+    private AutoCompleteCliente autoCompleteCliente;
     
     private long id;
 
@@ -217,6 +221,7 @@ public class ClienteController implements Serializable {
                 } else {
                     getFacade().remove(selected);
                 }
+                autoCompleteCliente.carga();
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
                 String msg = "";

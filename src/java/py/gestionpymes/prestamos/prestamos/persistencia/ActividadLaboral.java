@@ -23,7 +23,7 @@ public class ActividadLaboral implements Serializable {
  public static final String TODOS = "py.gestionpymes.clientes.persistencia.ActividadLaboral.TODOS";
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
     private String nombreEmpresa;

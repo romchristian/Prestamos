@@ -9,7 +9,7 @@
 
 
     <ui:define name="title">
-        Crear Nuevo Prestamo
+        Crear Nuevo Préstamo
     </ui:define>
 
     <ui:define name="body">
@@ -33,7 +33,7 @@
 
                                     </p:autoComplete>
                                     <h:outputText value="Cliente: "/>
-                                    <h:outputText value="#{prestamoController.selected.cliente.primerNombre} #{prestamoController.selected.cliente.primerApellido}"
+                                    <h:outputText value="#{prestamoController.selected.cliente.primerNombre}  #{prestamoController.selected.cliente.primerApellido}"
                                                   styleClass="clienteSeleccionado"/>
                                 </h:panelGrid>
 
@@ -88,7 +88,7 @@
                         
                         <h:outputText value="Monto Cuota"/>
                         <h:inputText value="#{prestamoController.selected.montoCuota}" disabled="true">
-                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                            <f:convertNumber locale="es" maxFractionDigits="2"/>
                         </h:inputText>
                         
                         <h:outputText value="Moneda"/>

@@ -19,7 +19,7 @@ import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 public abstract class DetCuentaCliente<T> implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     private CuentaCliente cuentaCliente;

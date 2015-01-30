@@ -24,7 +24,7 @@ public class Moneda implements Serializable {
     public static final String POR_NOMBRE = "package py.gestionpymes.jpa.adm.Moneda.POR_NOMBRE";
     public static final String POR_ESTADO = "package py.gestionpymes.jpa.adm.Moneda.POR_ESTADO";
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Version
     private Long version;

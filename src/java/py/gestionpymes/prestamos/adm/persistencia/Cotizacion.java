@@ -32,7 +32,7 @@ public class Cotizacion implements Serializable {
     public static final String TODOS = "py.gestionpymes.prestamos.adm.persistencia.cotizacion.TODOS";
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     private Moneda moneda;

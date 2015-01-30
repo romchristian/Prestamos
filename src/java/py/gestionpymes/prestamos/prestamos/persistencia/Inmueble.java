@@ -24,7 +24,7 @@ public class Inmueble implements Serializable {
     public static final String TODOS = "package py.gestionpymes.clientes.persistencia.Imnueble.TODOS";
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nrofinca;
     private String descripcion;

@@ -19,13 +19,25 @@
                 <p:dataTable id="datalist" value="#{usuarioController.items}" var="item"
                              selectionMode="single" selection="#{usuarioController.selected}"
                              paginator="true"
+                             paginatorPosition="bottom"
+                             paginatorAlwaysVisible="false"
                              rowKey="#{item.id}"
                              rows="10"
                              rowsPerPageTemplate="10,20,30,40,50"
                              >
 
-                    <p:ajax event="rowSelect"   update="createButton  editButton "/>
-                    <p:ajax event="rowUnselect" update="createButton  editButton "/>
+                    <p:ajax event="rowSelect"   update="createButton  editButton cambiarClaveButton"/>
+                    <p:ajax event="rowUnselect" update="createButton  editButton cambiarClaveButton"/>
+                    
+                    <f:facet name="header">
+                        <p:button id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" outcome="Create"/>
+                        <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" outcome="Edit">
+                            <f:param name="id" value="#{usuarioController.selected.id}"/>
+                        </p:button>
+                        <p:button id="cambiarClaveButton"  icon="ui-icon-pencil" value="Cambiar Contraseña" outcome="CambiarClave">
+                            <f:param name="id" value="#{usuarioController.selected.id}"/>
+                        </p:button>
+                    </f:facet>
                     
                     <p:column>
                         <f:facet name="header">
@@ -46,12 +58,7 @@
                         <h:outputText value="#{item.estado}"/>
                     </p:column>
                     
-                    <f:facet name="footer">
-                        <p:button id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" outcome="Create"/>
-                        <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" outcome="Edit">
-                            <f:param name="id" value="#{usuarioController.selected.id}"/>
-                        </p:button>
-                    </f:facet>
+                    
                 </p:dataTable>
             </h:form>
         </ui:define>

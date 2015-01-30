@@ -22,38 +22,169 @@
         <welcome-file>home/home.xhtml</welcome-file>
     </welcome-file-list>
     <security-constraint>
-        <display-name>Constraint1</display-name>
+        <display-name>ConstraintHome</display-name>
         <web-resource-collection>
             <web-resource-name>home</web-resource-name>
             <description/>
             <url-pattern>/home/*</url-pattern>
-        </web-resource-collection>
-        <web-resource-collection>
-            <web-resource-name>adm</web-resource-name>
-            <description/>
-            <url-pattern>/adm/*</url-pattern>
-        </web-resource-collection>
-        <web-resource-collection>
-            <web-resource-name>prestamos</web-resource-name>
-            <description/>
-            <url-pattern>/prestamos/*</url-pattern>
-        </web-resource-collection>
-        <web-resource-collection>
-            <web-resource-name>reportes</web-resource-name>
-            <description/>
-            <url-pattern>/reportes/*</url-pattern>
-        </web-resource-collection>
-        <web-resource-collection>
-            <web-resource-name>resources</web-resource-name>
-            <description/>
             <url-pattern>/resources/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>admin</role-name>
+            <role-name>cliente_lectura</role-name>
+            <role-name>cliente_edicion</role-name>
+            <role-name>prestamos_lectura</role-name>
+            <role-name>prestamos_edicion</role-name>
+            <role-name>prestamos_imprime_pagare</role-name>
+            <role-name>prestamos_confirma_pagare</role-name>
+            <role-name>prestamos_cancela_pagare</role-name>
+            <role-name>prestamos_desembolsa</role-name>
+            <role-name>cobro_cuota</role-name>
+            <role-name>configuraciones</role-name>
         </auth-constraint>
     </security-constraint>
-    
+    <security-constraint>
+        <display-name>ConstraintAdm</display-name>
+        <web-resource-collection>
+            <web-resource-name>adm</web-resource-name>
+            <description/>
+            <url-pattern>/adm/moneda/*</url-pattern>
+            <url-pattern>/adm/categoria/*</url-pattern>
+            <url-pattern>/adm/cotizacion/*</url-pattern>
+            <url-pattern>/adm/empresa/*</url-pattern>
+            <url-pattern>/adm/sucursal/*</url-pattern>
+            <url-pattern>/adm/impuestoIVA/*</url-pattern>
+            <url-pattern>/adm/usuario/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>configuraciones</role-name>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintClienteLectura</display-name>
+        <web-resource-collection>
+            <web-resource-name>clienteLectura</web-resource-name>
+            <description/>
+            <url-pattern>/adm/cliente/List.xhtml</url-pattern>
+            <url-pattern>/adm/cliente/View.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>cliente_lectura</role-name>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintClienteEdicion</display-name>
+        <web-resource-collection>
+            <web-resource-name>clienteEdicion</web-resource-name>
+            <description/>
+            <url-pattern>/adm/cliente/Edit.xhtml</url-pattern>
+            <url-pattern>/adm/cliente/List.xhtml</url-pattern>
+            <url-pattern>/adm/cliente/Create.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>cliente_edicion</role-name>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintPrestamoLectura</display-name>
+        <web-resource-collection>
+            <web-resource-name>PrestamoLectura</web-resource-name>
+            <description/>
+            <url-pattern>/prestamos/prestamo/List.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>prestamos_lectura</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintPrestamoEdicion</display-name>
+        <web-resource-collection>
+            <web-resource-name>PrestamoEdicion</web-resource-name>
+            <description/>
+            <url-pattern>/prestamos/prestamo/List.xhtml</url-pattern>
+            <url-pattern>/prestamos/prestamo/Create.xhtml</url-pattern>
+            <url-pattern>/prestamos/prestamo/Edit.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>prestamos_edicion</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintCobroCuota</display-name>
+        <web-resource-collection>
+            <web-resource-name>CobroCuota</web-resource-name>
+            <description/>
+            <url-pattern>/prestamos/prestamo/CobroCuota.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>cobro_cuota</role-name>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintDesembolsa</display-name>
+        <web-resource-collection>
+            <web-resource-name>Desembolsa</web-resource-name>
+            <description/>
+            <url-pattern>/prestamos/prestamo/Desembolsar.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>prestamos_desembolsa</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintImprimePagare</display-name>
+        <web-resource-collection>
+            <web-resource-name>ImprimePagare</web-resource-name>
+            <description/>
+            <url-pattern>/prestamos/prestamo/List.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>prestamos_imprime_pagare</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintConfirmaPagare</display-name>
+        <web-resource-collection>
+            <web-resource-name>ConfirmaPagare</web-resource-name>
+            <description/>
+            <url-pattern>/prestamos/prestamo/List.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>prestamos_confirma_pagare</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintCacelaPagare</display-name>
+        <web-resource-collection>
+            <web-resource-name>CancelaPagare</web-resource-name>
+            <description/>
+            <url-pattern>/prestamos/prestamo/List.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>configuraciones</role-name>
+        </auth-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>prestamosJDBC</realm-name>
@@ -63,65 +194,51 @@
         </form-login-config>
     </login-config>
     <error-page>
-        <error-code>
-            403
-        </error-code>
+        <error-code>403</error-code>
         <location>/sinpermiso.xhtml</location>
     </error-page>
     <security-role>
         <description/>
         <role-name>admin</role-name>
     </security-role>
-    
     <security-role>
         <description/>
         <role-name>cliente_lectura</role-name>
     </security-role>
-    
     <security-role>
         <description/>
         <role-name>cliente_edicion</role-name>
     </security-role>
-    
     <security-role>
         <description/>
         <role-name>prestamos_lectura</role-name>
     </security-role>
-    
     <security-role>
         <description/>
         <role-name>prestamos_edicion</role-name>
     </security-role>
-    
     <security-role>
         <description/>
         <role-name>prestamos_imprime_pagare</role-name>
     </security-role>
-    
     <security-role>
         <description/>
         <role-name>prestamos_confirma_pagare</role-name>
     </security-role>
-    
     <security-role>
         <description/>
         <role-name>prestamos_cancela_pagare</role-name>
     </security-role>
-    
     <security-role>
         <description/>
         <role-name>prestamos_desembolsa</role-name>
     </security-role>
-    
     <security-role>
         <description/>
         <role-name>cobro_cuota</role-name>
     </security-role>
-    
     <security-role>
         <description/>
         <role-name>configuraciones</role-name>
     </security-role>
-    
-    
 </web-app>

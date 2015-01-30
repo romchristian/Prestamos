@@ -23,8 +23,11 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 
 import javax.inject.Named;
+import org.apache.commons.beanutils.converters.DateConverter;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
+import static py.gestionpymes.prestamos.adm.web.util.MesEnTexto.fechaMesEnTexto;
+import py.gestionpymes.prestamos.adm.web.util.NumeroALetras;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetCobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
@@ -46,6 +49,7 @@ public class PrestamoController implements Serializable {
     private long id;
     @Inject
     private ReporteController reporteController;
+    private Pagare pagare;
 
     public long getId() {
         return id;
@@ -69,11 +73,45 @@ public class PrestamoController implements Serializable {
         return null;
     }
 
+    public Pagare getPagare() {
+        return pagare;
+    }
+
+    public void setPagare(Pagare pagare) {
+        this.pagare = pagare;
+    }
+
     public void imprimePagare() {
 
-        List<Pagare> data = new ArrayList<>();
+        pagare = new Pagare();
 
-        data.add(new Pagare(25655845D));
+        pagare.setMonto(selected.getMontoPrestamo());
+        pagare.setMontoLetras(selected.getMontoPrestamo());
+        pagare.setFechaEmision(selected.getFechaInicioOperacion());
+        pagare.setFechaEmisionTexto(selected.getFechaInicioOperacion());
+        pagare.setAnio(selected.getFecha().getYear());
+        pagare.setMesNumero(selected.getFecha().getMonth());
+        pagare.setMesLetra(fechaMesEnTexto(selected.getFecha()));
+        pagare.setDia(selected.getFecha().getDay());
+
+        pagare.setEmpresaNombre(selected.getCliente().getEmpresa().getRazonSocial());
+        pagare.setEmpresaRuc(selected.getCliente().getEmpresa().getRuc());
+
+        pagare.setDeudor(selected.getCliente().devuelveNombreCompleto());
+        pagare.setDeudorDoc(selected.getCliente().getNroDocumento());
+        pagare.setDeudorDireccion(selected.getCliente().devuelveDireccionParticular());
+        pagare.setDeudorConyuge(selected.getCliente().devuelveNombreCompleto());
+        pagare.setDeudorConyugeDoc(selected.getCliente().getNroDocumento());
+
+        pagare.setCoDeudor(selected.getCliente().devuelveNombreCompleto());
+        pagare.setCoDeudorDoc(selected.getCliente().getNroDocumento());
+        pagare.setCoDeudorDireccion(selected.getCliente().devuelveDireccionParticular());
+        pagare.setCoDeudorConyuge(selected.getCliente().devuelveNombreCompleto());
+        pagare.setCoDeudorConyugeDoc(selected.getCliente().getNroDocumento());
+
+        List<Pagare> data = new ArrayList<>();
+        data.add(pagare);
+
         reporteController.generaPDF(new HashMap(), data, "reportes/prestamos/pagares.jasper");
     }
 
@@ -187,6 +225,11 @@ public class PrestamoController implements Serializable {
         return getFacade().find(id);
     }
 
+    
+    public List<Prestamo> getPrestamosADesembolsar() {
+        return getFacade().findAllEstado(EstadoPrestamo.EN_DESEMBOLSO);
+    }
+    
     public List<Prestamo> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }

@@ -25,21 +25,23 @@
                              paginatorAlwaysVisible="false"
                              rowsPerPageTemplate="10,20,30,40,50"
                              >
+                    
                     <p:ajax event="rowSelect"   update="createButton viewButton editButton"/>
                     <p:ajax event="rowUnselect" update="createButton viewButton editButton"/>
 
                     <f:facet name="header">
-                        <p:button id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" outcome="Create"/>
-                        <p:button id="viewButton"   icon="ui-icon-search" value="#{bundle.View}"  disabled="#{empty clienteController.selected}" outcome="View">
+                        <p:button id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" outcome="Create" 
+                                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion'))}"/>
+                        <p:button id="viewButton"   icon="ui-icon-search" value="#{bundle.View}"  disabled="#{empty clienteController.selected}" outcome="View"
+                                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_lectura'))}">
                             <f:param name="id" value="#{clienteController.selected.id}"/>
                         </p:button>
 
-                        <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}"  disabled="#{empty clienteController.selected}" outcome="Edit">
+                        <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}"  disabled="#{empty clienteController.selected}" outcome="Edit"
+                                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion'))}">
                             <f:param name="id" value="#{clienteController.selected.id}"/>
                         </p:button>
                     </f:facet>
-
-
 
                     <p:column>
                         <f:facet name="header">

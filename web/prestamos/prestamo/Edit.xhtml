@@ -15,7 +15,7 @@
     </f:metadata>
     
     <ui:define name="title">
-        Editar Nuevo Prestamo
+        Editar Nuevo Préstamo
     </ui:define>
 
     <ui:define name="body">
@@ -57,7 +57,7 @@
 
                         <h:outputText value="Monto Préstamo"/>
                         <h:inputText value="#{prestamoController.selected.montoPrestamo}"  id="montoPrestamo">
-                            <f:convertNumber locale="#{formato.locale}"/>
+                            <f:convertNumber locale="es"/>
                         </h:inputText>
 
                         <h:outputText value="Capital"/>
@@ -66,7 +66,7 @@
 
                         <h:outputText value="Monto Gastos"/>
                         <h:inputText value="#{prestamoController.selected.gastos}">
-                            <f:convertNumber locale="#{formato.locale}"/>
+                            <f:convertNumber locale="es"/>
                         </h:inputText>
                         <h:outputText value="Plazo"/>
                         <h:inputText value="#{prestamoController.selected.plazo}"/>
@@ -87,19 +87,19 @@
                         </p:selectOneMenu>
                         <h:outputText value="Monto Cuota"/>
                         <h:inputText value="#{prestamoController.selected.montoCuota}" disabled="true">
-                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                            <f:convertNumber locale="es" maxFractionDigits="2"/>
                         </h:inputText>
                         <p:spacer/>
                         <p:spacer/>
                         <h:outputText value="Total Interes"/>
                         <h:inputText value="#{prestamoController.selected.totalIntereses}" disabled="true">
-                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                            <f:convertNumber locale="es" maxFractionDigits="2"/>
                         </h:inputText>
                         <p:spacer/>
                         <p:spacer/>
                         <h:outputText value="Total Operacion"/>
                         <h:inputText value="#{prestamoController.selected.totalOperacion}" disabled="true">
-                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                            <f:convertNumber locale="es" maxFractionDigits="2"/>
                         </h:inputText>
 
                         <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="display"/>
@@ -112,27 +112,27 @@
                     </p:column>
                     <p:column headerText="Saldo Capital">
                         <h:outputText value="#{d.saldoCapital}">
-                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                            <f:convertNumber locale="es" maxFractionDigits="2"/>
                         </h:outputText>
                     </p:column>
                     <p:column headerText="Monto cuota">
                         <h:outputText value="#{d.montoCuota}">
-                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                            <f:convertNumber locale="es" maxFractionDigits="2"/>
                         </h:outputText>
                     </p:column>
                     <p:column headerText="Vencimiento">
                         <h:outputText value="#{d.fechaVencimiento}">
-                            <f:convertDateTime pattern="#{formato.patronFecha}"/>
+                            <f:convertDateTime pattern="#{formato.patronFecha}" locale="es"/>
                         </h:outputText>
                     </p:column>
                     <p:column headerText="Cuota Capital">
                         <h:outputText value="#{d.cuotaCapital}">
-                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                            <f:convertNumber locale="es" maxFractionDigits="2"/>
                         </h:outputText>
                     </p:column>
                     <p:column headerText="Cuota Interes">
                         <h:outputText value="#{d.cuotaInteres}">
-                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                            <f:convertNumber locale="es" maxFractionDigits="2"/>
                         </h:outputText>
                     </p:column>
                 </p:dataTable>

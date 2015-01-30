@@ -19,7 +19,6 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
  * @author cromero
  */
 @Named
-@SessionScoped
 public class DiccionarioCliente implements Serializable{
     @EJB
     private ClienteFacade dao;

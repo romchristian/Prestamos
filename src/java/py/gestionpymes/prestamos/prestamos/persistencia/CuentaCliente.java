@@ -24,7 +24,7 @@ public class CuentaCliente implements Serializable {
     public static final String POR_CLIENTE = "package py.gestionpymes.jpa.clientes.CuentaCliente.POR_CLIENTE";
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Version
     private Long version;

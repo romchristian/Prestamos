@@ -15,6 +15,7 @@ import py.gestionpymes.prestamos.adm.persistencia.Direccion;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Persona;
 import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDireccion;
 import py.gestionpymes.prestamos.prestamos.persistencia.validadores.SoloLetras;
 
 /**
@@ -59,9 +60,22 @@ public class Cliente extends Persona {
    
     private String nacionalidad;
     
- 
+    private boolean esTitular;
+    
+    @ManyToOne
+    private Cliente conyuge;
     
     
+    
+
+    public boolean isEsTitular() {
+        return esTitular;
+    }
+
+    public void setEsTitular(boolean esTitular) {
+        this.esTitular = esTitular;
+    }
+       
     
     public EstadoCivil getEstadoCivil() {
         return estadoCivil;
@@ -191,11 +205,33 @@ public class Cliente extends Persona {
     }
 
     
+    public String devuelveDireccionParticular(){
+    
+        for (Direccion d : direcciones) {
+            if(d.getTipo().PARTICULAR==TipoDireccion.PARTICULAR){
+                return d.getDireccion()+" "+d.getNrocasa();
+            }
+        }
+        return null;
+    }
+
+    public Cliente getConyuge() {
+        return conyuge;
+    }
+
+    public void setConyuge(Cliente conyuge) {
+        this.conyuge = conyuge;
+    }
     
     
+    
+    public String devuelveNombreCompleto(){
+    
+        return getPrimerNombre()+" "+getSegundoNombre()+" "+getPrimerApellido()+" "+getSegundoApellido();
+    }
 
     @Override
     public String toString() {
-        return primerApellido + ", " + primerNombre;
+        return getPrimerNombre()+" "+getSegundoNombre()+" "+getPrimerApellido()+" "+getSegundoApellido();
     }
 }

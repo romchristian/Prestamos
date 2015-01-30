@@ -5,14 +5,19 @@
  */
 package py.gestionpymes.prestamos.prestamos.web;
 
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import py.gestionpymes.prestamos.adm.web.util.NumeroALetras;
+import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 
 /**
  *
  * @author Acer
  */
 public class Pagare {
+
+    private Prestamo prestamo;
     private int nro;
     private int cantidadPagares = 1;
     private Double monto;
@@ -20,40 +25,37 @@ public class Pagare {
     private String empresaNombre;
     private String empresaRuc;
     private Date fechaEmision;
+    private String fechaEmisionTexto;
     private String deudor;
     private String deudorDoc;
     private String deudorDireccion;
     private String deudorConyuge;
     private String deudorConyugeDoc;
-    
+
     private String coDeudor;
     private String coDeudorDoc;
     private String coDeudorDireccion;
     private String coDeudorConyuge;
     private String coDeudorConyugeDoc;
-    
+
     //Calulados
     private String montoLetras;
-    private String dia;
+    private int dia;
     private int mesNumero;
     private String mesLetra;
     private int anio;
-    
 
-    public Pagare(Double monto) {
-        this.monto = monto;
-        this.nro = 1;
-        this.vencimiento= new Date(2015, 1, 28);
-        this.empresaNombre = "CREDI";
-        this.empresaRuc="800021544-2";
-        this.deudor = "Juan Perez";
-        this.deudorDoc = "2.254.788";
-        this.deudorDireccion="Calle1 casi Calle2";
-        this.deudorConyuge="Juan de Arco";
-        this.deudorConyugeDoc="3.658.744";
+    public Pagare() {
+
     }
-    
-    
+
+    public Prestamo getPrestamo() {
+        return prestamo;
+    }
+
+    public void setPrestamo(Prestamo prestamo) {
+        this.prestamo = prestamo;
+    }
 
     public Double getMonto() {
         return monto;
@@ -109,6 +111,16 @@ public class Pagare {
 
     public void setFechaEmision(Date fechaEmision) {
         this.fechaEmision = fechaEmision;
+    }
+
+    public String getFechaEmisionTexto() {
+        return fechaEmisionTexto;
+    }
+
+    public void setFechaEmisionTexto(Date d){
+       
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
+        this.fechaEmisionTexto = dateFormat.format(d);
     }
 
     public String getDeudor() {
@@ -192,19 +204,18 @@ public class Pagare {
     }
 
     public String getMontoLetras() {
-        montoLetras = numeroALetras(monto);
         return montoLetras;
     }
 
-    public void setMontoLetras(String montoLetras) {
-        this.montoLetras = montoLetras;
+    public void setMontoLetras(Double monto) {
+        this.montoLetras = numeroALetras(monto);
     }
 
-    public String getDia() {
+    public int getDia() {
         return dia;
     }
 
-    public void setDia(String dia) {
+    public void setDia(int dia) {
         this.dia = dia;
     }
 
@@ -231,12 +242,11 @@ public class Pagare {
     public void setAnio(int anio) {
         this.anio = anio;
     }
-    
-    private String numeroALetras(Double num){
-        
+
+    private String numeroALetras(Double num) {
+
         System.out.println("");
-        return new NumeroALetras().Convertir(num.intValue()+"", false);
+        return new NumeroALetras().Convertir(num.intValue() + "", false);
     }
-    
-      
+
 }

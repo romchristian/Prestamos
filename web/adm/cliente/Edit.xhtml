@@ -24,103 +24,134 @@
             <h:form id="ClienteEditForm">
                 <h:panelGroup id="display" rendered="#{clienteController.selected != null}">
 
-                    <p:panel header="Datos Básicos" toggleable="false" collapsed="false" >
 
-                        <h:outputText value="Documento"/>
-                        <p:separator/>
-
-                        <p:panelGrid columns="5" rendered="#{clienteController.selected != null}">
-                            <h:outputText value="Tipo Doc."/>
-                            <h:outputText value="#{clienteController.selected.tipoDocumento}" />
-
-                            <p:spacer width="20" height="0"/>
-
-                            <p:outputLabel value="# documento" for="nrodoc" id="lblnrodoc"/>
-                            <h:outputText value="#{clienteController.selected.nroDocumento}" id="nrodoc"/>
-
-
-                            <h:outputText value="Vigencia Documento"/>
-                            <p:calendar value="#{clienteController.selected.vigencia}" id="vigencia" required="true"
-                                        locale="es" pattern="dd/MM/yyyy"/>
-                            <p:spacer width="20" height="0"/>
-
-                        </p:panelGrid>
-
-                        <h:panelGrid columns="1" width="100%">
-                            <p:spacer height="5" width="0"/>
-                            <h:outputText value="Persona"/>
-                            <p:separator/>
-                        </h:panelGrid>
-
-
-                        <p:panelGrid columns="6" rendered="#{clienteController.selected != null}">
-                            <p:outputLabel value="Primer Nombre" for="primerNombre" id="lblprimerNombre"/>
-                            <p:inputText value="#{clienteController.selected.primerNombre}" required="true" id="primerNombre">
-                                <p:ajax event="blur" update="primerNombre lblprimerNombre @(.mensajes)"/>
-                            </p:inputText>
-                            <p:outputLabel value="Segun Nombre" for="segundoNombre" id="lblsegundoNombre"/>
-                            <p:inputText value="#{clienteController.selected.segundoNombre}"  id="segundoNombre">
-                                <p:ajax event="blur" update="segundoNombre lblsegundoNombre @(.mensajes)"/>
-                            </p:inputText>
-                            <p:spacer width="20" height="0"/>
-                            <p:spacer width="20" height="0"/>
-
-                            <p:outputLabel value="Primer Apellido" for="primerApellido" id="lblprimerApellido"/>            
-                            <p:inputText value="#{clienteController.selected.primerApellido}" required="true" id="primerApellido">
-                                <p:ajax event="blur" update="primerApellido lblprimerApellido @(.mensajes)"/>
-                            </p:inputText>
-
-                            <p:outputLabel value="Segundo Apellido" for="segundoApellido" id="lblsegundoApellido"/>
-                            <p:inputText value="#{clienteController.selected.segundoApellido}"  id="segundoApellido">
-                                <p:ajax event="blur" update="segundoApellido lblsegundoApellido @(.mensajes)"/>
-                            </p:inputText>
-
-                            <p:outputLabel value="Nacionalidad" for="nacionalidad"/>
-                            <p:inputText value="#{clienteController.selected.nacionalidad}" id="nacionalidad"/>
-
-                            <p:outputLabel value="Sexo" for="sexo"/>
-                            <h:selectOneMenu value="#{clienteController.selected.sexo}" id="sexo">
-                                <f:selectItems value="#{productorEnums.obtSexo()}"/>
-                            </h:selectOneMenu>
-
-
-                            <p:outputLabel value="Estado Civil" for="estadocivil"/>
-                            <h:selectOneMenu value="#{clienteController.selected.estadoCivil}" id="estadocivil">
-                                <f:selectItems value="#{productorEnums.obtEstadosCivil()}"/>
-                            </h:selectOneMenu>
-
-
-                            <p:outputLabel value="Fecha Nac" for="fechaNacimiento"/>
-                            <p:calendar value="#{clienteController.selected.fechaNac}" id="fechaNacimiento" required="true"
-                                        locale="es" pattern="dd/MM/yyyy"/>
-
-                            <p:outputLabel value="Linea de Crédito" for="lineadecredito"/>
-                            <p:inputText value="#{clienteController.selected.lineaDeCredito}" id="lineadecredito"/>
-
-                            <p:outputLabel value="#{bundle.CreateClienteLabel_categoria}" for="categoria" /> 
-                            <p:selectOneMenu id="categoria" value="#{clienteController.selected.categoria}" >
-                                <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"
-                                               var="categoriaItem"
-                                               itemValue="#{categoriaItem}"/>
-                            </p:selectOneMenu>
-
-                            <p:outputLabel value="Empresa" for="empresa" /> 
-                            <p:selectOneMenu id="empresa" value="#{clienteController.selected.empresa}" >
-                                <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
-                            </p:selectOneMenu>
-
-                            <p:outputLabel value="#{bundle.CreateClienteLabel_sucursal}" for="sucursal" /> 
-                            <p:selectOneMenu id="sucursal" value="#{clienteController.selected.sucursal}" >
-                                <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
-                            </p:selectOneMenu>
-
-                        </p:panelGrid>
-
-
-                    </p:panel>
 
                     <p:tabView>
 
+
+                        <p:tab title="Datos Personales">
+                            
+
+                                <h:outputText value="Documento"/>
+                                <p:separator/>
+
+                                <p:panelGrid columns="5" rendered="#{clienteController.selected != null}">
+                                    <h:outputText value="Tipo Doc."/>
+                                    <h:outputText value="#{clienteController.selected.tipoDocumento}" />
+
+                                    <p:spacer width="20" height="0"/>
+
+                                    <p:outputLabel value="# documento" for="nrodoc" id="lblnrodoc"/>
+                                    <h:outputText value="#{clienteController.selected.nroDocumento}" id="nrodoc"/>
+
+
+                                    <h:outputText value="Vigencia Documento"/>
+                                    <p:calendar value="#{clienteController.selected.vigencia}" id="vigencia" required="true"
+                                                locale="es" pattern="dd/MM/yyyy"/>
+                                    <p:spacer width="20" height="0"/>
+
+                                </p:panelGrid>
+
+                                <h:panelGrid columns="1" width="100%">
+                                    <p:spacer height="5" width="0"/>
+                                    <h:outputText value="Persona"/>
+                                    <p:separator/>
+                                </h:panelGrid>
+
+
+                               <h:panelGrid columns="6" rendered="#{clienteController.selected != null}">
+                                <p:outputLabel value="Primer Nombre" for="primerNombre" id="lblprimerNombre"/>
+                                <p:inputText value="#{clienteController.selected.primerNombre}" required="true" id="primerNombre">
+                                    <p:ajax event="blur" update="primerNombre lblprimerNombre @(.mensajes)"/>
+                                </p:inputText>
+                                <p:outputLabel value="Segun Nombre" for="segundoNombre" id="lblsegundoNombre"/>
+                                <p:inputText value="#{clienteController.selected.segundoNombre}"  id="segundoNombre">
+                                    <p:ajax event="blur" update="segundoNombre lblsegundoNombre @(.mensajes)"/>
+                                </p:inputText>
+                                
+                                <p:outputLabel value="Nacionalidad" for="nacionalidad"/>
+                                <p:inputText value="#{clienteController.selected.nacionalidad}" id="nacionalidad"/>
+
+                                <p:outputLabel value="Primer Apellido" for="primerApellido" id="lblprimerApellido"/>            
+                                <p:inputText value="#{clienteController.selected.primerApellido}" required="true" id="primerApellido">
+                                    <p:ajax event="blur" update="primerApellido lblprimerApellido @(.mensajes)"/>
+                                </p:inputText>
+
+                                <p:outputLabel value="Segundo Apellido" for="segundoApellido" id="lblsegundoApellido"/>
+                                <p:inputText value="#{clienteController.selected.segundoApellido}"  id="segundoApellido">
+                                    <p:ajax event="blur" update="segundoApellido lblsegundoApellido @(.mensajes)"/>
+                                </p:inputText>
+
+                                <p:outputLabel value="Fecha Nac" for="fechaNacimiento"/>
+                                <p:calendar value="#{clienteController.selected.fechaNac}" id="fechaNacimiento" required="true"
+                                            pattern="#{formato.patronFecha}" locale="es"/>
+
+                                <p:outputLabel value="Sexo" for="sexo"/>
+                                <p:selectOneMenu value="#{clienteController.selected.sexo}" id="sexo">
+                                    <f:selectItems value="#{productorEnums.obtSexo()}"/>
+                                </p:selectOneMenu>
+
+
+                                <p:outputLabel value="Estado Civil" for="estadocivil"/>
+                                <p:selectOneMenu value="#{clienteController.selected.estadoCivil}" id="estadocivil">
+                                    <f:selectItems value="#{productorEnums.obtEstadosCivil()}"/>
+                                </p:selectOneMenu>
+
+
+                                <p:spacer/>
+                                <p:spacer/>
+
+                                <h:outputText value="Conyuge: "/>
+
+
+
+
+                                <p:autoComplete value="#{clienteController.selected.conyuge}"  id="autoCompleteCliente"
+                                                completeMethod="#{autoCompleteCliente.completar}"
+                                                forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}"
+                                                >
+                                    <p:ajax event="itemSelect" update="panelCliente"/>
+
+                                </p:autoComplete>
+
+                                <p:panel id="panelCliente" style="margin: 0;border: none;padding: 0;">
+                                    <h:outputText value=" #{clienteController.selected.conyuge != null ? clienteController.selected.conyuge.devuelveNombreCompleto():'No Asignado'}"
+                                                  styleClass="clienteSeleccionado"/>
+                                </p:panel>
+
+
+                                <p:spacer/>
+                                <p:spacer/>
+                                <p:spacer/>
+
+                                <p:outputLabel value="Linea de Crédito" for="lineadecredito"/>
+                                <p:inputText value="#{clienteController.selected.lineaDeCredito}" id="lineadecredito"/>
+
+                                <p:outputLabel value="#{bundle.CreateClienteLabel_categoria}" for="categoria" /> 
+                                <p:selectOneMenu id="categoria" value="#{clienteController.selected.categoria}" >
+                                    <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"
+                                                   var="categoriaItem"
+                                                   itemValue="#{categoriaItem}"/>
+                                </p:selectOneMenu>
+
+                                <p:spacer/>
+                                <p:spacer/>
+                                <p:outputLabel value="Empresa" for="empresa" /> 
+                                <p:selectOneMenu id="empresa" value="#{clienteController.selected.empresa}" >
+                                    <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="#{bundle.CreateClienteLabel_sucursal}" for="sucursal" /> 
+                                <p:selectOneMenu id="sucursal" value="#{clienteController.selected.sucursal}" >
+                                    <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
+                                </p:selectOneMenu>
+
+                            </h:panelGrid>
+
+
+                            
+
+                        </p:tab>
                         <p:tab title="Direcciones">
                             <p:panel styleClass="panelDirecciones">
 

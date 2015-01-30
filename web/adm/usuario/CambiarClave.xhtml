@@ -26,21 +26,21 @@
                     <p:panelGrid columns="2" >
 
                         <p:outputLabel value="Estado" for="estado" />
-                        <p:selectOneMenu value="#{usuarioController.selected.estado}" id="estado">
+                        <p:selectOneMenu value="#{usuarioController.selected.estado}" id="estado" disabled="true">
                             <f:selectItems value="#{productorEnums.obtEstados()}"/>
                         </p:selectOneMenu>
                         
                         <p:outputLabel value="Nombre" for="nombre" />
-                        <p:inputText id="nombre" value="#{usuarioController.selected.nombre}"/>
+                        <p:inputText id="nombre" value="#{usuarioController.selected.nombre}" disabled="true"/>
                         <p:outputLabel value="Apellido" for="apellido" />
-                        <p:inputText id="apellido" value="#{usuarioController.selected.apellido}"/>
+                        <p:inputText id="apellido" value="#{usuarioController.selected.apellido}" disabled="true"/>
                         <p:outputLabel value="Usuario" for="usuario" />
-                        <p:inputText id="usuario" value="#{usuarioController.selected.usuario}"/>
+                        <p:inputText id="usuario" value="#{usuarioController.selected.usuario}" disabled="true"/>
                         
-                        <h:outputText value="Permisos:" />
-                        <p:selectManyCheckbox id="grid" value="#{usuarioController.selected.roles}" layout="grid" columns="3" converter="rolConverter">
-                            <f:selectItems value="#{rolController.items}" var="r" itemLabel="#{r.nombre}" itemValue="#{r}"/>
-                        </p:selectManyCheckbox>
+                        <p:outputLabel for="pwd1" value="Clave:" />
+                        <p:password id="pwd1" value="#{usuarioController.selected.clave}" match="pwd2" required="true" />
+                        <p:outputLabel for="pwd2" value="Confirmar Clave:" />
+                        <p:password id="pwd2" value="#{usuarioController.selected.clave}" required="true" />
 
                     </p:panelGrid>
 

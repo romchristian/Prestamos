@@ -24,7 +24,7 @@ public class Direccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
     private TipoDireccion tipo;
@@ -98,7 +98,7 @@ public class Direccion implements Serializable {
     public void setNrocasa(String nrocasa) {
         this.nrocasa = nrocasa;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -118,9 +118,6 @@ public class Direccion implements Serializable {
         }
         return true;
     }
-
-    
-    
     
 
     @Override

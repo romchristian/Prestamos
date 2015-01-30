@@ -21,7 +21,7 @@ public class Sucursal implements Serializable {
     public static final String TODOS = "package py.gestionpymes.jpa.adm.Sucursal.TODOS";
     public static final String POR_EMPRESA = "package py.gestionpymes.jpa.adm.Sucursal.POR_EMPRESA";
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Version
     private Long version;

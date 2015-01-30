@@ -17,3 +17,5 @@ CREATE OR REPLACE VIEW groups AS select cast(lower(r.nombre) as character varyin
 ALTER TABLE groups OWNER TO postgres;
 CREATE OR REPLACE VIEW users AS SELECT usuario AS userid, clave AS password FROM persona where dtype = 'Usuario';
 ALTER TABLE users OWNER TO postgres;
+
+INSERT INTO moneda(abreviacion, decimales, estado, monedalocal, nombre, version) VALUES ('GS', 0, 'ACTIVO', TRUE, 'GUARANIES', 1);
