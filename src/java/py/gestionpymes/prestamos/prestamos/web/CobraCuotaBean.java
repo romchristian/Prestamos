@@ -5,10 +5,13 @@
 package py.gestionpymes.prestamos.prestamos.web;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -20,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -37,7 +41,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
  * @author cromero
  */
 @Named
-@SessionScoped
+@ViewScoped
 public class CobraCuotaBean implements Serializable {
 
     @EJB
@@ -54,6 +58,33 @@ public class CobraCuotaBean implements Serializable {
     private double totalAPagar;
     private TreeCuota cuotaSeleccionada;
     private Double montoActual;
+
+    public String obtDescCuota() {
+        String R = "";
+        if (cuotaSeleccionada != null && cuotaSeleccionada.getPrestamo() != null) {
+            NumberFormat nf = NumberFormat.getInstance(new Locale("es","py"));
+            R = cuotaSeleccionada.getPrestamo().getId() + ";" + nf.format(cuotaSeleccionada.getPrestamo().getMontoPrestamo()) + " - Cuota Nro "
+                    + cuotaSeleccionada.getDetPrestamo().getNroCuota();
+        }
+        return R;
+    }
+
+    public String obtDescMora() {
+        String R = "";
+        if (cuotaSeleccionada != null && cuotaSeleccionada.getPrestamo() != null) {
+            R = cuotaSeleccionada.getDetPrestamo().getDiasMora() < 0 ? 0 + " días" : cuotaSeleccionada.getDetPrestamo().getDiasMora() + " días";
+        }
+        return R;
+    }
+
+    public Date obtUltimoPago() {
+        Date R = null;
+        if(cuotaSeleccionada != null && cuotaSeleccionada.getPrestamo() != null){
+            R = cuotaSeleccionada.getPrestamo().getUltimoPago();
+        }
+        
+        return R;
+    }
 
     public Double getMontoActual() {
         return montoActual;
@@ -73,7 +104,7 @@ public class CobraCuotaBean implements Serializable {
     public void setCuotaSeleccionada(TreeCuota cuotaSeleccionada) {
 
         this.cuotaSeleccionada = cuotaSeleccionada;
-        montoActual = cuotaSeleccionada.getSaldoCuota();
+        montoActual = cuotaSeleccionada == null ? 0 : cuotaSeleccionada.getSaldoCuota();
     }
 
     public void paga() {

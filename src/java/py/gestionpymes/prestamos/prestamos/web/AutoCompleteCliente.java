@@ -44,7 +44,9 @@ public class AutoCompleteCliente implements Serializable {
         List<Cliente> sugerencias = new ArrayList<>();
 
         for (Cliente p : getLista()) {
-            if (p.getNroDocumento().toUpperCase().startsWith(query.toUpperCase())) {
+            
+            String cadenaAComparar = p.getNroDocumento()+ " " + p.devuelveNombreCompleto();
+            if (cadenaAComparar.trim().toUpperCase().contains(query.toUpperCase().trim())) {
                 sugerencias.add(p);
             }
         }

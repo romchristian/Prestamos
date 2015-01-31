@@ -32,19 +32,19 @@
                                      rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_desembolsa'))}"/>
                 </f:facet>
 
-                <p:column>
+                <p:column style="font-size: 12px">
                     <f:facet name="header">
                         Descripción
                     </f:facet>
                     <h:outputText value="Prestamo nro: #{p.id}"/>
                 </p:column>
-                <p:column>
+                <p:column style="font-size: 12px">
                     <f:facet name="header">
                         Estado
                     </f:facet>
                     <h:outputText value="#{p.estado}"/>
                 </p:column>
-                <p:column>
+                <p:column style="font-size: 12px">
                     <f:facet name="header">
                         Pagare Firmado
                     </f:facet>

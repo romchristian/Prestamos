@@ -8,6 +8,8 @@ package py.gestionpymes.prestamos.prestamos.web;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import org.joda.time.DateTime;
 import py.gestionpymes.prestamos.adm.web.util.NumeroALetras;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 
@@ -18,7 +20,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 public class Pagare {
 
     private Prestamo prestamo;
-    private int nro;
+    private int nro=1;
     private int cantidadPagares = 1;
     private Double monto;
     private Date vencimiento;
@@ -47,6 +49,39 @@ public class Pagare {
 
     public Pagare() {
 
+    }
+
+    public Pagare(Prestamo prestamo) {
+        this.prestamo = prestamo;
+
+        monto = this.prestamo.getMontoPrestamo();
+        setMontoLetras(this.prestamo.getMontoPrestamo());
+        fechaEmision = this.prestamo.getFechaInicioOperacion();
+        setFechaEmisionTexto(this.prestamo.getFechaInicioOperacion());
+        DateTime d = new DateTime(this.prestamo.getFecha());
+        setAnio(d.getYear());
+        setMesNumero(d.getMonthOfYear());
+        setMesLetra(d.toString("MMMM", Locale.getDefault()));
+        setDia(d.getDayOfMonth());
+
+        setEmpresaNombre(this.prestamo.getCliente().getEmpresa() == null ? null : this.prestamo.getCliente().getEmpresa().getRazonSocial());
+        setEmpresaRuc(this.prestamo.getCliente().getEmpresa() == null ? null : this.prestamo.getCliente().getEmpresa().getRuc());
+
+        setDeudor(this.prestamo.getCliente() == null ? null : this.prestamo.getCliente().devuelveNombreCompleto());
+        setDeudorDoc(this.prestamo.getCliente() == null ? null : this.prestamo.getCliente().getNroDocumento());
+        setDeudorDireccion(this.prestamo.getCliente() == null ? null : this.prestamo.getCliente().devuelveDireccionParticular());
+        if (prestamo.isFirmaConyugeTitular()) {
+            setDeudorConyuge(this.prestamo.getCliente().getConyuge() == null ? null : this.prestamo.getCliente().getConyuge().devuelveNombreCompleto());
+            setDeudorConyugeDoc(this.prestamo.getCliente().getConyuge() == null ? null : this.prestamo.getCliente().getConyuge().getNroDocumento());
+        }
+
+        setCoDeudor(this.prestamo.getCodeudor() == null ? null : this.prestamo.getCodeudor().devuelveNombreCompleto());
+        setCoDeudorDoc(this.prestamo.getCodeudor() == null ? null : this.prestamo.getCodeudor().getNroDocumento());
+        setCoDeudorDireccion(this.prestamo.getCodeudor() == null ? null : this.prestamo.getCodeudor().devuelveDireccionParticular());
+        if (prestamo.isFirmaConyugeCodeudor()) {
+            setCoDeudorConyuge(this.prestamo.getCodeudor().getConyuge() == null ? null : this.prestamo.getCodeudor().getConyuge().devuelveNombreCompleto());
+            setCoDeudorConyugeDoc(this.prestamo.getCodeudor().getConyuge() == null ? null : this.prestamo.getCodeudor().getConyuge().getNroDocumento());
+        }
     }
 
     public Prestamo getPrestamo() {
@@ -117,8 +152,8 @@ public class Pagare {
         return fechaEmisionTexto;
     }
 
-    public void setFechaEmisionTexto(Date d){
-       
+    public void setFechaEmisionTexto(Date d) {
+
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
         this.fechaEmisionTexto = dateFormat.format(d);
     }

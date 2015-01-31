@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +25,8 @@ import javax.inject.Inject;
 
 import javax.inject.Named;
 import org.apache.commons.beanutils.converters.DateConverter;
+import org.joda.time.DateTime;
+import org.joda.time.JodaTimePermission;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
 import static py.gestionpymes.prestamos.adm.web.util.MesEnTexto.fechaMesEnTexto;
@@ -83,31 +86,9 @@ public class PrestamoController implements Serializable {
 
     public void imprimePagare() {
 
-        pagare = new Pagare();
+        pagare = new Pagare(selected);
 
-        pagare.setMonto(selected.getMontoPrestamo());
-        pagare.setMontoLetras(selected.getMontoPrestamo());
-        pagare.setFechaEmision(selected.getFechaInicioOperacion());
-        pagare.setFechaEmisionTexto(selected.getFechaInicioOperacion());
-        pagare.setAnio(selected.getFecha().getYear());
-        pagare.setMesNumero(selected.getFecha().getMonth());
-        pagare.setMesLetra(fechaMesEnTexto(selected.getFecha()));
-        pagare.setDia(selected.getFecha().getDay());
-
-        pagare.setEmpresaNombre(selected.getCliente().getEmpresa().getRazonSocial());
-        pagare.setEmpresaRuc(selected.getCliente().getEmpresa().getRuc());
-
-        pagare.setDeudor(selected.getCliente().devuelveNombreCompleto());
-        pagare.setDeudorDoc(selected.getCliente().getNroDocumento());
-        pagare.setDeudorDireccion(selected.getCliente().devuelveDireccionParticular());
-        pagare.setDeudorConyuge(selected.getCliente().devuelveNombreCompleto());
-        pagare.setDeudorConyugeDoc(selected.getCliente().getNroDocumento());
-
-        pagare.setCoDeudor(selected.getCliente().devuelveNombreCompleto());
-        pagare.setCoDeudorDoc(selected.getCliente().getNroDocumento());
-        pagare.setCoDeudorDireccion(selected.getCliente().devuelveDireccionParticular());
-        pagare.setCoDeudorConyuge(selected.getCliente().devuelveNombreCompleto());
-        pagare.setCoDeudorConyugeDoc(selected.getCliente().getNroDocumento());
+       
 
         List<Pagare> data = new ArrayList<>();
         data.add(pagare);

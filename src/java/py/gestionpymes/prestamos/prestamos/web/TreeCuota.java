@@ -4,7 +4,9 @@
  */
 package py.gestionpymes.prestamos.prestamos.web;
 
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.Locale;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
@@ -43,7 +45,8 @@ public class TreeCuota {
     
     public TreeCuota(Prestamo prestamo) {
         this.prestamo = prestamo;
-        this.descPrestamo = "Prestamo # " + prestamo.getId();
+        NumberFormat nf = NumberFormat.getInstance(new Locale("es","py"));
+        this.descPrestamo = "Prestamo # " + prestamo.getId() +" - "+ nf.format(prestamo.getMontoPrestamo());
         this.esPrestamo = true;
         this.moneda = prestamo.getMoneda();
     }

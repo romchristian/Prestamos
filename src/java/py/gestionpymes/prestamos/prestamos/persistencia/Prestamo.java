@@ -19,7 +19,7 @@ import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 @Entity
 @NamedQueries({
     @NamedQuery(name = Prestamo.TODOS, query = "select p from Prestamo p"),
- @NamedQuery(name = Prestamo.POR_CLIENTE, query = "select p from Prestamo p where p.cliente = :cliente")})
+    @NamedQuery(name = Prestamo.POR_CLIENTE, query = "select p from Prestamo p where p.cliente = :cliente")})
 public class Prestamo implements Serializable {
 
     public static final String TODOS = "py.gestionpymes.jpa.prestamos.Prestamo.TODOS";
@@ -30,15 +30,17 @@ public class Prestamo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @ManyToOne
     private Cliente cliente;
-    private double montoPrestamo = 1000000d;;
-    private double capital; 
-    private int plazo = 12;
-    private int tasa = 24;
+    @ManyToOne
+    private Cliente codeudor;
+    private double montoPrestamo;
+    private double capital;
+    private int plazo;
+    private int tasa;
     @Enumerated(EnumType.STRING)
-    private PeriodoPago periodoPago = PeriodoPago.MENSUAL;
+    private PeriodoPago periodoPago;
     private double gastos;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaInicioOperacion;
@@ -48,7 +50,7 @@ public class Prestamo implements Serializable {
     private double totalIntereses;
     private double totalOperacion;
     @Enumerated(EnumType.STRING)
-    private SistemaAmortizacion sistemaAmortizacion ;
+    private SistemaAmortizacion sistemaAmortizacion;
     @Transient
     private Sistema sistema;
     private EstadoPrestamo estado;
@@ -57,12 +59,43 @@ public class Prestamo implements Serializable {
     private Moneda moneda;
     @ManyToOne
     private Cotizacion cotizacion;
+    private boolean firmaConyugeTitular;
+    private boolean firmaConyugeCodeudor;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date ultimoPago;
 
     public Prestamo() {
         this.estado = EstadoPrestamo.PENDIENTE_DESEMBOLSO;
         this.sistemaAmortizacion = SistemaAmortizacion.FRANCES;
     }
 
+    public Date getUltimoPago() {
+        return ultimoPago;
+    }
+
+    public void setUltimoPago(Date ultimoPago) {
+        this.ultimoPago = ultimoPago;
+    }
+
+    
+    
+    public boolean isFirmaConyugeTitular() {
+        return firmaConyugeTitular;
+    }
+
+    public void setFirmaConyugeTitular(boolean firmaConyugeTitular) {
+        this.firmaConyugeTitular = firmaConyugeTitular;
+    }
+
+    public boolean isFirmaConyugeCodeudor() {
+        return firmaConyugeCodeudor;
+    }
+
+    public void setFirmaConyugeCodeudor(boolean firmaConyugeCodeudor) {
+        this.firmaConyugeCodeudor = firmaConyugeCodeudor;
+    }
+
+ 
     public Moneda getMoneda() {
         return moneda;
     }
@@ -79,8 +112,6 @@ public class Prestamo implements Serializable {
         this.cotizacion = cotizacion;
     }
 
-    
-    
     public void setSistema(Sistema sistema) {
         this.sistema = sistema;
     }
@@ -107,8 +138,6 @@ public class Prestamo implements Serializable {
         this.firmaPagare = firmaPagare;
     }
 
-    
-    
     public double getMontoPrestamo() {
         return montoPrestamo;
     }
@@ -116,7 +145,7 @@ public class Prestamo implements Serializable {
     public void setMontoPrestamo(double montoPrestamo) {
         this.montoPrestamo = montoPrestamo;
     }
-    
+
     public EstadoPrestamo getEstado() {
         return estado;
     }
@@ -139,6 +168,14 @@ public class Prestamo implements Serializable {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public Cliente getCodeudor() {
+        return codeudor;
+    }
+
+    public void setCodeudor(Cliente codeudor) {
+        this.codeudor = codeudor;
     }
 
     public List<DetPrestamo> getDetalles() {
@@ -178,7 +215,7 @@ public class Prestamo implements Serializable {
     }
 
     public double getMontoCuota() {
-        
+
         montoCuota = getSistema().getCuota();
         return montoCuota;
     }
@@ -210,8 +247,6 @@ public class Prestamo implements Serializable {
     public void setSistemaAmortizacion(SistemaAmortizacion sistemaAmortizacion) {
         this.sistemaAmortizacion = sistemaAmortizacion;
     }
-
-    
 
     public int getTasa() {
         return tasa;
@@ -250,7 +285,6 @@ public class Prestamo implements Serializable {
         this.id = id;
     }
 
-  
     @Override
     public int hashCode() {
         int hash = 0;

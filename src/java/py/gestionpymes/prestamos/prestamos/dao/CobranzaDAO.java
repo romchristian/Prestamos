@@ -16,6 +16,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Efectivo;
 import py.gestionpymes.prestamos.prestamos.persistencia.OperacionCobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.Pago;
+import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 import py.gestionpymes.prestamos.prestamos.web.TreeCuota;
 
 /**
@@ -89,7 +90,10 @@ public class CobranzaDAO {
                 if (!dp.afectaSaldoCuota(d.getMonto())) {
                     throw new PagoExcedidoException("El monto no puede ser mayor al saldo de la cuota");
                 } else {
+                    Prestamo p = dp.getPrestamo();
+                    p.setUltimoPago(dp.getUltimoPago());
                     em.merge(dp);
+                    em.merge(p);
                 }
 
             }
