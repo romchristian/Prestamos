@@ -54,11 +54,11 @@ public class Pagare {
     public Pagare(Prestamo prestamo) {
         this.prestamo = prestamo;
 
-        monto = this.prestamo.getMontoPrestamo();
-        setMontoLetras(this.prestamo.getMontoPrestamo());
+        monto = this.prestamo.getTotalOperacion();
+        setMontoLetras(this.prestamo.getTotalOperacion());
         fechaEmision = this.prestamo.getFechaInicioOperacion();
         setFechaEmisionTexto(this.prestamo.getFechaInicioOperacion());
-        DateTime d = new DateTime(this.prestamo.getFecha());
+        DateTime d = new DateTime(this.prestamo.getFechaInicioOperacion());
         setAnio(d.getYear());
         setMesNumero(d.getMonthOfYear());
         setMesLetra(d.toString("MMMM", Locale.getDefault()));
