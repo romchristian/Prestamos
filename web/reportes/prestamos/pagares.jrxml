@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6ea7e56b-e942-4eeb-8282-2bdd2a4b61aa">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="568"/>
 	<field name="monto" class="java.lang.Double"/>
 	<field name="montoLetras" class="java.lang.String"/>
 	<field name="fechaEmisionTexto" class="java.lang.String"/>
@@ -24,6 +24,13 @@
 	<field name="coDeudorDireccion" class="java.lang.String"/>
 	<field name="coDeudorConyuge" class="java.lang.String"/>
 	<field name="coDeudorConyugeDoc" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.String"/>
+	<variable name="variable2" class="java.lang.String"/>
+	<variable name="variable3" class="java.lang.String"/>
+	<variable name="variable4" class="java.lang.String"/>
+	<variable name="variable5" class="java.lang.String"/>
+	<variable name="variable6" class="java.lang.String"/>
+	<variable name="variable7" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -181,13 +188,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{deudorDoc}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="98" y="523" width="175" height="20" uuid="dd782885-af18-45ff-82ff-1785f8b543bc"/>
-				<textElement>
-					<font fontName="Times New Roman" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{deudorConyuge}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="274" y="523" width="276" height="20" uuid="d2bc933c-653a-4c39-a7c4-ddbc20e633a2"/>
 				<textElement>
@@ -195,13 +195,6 @@
 				</textElement>
 				<text><![CDATA[FIRMA:.............................................]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="375" y="544" width="175" height="20" uuid="8ad29529-3172-4d44-a978-9f14eb668c51"/>
-				<textElement>
-					<font fontName="Times New Roman" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{deudorConyugeDoc}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="274" y="543" width="100" height="20" uuid="cfee2935-1013-4acb-8dbb-a7f5ad5cf305"/>
 				<textElement>
@@ -223,27 +216,6 @@
 				</textElement>
 				<text><![CDATA[FIRMA:.............................................]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="98" y="624" width="175" height="20" uuid="b5314d45-9635-4511-b7e2-ac4a2f39b31c"/>
-				<textElement>
-					<font fontName="Times New Roman" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{coDeudorConyuge}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="375" y="645" width="175" height="20" uuid="c0a09dbf-dba5-4726-b9a0-9a1805952e8a"/>
-				<textElement>
-					<font fontName="Times New Roman" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{coDeudorConyugeDoc}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="98" y="594" width="175" height="20" uuid="70e3f0e6-5341-4a0c-9777-f1c2c7b03439"/>
-				<textElement>
-					<font fontName="Times New Roman" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{coDeudorDireccion}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="274" y="644" width="100" height="20" uuid="edc763f1-d66b-419f-be02-71012d3618cc"/>
 				<textElement>
@@ -258,26 +230,61 @@
 				</textElement>
 				<text><![CDATA[FIRMA:.............................................]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="375" y="595" width="175" height="20" uuid="16fb6770-29d3-4b5c-b51b-7f47f484893f"/>
-				<textElement>
-					<font fontName="Times New Roman" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{coDeudorDoc}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="98" y="574" width="175" height="20" uuid="39e9a1db-97be-4487-aa07-2bae7dfb1385"/>
-				<textElement>
-					<font fontName="Times New Roman" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{coDeudor}]]></textFieldExpression>
-			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="263" y="84" width="286" height="18" uuid="f89eb3ff-06d5-4dc9-a5bc-a2a43814903a"/>
 				<textElement>
 					<font fontName="Times New Roman" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fechaEmisionTexto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="98" y="523" width="175" height="20" uuid="d8703061-e0ae-4361-b9df-141eb137d911"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deudorConyuge} == null ? "" : $F{deudorConyuge}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="375" y="543" width="175" height="20" uuid="a11d1014-7ac7-4e7a-87f1-46c00f97502c"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deudorConyugeDoc}  == null ? "" : $F{deudorConyugeDoc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="98" y="575" width="175" height="20" uuid="a587482b-412f-4404-81c8-f095f4edb147"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{coDeudor} == null ? "" : $F{coDeudor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="98" y="595" width="175" height="20" uuid="cd7a7009-7609-4b5d-9fee-6c89694ad1f2"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{coDeudorDireccion} == null ? "" : $F{coDeudorDireccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="375" y="594" width="172" height="20" uuid="332bae11-8a05-4f5c-ae8d-f070521449ef"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{coDeudorDoc} == null ? "" : $F{coDeudorDoc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="98" y="625" width="175" height="20" uuid="fe5c11b5-9c24-4762-9b8c-f917cdf740b2"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{coDeudorConyuge} == null ? "" : $F{coDeudorConyuge}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="375" y="644" width="175" height="20" uuid="6eea8816-6462-491c-aaca-db776bff6e07"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{coDeudorConyugeDoc} == null ? "" : $F{coDeudorConyugeDoc}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
