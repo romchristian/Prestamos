@@ -5,6 +5,7 @@
 package py.gestionpymes.prestamos.prestamos.dao;
 
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -100,5 +101,13 @@ public class CobranzaDAO {
         
 
         return cobro;
+    }
+    
+    public List<DetPrestamo> findVencientos(Date start, Date end){
+        return em.createQuery("SELECT d FROM DetPrestamo d where d.saldoCuota > 0  and d.fechaVencimiento BETWEEN :start and :end "
+                + "ORDER BY d.fechaVencimiento")
+                .setParameter("start", start)
+                .setParameter("end", end)
+                .getResultList();
     }
 }
