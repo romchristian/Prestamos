@@ -4,13 +4,16 @@
  */
 package py.gestionpymes.prestamos.prestamos.persistencia;
 
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.PeriodoPago;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
+import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
+import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
 
 /**
  *
@@ -30,7 +33,12 @@ public class Prestamo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+    @ManyToOne
+    private Empresa empresa;
+    @ManyToOne
+    private Sucursal sucursal;
+    
     @ManyToOne
     private Cliente cliente;
     @ManyToOne
@@ -69,6 +77,24 @@ public class Prestamo implements Serializable {
         this.sistemaAmortizacion = SistemaAmortizacion.FRANCES;
     }
 
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+
+    
+    
     public Date getUltimoPago() {
         return ultimoPago;
     }
@@ -77,8 +103,6 @@ public class Prestamo implements Serializable {
         this.ultimoPago = ultimoPago;
     }
 
-    
-    
     public boolean isFirmaConyugeTitular() {
         return firmaConyugeTitular;
     }
@@ -95,7 +119,6 @@ public class Prestamo implements Serializable {
         this.firmaConyugeCodeudor = firmaConyugeCodeudor;
     }
 
- 
     public Moneda getMoneda() {
         return moneda;
     }

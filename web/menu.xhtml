@@ -19,8 +19,22 @@
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cobro_cuota'))}"/>
         <h:link  value="Agenda de Cobros" outcome="/prestamos/prestamo/agendaCobros.xhtml" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('agenda_cobro'))}"/>
+        
     </h:panelGrid>
 
+
+    <h:outputText value="Informes" style="font-size: 11pt; position: relative;left: -10px;font-weight: bold;margin-bottom: 20px"
+                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('informes'))}"/>
+
+    <br/>
+
+    <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 0px;font-size: 11pt">
+        
+        <h:link  value="Listados de Prestamo" outcome="/prestamos/informes/listadoPrestamo.xhtml" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('informes'))}"/>
+        <h:link  value="Estado Cuenta Cliente" outcome="/prestamos/prestamo/estadoCuenta.xhtml" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('estado_cuenta'))}"/>
+    </h:panelGrid>
 
     <br/>
 
@@ -35,12 +49,12 @@
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
         <h:link  value="Sucursal" outcome="/adm/sucursal/List.xhtml" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
-<!--        <h:link  value="Cotizacion" outcome="/adm/cotizacion/List.xhtml" 
-                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
-        <h:link  value="Moneda" outcome="/adm/moneda/List.xhtml" 
-                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
-        <h:link  value="ImpuestoIVA" outcome="/adm/impuestoIVA/List.xhtml" 
-                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>-->
+        <!--        <h:link  value="Cotizacion" outcome="/adm/cotizacion/List.xhtml" 
+                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+                <h:link  value="Moneda" outcome="/adm/moneda/List.xhtml" 
+                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+                <h:link  value="ImpuestoIVA" outcome="/adm/impuestoIVA/List.xhtml" 
+                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>-->
         <h:link  value="Categoria de Clientes" outcome="/adm/categoria/List.xhtml" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
     </h:panelGrid>

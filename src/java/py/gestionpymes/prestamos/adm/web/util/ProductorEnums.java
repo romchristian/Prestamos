@@ -12,12 +12,13 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.persistencia.Estado;
 import py.gestionpymes.prestamos.adm.persistencia.TipoPersona;
-import py.gestionpymes.prestamos.prestamos.persistencia.PeriodoPago;
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.PeriodoPago;
 import py.gestionpymes.prestamos.prestamos.persistencia.SistemaAmortizacion;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.Calificacion;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.CicloIngreso;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoCivil;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoContactoTelefonico;
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.Sexo;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoContactoTelefonico;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDireccion;
@@ -176,6 +177,17 @@ public class ProductorEnums implements Serializable {
         Calificacion[] lista = Calificacion.values();
         for (int i = 0; i < lista.length; i++) {
             Calificacion tp = lista[i];
+            R[i] = new SelectItem(tp, tp.toString());
+        }
+        return R;
+    }
+    
+    
+    public SelectItem[] obtEstadosPrestamo() {
+        SelectItem[] R = new SelectItem[EstadoPrestamo.values().length];
+        EstadoPrestamo[] lista = EstadoPrestamo.values();
+        for (int i = 0; i < lista.length; i++) {
+            EstadoPrestamo tp = lista[i];
             R[i] = new SelectItem(tp, tp.toString());
         }
         return R;

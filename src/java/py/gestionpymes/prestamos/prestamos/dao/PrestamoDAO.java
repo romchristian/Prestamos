@@ -10,6 +10,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import py.gestionpymes.prestamos.adm.dao.AbstractFacade;
+import py.gestionpymes.prestamos.adm.persistencia.Empresa;
+import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.CuentaCliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
@@ -46,6 +48,13 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
         return em.createQuery("SELECT p from Prestamo p where p.cliente = :cliente and p.estado = :estado")
                 .setParameter("cliente", cliente)
                 .setParameter("estado", estado)
+                .getResultList();
+    }
+
+    public List<Prestamo> findAllPorEmpresa(Empresa e, Sucursal s, EstadoPrestamo estado) {
+        return em.createQuery("SELECT p from Prestamo p where p.empresa = :emp and p.sucursal = :suc")
+                .setParameter("emp", e)
+                .setParameter("suc", s)
                 .getResultList();
     }
 

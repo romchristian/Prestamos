@@ -27,7 +27,10 @@ public class OperacionCobroCuota extends DetCuentaCliente<DetCobroCuota> {
 
     public OperacionCobroCuota(DetCobroCuota detCobroCuota) {
         this();
-        setPrestamo(detCobroCuota.getDetPrestamo().getPrestamo());
+        Prestamo prestamo = detCobroCuota.getDetPrestamo().getPrestamo();
+        setPrestamo(prestamo);
+        setEmpresa(prestamo.getEmpresa());
+        setSucursal(prestamo.getSucursal());
         this.detCobroCuota = detCobroCuota;
         setMontoCredito(0d);
         setMoneda(detCobroCuota.getMoneda());

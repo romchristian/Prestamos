@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:gpymes="http://java.sun.com/jsf/composite/gpymes">
+
+    <ui:define name="title">
+        Estado Cuenta Cliente
+    </ui:define>
+    <ui:define name="body">
+
+        <h:form id="formCobroCuota">
+
+
+            <h:panelGroup>
+
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-7">
+                            <div style="background-color: #ddd; width: 90%;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
+                                 -moz-border-radius: 5px;
+                                 border-radius: 5px;
+                                 margin-bottom: 5px">
+                                <p:outputPanel styleClass="escuchaSeleccionCuota">
+                                    <h:panelGrid columns="2">
+                                        <h:outputText value="Titular: "/>
+                                        <p:autoComplete value="#{cuentaClienteController.clienteSeleccionado}"  id="autoCompleteCliente" size="60"
+                                                        completeMethod="#{autoCompleteCliente.completar}"
+                                                        forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
+                                                        >
+                                            <p:ajax event="itemSelect" update="@(.escuchaSeleccionCuota)" listener="#{cuentaClienteController.busca()}"/>
+
+                                        </p:autoComplete>
+
+                                        <!--                                        <h:outputText value="Mora: "/>
+                                                                                <h:outputText value="{cobraCuotaBean.obtDescMora()}"/>
+                                                                                <h:outputText value="Ultimo Pago: "/>
+                                                                                <h:outputText value="{cobraCuotaBean.obtUltimoPago()}">
+                                                                                    <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFechaHora}"/>
+                                                                                </h:outputText>-->
+
+                                    </h:panelGrid>
+                                </p:outputPanel>
+                            </div>
+
+                        </div>  
+
+
+                        <div class="ui-grid-col-5">
+                            <div style="background-color: #ddd; width: 95%;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
+                                 -moz-border-radius: 5px;
+                                 border-radius: 5px;
+                                 margin-bottom: 5px">
+                                <!--                                <h:outputText value="SALDO:" style="position: absolute; left: calc(90% - 185px);top: calc(5% - 10px)"/>
+                                                                <p:outputPanel styleClass="escuchaSeleccionCuota">
+                                                                    <h:outputText value="#{cobraCuotaBean.totalAPagar}" style="color: #CC0000;font-size: 20pt; font-weight: bold; position: absolute; left: calc(90% - 210px);top: calc(10% - 20px)">
+                                                                        <f:convertNumber locale="#{formato.locale}"/>
+                                                                    </h:outputText>
+                                                                </p:outputPanel>
+                                
+                                                                <p:commandButton value="Confirmar Pago"  action="#{cobraCuotaBean.paga()}" ajax="false" style="position: absolute; left: calc(90% - 195px);top: calc(10% + 10px)"/>-->
+                            </div>
+
+
+                        </div>  
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-12">
+                            <p:dataTable value="#{cuentaClienteController.detalles}" var="d" id="dataList"
+                                         styleClass="escuchaSeleccionCuota">
+                                
+                                <p:column headerText="FECHA">
+                                    <h:outputText value="#{d.fecha}">
+                                        <f:convertDateTime pattern="#{formato.patronFechaHora}" timeZone="Asuncion/America"/>
+                                    </h:outputText>
+                                    
+                                </p:column>
+                                <p:column headerText="TIPO OP.">
+                                    #{d.tipoOperacion}
+                                </p:column>
+                                <p:column headerText="DESCRIPCION">
+                                    #{d.descripcion}
+                                </p:column>
+                                <p:column headerText="CREDITO">
+                                    #{d.montoCredito}
+                                </p:column>
+                                <p:column headerText="DEBITO">
+                                    #{d.montoDebito}
+                                </p:column>
+                                
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </div>
+
+
+            </h:panelGroup>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

@@ -8,7 +8,9 @@ import java.text.NumberFormat;
 import java.util.Date;
 import java.util.Locale;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
+import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
+import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 
@@ -37,6 +39,8 @@ public class TreeCuota {
     private boolean cancelado;
     private boolean modoEdicion;
     private boolean seleccionado;
+    private Empresa empresa;
+    private Sucursal sucursal;
 
     public TreeCuota() {
     }
@@ -45,6 +49,8 @@ public class TreeCuota {
     
     public TreeCuota(Prestamo prestamo) {
         this.prestamo = prestamo;
+        this.empresa = prestamo.getEmpresa();
+        this.sucursal = prestamo.getSucursal();
         NumberFormat nf = NumberFormat.getInstance(new Locale("es","py"));
         this.descPrestamo = "Prestamo # " + prestamo.getId() +" - "+ nf.format(prestamo.getMontoPrestamo());
         this.esPrestamo = true;
@@ -62,11 +68,31 @@ public class TreeCuota {
         this.montoPago = detPrestamo.getMontoPago();
         this.saldoCuota = detPrestamo.getSaldoCuota();
         this.prestamo = detPrestamo.getPrestamo();
+        this.empresa = detPrestamo.getPrestamo().getEmpresa();
+        this.sucursal = detPrestamo.getPrestamo().getSucursal();
         this.moneda = detPrestamo.getPrestamo().getMoneda();
         this.esPrestamo = false;
         this.cancelado = true;
     }
 
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+
+    
+    
     public boolean isSeleccionado() {
         return seleccionado;
     }

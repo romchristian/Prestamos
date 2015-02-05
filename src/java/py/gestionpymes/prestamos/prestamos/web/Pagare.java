@@ -64,8 +64,8 @@ public class Pagare {
         setMesLetra(d.toString("MMMM", Locale.getDefault()));
         setDia(d.getDayOfMonth());
 
-        setEmpresaNombre(this.prestamo.getCliente().getEmpresa() == null ? null : this.prestamo.getCliente().getEmpresa().getRazonSocial());
-        setEmpresaRuc(this.prestamo.getCliente().getEmpresa() == null ? null : this.prestamo.getCliente().getEmpresa().getRuc());
+        setEmpresaNombre(this.prestamo.getEmpresa() == null ? null : this.prestamo.getEmpresa().getRazonSocial());
+        setEmpresaRuc(this.prestamo.getEmpresa() == null ? null : this.prestamo.getEmpresa().getRuc());
 
         setDeudor(this.prestamo.getCliente() == null ? null : this.prestamo.getCliente().devuelveNombreCompleto());
         setDeudorDoc(this.prestamo.getCliente() == null ? null : this.prestamo.getCliente().getNroDocumento());
@@ -281,7 +281,7 @@ public class Pagare {
     private String numeroALetras(Double num) {
 
         System.out.println("");
-        return new NumeroALetras().Convertir(num.intValue() + "", false);
+        return new NumeroALetras().Convertir(num.intValue() + "", true);
     }
 
 }

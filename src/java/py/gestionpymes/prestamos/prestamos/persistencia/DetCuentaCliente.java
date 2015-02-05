@@ -9,7 +9,9 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
+import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
+import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
 
 /**
  *
@@ -21,9 +23,14 @@ public abstract class DetCuentaCliente<T> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+   
+    @ManyToOne
+    private Empresa empresa;
+    @ManyToOne
+    private Sucursal sucursal;
     @ManyToOne
     private CuentaCliente cuentaCliente;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fecha = new Date();
     @Enumerated(EnumType.STRING)
     private TipoOperacion tipoOperacion;
@@ -37,6 +44,25 @@ public abstract class DetCuentaCliente<T> implements Serializable {
     private Moneda moneda;
     @ManyToOne
     private Cotizacion cotizacion;
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+    
+    
+    
 
     public Moneda getMoneda() {
         return moneda;

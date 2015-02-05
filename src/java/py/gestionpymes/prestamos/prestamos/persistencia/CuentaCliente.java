@@ -7,6 +7,7 @@ package py.gestionpymes.prestamos.prestamos.persistencia;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoCuenta;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -19,6 +20,7 @@ import javax.persistence.*;
     @NamedQuery(name = CuentaCliente.POR_CLIENTE, query = "select c from CuentaCliente c where c.cliente = :cliente")
 })
 public class CuentaCliente implements Serializable {
+
     public static Long contador = 1000l;
     public static final String TODOS = "package py.gestionpymes.jpa.clientes.CuentaCliente.TODOS";
     public static final String POR_CLIENTE = "package py.gestionpymes.jpa.clientes.CuentaCliente.POR_CLIENTE";
@@ -40,6 +42,20 @@ public class CuentaCliente implements Serializable {
     private String nroCuenta;
     private EstadoCuenta estado;
 
+    @OneToMany(mappedBy = "cuentaCliente",fetch = FetchType.EAGER)
+    private List<DetCuentaCliente> detalles;
+
+    public List<DetCuentaCliente> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetCuentaCliente> detalles) {
+        this.detalles = detalles;
+    }
+    
+    
+    
+
     public Long getVersion() {
         return version;
     }
@@ -48,8 +64,6 @@ public class CuentaCliente implements Serializable {
         this.version = version;
     }
 
-    
-    
     public Long getId() {
         return id;
     }
@@ -121,8 +135,6 @@ public class CuentaCliente implements Serializable {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
-    
-    
 
     @Override
     public int hashCode() {
@@ -148,5 +160,5 @@ public class CuentaCliente implements Serializable {
     public String toString() {
         return "py.gestionpymes.jpa.clientes.CuentaCliente[ id=" + id + " ]";
     }
-    
+
 }

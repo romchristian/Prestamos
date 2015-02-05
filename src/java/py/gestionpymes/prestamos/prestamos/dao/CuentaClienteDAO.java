@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import py.gestionpymes.prestamos.adm.dao.AbstractFacade;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.CuentaCliente;
+import py.gestionpymes.prestamos.prestamos.persistencia.DetCuentaCliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoCuenta;
 
 /**
@@ -53,6 +54,21 @@ public class CuentaClienteDAO extends AbstractFacade<CuentaCliente> {
 
     public String getSgteNumero() {
         return (CuentaCliente.contador + 1) + "";
+    }
+
+    public CuentaCliente findPorCliente(Cliente c) {
+        CuentaCliente R = null;
+        try {
+
+           R =  (CuentaCliente) em.createQuery("SELECT c FROM CuentaCliente c WHERE c.cliente = :cliente").setParameter("cliente", c).getSingleResult();
+        } catch (Exception e) {
+        }
+        return R;
+    }
+    
+    
+    public List<DetCuentaCliente> findDetalles(CuentaCliente c){
+        return em.createQuery("SELECT d FROM DetCuentaCliente d WHERE d.cuentaCliente = :cuenta").setParameter("cuenta", c).getResultList();
     }
 
 }

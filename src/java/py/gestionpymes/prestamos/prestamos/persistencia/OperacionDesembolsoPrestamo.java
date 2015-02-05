@@ -25,6 +25,8 @@ public class OperacionDesembolsoPrestamo extends DetCuentaCliente<Prestamo> {
     public OperacionDesembolsoPrestamo(Prestamo prestamo) {
         this();
         setPrestamo(prestamo);
+        setEmpresa(prestamo.getEmpresa());
+        setSucursal(prestamo.getSucursal());
         setMoneda(prestamo.getMoneda());
         setMontoCredito(prestamo.getTotalOperacion());
         setMontoDebito(0d);

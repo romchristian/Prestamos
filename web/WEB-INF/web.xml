@@ -198,6 +198,32 @@
             <role-name>agenda_cobro</role-name>
         </auth-constraint>
     </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintEstadoCuenta</display-name>
+        <web-resource-collection>
+            <web-resource-name>EstadoCuenta</web-resource-name>
+            <description/>
+            <url-pattern>/prestamos/prestamo/estadoCuenta.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>estado_cuenta</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintInformes</display-name>
+        <web-resource-collection>
+            <web-resource-name>informes</web-resource-name>
+            <description/>
+            <url-pattern>/prestamos/informes/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>informes</role-name>
+        </auth-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>prestamosJDBC</realm-name>
@@ -257,5 +283,13 @@
     <security-role>
         <description/>
         <role-name>agenda_cobro</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>estado_cuenta</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>informes</role-name>
     </security-role>
 </web-app>
