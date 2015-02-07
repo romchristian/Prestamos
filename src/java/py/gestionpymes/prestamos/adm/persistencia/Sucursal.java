@@ -5,6 +5,7 @@
 package py.gestionpymes.prestamos.adm.persistencia;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -18,7 +19,7 @@ import javax.persistence.*;
 public class Sucursal implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    public static final String TODOS = "package py.gestionpymes.jpa.adm.Sucursal.TODOS";
+    public static final String TODOS = "package py.gestionpymes.prestamos.adm.persistencia.Sucursal.TODOS";
     public static final String POR_EMPRESA = "package py.gestionpymes.jpa.adm.Sucursal.POR_EMPRESA";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +31,7 @@ public class Sucursal implements Serializable {
     private String nombre;
     @Enumerated(EnumType.STRING)
     private Estado estado;
-
+    
     public Sucursal() {
         this.estado = Estado.ACTIVO;
     }

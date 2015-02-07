@@ -7,6 +7,7 @@ import py.gestionpymes.prestamos.adm.dao.ClienteFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -25,6 +26,8 @@ import py.gestionpymes.prestamos.prestamos.persistencia.ActividadLaboral;
 import py.gestionpymes.prestamos.prestamos.persistencia.ContactoTelefonico;
 import py.gestionpymes.prestamos.prestamos.persistencia.ReferenciaCliente;
 import py.gestionpymes.prestamos.prestamos.web.AutoCompleteCliente;
+import py.gestionpymes.prestamos.prestamos.web.RegistroFirma;
+import py.gestionpymes.prestamos.reportes.jasper.ReporteController;
 
 @Named("clienteController")
 @ViewScoped
@@ -40,6 +43,9 @@ public class ClienteController implements Serializable {
     private ReferenciaCliente referenciaClienteSeleccionada;
     @Inject
     private AutoCompleteCliente autoCompleteCliente;
+    @Inject
+    private ReporteController reporteController;
+    private RegistroFirma registroFirma;
     
     private long id;
 
@@ -51,6 +57,17 @@ public class ClienteController implements Serializable {
         this.id = id;
     }
     
+    public void imprimeRegistroFirma() {
+
+        registroFirma = new RegistroFirma(selected);
+
+       
+
+        List<RegistroFirma> data = new ArrayList<>();
+        data.add(registroFirma);
+
+        reporteController.generaPDF(new HashMap(), data, "reportes/clientes/registroDeFirmas.jasper");
+    }
     
     public void cargaDatos(){
         selected = getCliente(id);
@@ -165,6 +182,14 @@ public class ClienteController implements Serializable {
 
     public void setSelected(Cliente selected) {
         this.selected = selected;
+    }
+
+    public RegistroFirma getRegistroFirma() {
+        return registroFirma;
+    }
+
+    public void setRegistroFirma(RegistroFirma registroFirma) {
+        this.registroFirma = registroFirma;
     }
 
     protected void setEmbeddableKeys() {

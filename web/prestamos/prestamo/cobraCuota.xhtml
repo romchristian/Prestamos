@@ -106,7 +106,7 @@
                                         Monto Cuota
                                     </f:facet>
                                     <h:outputText value="#{c.montoCuota}">
-                                        <f:convertNumber locale="#{formato.locale}"/>
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                                     </h:outputText>
                                 </p:column>
 
@@ -133,7 +133,7 @@
                                         Saldo
                                     </f:facet>
                                     <h:outputText value="#{c.saldoCuota}">
-                                        <f:convertNumber locale="#{formato.locale}"/>
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                                     </h:outputText>
                                 </p:column>
 
@@ -142,10 +142,10 @@
                                         Monto Pago
                                     </f:facet>
                                     <h:inputText value="#{c.montoPago}" rendered="#{(not p.esPrestamo) and p.modoEdicion}">
-                                        <f:convertNumber locale="#{formato.locale}"/>
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                                     </h:inputText>
                                     <h:outputText value="#{c.montoPago}" rendered="#{(not p.esPrestamo) and (not p.modoEdicion)}">
-                                        <f:convertNumber locale="#{formato.locale}"/>
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                                     </h:outputText>
                                 </p:column>
 
@@ -158,11 +158,7 @@
                                     <h:panelGroup style="text-align: center" rendered="#{not c.esPrestamo}">
                                         <p:graphicImage library="img" name="check.png" rendered="#{c.detPrestamo.estado == 'CANCELADO'}"/>
                                         <p:commandLink update=":formCobroCuota:cuotaPanel" oncomplete="PF('cuotaDialog').show()" value="Pagar" rendered="#{c.detPrestamo.estado == 'PENDIENTE'}">
-
                                             <f:setPropertyActionListener value="#{c}" target="#{cobraCuotaBean.cuotaSeleccionada}" />
-
-                                            <!--                                <p:ajax update="@(.escuchaSeleccionCuota)" listener="{cobraCuotaBean.selecciona()}"/>  -->
-
                                         </p:commandLink>
                                     </h:panelGroup>
 

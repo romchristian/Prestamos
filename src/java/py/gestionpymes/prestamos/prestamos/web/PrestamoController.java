@@ -8,13 +8,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.enterprise.context.SessionScoped;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -24,15 +22,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 
 import javax.inject.Named;
-import org.apache.commons.beanutils.converters.DateConverter;
-import org.joda.time.DateTime;
-import org.joda.time.JodaTimePermission;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
-import static py.gestionpymes.prestamos.adm.web.util.MesEnTexto.fechaMesEnTexto;
-import py.gestionpymes.prestamos.adm.web.util.NumeroALetras;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
-import py.gestionpymes.prestamos.prestamos.persistencia.DetCobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 import py.gestionpymes.prestamos.reportes.jasper.ReporteController;
@@ -95,6 +87,15 @@ public class PrestamoController implements Serializable {
         data.add(pagare);
 
         reporteController.generaPDF(new HashMap(), data, "reportes/prestamos/pagares.jasper");
+    }
+    
+    public void imprimeLiquidacionPrestamo() {
+
+
+        List<Prestamo> data = new ArrayList<>();
+        data.add(selected);
+
+        reporteController.generaPDF(new HashMap(), data, "reportes/prestamos/liquidacion.jasper");
     }
 
     public void desembolsa() {
@@ -159,11 +160,11 @@ public class PrestamoController implements Serializable {
     }
 
     public void update() {
-        persist(PersistAction.UPDATE, "El prestamo se actualizo se creO EXITOSAMENTE!");
+        persist(PersistAction.UPDATE, "El prestamo se actualizo se creo EXITOSAMENTE!");
     }
 
     public void destroy() {
-        persist(PersistAction.DELETE, "El prestamo se elimino se creO EXITOSAMENTE!");
+        persist(PersistAction.DELETE, "El prestamo se elimino se creo EXITOSAMENTE!");
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.

@@ -7,6 +7,7 @@ package py.gestionpymes.prestamos.prestamos.web;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -217,10 +218,11 @@ public class CobraCuotaBean implements Serializable {
 
         @Override
         public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-            if (value instanceof Double) {
-                BigDecimal montoPago = (BigDecimal) value;
+            if (value instanceof BigDecimal) {
+                System.out.println("Valueeeeeeeee: " + value);
+                BigDecimal montoPago = ((BigDecimal) value).setScale(0, RoundingMode.HALF_EVEN);
 
-                PrestamoListadoBean controller = (PrestamoListadoBean) context.getApplication().getELResolver().
+                CobraCuotaBean controller = (CobraCuotaBean) context.getApplication().getELResolver().
                         getValue(context.getELContext(), null, "cobraCuotaBean");
                 if (montoPago.compareTo(controller.getCuotaSeleccionada().getSaldoCuota().add(controller.getCuotaSeleccionada().getMontoMora())) > 0) {
                     FacesMessage msg = new FacesMessage("El pago excede el monto de la cuota");

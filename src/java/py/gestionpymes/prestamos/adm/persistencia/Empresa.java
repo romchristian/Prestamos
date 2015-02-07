@@ -19,7 +19,7 @@ import javax.persistence.*;
 public class Empresa implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    public static final String TODOS = "package py.gestionpymes.jpa.adm.Empresa.TODOS";
+    public static final String TODOS = "package py.gestionpymes.prestamos.adm.persistencia.Empresa.TODOS";
     public static final String POR_RAZON_SOCIAL = "package py.gestionpymes.jpa.adm.Empresa.POR_RAZON_SOCIAL";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +36,7 @@ public class Empresa implements Serializable {
     private Estado estado;
     @OneToMany(mappedBy = "empresa")
     private List<Sucursal> sucursales;
-
+    
     public Empresa() {
         this.estado = Estado.ACTIVO;
     }

@@ -47,12 +47,13 @@ public class InteresSimple extends Sistema {
 
     private BigDecimal calculaInteres(int nroCuota, Prestamo p) {
         BigDecimal R;
-        BigDecimal div1 = new BigDecimal(p.getTasa()).divide(new BigDecimal(100),0,RoundingMode.HALF_EVEN);
-        BigDecimal mul1 = p.getCapital().multiply(div1);
-        BigDecimal div2 = new BigDecimal(p.getPlazo()).divide(new BigDecimal(10),0,RoundingMode.HALF_EVEN);
-        R = mul1.multiply(div2).divide(new BigDecimal(p.getPlazo()), 0, RoundingMode.HALF_EVEN);
+        BigDecimal div1 = new BigDecimal(p.getTasa()).divide(new BigDecimal(100),4,RoundingMode.HALF_EVEN);//tasa interes anual
+        BigDecimal div2 = div1.divide(new BigDecimal(12),4,RoundingMode.HALF_EVEN);//interes mensual
+        R = p.getCapital().multiply(div2); //interes del mes
         
-        //R = ((p.getCapital()  * (p.getTasa() / 100d) * (p.getPlazo() / 10d))) / p.getPlazo();
+        //R = ((p.getCapital()  * ((p.getTasa() / 100d) / 12d))) / p.getPlazo();
+        
+        //R = ((p.getCapital()  * (p.getTasa() / 100d) * (p.getPlazo() / 10d))) / p.getPlazo();error
 
         return R;
 

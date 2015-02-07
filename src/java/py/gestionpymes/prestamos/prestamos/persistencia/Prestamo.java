@@ -9,6 +9,8 @@ import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -16,6 +18,7 @@ import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
+import py.gestionpymes.prestamos.adm.persistencia.Vendedor;
 
 /**
  *
@@ -29,7 +32,7 @@ public class Prestamo implements Serializable {
 
     public static final String TODOS = "py.gestionpymes.jpa.prestamos.Prestamo.TODOS";
     public static final String POR_CLIENTE = "py.gestionpymes.jpa.prestamos.Prestamo.POR_CLIENTE";
-    @OneToMany(mappedBy = "prestamo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "prestamo", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<DetPrestamo> detalles;
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,18 +43,21 @@ public class Prestamo implements Serializable {
     private Empresa empresa;
     @ManyToOne
     private Sucursal sucursal;
-
+    @ManyToOne
+    private Vendedor vendedor;
     @ManyToOne
     private Cliente cliente;
     @ManyToOne
     private Cliente codeudor;
     private BigDecimal montoPrestamo = new BigDecimal(BigInteger.ZERO);
     private BigDecimal capital = new BigDecimal(BigInteger.ZERO);
-    private int plazo;
+    private int plazo = 12;
     private int tasa;
     @Enumerated(EnumType.STRING)
     private PeriodoPago periodoPago;
-    private BigDecimal gastos = new BigDecimal(BigInteger.ZERO);
+    private BigDecimal gastos = new BigDecimal(BigInteger.ZERO);//Gastos de cobranza domiciliaria
+    private BigDecimal comisiones = new BigDecimal(BigInteger.ZERO);//Comisiones por Asesoramiento Financiero
+    private BigDecimal impuestoIVA = new BigDecimal(BigInteger.ZERO);
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaInicioOperacion;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -77,6 +83,14 @@ public class Prestamo implements Serializable {
     public Prestamo() {
         this.estado = EstadoPrestamo.PENDIENTE_DESEMBOLSO;
         this.sistemaAmortizacion = SistemaAmortizacion.FRANCES;
+    }
+
+    public Vendedor getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
     }
 
     public Empresa getEmpresa() {
@@ -178,11 +192,20 @@ public class Prestamo implements Serializable {
     }
 
     public BigDecimal getCapital() {
-        return montoPrestamo.add(gastos);
+        capital = montoPrestamo.add(gastos).add(comisiones);
+        return capital;
     }
 
     public void setCapital(BigDecimal capital) {
         this.capital = capital;
+    }
+
+    public BigDecimal getImpuestoIVA() {
+        return impuestoIVA;
+    }
+
+    public void setImpuestoIVA(BigDecimal impuestoIVA) {
+        this.impuestoIVA = impuestoIVA;
     }
 
     public Cliente getCliente() {
@@ -218,7 +241,6 @@ public class Prestamo implements Serializable {
     }
 
     public Date getFechaInicioOperacion() {
-        fechaInicioOperacion = new Date();
         return fechaInicioOperacion;
     }
 
@@ -234,9 +256,16 @@ public class Prestamo implements Serializable {
         this.gastos = gastos;
     }
 
-    public BigDecimal getMontoCuota() {
+    public BigDecimal getComisiones() {
+        return comisiones;
+    }
 
-        return montoCuota;
+    public void setComisiones(BigDecimal comisiones) {
+        this.comisiones = comisiones;
+    }
+
+    public BigDecimal getMontoCuota() {
+        return montoCuota;//.add(impuestoIVA).divide(new BigDecimal(plazo))
     }
 
     public void setMontoCuota(BigDecimal montoCuota) {
@@ -285,7 +314,6 @@ public class Prestamo implements Serializable {
     }
 
     public BigDecimal getTotalOperacion() {
-        totalOperacion = getCapital().add(getTotalIntereses());
         return totalOperacion;
     }
 
@@ -303,13 +331,37 @@ public class Prestamo implements Serializable {
 
     public void calcula() {
         detalles = getSistema().calculaCuotas();
-        montoCuota = getSistema().getCuota();
         
+
         totalIntereses = BigDecimal.ZERO;
+        impuestoIVA = BigDecimal.ZERO;
+        totalOperacion = BigDecimal.ZERO;
+        
         for (DetPrestamo d : getDetalles()) {
             totalIntereses = totalIntereses.add(d.getCuotaInteres());
+            impuestoIVA = impuestoIVA.add(d.getImpuestoIvaCuota());      
         }
+        
+        
+        totalOperacion = getCapital().add(totalIntereses).add(impuestoIVA);
+        
+        System.out.println("TOTAL IVA: " + impuestoIVA.doubleValue());
+        System.out.println("PLAZO: " + plazo);
+        BigDecimal ivaMesFijo = impuestoIVA.divide(new BigDecimal(plazo),MathContext.DECIMAL128);
+        
+        for (DetPrestamo d : getDetalles()) {
+            BigDecimal montoIvaIncluido = d.getMontoCuota().add(ivaMesFijo);
+            d.setMontoCuota(montoIvaIncluido);
+            d.setSaldoCuota(montoIvaIncluido);
+        }
+        
+        montoCuota = getSistema().getCuota().add(ivaMesFijo);
+        
 
+        montoCuota.setScale(0, RoundingMode.HALF_EVEN);
+        totalIntereses.setScale(0, RoundingMode.HALF_EVEN);
+        totalOperacion.setScale(0, RoundingMode.HALF_EVEN);
+        impuestoIVA.setScale(0, RoundingMode.HALF_EVEN);
     }
 
     @Override

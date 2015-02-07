@@ -5,6 +5,7 @@
 package py.gestionpymes.prestamos.prestamos.web;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -63,11 +64,11 @@ public class TreeCuota {
         this.descDetPrestamo = "Cuota # " + detPrestamo.getNroCuota();
         this.fechaVencimiento = detPrestamo.getFechaVencimiento();
         this.nroCuota = detPrestamo.getNroCuota();
-        this.montoCuota = detPrestamo.getMontoCuota();
+        this.montoCuota = detPrestamo.getMontoCuota().setScale(0, RoundingMode.HALF_EVEN);
         this.diasMora = detPrestamo.getDiasMora();
-        this.montoMora = detPrestamo.getMontoMora();
-        this.montoPago = detPrestamo.getMontoPago();
-        this.saldoCuota = detPrestamo.getSaldoCuota();
+        this.montoMora = detPrestamo.devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
+        this.montoPago = detPrestamo.getMontoPago().setScale(0, RoundingMode.HALF_EVEN);
+        this.saldoCuota = detPrestamo.getSaldoCuota().setScale(0, RoundingMode.HALF_EVEN);
         this.prestamo = detPrestamo.getPrestamo();
         this.empresa = detPrestamo.getPrestamo().getEmpresa();
         this.sucursal = detPrestamo.getPrestamo().getSucursal();
@@ -170,6 +171,7 @@ public class TreeCuota {
     }
 
     public BigDecimal getMontoCuota() {
+        
         return montoCuota;
     }
 

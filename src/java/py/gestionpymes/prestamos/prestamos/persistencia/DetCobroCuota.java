@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.*;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
+import py.gestionpymes.prestamos.contabilidad.FacturaVenta;
 
 /**
  *
@@ -34,7 +35,19 @@ public class DetCobroCuota implements Serializable {
     private Moneda moneda;
     @ManyToOne
     private Cotizacion cotizacion;
+    @ManyToOne
+    private FacturaVenta facturaVenta;
 
+    public FacturaVenta getFacturaVenta() {
+        return facturaVenta;
+    }
+
+    public void setFacturaVenta(FacturaVenta facturaVenta) {
+        this.facturaVenta = facturaVenta;
+    }
+
+    
+    
     public Moneda getMoneda() {
         return moneda;
     }
