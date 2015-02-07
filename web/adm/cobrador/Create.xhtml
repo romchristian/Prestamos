@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CobradorCreateDlg" widgetVar="CobradorCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateCobradorTitle}">
+            <h:form id="CobradorCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{cobradorController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_nombres}" for="nombres" />
+                        <p:inputText id="nombres" value="#{cobradorController.selected.nombres}" title="#{bundle.CreateCobradorTitle_nombres}" />
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_apellidos}" for="apellidos" />
+                        <p:inputText id="apellidos" value="#{cobradorController.selected.apellidos}" title="#{bundle.CreateCobradorTitle_apellidos}" />
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{cobradorController.selected.id}" title="#{bundle.CreateCobradorTitle_id}" />
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_estado}" for="estado" />
+                        <p:inputText id="estado" value="#{cobradorController.selected.estado}" title="#{bundle.CreateCobradorTitle_estado}" />
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_empresa}" for="empresa" />
+                        <p:selectOneMenu id="empresa" value="#{cobradorController.selected.empresa}" >
+                            <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"
+                                           var="empresaItem"
+                                           itemValue="#{empresaItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_nroDocumento}" for="nroDocumento" />
+                        <p:inputText id="nroDocumento" value="#{cobradorController.selected.nroDocumento}" title="#{bundle.CreateCobradorTitle_nroDocumento}" />
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_sucursal}" for="sucursal" />
+                        <p:selectOneMenu id="sucursal" value="#{cobradorController.selected.sucursal}" >
+                            <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"
+                                           var="sucursalItem"
+                                           itemValue="#{sucursalItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_tipoDocumento}" for="tipoDocumento" />
+                        <p:inputText id="tipoDocumento" value="#{cobradorController.selected.tipoDocumento}" title="#{bundle.CreateCobradorTitle_tipoDocumento}" />
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_version}" for="version" />
+                        <p:inputText id="version" value="#{cobradorController.selected.version}" title="#{bundle.CreateCobradorTitle_version}" />
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_vigencia}" for="vigencia" />
+                        <p:calendar id="vigencia" pattern="MM/dd/yyyy" value="#{cobradorController.selected.vigencia}" title="#{bundle.EditCobradorTitle_vigencia}"  showOn="button"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{cobradorController.create}" value="#{bundle.Save}" update="display,:CobradorListForm:datalist,:growl" oncomplete="handleSubmit(args,'CobradorCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="CobradorCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

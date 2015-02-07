@@ -49,6 +49,10 @@
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
         <h:link  value="Sucursal" outcome="/adm/sucursal/List.xhtml" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:link  value="Vendedor" outcome="/adm/vendedor/List.xhtml" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:link  value="Cobrador" outcome="/adm/cobrador/List.xhtml" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
         <!--        <h:link  value="Cotizacion" outcome="/adm/cotizacion/List.xhtml" 
                          rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
                 <h:link  value="Moneda" outcome="/adm/moneda/List.xhtml" 

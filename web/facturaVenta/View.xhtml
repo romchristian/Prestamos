@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="FacturaVentaViewDlg" widgetVar="FacturaVentaViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewFacturaVentaTitle}">
+            <h:form id="FacturaVentaViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{facturaVentaController.selected != null}">
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_id}"/>
+                        <h:outputText value="#{facturaVentaController.selected.id}" title="#{bundle.ViewFacturaVentaTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_timbrado}"/>
+                        <h:outputText value="#{facturaVentaController.selected.timbrado}" title="#{bundle.ViewFacturaVentaTitle_timbrado}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_codEstablecimiento}"/>
+                        <h:outputText value="#{facturaVentaController.selected.codEstablecimiento}" title="#{bundle.ViewFacturaVentaTitle_codEstablecimiento}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_puntoExpedicion}"/>
+                        <h:outputText value="#{facturaVentaController.selected.puntoExpedicion}" title="#{bundle.ViewFacturaVentaTitle_puntoExpedicion}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_numero}"/>
+                        <h:outputText value="#{facturaVentaController.selected.numero}" title="#{bundle.ViewFacturaVentaTitle_numero}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_condicionVenta}"/>
+                        <h:outputText value="#{facturaVentaController.selected.condicionVenta}" title="#{bundle.ViewFacturaVentaTitle_condicionVenta}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_cantidadCuota}"/>
+                        <h:outputText value="#{facturaVentaController.selected.cantidadCuota}" title="#{bundle.ViewFacturaVentaTitle_cantidadCuota}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_empresa}"/>
+                        <h:outputText value="#{facturaVentaController.selected.empresa}" title="#{bundle.ViewFacturaVentaTitle_empresa}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_sucursal}"/>
+                        <h:outputText value="#{facturaVentaController.selected.sucursal}" title="#{bundle.ViewFacturaVentaTitle_sucursal}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_cliente}"/>
+                        <h:outputText value="#{facturaVentaController.selected.cliente}" title="#{bundle.ViewFacturaVentaTitle_cliente}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_fechaEmision}"/>
+                        <h:outputText value="#{facturaVentaController.selected.fechaEmision}" title="#{bundle.ViewFacturaVentaTitle_fechaEmision}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_fechaVencimiento}"/>
+                        <h:outputText value="#{facturaVentaController.selected.fechaVencimiento}" title="#{bundle.ViewFacturaVentaTitle_fechaVencimiento}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_fechaCreacion}"/>
+                        <h:outputText value="#{facturaVentaController.selected.fechaCreacion}" title="#{bundle.ViewFacturaVentaTitle_fechaCreacion}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_fechaCancelacion}"/>
+                        <h:outputText value="#{facturaVentaController.selected.fechaCancelacion}" title="#{bundle.ViewFacturaVentaTitle_fechaCancelacion}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_fechaAnulacion}"/>
+                        <h:outputText value="#{facturaVentaController.selected.fechaAnulacion}" title="#{bundle.ViewFacturaVentaTitle_fechaAnulacion}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_cobrador}"/>
+                        <h:outputText value="#{facturaVentaController.selected.cobrador}" title="#{bundle.ViewFacturaVentaTitle_cobrador}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_razonSocial}"/>
+                        <h:outputText value="#{facturaVentaController.selected.razonSocial}" title="#{bundle.ViewFacturaVentaTitle_razonSocial}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_ruc}"/>
+                        <h:outputText value="#{facturaVentaController.selected.ruc}" title="#{bundle.ViewFacturaVentaTitle_ruc}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_direccion}"/>
+                        <h:outputText value="#{facturaVentaController.selected.direccion}" title="#{bundle.ViewFacturaVentaTitle_direccion}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_totalExento}"/>
+                        <h:outputText value="#{facturaVentaController.selected.totalExento}" title="#{bundle.ViewFacturaVentaTitle_totalExento}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_totalGravada05}"/>
+                        <h:outputText value="#{facturaVentaController.selected.totalGravada05}" title="#{bundle.ViewFacturaVentaTitle_totalGravada05}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_totalGravada10}"/>
+                        <h:outputText value="#{facturaVentaController.selected.totalGravada10}" title="#{bundle.ViewFacturaVentaTitle_totalGravada10}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_total}"/>
+                        <h:outputText value="#{facturaVentaController.selected.total}" title="#{bundle.ViewFacturaVentaTitle_total}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_iva05}"/>
+                        <h:outputText value="#{facturaVentaController.selected.iva05}" title="#{bundle.ViewFacturaVentaTitle_iva05}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_iva10}"/>
+                        <h:outputText value="#{facturaVentaController.selected.iva10}" title="#{bundle.ViewFacturaVentaTitle_iva10}"/>
+                        <h:outputText value="#{bundle.ViewFacturaVentaLabel_totalIva}"/>
+                        <h:outputText value="#{facturaVentaController.selected.totalIva}" title="#{bundle.ViewFacturaVentaTitle_totalIva}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="FacturaVentaViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

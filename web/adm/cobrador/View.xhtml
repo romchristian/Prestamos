@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CobradorViewDlg" widgetVar="CobradorViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewCobradorTitle}">
+            <h:form id="CobradorViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{cobradorController.selected != null}">
+                        <h:outputText value="#{bundle.ViewCobradorLabel_nombres}"/>
+                        <h:outputText value="#{cobradorController.selected.nombres}" title="#{bundle.ViewCobradorTitle_nombres}"/>
+                        <h:outputText value="#{bundle.ViewCobradorLabel_apellidos}"/>
+                        <h:outputText value="#{cobradorController.selected.apellidos}" title="#{bundle.ViewCobradorTitle_apellidos}"/>
+                        <h:outputText value="#{bundle.ViewCobradorLabel_id}"/>
+                        <h:outputText value="#{cobradorController.selected.id}" title="#{bundle.ViewCobradorTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewCobradorLabel_estado}"/>
+                        <h:outputText value="#{cobradorController.selected.estado}" title="#{bundle.ViewCobradorTitle_estado}"/>
+                        <h:outputText value="#{bundle.ViewCobradorLabel_empresa}"/>
+                        <h:outputText value="#{cobradorController.selected.empresa}" title="#{bundle.ViewCobradorTitle_empresa}"/>
+                        <h:outputText value="#{bundle.ViewCobradorLabel_nroDocumento}"/>
+                        <h:outputText value="#{cobradorController.selected.nroDocumento}" title="#{bundle.ViewCobradorTitle_nroDocumento}"/>
+                        <h:outputText value="#{bundle.ViewCobradorLabel_sucursal}"/>
+                        <h:outputText value="#{cobradorController.selected.sucursal}" title="#{bundle.ViewCobradorTitle_sucursal}"/>
+                        <h:outputText value="#{bundle.ViewCobradorLabel_tipoDocumento}"/>
+                        <h:outputText value="#{cobradorController.selected.tipoDocumento}" title="#{bundle.ViewCobradorTitle_tipoDocumento}"/>
+                        <h:outputText value="#{bundle.ViewCobradorLabel_version}"/>
+                        <h:outputText value="#{cobradorController.selected.version}" title="#{bundle.ViewCobradorTitle_version}"/>
+                        <h:outputText value="#{bundle.ViewCobradorLabel_vigencia}"/>
+                        <h:outputText value="#{cobradorController.selected.vigencia}" title="#{bundle.ViewCobradorTitle_vigencia}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="CobradorViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

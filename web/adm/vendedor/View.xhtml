@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="VendedorViewDlg" widgetVar="VendedorViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewVendedorTitle}">
+            <h:form id="VendedorViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{vendedorController.selected != null}">
+                        <h:outputText value="#{bundle.ViewVendedorLabel_nombres}"/>
+                        <h:outputText value="#{vendedorController.selected.nombres}" title="#{bundle.ViewVendedorTitle_nombres}"/>
+                        <h:outputText value="#{bundle.ViewVendedorLabel_apellidos}"/>
+                        <h:outputText value="#{vendedorController.selected.apellidos}" title="#{bundle.ViewVendedorTitle_apellidos}"/>
+                        <h:outputText value="#{bundle.ViewVendedorLabel_id}"/>
+                        <h:outputText value="#{vendedorController.selected.id}" title="#{bundle.ViewVendedorTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewVendedorLabel_estado}"/>
+                        <h:outputText value="#{vendedorController.selected.estado}" title="#{bundle.ViewVendedorTitle_estado}"/>
+                        <h:outputText value="#{bundle.ViewVendedorLabel_empresa}"/>
+                        <h:outputText value="#{vendedorController.selected.empresa}" title="#{bundle.ViewVendedorTitle_empresa}"/>
+                        <h:outputText value="#{bundle.ViewVendedorLabel_nroDocumento}"/>
+                        <h:outputText value="#{vendedorController.selected.nroDocumento}" title="#{bundle.ViewVendedorTitle_nroDocumento}"/>
+                        <h:outputText value="#{bundle.ViewVendedorLabel_sucursal}"/>
+                        <h:outputText value="#{vendedorController.selected.sucursal}" title="#{bundle.ViewVendedorTitle_sucursal}"/>
+                        <h:outputText value="#{bundle.ViewVendedorLabel_tipoDocumento}"/>
+                        <h:outputText value="#{vendedorController.selected.tipoDocumento}" title="#{bundle.ViewVendedorTitle_tipoDocumento}"/>
+                        <h:outputText value="#{bundle.ViewVendedorLabel_version}"/>
+                        <h:outputText value="#{vendedorController.selected.version}" title="#{bundle.ViewVendedorTitle_version}"/>
+                        <h:outputText value="#{bundle.ViewVendedorLabel_vigencia}"/>
+                        <h:outputText value="#{vendedorController.selected.vigencia}" title="#{bundle.ViewVendedorTitle_vigencia}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="VendedorViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

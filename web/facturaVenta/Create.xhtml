@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="FacturaVentaCreateDlg" widgetVar="FacturaVentaCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateFacturaVentaTitle}">
+            <h:form id="FacturaVentaCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{facturaVentaController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{facturaVentaController.selected.id}" title="#{bundle.CreateFacturaVentaTitle_id}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_timbrado}" for="timbrado" />
+                        <p:inputText id="timbrado" value="#{facturaVentaController.selected.timbrado}" title="#{bundle.CreateFacturaVentaTitle_timbrado}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_codEstablecimiento}" for="codEstablecimiento" />
+                        <p:inputText id="codEstablecimiento" value="#{facturaVentaController.selected.codEstablecimiento}" title="#{bundle.CreateFacturaVentaTitle_codEstablecimiento}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_puntoExpedicion}" for="puntoExpedicion" />
+                        <p:inputText id="puntoExpedicion" value="#{facturaVentaController.selected.puntoExpedicion}" title="#{bundle.CreateFacturaVentaTitle_puntoExpedicion}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_numero}" for="numero" />
+                        <p:inputText id="numero" value="#{facturaVentaController.selected.numero}" title="#{bundle.CreateFacturaVentaTitle_numero}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_condicionVenta}" for="condicionVenta" />
+                        <p:inputText id="condicionVenta" value="#{facturaVentaController.selected.condicionVenta}" title="#{bundle.CreateFacturaVentaTitle_condicionVenta}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_cantidadCuota}" for="cantidadCuota" />
+                        <p:inputText id="cantidadCuota" value="#{facturaVentaController.selected.cantidadCuota}" title="#{bundle.CreateFacturaVentaTitle_cantidadCuota}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_empresa}" for="empresa" />
+                        <p:selectOneMenu id="empresa" value="#{facturaVentaController.selected.empresa}" >
+                            <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"
+                                           var="empresaItem"
+                                           itemValue="#{empresaItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_sucursal}" for="sucursal" />
+                        <p:selectOneMenu id="sucursal" value="#{facturaVentaController.selected.sucursal}" >
+                            <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"
+                                           var="sucursalItem"
+                                           itemValue="#{sucursalItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_cliente}" for="cliente" />
+                        <p:selectOneMenu id="cliente" value="#{facturaVentaController.selected.cliente}" >
+                            <f:selectItems value="#{clienteController.itemsAvailableSelectOne}"
+                                           var="clienteItem"
+                                           itemValue="#{clienteItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_fechaEmision}" for="fechaEmision" />
+                        <p:calendar id="fechaEmision" pattern="MM/dd/yyyy" value="#{facturaVentaController.selected.fechaEmision}" title="#{bundle.EditFacturaVentaTitle_fechaEmision}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_fechaVencimiento}" for="fechaVencimiento" />
+                        <p:calendar id="fechaVencimiento" pattern="MM/dd/yyyy" value="#{facturaVentaController.selected.fechaVencimiento}" title="#{bundle.EditFacturaVentaTitle_fechaVencimiento}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_fechaCreacion}" for="fechaCreacion" />
+                        <p:calendar id="fechaCreacion" pattern="MM/dd/yyyy" value="#{facturaVentaController.selected.fechaCreacion}" title="#{bundle.EditFacturaVentaTitle_fechaCreacion}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_fechaCancelacion}" for="fechaCancelacion" />
+                        <p:calendar id="fechaCancelacion" pattern="MM/dd/yyyy" value="#{facturaVentaController.selected.fechaCancelacion}" title="#{bundle.EditFacturaVentaTitle_fechaCancelacion}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_fechaAnulacion}" for="fechaAnulacion" />
+                        <p:calendar id="fechaAnulacion" pattern="MM/dd/yyyy" value="#{facturaVentaController.selected.fechaAnulacion}" title="#{bundle.EditFacturaVentaTitle_fechaAnulacion}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_cobrador}" for="cobrador" />
+                        <p:selectOneMenu id="cobrador" value="#{facturaVentaController.selected.cobrador}" >
+                            <f:selectItems value="#{cobradorController.itemsAvailableSelectOne}"
+                                           var="cobradorItem"
+                                           itemValue="#{cobradorItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_razonSocial}" for="razonSocial" />
+                        <p:inputText id="razonSocial" value="#{facturaVentaController.selected.razonSocial}" title="#{bundle.CreateFacturaVentaTitle_razonSocial}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_ruc}" for="ruc" />
+                        <p:inputText id="ruc" value="#{facturaVentaController.selected.ruc}" title="#{bundle.CreateFacturaVentaTitle_ruc}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_direccion}" for="direccion" />
+                        <p:inputText id="direccion" value="#{facturaVentaController.selected.direccion}" title="#{bundle.CreateFacturaVentaTitle_direccion}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_totalExento}" for="totalExento" />
+                        <p:inputText id="totalExento" value="#{facturaVentaController.selected.totalExento}" title="#{bundle.CreateFacturaVentaTitle_totalExento}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_totalGravada05}" for="totalGravada05" />
+                        <p:inputText id="totalGravada05" value="#{facturaVentaController.selected.totalGravada05}" title="#{bundle.CreateFacturaVentaTitle_totalGravada05}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_totalGravada10}" for="totalGravada10" />
+                        <p:inputText id="totalGravada10" value="#{facturaVentaController.selected.totalGravada10}" title="#{bundle.CreateFacturaVentaTitle_totalGravada10}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_total}" for="total" />
+                        <p:inputText id="total" value="#{facturaVentaController.selected.total}" title="#{bundle.CreateFacturaVentaTitle_total}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_iva05}" for="iva05" />
+                        <p:inputText id="iva05" value="#{facturaVentaController.selected.iva05}" title="#{bundle.CreateFacturaVentaTitle_iva05}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_iva10}" for="iva10" />
+                        <p:inputText id="iva10" value="#{facturaVentaController.selected.iva10}" title="#{bundle.CreateFacturaVentaTitle_iva10}" />
+                        <p:outputLabel value="#{bundle.CreateFacturaVentaLabel_totalIva}" for="totalIva" />
+                        <p:inputText id="totalIva" value="#{facturaVentaController.selected.totalIva}" title="#{bundle.CreateFacturaVentaTitle_totalIva}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{facturaVentaController.create}" value="#{bundle.Save}" update="display,:FacturaVentaListForm:datalist,:growl" oncomplete="handleSubmit(args,'FacturaVentaCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="FacturaVentaCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

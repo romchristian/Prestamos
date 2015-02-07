@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="VendedorCreateDlg" widgetVar="VendedorCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateVendedorTitle}">
+            <h:form id="VendedorCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{vendedorController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateVendedorLabel_nombres}" for="nombres" />
+                        <p:inputText id="nombres" value="#{vendedorController.selected.nombres}" title="#{bundle.CreateVendedorTitle_nombres}" />
+                        <p:outputLabel value="#{bundle.CreateVendedorLabel_apellidos}" for="apellidos" />
+                        <p:inputText id="apellidos" value="#{vendedorController.selected.apellidos}" title="#{bundle.CreateVendedorTitle_apellidos}" />
+                        <p:outputLabel value="#{bundle.CreateVendedorLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{vendedorController.selected.id}" title="#{bundle.CreateVendedorTitle_id}" />
+                        <p:outputLabel value="#{bundle.CreateVendedorLabel_estado}" for="estado" />
+                        <p:inputText id="estado" value="#{vendedorController.selected.estado}" title="#{bundle.CreateVendedorTitle_estado}" />
+                        <p:outputLabel value="#{bundle.CreateVendedorLabel_empresa}" for="empresa" />
+                        <p:selectOneMenu id="empresa" value="#{vendedorController.selected.empresa}" >
+                            <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"
+                                           var="empresaItem"
+                                           itemValue="#{empresaItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateVendedorLabel_nroDocumento}" for="nroDocumento" />
+                        <p:inputText id="nroDocumento" value="#{vendedorController.selected.nroDocumento}" title="#{bundle.CreateVendedorTitle_nroDocumento}" />
+                        <p:outputLabel value="#{bundle.CreateVendedorLabel_sucursal}" for="sucursal" />
+                        <p:selectOneMenu id="sucursal" value="#{vendedorController.selected.sucursal}" >
+                            <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"
+                                           var="sucursalItem"
+                                           itemValue="#{sucursalItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateVendedorLabel_tipoDocumento}" for="tipoDocumento" />
+                        <p:inputText id="tipoDocumento" value="#{vendedorController.selected.tipoDocumento}" title="#{bundle.CreateVendedorTitle_tipoDocumento}" />
+                        <p:outputLabel value="#{bundle.CreateVendedorLabel_version}" for="version" />
+                        <p:inputText id="version" value="#{vendedorController.selected.version}" title="#{bundle.CreateVendedorTitle_version}" />
+                        <p:outputLabel value="#{bundle.CreateVendedorLabel_vigencia}" for="vigencia" />
+                        <p:calendar id="vigencia" pattern="MM/dd/yyyy" value="#{vendedorController.selected.vigencia}" title="#{bundle.EditVendedorTitle_vigencia}"  showOn="button"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{vendedorController.create}" value="#{bundle.Save}" update="display,:VendedorListForm:datalist,:growl" oncomplete="handleSubmit(args,'VendedorCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="VendedorCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
