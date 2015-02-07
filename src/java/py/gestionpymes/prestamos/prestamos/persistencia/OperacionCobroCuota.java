@@ -4,11 +4,11 @@
  */
 package py.gestionpymes.prestamos.prestamos.persistencia;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoOperacion;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import py.gestionpymes.prestamos.prestamos.persistencia.DetCobroCuota;
-import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 
 /**
  *
@@ -32,7 +32,7 @@ public class OperacionCobroCuota extends DetCuentaCliente<DetCobroCuota> {
         setEmpresa(prestamo.getEmpresa());
         setSucursal(prestamo.getSucursal());
         this.detCobroCuota = detCobroCuota;
-        setMontoCredito(0d);
+        setMontoCredito(new BigDecimal(BigInteger.ZERO));
         setMoneda(detCobroCuota.getMoneda());
         setMontoDebito(detCobroCuota.getMonto());
         setDescripcion("Pago cuota "+ detCobroCuota.getDetPrestamo().getNroCuota()+" Prestamo nro "+ detCobroCuota.getCobroCuota().getPrestamo().getId());

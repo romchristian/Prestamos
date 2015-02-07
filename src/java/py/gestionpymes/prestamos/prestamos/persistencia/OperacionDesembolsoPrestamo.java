@@ -4,10 +4,10 @@
  */
 package py.gestionpymes.prestamos.prestamos.persistencia;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoOperacion;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 
 /**
  *
@@ -29,7 +29,7 @@ public class OperacionDesembolsoPrestamo extends DetCuentaCliente<Prestamo> {
         setSucursal(prestamo.getSucursal());
         setMoneda(prestamo.getMoneda());
         setMontoCredito(prestamo.getTotalOperacion());
-        setMontoDebito(0d);
+        setMontoDebito(new BigDecimal(BigInteger.ZERO));
         setDescripcion("Desembolso prestamo nro " + prestamo.getId());
         
     }

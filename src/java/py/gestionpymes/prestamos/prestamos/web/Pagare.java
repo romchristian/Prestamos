@@ -5,6 +5,7 @@
  */
 package py.gestionpymes.prestamos.prestamos.web;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,7 +23,7 @@ public class Pagare {
     private Prestamo prestamo;
     private int nro=1;
     private int cantidadPagares = 1;
-    private Double monto;
+    private BigDecimal monto;
     private Date vencimiento;
     private String empresaNombre;
     private String empresaRuc;
@@ -92,11 +93,11 @@ public class Pagare {
         this.prestamo = prestamo;
     }
 
-    public Double getMonto() {
+    public BigDecimal getMonto() {
         return monto;
     }
 
-    public void setMonto(Double monto) {
+    public void setMonto(BigDecimal monto) {
         this.monto = monto;
     }
 
@@ -242,7 +243,7 @@ public class Pagare {
         return montoLetras;
     }
 
-    public void setMontoLetras(Double monto) {
+    public void setMontoLetras(BigDecimal monto) {
         this.montoLetras = numeroALetras(monto);
     }
 
@@ -278,7 +279,7 @@ public class Pagare {
         this.anio = anio;
     }
 
-    private String numeroALetras(Double num) {
+    private String numeroALetras(BigDecimal num) {
 
         System.out.println("");
         return new NumeroALetras().Convertir(num.intValue() + "", true);

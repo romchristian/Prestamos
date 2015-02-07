@@ -5,6 +5,9 @@
 package py.gestionpymes.prestamos.prestamos.persistencia;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -32,14 +35,14 @@ public class DetPrestamo implements Serializable {
     private int nroCuota;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaVencimiento;
-    private double saldoCapital;
-    private double cuotaCapital;// monto del prestamo / plazo
-    private double cuotaInteres;// total interes / plazo
-    private double montoCuota;
+    private BigDecimal saldoCapital = new BigDecimal(BigInteger.ZERO);
+    private BigDecimal cuotaCapital = new BigDecimal(BigInteger.ZERO);// monto del prestamo / plazo
+    private BigDecimal cuotaInteres = new BigDecimal(BigInteger.ZERO);// total interes / plazo
+    private BigDecimal montoCuota = new BigDecimal(BigInteger.ZERO);
     private int diasMora;
-    private double montoMora;
-    private double montoPago;
-    private double saldoCuota;
+    private BigDecimal montoMora = new BigDecimal(BigInteger.ZERO);
+    private BigDecimal montoPago = new BigDecimal(BigInteger.ZERO);
+    private BigDecimal saldoCuota = new BigDecimal(BigInteger.ZERO);
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date ultimoPago;
     @ManyToOne
@@ -50,14 +53,14 @@ public class DetPrestamo implements Serializable {
         this.estado = EstadoDetPrestamo.PENDIENTE;
     }
 
-    public DetPrestamo(Prestamo prestamo, int nroCuota, double cuotaCapital, double cuotaInteres, double saldoCapital) {
+    public DetPrestamo(Prestamo prestamo, int nroCuota, BigDecimal cuotaCapital, BigDecimal cuotaInteres, BigDecimal saldoCapital) {
         this();
         this.prestamo = prestamo;
         this.moneda = prestamo.getMoneda();
         this.nroCuota = nroCuota;
         this.cuotaCapital = cuotaCapital;
         this.cuotaInteres = cuotaInteres;
-        this.montoCuota = cuotaCapital + cuotaInteres;
+        this.montoCuota = cuotaCapital.add(cuotaInteres);
         this.saldoCapital = saldoCapital;
         this.setSaldoCuota(montoCuota);
 
@@ -68,6 +71,12 @@ public class DetPrestamo implements Serializable {
         switch (prestamo.getPeriodoPago()) {
             case MENSUAL:
                 dias = 30;
+                break;
+            case QUINCENAL:
+                dias = 15;
+                break;
+            case SEMANAL:
+                dias = 7;
                 break;
         }
 
@@ -110,7 +119,7 @@ public class DetPrestamo implements Serializable {
     }
 
     public int getDiasMora() {
-        
+
         if (estado == EstadoDetPrestamo.PENDIENTE) {
             diasMora = Days.daysBetween(new DateTime(fechaVencimiento), new DateTime(new Date())).getDays();
         }
@@ -131,52 +140,52 @@ public class DetPrestamo implements Serializable {
         this.fechaVencimiento = fechaVencimiento;
     }
 
-    public double getCuotaCapital() {
+    public BigDecimal getCuotaCapital() {
         return cuotaCapital;
     }
 
-    public void setCuotaCapital(double cuotaCapital) {
+    public void setCuotaCapital(BigDecimal cuotaCapital) {
         this.cuotaCapital = cuotaCapital;
     }
 
-    public double getCuotaInteres() {
+    public BigDecimal getCuotaInteres() {
         return cuotaInteres;
     }
 
-    public void setCuotaInteres(double cuotaInteres) {
+    public void setCuotaInteres(BigDecimal cuotaInteres) {
         this.cuotaInteres = cuotaInteres;
     }
 
-    public double getMontoCuota() {
+    public BigDecimal getMontoCuota() {
         return montoCuota;
     }
 
-    public void setMontoCuota(double montoCuota) {
+    public void setMontoCuota(BigDecimal montoCuota) {
         this.montoCuota = montoCuota;
     }
 
-    public double getSaldoCapital() {
+    public BigDecimal getSaldoCapital() {
         return saldoCapital;
     }
 
-    public void setSaldoCapital(double saldoCapital) {
+    public void setSaldoCapital(BigDecimal saldoCapital) {
         this.saldoCapital = saldoCapital;
     }
 
-    public double getMontoMora() {
+    public BigDecimal getMontoMora() {
         return montoMora;
     }
 
-    public void setMontoMora(double montoMora) {
+    public void setMontoMora(BigDecimal montoMora) {
         this.montoMora = montoMora;
     }
 
-    public double getMontoPago() {
+    public BigDecimal getMontoPago() {
         return montoPago;
     }
 
-    public void setMontoPago(double montoPago) {
-      
+    public void setMontoPago(BigDecimal montoPago) {
+
         this.montoPago = montoPago;
     }
 
@@ -196,11 +205,11 @@ public class DetPrestamo implements Serializable {
         this.prestamo = prestamo;
     }
 
-    public double getSaldoCuota() {
+    public BigDecimal getSaldoCuota() {
         return saldoCuota;
     }
 
-    public void setSaldoCuota(double saldoCuota) {
+    public void setSaldoCuota(BigDecimal saldoCuota) {
         this.saldoCuota = saldoCuota;
     }
 
@@ -212,20 +221,20 @@ public class DetPrestamo implements Serializable {
         this.ultimoPago = ultimoPago;
     }
 
-    public boolean afectaSaldoCuota(double monto) {
+    public boolean afectaSaldoCuota(BigDecimal monto) {
         boolean R = false;
-        if ((saldoCuota + montoMora) >= monto) {
-            
-            montoPago += monto;
-            saldoCuota -= monto;
+        if ((saldoCuota.add(montoMora).compareTo(monto)) >= 0) {
+
+            montoPago = montoPago.add(monto);
+            saldoCuota = saldoCuota.subtract(monto);
             R = true;
             ultimoPago = new Date();
-            
-             if (saldoCuota == 0) {
+
+            if (saldoCuota.compareTo(new BigDecimal(0)) == 0) {
                 estado = EstadoDetPrestamo.CANCELADO;
                 setDiasMora(Days.daysBetween(new DateTime(fechaVencimiento), new DateTime(new Date())).getDays());
             }
-            
+
         }
         return R;
     }

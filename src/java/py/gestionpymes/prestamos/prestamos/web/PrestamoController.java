@@ -72,7 +72,8 @@ public class PrestamoController implements Serializable {
     public String calcular() {
         selected.setSistema(null);
         selected.setDetalles(null);
-        selected.getDetalles();
+        selected.calcula();
+        
         return null;
     }
 
@@ -99,6 +100,8 @@ public class PrestamoController implements Serializable {
     public void desembolsa() {
         ejbFacade.desembolsa(selected);
     }
+    
+
 
     public void confirmaPagare() {
         selected.setFirmaPagare(true);

@@ -7,6 +7,8 @@ package py.gestionpymes.prestamos.prestamos.persistencia;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.PeriodoPago;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -33,30 +35,30 @@ public class Prestamo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @ManyToOne
     private Empresa empresa;
     @ManyToOne
     private Sucursal sucursal;
-    
+
     @ManyToOne
     private Cliente cliente;
     @ManyToOne
     private Cliente codeudor;
-    private double montoPrestamo;
-    private double capital;
+    private BigDecimal montoPrestamo = new BigDecimal(BigInteger.ZERO);
+    private BigDecimal capital = new BigDecimal(BigInteger.ZERO);
     private int plazo;
     private int tasa;
     @Enumerated(EnumType.STRING)
     private PeriodoPago periodoPago;
-    private double gastos;
+    private BigDecimal gastos = new BigDecimal(BigInteger.ZERO);
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaInicioOperacion;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fecha = new Date();
-    private double montoCuota;
-    private double totalIntereses;
-    private double totalOperacion;
+    private BigDecimal montoCuota = new BigDecimal(BigInteger.ZERO);
+    private BigDecimal totalIntereses = new BigDecimal(BigInteger.ZERO);
+    private BigDecimal totalOperacion = new BigDecimal(BigInteger.ZERO);
     @Enumerated(EnumType.STRING)
     private SistemaAmortizacion sistemaAmortizacion;
     @Transient
@@ -93,8 +95,6 @@ public class Prestamo implements Serializable {
         this.sucursal = sucursal;
     }
 
-    
-    
     public Date getUltimoPago() {
         return ultimoPago;
     }
@@ -161,11 +161,11 @@ public class Prestamo implements Serializable {
         this.firmaPagare = firmaPagare;
     }
 
-    public double getMontoPrestamo() {
+    public BigDecimal getMontoPrestamo() {
         return montoPrestamo;
     }
 
-    public void setMontoPrestamo(double montoPrestamo) {
+    public void setMontoPrestamo(BigDecimal montoPrestamo) {
         this.montoPrestamo = montoPrestamo;
     }
 
@@ -177,11 +177,11 @@ public class Prestamo implements Serializable {
         this.estado = estado;
     }
 
-    public double getCapital() {
-        return montoPrestamo + gastos;
+    public BigDecimal getCapital() {
+        return montoPrestamo.add(gastos);
     }
 
-    public void setCapital(double capital) {
+    public void setCapital(BigDecimal capital) {
         this.capital = capital;
     }
 
@@ -202,9 +202,6 @@ public class Prestamo implements Serializable {
     }
 
     public List<DetPrestamo> getDetalles() {
-        if (detalles == null) {
-            detalles = getSistema().calculaCuotas();
-        }
         return detalles;
     }
 
@@ -229,21 +226,20 @@ public class Prestamo implements Serializable {
         this.fechaInicioOperacion = fechaInicioOperacion;
     }
 
-    public double getGastos() {
+    public BigDecimal getGastos() {
         return gastos;
     }
 
-    public void setGastos(double gastos) {
+    public void setGastos(BigDecimal gastos) {
         this.gastos = gastos;
     }
 
-    public double getMontoCuota() {
+    public BigDecimal getMontoCuota() {
 
-        montoCuota = getSistema().getCuota();
         return montoCuota;
     }
 
-    public void setMontoCuota(double montoCuota) {
+    public void setMontoCuota(BigDecimal montoCuota) {
         this.montoCuota = montoCuota;
     }
 
@@ -279,24 +275,21 @@ public class Prestamo implements Serializable {
         this.tasa = tasa;
     }
 
-    public double getTotalIntereses() {
-        totalIntereses = 0;
-        for (DetPrestamo d : getDetalles()) {
-            totalIntereses += d.getCuotaInteres();
-        }
+    public BigDecimal getTotalIntereses() {
+
         return totalIntereses;
     }
 
-    public void setTotalIntereses(double totalIntereses) {
+    public void setTotalIntereses(BigDecimal totalIntereses) {
         this.totalIntereses = totalIntereses;
     }
 
-    public double getTotalOperacion() {
-        totalOperacion = getCapital() + getGastos() + getTotalIntereses();
+    public BigDecimal getTotalOperacion() {
+        totalOperacion = getCapital().add(getTotalIntereses());
         return totalOperacion;
     }
 
-    public void setTotalOperacion(double totalOperacion) {
+    public void setTotalOperacion(BigDecimal totalOperacion) {
         this.totalOperacion = totalOperacion;
     }
 
@@ -306,6 +299,17 @@ public class Prestamo implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void calcula() {
+        detalles = getSistema().calculaCuotas();
+        montoCuota = getSistema().getCuota();
+        
+        totalIntereses = BigDecimal.ZERO;
+        for (DetPrestamo d : getDetalles()) {
+            totalIntereses = totalIntereses.add(d.getCuotaInteres());
+        }
+
     }
 
     @Override

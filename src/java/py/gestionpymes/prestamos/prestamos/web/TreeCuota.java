@@ -4,6 +4,7 @@
  */
 package py.gestionpymes.prestamos.prestamos.web;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -30,11 +31,11 @@ public class TreeCuota {
     private String descDetPrestamo;
     private Date fechaVencimiento;
     private int nroCuota;
-    private Double montoCuota;
+    private BigDecimal montoCuota;
     private Integer diasMora;
-    private Double montoMora;
-    private Double montoPago;
-    private Double saldoCuota;
+    private BigDecimal montoMora;
+    private BigDecimal montoPago;
+    private BigDecimal saldoCuota;
     private boolean esPrestamo;
     private boolean cancelado;
     private boolean modoEdicion;
@@ -168,27 +169,27 @@ public class TreeCuota {
         this.fechaVencimiento = fechaVencimiento;
     }
 
-    public Double getMontoCuota() {
+    public BigDecimal getMontoCuota() {
         return montoCuota;
     }
 
-    public void setMontoCuota(Double montoCuota) {
+    public void setMontoCuota(BigDecimal montoCuota) {
         this.montoCuota = montoCuota;
     }
 
-    public Double getMontoMora() {
+    public BigDecimal getMontoMora() {
         return montoMora;
     }
 
-    public void setMontoMora(Double montoMora) {
+    public void setMontoMora(BigDecimal montoMora) {
         this.montoMora = montoMora;
     }
 
-    public Double getMontoPago() {
+    public BigDecimal getMontoPago() {
         return montoPago;
     }
 
-    public void setMontoPago(Double montoPago) {
+    public void setMontoPago(BigDecimal montoPago) {
         this.montoPago = montoPago;
     }
 
@@ -210,11 +211,11 @@ public class TreeCuota {
         this.prestamo = prestamo;
     }
 
-    public Double getSaldoCuota() {
+    public BigDecimal getSaldoCuota() {
         return saldoCuota;
     }
 
-    public void setSaldoCuota(Double saldoCuota) {
+    public void setSaldoCuota(BigDecimal saldoCuota) {
         this.saldoCuota = saldoCuota;
     }
 

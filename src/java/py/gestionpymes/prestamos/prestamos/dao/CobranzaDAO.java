@@ -4,6 +4,7 @@
  */
 package py.gestionpymes.prestamos.prestamos.dao;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -40,7 +41,7 @@ public class CobranzaDAO {
         CobroCuota cobro = new CobroCuota(t.getPrestamo());
 
         
-            if (t.getMontoPago() > (t.getMontoMora() + t.getSaldoCuota())) {
+            if (t.getMontoPago().compareTo(t.getMontoMora().add(t.getSaldoCuota())) > 0) {
                 throw new PagoExcedidoException("El monto de la cuota #" + t.getNroCuota() + " esta excedido");
             }
 

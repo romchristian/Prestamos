@@ -3,7 +3,7 @@
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="568"/>
-	<field name="monto" class="java.lang.Double"/>
+	<field name="monto" class="java.math.BigDecimal"/>
 	<field name="montoLetras" class="java.lang.String"/>
 	<field name="fechaEmisionTexto" class="java.lang.String"/>
 	<field name="dia" class="java.lang.Integer"/>

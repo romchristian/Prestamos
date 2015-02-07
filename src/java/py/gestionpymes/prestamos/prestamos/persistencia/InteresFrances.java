@@ -4,6 +4,10 @@
  */
 package py.gestionpymes.prestamos.prestamos.persistencia;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +17,8 @@ import java.util.List;
  */
 public class InteresFrances extends Sistema{
 
+    
+    
     public InteresFrances(Prestamo prestamo) {
         super(prestamo);
     }
@@ -20,15 +26,15 @@ public class InteresFrances extends Sistema{
     
     @Override
     protected List<DetPrestamo> calculaCuotas() {
-        List<DetPrestamo> detalles = new ArrayList<DetPrestamo>();
+        List<DetPrestamo> detalles = new ArrayList<>();
         Prestamo p = getPrestamo();
 
 
         for (int i = 0; i < p.getPlazo(); i++) {
             int nroCuota = i;
-            double saldoCapital = getSaldoCapital(nroCuota);
-            double cuotaInteres = getCuotaInteres(saldoCapital);
-            double cuotaCapital = getCuotaCapital(cuotaInteres);
+            BigDecimal saldoCapital = getSaldoCapital(nroCuota);
+            BigDecimal cuotaInteres = getCuotaInteres(saldoCapital);
+            BigDecimal cuotaCapital = getCuotaCapital(cuotaInteres);
            
 
             DetPrestamo d = new DetPrestamo(p, nroCuota+1, cuotaCapital, cuotaInteres,saldoCapital);
@@ -44,25 +50,30 @@ public class InteresFrances extends Sistema{
      * @return (C) cuota total : cuota final fija = cuota de capital + cuota de interes
      */
     @Override
-    protected double getCuota() {
-        double V = getPrestamo().getCapital();
+    protected BigDecimal getCuota() {
+        BigDecimal V = getPrestamo().getCapital();
         float i = getInteresPeriodico();
         int n = getPlazo();
         
-        double C = V * ((Math.pow((1+i), n)*i)/(Math.pow((1+i), n)-1)); 
-        return  C;
+        BigDecimal pow = new BigDecimal((Math.pow((1+i), n)),MathContext.DECIMAL64);
+        BigDecimal op1 = pow.multiply(new BigDecimal(i,MathContext.DECIMAL128));
+        BigDecimal op2 = pow.subtract(new BigDecimal(BigInteger.ONE));
+        
+        BigDecimal C = V.multiply(op1).divide(op2,0,RoundingMode.HALF_EVEN);
+//V * ((Math.pow((1+i), n)*i)/(Math.pow((1+i), n)-1)); 
+        return  C.setScale(0, RoundingMode.HALF_EVEN);
     }
     
     /**
      * 
      * @return 
      */
-    private double getCuotaAmortizacion(int nroCuota){
-        double V = getPrestamo().getCapital() + getPrestamo().getGastos();
+    private BigDecimal getCuotaAmortizacion(int nroCuota){
+        BigDecimal V = getPrestamo().getCapital();// Capital sumar comision
         float i = getInteresPeriodico();
+        BigDecimal pow = new BigDecimal(Math.pow(1+i, (nroCuota -1)),MathContext.DECIMAL64);
         
-        
-        double tp = getT1()*Math.pow(1+i, (nroCuota -1));
+        BigDecimal tp = getT1().multiply(pow).setScale(0, RoundingMode.HALF_EVEN);
         
        return tp;
     }
@@ -74,18 +85,30 @@ public class InteresFrances extends Sistema{
      * VP = C * (1-(1+i)^-n+p)/i)
      */
     
-    public double getSaldoCapital(int nroCuota){
-        float i = getInteresPeriodico();
-        double VP = getCuota() * ((1-Math.pow((1+i),-getPlazo()+nroCuota))/i);
-        return VP;
+    public BigDecimal getSaldoCapital(int nroCuota){
+//        float i = getInteresPeriodico();
+//                         1+ 0.0375
+//        136516 * (-11        ) / 0.0375
+//                         
+//        BigDecimal pow = new BigDecimal(Math.pow((1+i),-getPlazo()+nroCuota),MathContext.DECIMAL64);
+//        BigDecimal op1 = new BigDecimal(BigInteger.ONE).subtract(pow);
+//        BigDecimal op2 = op1.divide(new BigDecimal(i,MathContext.DECIMAL128),0,RoundingMode.HALF_EVEN);
+//        BigDecimal VP = getCuota().multiply(op2);//getCuota() * ((1-Math.pow((1+i),-getPlazo()+nroCuota))/i);
+        
+        BigDecimal amortizacionAcumulada = new BigDecimal(BigInteger.ZERO);
+        for(int i = 1; i <= nroCuota;i++) {
+            amortizacionAcumulada = amortizacionAcumulada.add(getCuotaAmortizacion(i));
+        }
+        
+        return getPrestamo().getCapital().subtract(amortizacionAcumulada);
     }
     
-    public double getCuotaInteres(double vp){
-        return vp * getInteresPeriodico();
+    public BigDecimal getCuotaInteres(BigDecimal vp){
+        return vp.multiply(new BigDecimal(getInteresPeriodico(),MathContext.DECIMAL128)).setScale(0, RoundingMode.HALF_EVEN);
     }
     
-    public double getCuotaCapital(double cuotaInteres){
-        return getCuota() - cuotaInteres;
+    public BigDecimal getCuotaCapital(BigDecimal cuotaInteres){
+        return getCuota().subtract(cuotaInteres);
     }
     
     
@@ -98,13 +121,28 @@ public class InteresFrances extends Sistema{
     }
     
     public float getInteresPeriodico(){
-        return (getPrestamo().getTasa()/100f) / getPlazo();
+         int meses = 12;
+
+        switch (getPrestamo().getPeriodoPago()) {
+            case MENSUAL:
+                meses = 12;
+                break;
+            case QUINCENAL:
+                meses = meses*2;
+                break;
+            case SEMANAL:
+                meses = meses*4;
+                break;
+        }
+        
+        return (getPrestamo().getTasa()/100f) / meses;
     }
     
-    public double getT1(){
-        double V = getPrestamo().getCapital();
+    public BigDecimal getT1(){
+        BigDecimal V = getPrestamo().getCapital();
         float i = getInteresPeriodico();
-        return getCuota() - V*i;
+        BigDecimal op1 = V.multiply(new BigDecimal(i,MathContext.DECIMAL128));
+        return getCuota().subtract(op1);
     }
     
     

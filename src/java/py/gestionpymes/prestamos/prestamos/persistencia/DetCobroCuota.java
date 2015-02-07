@@ -5,11 +5,12 @@
 package py.gestionpymes.prestamos.prestamos.persistencia;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.*;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
-import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
 
 /**
  *
@@ -22,7 +23,7 @@ public class DetCobroCuota implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private double monto;
+    private BigDecimal monto = new BigDecimal(BigInteger.ZERO);
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fecha;
     @ManyToOne
@@ -86,11 +87,11 @@ public class DetCobroCuota implements Serializable {
         this.fecha = fecha;
     }
 
-    public double getMonto() {
+    public BigDecimal getMonto() {
         return monto;
     }
 
-    public void setMonto(double monto) {
+    public void setMonto(BigDecimal monto) {
         this.monto = monto;
     }
 

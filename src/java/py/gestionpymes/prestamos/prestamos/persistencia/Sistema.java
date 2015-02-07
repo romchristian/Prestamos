@@ -4,6 +4,7 @@
  */
 package py.gestionpymes.prestamos.prestamos.persistencia;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -25,6 +26,6 @@ public abstract  class Sistema {
     
     protected abstract List<DetPrestamo> calculaCuotas();
     
-    protected abstract double getCuota();
+    protected abstract BigDecimal getCuota();
     
 }

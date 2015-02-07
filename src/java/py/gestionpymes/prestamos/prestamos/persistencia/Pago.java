@@ -5,6 +5,8 @@
 package py.gestionpymes.prestamos.prestamos.persistencia;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.*;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
@@ -21,7 +23,7 @@ public abstract class Pago implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private double monto;
+    private BigDecimal monto = new BigDecimal(BigInteger.ZERO);
     @ManyToOne
     private Moneda moneda;
     @ManyToOne
@@ -61,11 +63,11 @@ public abstract class Pago implements Serializable {
         this.moneda = moneda;
     }
 
-    public double getMonto() {
+    public BigDecimal getMonto() {
         return monto;
     }
 
-    public void setMonto(double monto) {
+    public void setMonto(BigDecimal monto) {
         this.monto = monto;
     }
 

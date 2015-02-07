@@ -5,6 +5,8 @@
 package py.gestionpymes.prestamos.prestamos.web;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -57,9 +58,9 @@ public class PrestamoListadoBean implements Serializable {
     private Cliente cliente;
     private List<TreeCuota> seleccionados = new ArrayList<TreeCuota>();
     private List<TreeCuota> disponibles;
-    private double totalAPagar;
+    private BigDecimal totalAPagar;
     private TreeCuota cuotaSeleccionada;
-    private Double montoActual;
+    private BigDecimal montoActual;
     private Empresa empresa;
     private Sucursal sucursal;
     private EstadoPrestamo estado;
@@ -115,11 +116,11 @@ public class PrestamoListadoBean implements Serializable {
         return R;
     }
 
-    public Double getMontoActual() {
+    public BigDecimal getMontoActual() {
         return montoActual;
     }
 
-    public void setMontoActual(Double montoActual) {
+    public void setMontoActual(BigDecimal montoActual) {
         this.montoActual = montoActual;
     }
 
@@ -133,7 +134,7 @@ public class PrestamoListadoBean implements Serializable {
     public void setCuotaSeleccionada(TreeCuota cuotaSeleccionada) {
 
         this.cuotaSeleccionada = cuotaSeleccionada;
-        montoActual = cuotaSeleccionada == null ? 0 : cuotaSeleccionada.getSaldoCuota();
+        montoActual = cuotaSeleccionada == null ? new BigDecimal(BigInteger.ZERO) : cuotaSeleccionada.getSaldoCuota();
     }
 
     public void paga() {
@@ -153,15 +154,15 @@ public class PrestamoListadoBean implements Serializable {
 
     }
 
-    public double getTotalAPagar() {
-        totalAPagar = 0;
+    public BigDecimal getTotalAPagar() {
+        totalAPagar = new BigDecimal(BigInteger.ZERO);
         for (TreeCuota t : seleccionados) {
-            totalAPagar += t.getMontoPago();
+            totalAPagar = totalAPagar.add(t.getMontoPago());
         }
         return totalAPagar;
     }
 
-    public void setTotalAPagar(double totalAPagar) {
+    public void setTotalAPagar(BigDecimal totalAPagar) {
         this.totalAPagar = totalAPagar;
     }
 
@@ -239,32 +240,15 @@ public class PrestamoListadoBean implements Serializable {
         System.out.println("En selcciona");
 
         if (seleccionados == null) {
-            seleccionados = new ArrayList<TreeCuota>();
+            seleccionados = new ArrayList<>();
         }
 
         cuotaSeleccionada.setMontoPago(montoActual);
 
         seleccionados.add(cuotaSeleccionada);
 
-        montoActual = 0D;
+        montoActual = new BigDecimal(BigInteger.ZERO);
     }
 
-    @FacesValidator(value = "pagoValidator")
-    public static class PagoValidator implements Validator {
-
-        @Override
-        public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-            if (value instanceof Double) {
-                Double montoPago = (Double) value;
-
-                PrestamoListadoBean controller = (PrestamoListadoBean) context.getApplication().getELResolver().
-                        getValue(context.getELContext(), null, "cobraCuotaBean");
-                if (montoPago > (controller.getCuotaSeleccionada().getSaldoCuota() + controller.getCuotaSeleccionada().getMontoMora())) {
-                    FacesMessage msg = new FacesMessage("El pago excede el monto de la cuota");
-                    throw new ValidatorException(msg);
-                }
-            }
-        }
-
-    }
+    
 }

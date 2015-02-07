@@ -6,6 +6,8 @@ package py.gestionpymes.prestamos.prestamos.persistencia;
 
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoOperacion;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.*;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
@@ -36,8 +38,8 @@ public abstract class DetCuentaCliente<T> implements Serializable {
     private TipoOperacion tipoOperacion;
     private String descripcion;
     
-    private double montoCredito;
-    private double montoDebito;
+    private BigDecimal montoCredito = new BigDecimal(BigInteger.ZERO);
+    private BigDecimal montoDebito = new BigDecimal(BigInteger.ZERO);
     @ManyToOne
     private Prestamo prestamo;
     @ManyToOne
@@ -132,19 +134,19 @@ public abstract class DetCuentaCliente<T> implements Serializable {
         this.fecha = fecha;
     }
 
-    public double getMontoCredito() {
+    public BigDecimal getMontoCredito() {
         return montoCredito;
     }
 
-    public void setMontoCredito(double montoCredito) {
+    public void setMontoCredito(BigDecimal montoCredito) {
         this.montoCredito = montoCredito;
     }
 
-    public double getMontoDebito() {
+    public BigDecimal getMontoDebito() {
         return montoDebito;
     }
 
-    public void setMontoDebito(double montoDebito) {
+    public void setMontoDebito(BigDecimal montoDebito) {
         this.montoDebito = montoDebito;
     }
 
