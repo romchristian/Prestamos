@@ -43,6 +43,9 @@ public class TreeCuota {
     private boolean seleccionado;
     private Empresa empresa;
     private Sucursal sucursal;
+    private BigDecimal montoMoratorio;
+    private BigDecimal montoPunitorio;
+    
 
     public TreeCuota() {
     }
@@ -66,6 +69,10 @@ public class TreeCuota {
         this.nroCuota = detPrestamo.getNroCuota();
         this.montoCuota = detPrestamo.getMontoCuota().setScale(0, RoundingMode.HALF_EVEN);
         this.diasMora = detPrestamo.getDiasMora();
+        
+        this.montoMoratorio = detPrestamo.calculaMoratorio();
+        this.montoPunitorio = detPrestamo.calculaPunitorio();
+        
         this.montoMora = detPrestamo.devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
         this.montoPago = detPrestamo.getMontoPago().setScale(0, RoundingMode.HALF_EVEN);
         this.saldoCuota = detPrestamo.getSaldoCuota().setScale(0, RoundingMode.HALF_EVEN);
@@ -77,6 +84,24 @@ public class TreeCuota {
         this.cancelado = true;
     }
 
+    public BigDecimal getMontoMoratorio() {
+        return montoMoratorio;
+    }
+
+    public void setMontoMoratorio(BigDecimal montoMoratorio) {
+        this.montoMoratorio = montoMoratorio;
+    }
+
+    public BigDecimal getMontoPunitorio() {
+        return montoPunitorio;
+    }
+
+    public void setMontoPunitorio(BigDecimal montoPunitorio) {
+        this.montoPunitorio = montoPunitorio;
+    }
+
+    
+    
     public Empresa getEmpresa() {
         return empresa;
     }

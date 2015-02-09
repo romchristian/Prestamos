@@ -9,6 +9,7 @@ import py.gestionpymes.prestamos.adm.persistencia.Cobrador;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
@@ -27,6 +29,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
  */
 @Entity
 public class FacturaVenta implements Serializable {
+    
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -72,6 +75,20 @@ public class FacturaVenta implements Serializable {
     private BigDecimal iva05;
     private BigDecimal iva10;
     private BigDecimal totalIva;
+    
+    @OneToMany(mappedBy = "facturaVenta")
+    private List<FacturaVentaDetalle> detalles;
+
+    public List<FacturaVentaDetalle> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<FacturaVentaDetalle> detalles) {
+        this.detalles = detalles;
+    }
+    
+    
+    
     
     
     public Long getId() {

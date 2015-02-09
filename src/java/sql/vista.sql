@@ -12,6 +12,7 @@ insert into rol (nombre, estado, version) values ('configuraciones','ACTIVO',1);
 insert into rol (nombre, estado, version) values ('agenda_cobro','ACTIVO',1);
 insert into rol (nombre, estado, version) values ('estado_cuenta','ACTIVO',1);
 insert into rol (nombre, estado, version) values ('informes','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('contabilidad','ACTIVO',1);
 
 
 insert into persona(dtype,estado,nrodocumento,usuario,clave,nombre) values('Usuario','ACTIVO','','admin','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918','Administrador');

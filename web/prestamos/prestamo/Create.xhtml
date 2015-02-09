@@ -40,7 +40,7 @@
                                                         completeMethod="#{autoCompleteCliente.completar}"
                                                         forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
                                                         >
-                                            <p:ajax event="itemSelect" update="panelCliente"/>
+                                            <p:ajax event="itemSelect" update="textoConyugeDeudor"/>
 
                                         </p:autoComplete>
                                         <p:spacer/>
@@ -49,8 +49,11 @@
 
                                         <h:outputText value="Conyuge: "
                                                       style="font-size: 10pt"/>
-                                        <h:outputText value="#{prestamoController.selected.cliente.conyuge != null ? prestamoController.selected.cliente.conyuge.devuelveNombreCompleto():'No asignado'}"
-                                                      style="font-size: 10pt"/>
+                                        <p:outputPanel id="textoConyugeDeudor">
+                                            <h:outputText value="#{prestamoController.selected.cliente.conyuge != null ? prestamoController.selected.cliente.conyuge.devuelveNombreCompleto():'No asignado'}"
+                                                          style="font-size: 10pt"/>
+                                        </p:outputPanel>
+
                                         <p:selectBooleanCheckbox value="#{prestamoController.selected.firmaConyugeTitular}"/>
                                         <h:outputText value="Marcar si el conyuge firmará el pagaré"/>
 
@@ -62,7 +65,7 @@
                                                         completeMethod="#{autoCompleteCliente.completar}"
                                                         forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento} #{c.devuelveNombreCompleto()}"
                                                         >
-                                            <p:ajax event="itemSelect" update="panelCliente"/>
+                                            <p:ajax event="itemSelect" update="textoConyugeCoDeudor"/>
 
                                         </p:autoComplete>
                                         <p:spacer/>
@@ -70,8 +73,11 @@
 
                                         <h:outputText value="Conyuge: "
                                                       style="font-size: 10pt"/>
-                                        <h:outputText value="#{prestamoController.selected.codeudor.conyuge != null ? prestamoController.selected.codeudor.conyuge.devuelveNombreCompleto():'No asignado'}"
-                                                      style="font-size: 10pt"/>
+                                        <p:outputPanel id="textoConyugeCoDeudor">
+                                            <h:outputText value="#{prestamoController.selected.codeudor.conyuge != null ? prestamoController.selected.codeudor.conyuge.devuelveNombreCompleto():'No asignado'}"
+                                                          style="font-size: 10pt"/>    
+                                        </p:outputPanel>
+
                                         <p:selectBooleanCheckbox value="#{prestamoController.selected.firmaConyugeCodeudor}"/>
                                         <h:outputText value="Marcar si el conyuge firmará el pagaré"/>
 
@@ -163,7 +169,7 @@
                             <p:selectOneMenu value="#{prestamoController.selected.moneda}">
                                 <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
                             </p:selectOneMenu>
-                            
+
 
                             <h:outputText value="Total IVA"/>
                             <h:inputText value="#{prestamoController.selected.impuestoIVA}" disabled="true">
@@ -189,7 +195,7 @@
 
                             <p:spacer/>
                             <p:spacer/>
-                                   
+
                         </h:panelGrid>
 
                     </p:panel>

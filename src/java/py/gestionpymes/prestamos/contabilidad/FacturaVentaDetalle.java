@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -22,6 +23,8 @@ public class FacturaVentaDetalle implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    @ManyToOne
     private FacturaVenta facturaVenta;
     private int nrolinea;
     private BigDecimal cantidad;
@@ -31,6 +34,80 @@ public class FacturaVentaDetalle implements Serializable {
     private BigDecimal exenta;
     private BigDecimal gravada05;
     private BigDecimal gravada10;
+
+    public FacturaVenta getFacturaVenta() {
+        return facturaVenta;
+    }
+
+    public void setFacturaVenta(FacturaVenta facturaVenta) {
+        this.facturaVenta = facturaVenta;
+    }
+
+    public int getNrolinea() {
+        return nrolinea;
+    }
+
+    public void setNrolinea(int nrolinea) {
+        this.nrolinea = nrolinea;
+    }
+
+    public BigDecimal getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(BigDecimal cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public BigDecimal getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(BigDecimal precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
+
+    public BigDecimal getImpuesto() {
+        return impuesto;
+    }
+
+    public void setImpuesto(BigDecimal impuesto) {
+        this.impuesto = impuesto;
+    }
+
+    public BigDecimal getExenta() {
+        return exenta;
+    }
+
+    public void setExenta(BigDecimal exenta) {
+        this.exenta = exenta;
+    }
+
+    public BigDecimal getGravada05() {
+        return gravada05;
+    }
+
+    public void setGravada05(BigDecimal gravada05) {
+        this.gravada05 = gravada05;
+    }
+
+    public BigDecimal getGravada10() {
+        return gravada10;
+    }
+
+    public void setGravada10(BigDecimal gravada10) {
+        this.gravada10 = gravada10;
+    }
+    
+    
     
 
     public Long getId() {

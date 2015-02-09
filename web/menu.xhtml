@@ -19,17 +19,29 @@
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cobro_cuota'))}"/>
         <h:link  value="Agenda de Cobros" outcome="/prestamos/prestamo/agendaCobros.xhtml" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('agenda_cobro'))}"/>
-        
+
     </h:panelGrid>
 
+    <br/>
+    <h:outputText value="Contabilidad" style="font-size: 11pt; position: relative;left: -10px;font-weight: bold;margin-bottom: 20px"
+                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('contabilidad'))}"/>
+    <br/>
 
+    <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 0px;font-size: 11pt">
+        <h:link  value="Facturas" outcome="/contabilidad/facturaVenta/List.xhtml" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('contabilidad'))}"/>
+
+
+    </h:panelGrid>
+
+    <br/>
     <h:outputText value="Informes" style="font-size: 11pt; position: relative;left: -10px;font-weight: bold;margin-bottom: 20px"
                   rendered="#{(request.isUserInRole('admin') or request.isUserInRole('informes'))}"/>
 
     <br/>
 
     <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 0px;font-size: 11pt">
-        
+
         <h:link  value="Listados de Prestamo" outcome="/prestamos/informes/listadoPrestamo.xhtml" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('informes'))}"/>
         <h:link  value="Estado Cuenta Cliente" outcome="/prestamos/prestamo/estadoCuenta.xhtml" 

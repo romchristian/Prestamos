@@ -19,6 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -26,11 +28,15 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import py.gestionpymes.prestamos.adm.dao.MonedaFacade;
+import py.gestionpymes.prestamos.adm.persistencia.Empresa;
+import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
+import py.gestionpymes.prestamos.contabilidad.FacturaVenta;
+import py.gestionpymes.prestamos.contabilidad.FacturaVentaDetalle;
 import py.gestionpymes.prestamos.prestamos.dao.CobranzaDAO;
 import py.gestionpymes.prestamos.prestamos.dao.PagoExcedidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
@@ -44,7 +50,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
  * @author cromero
  */
 @Named
-@ViewScoped
+@SessionScoped
 public class CobraCuotaBean implements Serializable {
 
     @EJB
@@ -62,10 +68,23 @@ public class CobraCuotaBean implements Serializable {
     private TreeCuota cuotaSeleccionada;
     private BigDecimal montoActual;
 
+    private FacturaVenta facturaVenta;
+
+    public FacturaVenta getFacturaVenta() {
+        if (facturaVenta == null) {
+            facturaVenta = new FacturaVenta();
+        }
+        return facturaVenta;
+    }
+
+    public void setFacturaVenta(FacturaVenta facturaVenta) {
+        this.facturaVenta = facturaVenta;
+    }
+
     public String obtDescCuota() {
         String R = "";
         if (cuotaSeleccionada != null && cuotaSeleccionada.getPrestamo() != null) {
-            NumberFormat nf = NumberFormat.getInstance(new Locale("es","py"));
+            NumberFormat nf = NumberFormat.getInstance(new Locale("es", "py"));
             R = cuotaSeleccionada.getPrestamo().getId() + ";" + nf.format(cuotaSeleccionada.getPrestamo().getMontoPrestamo()) + " - Cuota Nro "
                     + cuotaSeleccionada.getDetPrestamo().getNroCuota();
         }
@@ -82,10 +101,11 @@ public class CobraCuotaBean implements Serializable {
 
     public Date obtUltimoPago() {
         Date R = null;
-        if(cuotaSeleccionada != null && cuotaSeleccionada.getPrestamo() != null){
+        if (cuotaSeleccionada != null && cuotaSeleccionada.getPrestamo() != null) {
             R = cuotaSeleccionada.getPrestamo().getUltimoPago();
+
         }
-        
+
         return R;
     }
 
@@ -110,6 +130,117 @@ public class CobraCuotaBean implements Serializable {
         montoActual = cuotaSeleccionada == null ? new BigDecimal(BigInteger.ZERO) : cuotaSeleccionada.getSaldoCuota();
     }
 
+    public String generaFactura() {
+        if (cliente == null) {
+            JsfUtil.addErrorMessage("Debe Seleccionar un cliente");
+            return null;
+        }
+
+        if (cuotaSeleccionada == null) {
+            JsfUtil.addErrorMessage("Debe seleccionar al menos uno cuota");
+            return null;
+        }
+
+        facturaVenta = new FacturaVenta();
+        facturaVenta.setCliente(cliente);
+        if (cuotaSeleccionada != null) {
+            facturaVenta.setEmpresa(cuotaSeleccionada.getEmpresa());
+            facturaVenta.setSucursal(cuotaSeleccionada.getSucursal());
+        }
+
+        
+        facturaVenta.setFechaCreacion(new Date());
+        facturaVenta.setFechaEmision(new Date());
+        facturaVenta.setDireccion(cliente.devuelveDireccionParticular());
+        facturaVenta.setRazonSocial(cliente.devuelveNombreCompleto());
+        facturaVenta.setRuc(cliente.getNroDocumento());
+        facturaVenta.setCodEstablecimiento("001");
+        facturaVenta.setPuntoExpedicion("001");
+        facturaVenta.setNumero("0000001");
+
+        facturaVenta.setDetalles(new ArrayList<FacturaVentaDetalle>());
+        int nrolinea = 1;
+        for (TreeCuota t : seleccionados) {
+            FacturaVentaDetalle d = new FacturaVentaDetalle();
+            d.setFacturaVenta(facturaVenta);
+            d.setNrolinea(nrolinea);
+            d.setCantidad(new BigDecimal(BigInteger.ONE));
+
+            d.setDescripcion("Pago de " + t.getDescDetPrestamo() + ", Prestamo #" + t.getPrestamo().getId());
+            d.setPrecioUnitario(t.getMontoCuota());
+            d.setGravada10(d.getCantidad().multiply(d.getPrecioUnitario()));
+            facturaVenta.getDetalles().add(d);
+            nrolinea++;
+
+            if (t.getMontoMoratorio().compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
+                FacturaVentaDetalle d2 = new FacturaVentaDetalle();
+                d2.setFacturaVenta(facturaVenta);
+                d2.setNrolinea(nrolinea);
+                d2.setCantidad(new BigDecimal(BigInteger.ONE));
+
+                d2.setDescripcion("Pago por mora de la " + t.getDescDetPrestamo() + ", Prestamo #" + t.getPrestamo().getId());
+                d2.setPrecioUnitario(t.getMontoMoratorio());
+                d2.setGravada10(d2.getCantidad().multiply(d2.getPrecioUnitario()));
+                facturaVenta.getDetalles().add(d2);
+                nrolinea++;
+            }
+
+            if (t.getMontoPunitorio().compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
+                FacturaVentaDetalle d3 = new FacturaVentaDetalle();
+                d3.setFacturaVenta(facturaVenta);
+                d3.setNrolinea(nrolinea);
+                d3.setCantidad(new BigDecimal(BigInteger.ONE));
+
+                d3.setDescripcion("Pago punitorio de la " + t.getDescDetPrestamo() + ", Prestamo #" + t.getPrestamo().getId());
+                d3.setPrecioUnitario(t.getMontoPunitorio());
+                d3.setGravada10(d3.getCantidad().multiply(d3.getPrecioUnitario()));
+                facturaVenta.getDetalles().add(d3);
+                nrolinea++;
+            }
+
+            BigDecimal totalexento = new BigDecimal(BigInteger.ZERO);
+            BigDecimal totalgravada05 = new BigDecimal(BigInteger.ZERO);
+            BigDecimal totalgravada10 = new BigDecimal(BigInteger.ZERO);
+            for (FacturaVentaDetalle fd : facturaVenta.getDetalles()) {
+                if(fd.getExenta() != null ){
+                    totalexento = totalexento.add(fd.getExenta());
+                }
+                if(fd.getGravada05() != null ){
+                    totalgravada05 = totalgravada05.add(fd.getGravada05());
+                }
+                
+                if(fd.getGravada10()!= null ){
+                    totalgravada10 = totalgravada10.add(fd.getGravada10());
+                }
+                
+                
+            }
+
+            BigDecimal total = totalgravada10.add(totalgravada05).add(totalexento);
+            BigDecimal iva05 = new BigDecimal(BigInteger.ZERO);
+            BigDecimal iva10 = new BigDecimal(BigInteger.ZERO);
+            if (iva10.compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
+                iva10 = iva10.divide(new BigDecimal(11), 0, RoundingMode.HALF_EVEN);
+            }
+            if (iva05.compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
+                iva05 = iva05.divide(new BigDecimal(21), 0, RoundingMode.HALF_EVEN);
+            }
+
+            BigDecimal ivatotal = iva05.add(iva10);
+
+            facturaVenta.setTotalExento(totalexento.setScale(0, RoundingMode.HALF_EVEN));
+            facturaVenta.setTotalGravada10(totalgravada05.setScale(0, RoundingMode.HALF_EVEN));
+            facturaVenta.setTotalGravada10(totalgravada10.setScale(0, RoundingMode.HALF_EVEN));
+            facturaVenta.setTotal(total.setScale(0, RoundingMode.HALF_EVEN));
+            facturaVenta.setIva05(iva05.setScale(0, RoundingMode.HALF_EVEN));
+            facturaVenta.setIva10(iva10.setScale(0, RoundingMode.HALF_EVEN));
+            facturaVenta.setTotalIva(ivatotal.setScale(0, RoundingMode.HALF_EVEN));
+
+        }
+
+        return "/contabilidad/facturaVenta/CreaFactura?faces-redirect=true";
+    }
+
     public void paga() {
         try {
             for (TreeCuota t : seleccionados) {
@@ -129,6 +260,7 @@ public class CobraCuotaBean implements Serializable {
 
     @PostConstruct
     public void init() {
+
         cargaPrestamos();
     }
 
@@ -170,8 +302,9 @@ public class CobraCuotaBean implements Serializable {
     }
 
     public String buscaPrestamos() {
+
         cargaPrestamos();
-        return null;
+        return "cobraCuota?faces-redirect=true";
     }
 
     private void cargaPrestamos() {
