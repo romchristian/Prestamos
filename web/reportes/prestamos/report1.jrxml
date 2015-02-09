@@ -26,6 +26,7 @@
 	<field name="firmaConyugeCodeudor" class="java.lang.Boolean"/>
 	<field name="nroCuota" class="java.lang.Integer"/>
 	<field name="fechaVencimiento" class="java.util.Date"/>
+	<field name="saldoCapital" class="java.lang.BigDecimal"/>
 	<field name="cuotaCapital" class="java.math.BigDecimal"/>
 	<field name="cuotaIntereses" class="java.math.BigDecimal"/>
 	<field name="impuestoIvaCuota" class="java.math.BigDecimal"/>
@@ -46,7 +47,7 @@
 	</title>
 	<pageHeader>
 		<band height="143">
-			<textField pattern="dd/MM/yyyy">
+			<textField>
 				<reportElement x="0" y="0" width="253" height="20" uuid="794c467f-19dc-4023-9ec5-eb8b4ea1258c"/>
 				<textElement>
 					<font fontName="Arial"/>
@@ -221,6 +222,10 @@
 				<text><![CDATA[IMPUESTO]]></text>
 			</staticText>
 			<staticText>
+				<reportElement x="515" y="20" width="91" height="20" uuid="ddbbd8c1-78fc-404a-99ed-2cca056023ea"/>
+				<text><![CDATA[SALDO CAPITAL]]></text>
+			</staticText>
+			<staticText>
 				<reportElement x="321" y="20" width="91" height="20" uuid="ae80de0f-e1a4-43ae-82ae-e0b69a922cdf"/>
 				<text><![CDATA[CUOTA INTERES]]></text>
 			</staticText>
@@ -241,7 +246,6 @@
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fechaVencimiento}]]></textFieldExpression>
-				<patternExpression><![CDATA[$F{fechaVencimiento}]]></patternExpression>
 			</textField>
 			<textField pattern="¤ #,##0" isBlankWhenNull="true">
 				<reportElement x="131" y="3" width="91" height="20" uuid="92bbfe0a-ab93-4c73-b51a-e548d557f0f4"/>
@@ -249,7 +253,6 @@
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{montoCuota}]]></textFieldExpression>
-				<patternExpression><![CDATA[$F{montoCuota}]]></patternExpression>
 			</textField>
 			<textField pattern="¤ #,##0" isBlankWhenNull="true">
 				<reportElement x="226" y="4" width="91" height="20" uuid="2585525d-dda4-4a8d-b572-99b6ac8ad041"/>
@@ -257,7 +260,6 @@
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cuotaCapital}]]></textFieldExpression>
-				<patternExpression><![CDATA[$F{cuotaCapital}]]></patternExpression>
 			</textField>
 			<textField pattern="¤ #,##0" isBlankWhenNull="true">
 				<reportElement x="321" y="4" width="91" height="20" uuid="b6e82b70-0da2-4b7b-bfd6-a4b24726b622"/>
@@ -265,7 +267,6 @@
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cuotaIntereses}]]></textFieldExpression>
-				<patternExpression><![CDATA[$F{cuotaIntereses}]]></patternExpression>
 			</textField>
 			<textField pattern="¤ #,##0" isBlankWhenNull="true">
 				<reportElement x="418" y="4" width="91" height="20" uuid="fa7f1b40-c4aa-4221-a408-7cd0000de2f8"/>
@@ -273,7 +274,13 @@
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{impuestoIvaCuota}]]></textFieldExpression>
-				<patternExpression><![CDATA[$F{impuestoIvaCuota}]]></patternExpression>
+			</textField>
+			<textField pattern="¤ #,##0" isBlankWhenNull="true">
+				<reportElement x="515" y="4" width="91" height="20" uuid="8b43a605-96af-4d2b-b07d-0664741b1da3"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldoCapital}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

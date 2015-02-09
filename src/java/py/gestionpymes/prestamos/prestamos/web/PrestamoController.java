@@ -65,7 +65,7 @@ public class PrestamoController implements Serializable {
         selected.setSistema(null);
         selected.setDetalles(null);
         selected.calcula();
-        
+
         return null;
     }
 
@@ -81,19 +81,19 @@ public class PrestamoController implements Serializable {
 
         pagare = new Pagare(selected);
 
-       
-
         List<Pagare> data = new ArrayList<>();
         data.add(pagare);
 
         reporteController.generaPDF(new HashMap(), data, "reportes/prestamos/pagares.jasper");
     }
-    
+
     public void imprimeLiquidacionPrestamo() {
 
-
+        Prestamo p = new Prestamo();
+        p=selected;
+        
         List<Prestamo> data = new ArrayList<>();
-        data.add(selected);
+        data.add(p);
 
         reporteController.generaPDF(new HashMap(), data, "reportes/prestamos/liquidacion.jasper");
     }
@@ -101,8 +101,6 @@ public class PrestamoController implements Serializable {
     public void desembolsa() {
         ejbFacade.desembolsa(selected);
     }
-    
-
 
     public void confirmaPagare() {
         selected.setFirmaPagare(true);
@@ -210,11 +208,10 @@ public class PrestamoController implements Serializable {
         return getFacade().find(id);
     }
 
-    
     public List<Prestamo> getPrestamosADesembolsar() {
         return getFacade().findAllEstado(EstadoPrestamo.EN_DESEMBOLSO);
     }
-    
+
     public List<Prestamo> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }

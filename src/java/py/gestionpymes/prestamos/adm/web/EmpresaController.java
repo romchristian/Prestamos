@@ -27,7 +27,7 @@ public class EmpresaController implements Serializable {
     private py.gestionpymes.prestamos.adm.dao.EmpresaFacade ejbFacade;
     private List<Empresa> items = null;
     private Empresa selected;
-
+    
     public EmpresaController() {
     }
 
@@ -35,6 +35,7 @@ public class EmpresaController implements Serializable {
         return selected;
     }
 
+    
     public void setSelected(Empresa selected) {
         this.selected = selected;
     }

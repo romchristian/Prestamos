@@ -12,34 +12,44 @@
             <h:form id="CobradorCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{cobradorController.selected != null}">
+                        
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{cobradorController.selected.id}" title="#{bundle.CreateCobradorTitle_id}" disabled="true"/>
+                        
                         <p:outputLabel value="#{bundle.CreateCobradorLabel_nombres}" for="nombres" />
                         <p:inputText id="nombres" value="#{cobradorController.selected.nombres}" title="#{bundle.CreateCobradorTitle_nombres}" />
+                        
                         <p:outputLabel value="#{bundle.CreateCobradorLabel_apellidos}" for="apellidos" />
-                        <p:inputText id="apellidos" value="#{cobradorController.selected.apellidos}" title="#{bundle.CreateCobradorTitle_apellidos}" />
-                        <p:outputLabel value="#{bundle.CreateCobradorLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{cobradorController.selected.id}" title="#{bundle.CreateCobradorTitle_id}" />
-                        <p:outputLabel value="#{bundle.CreateCobradorLabel_estado}" for="estado" />
-                        <p:inputText id="estado" value="#{cobradorController.selected.estado}" title="#{bundle.CreateCobradorTitle_estado}" />
+                        <p:inputText id="apellidos" value="#{cobradorController.selected.apellidos}" title="#{bundle.CreateCobradorTitle_apellidos}" />                        
+                        <h:outputText value="Tipo Doc."/>
+                        <h:selectOneMenu value="#{cobradorController.selected.tipoDocumento}">
+                            <f:selectItems value="#{productorEnums.obtTiposDoc()}"/>
+                        </h:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_nroDocumento}" for="nroDocumento" />
+                        <p:inputText id="nroDocumento" value="#{cobradorController.selected.nroDocumento}" title="#{bundle.CreateCobradorTitle_nroDocumento}" />
+                        
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_vigencia}" for="vigencia" />
+                        <p:calendar id="vigencia" locale="es" pattern="dd/MM/yyyy" value="#{cobradorController.selected.vigencia}" title="#{bundle.EditCobradorTitle_vigencia}"  showOn="button"/>
+                        
                         <p:outputLabel value="#{bundle.CreateCobradorLabel_empresa}" for="empresa" />
                         <p:selectOneMenu id="empresa" value="#{cobradorController.selected.empresa}" >
                             <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"
                                            var="empresaItem"
                                            itemValue="#{empresaItem}"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="#{bundle.CreateCobradorLabel_nroDocumento}" for="nroDocumento" />
-                        <p:inputText id="nroDocumento" value="#{cobradorController.selected.nroDocumento}" title="#{bundle.CreateCobradorTitle_nroDocumento}" />
+                        
                         <p:outputLabel value="#{bundle.CreateCobradorLabel_sucursal}" for="sucursal" />
                         <p:selectOneMenu id="sucursal" value="#{cobradorController.selected.sucursal}" >
                             <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"
                                            var="sucursalItem"
                                            itemValue="#{sucursalItem}"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="#{bundle.CreateCobradorLabel_tipoDocumento}" for="tipoDocumento" />
-                        <p:inputText id="tipoDocumento" value="#{cobradorController.selected.tipoDocumento}" title="#{bundle.CreateCobradorTitle_tipoDocumento}" />
+                        
                         <p:outputLabel value="#{bundle.CreateCobradorLabel_version}" for="version" />
-                        <p:inputText id="version" value="#{cobradorController.selected.version}" title="#{bundle.CreateCobradorTitle_version}" />
-                        <p:outputLabel value="#{bundle.CreateCobradorLabel_vigencia}" for="vigencia" />
-                        <p:calendar id="vigencia" pattern="MM/dd/yyyy" value="#{cobradorController.selected.vigencia}" title="#{bundle.EditCobradorTitle_vigencia}"  showOn="button"/>
+                        <p:inputText id="version" value="#{cobradorController.selected.version}" title="#{bundle.CreateCobradorTitle_version}" disabled="true" />
+                        
+                        <p:outputLabel value="#{bundle.CreateCobradorLabel_estado}" for="estado" />
+                        <p:inputText id="estado" value="#{cobradorController.selected.estado}" title="#{bundle.CreateCobradorTitle_estado}" />
                     </p:panelGrid>
                     <p:commandButton actionListener="#{cobradorController.create}" value="#{bundle.Save}" update="display,:CobradorListForm:datalist,:growl" oncomplete="handleSubmit(args,'CobradorCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="CobradorCreateDialog.hide()"/>

@@ -48,9 +48,9 @@
                                          rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_confirma_pagare'))}"/>
                         
                         
-                        <p:commandButton id="imprimirLiqButton" action="#{prestamoController.confirmaPagare()}" value="Imprimir Liq. Prestamo" update="datalist"
+                        <p:commandButton id="imprimirLiqButton" action="#{prestamoController.imprimeLiquidacionPrestamo()}" value="Imprimir Liq. Prestamo" ajax="false" update="datalist"
                                          disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
-                                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_confirma_pagare'))}"/>
+                                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_pagare'))}"/>
 
 
                         <p:commandButton id="cancelarButton" action="#{prestamoController.anulaConfimacion()}" value="Cancelar Pagare" update="datalist"

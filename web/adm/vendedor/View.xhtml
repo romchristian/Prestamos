@@ -8,32 +8,42 @@
 
     <ui:composition>
 
-        <p:dialog id="VendedorViewDlg" widgetVar="VendedorViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewVendedorTitle}">
+        <p:dialog id="VendedorViewDlg" widgetVar="VendedorViewDialog" modal="false" resizable="false" appendTo="@(body)" header="Datos de Vendedor">
             <h:form id="VendedorViewForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{vendedorController.selected != null}">
-                        <h:outputText value="#{bundle.ViewVendedorLabel_nombres}"/>
-                        <h:outputText value="#{vendedorController.selected.nombres}" title="#{bundle.ViewVendedorTitle_nombres}"/>
-                        <h:outputText value="#{bundle.ViewVendedorLabel_apellidos}"/>
-                        <h:outputText value="#{vendedorController.selected.apellidos}" title="#{bundle.ViewVendedorTitle_apellidos}"/>
+
                         <h:outputText value="#{bundle.ViewVendedorLabel_id}"/>
                         <h:outputText value="#{vendedorController.selected.id}" title="#{bundle.ViewVendedorTitle_id}"/>
-                        <h:outputText value="#{bundle.ViewVendedorLabel_estado}"/>
-                        <h:outputText value="#{vendedorController.selected.estado}" title="#{bundle.ViewVendedorTitle_estado}"/>
-                        <h:outputText value="#{bundle.ViewVendedorLabel_empresa}"/>
-                        <h:outputText value="#{vendedorController.selected.empresa}" title="#{bundle.ViewVendedorTitle_empresa}"/>
-                        <h:outputText value="#{bundle.ViewVendedorLabel_nroDocumento}"/>
-                        <h:outputText value="#{vendedorController.selected.nroDocumento}" title="#{bundle.ViewVendedorTitle_nroDocumento}"/>
-                        <h:outputText value="#{bundle.ViewVendedorLabel_sucursal}"/>
-                        <h:outputText value="#{vendedorController.selected.sucursal}" title="#{bundle.ViewVendedorTitle_sucursal}"/>
+
+                        <h:outputText value="#{bundle.ViewVendedorLabel_nombres}"/>
+                        <h:outputText value="#{vendedorController.selected.nombres}" title="#{bundle.ViewVendedorTitle_nombres}"/>
+
+                        <h:outputText value="#{bundle.ViewVendedorLabel_apellidos}"/>
+                        <h:outputText value="#{vendedorController.selected.apellidos}" title="#{bundle.ViewVendedorTitle_apellidos}"/>
+
                         <h:outputText value="#{bundle.ViewVendedorLabel_tipoDocumento}"/>
                         <h:outputText value="#{vendedorController.selected.tipoDocumento}" title="#{bundle.ViewVendedorTitle_tipoDocumento}"/>
-                        <h:outputText value="#{bundle.ViewVendedorLabel_version}"/>
-                        <h:outputText value="#{vendedorController.selected.version}" title="#{bundle.ViewVendedorTitle_version}"/>
+
+                        <h:outputText value="#{bundle.ViewVendedorLabel_nroDocumento}"/>
+                        <h:outputText value="#{vendedorController.selected.nroDocumento}" title="#{bundle.ViewVendedorTitle_nroDocumento}"/>
+
                         <h:outputText value="#{bundle.ViewVendedorLabel_vigencia}"/>
                         <h:outputText value="#{vendedorController.selected.vigencia}" title="#{bundle.ViewVendedorTitle_vigencia}">
-                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                            <f:convertDateTime locale="es" pattern="dd/MM/yyyy" />
                         </h:outputText>
+
+                        <h:outputText value="#{bundle.ViewVendedorLabel_empresa}"/>
+                        <h:outputText value="#{vendedorController.selected.empresa.razonSocial}" title="#{bundle.ViewVendedorTitle_empresa}"/>
+
+                        <h:outputText value="#{bundle.ViewVendedorLabel_sucursal}"/>
+                        <h:outputText value="#{vendedorController.selected.sucursal.nombre}" title="#{bundle.ViewVendedorTitle_sucursal}"/>
+
+                        <h:outputText value="#{bundle.ViewVendedorLabel_version}"/>
+                        <h:outputText value="#{vendedorController.selected.version}" title="#{bundle.ViewVendedorTitle_version}"/>
+
+                        <h:outputText value="#{bundle.ViewVendedorLabel_estado}"/>
+                        <h:outputText value="#{vendedorController.selected.estado}" title="#{bundle.ViewVendedorTitle_estado}"/>
                     </p:panelGrid>
                     <p:commandButton value="#{bundle.Close}" onclick="VendedorViewDialog.hide()"/>
                 </h:panelGroup>

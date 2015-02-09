@@ -18,15 +18,25 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.view.ViewScoped;
 
 @Named("categoriaController")
-@SessionScoped
+@ViewScoped
 public class CategoriaController implements Serializable {
 
     @EJB
     private py.gestionpymes.prestamos.adm.dao.CategoriaFacade ejbFacade;
     private List<Categoria> items = null;
     private Categoria selected;
+    private long id;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public CategoriaController() {
     }

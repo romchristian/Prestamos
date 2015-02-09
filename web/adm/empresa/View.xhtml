@@ -8,7 +8,7 @@
 
     <ui:composition>
 
-        <p:dialog id="EmpresaViewDlg" widgetVar="EmpresaViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewEmpresaTitle}">
+        <p:dialog id="EmpresaViewDlg" widgetVar="EmpresaViewDialog" modal="false" resizable="false"  header="#{bundle.ViewEmpresaTitle}">
             <h:form id="EmpresaViewForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{empresaController.selected != null}">

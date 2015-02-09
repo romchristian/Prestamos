@@ -6,6 +6,7 @@
 package py.gestionpymes.prestamos.prestamos.web;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -56,7 +57,7 @@ public class Pagare {
         this.prestamo = prestamo;
 
         monto = this.prestamo.getTotalOperacion();
-        setMontoLetras(this.prestamo.getTotalOperacion());
+        setMontoLetras(this.prestamo.getTotalOperacion().setScale(0, RoundingMode.HALF_EVEN));
         fechaEmision = this.prestamo.getFechaInicioOperacion();
         setFechaEmisionTexto(this.prestamo.getFechaInicioOperacion());
         DateTime d = new DateTime(this.prestamo.getFechaInicioOperacion());

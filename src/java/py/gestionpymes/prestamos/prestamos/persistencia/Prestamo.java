@@ -180,7 +180,7 @@ public class Prestamo implements Serializable {
     }
 
     public void setMontoPrestamo(BigDecimal montoPrestamo) {
-        this.montoPrestamo = montoPrestamo;
+        this.montoPrestamo = montoPrestamo.setScale(0, RoundingMode.HALF_EVEN);
     }
 
     public EstadoPrestamo getEstado() {
@@ -192,12 +192,12 @@ public class Prestamo implements Serializable {
     }
 
     public BigDecimal getCapital() {
-        capital = montoPrestamo.add(gastos).add(comisiones);
+        capital = montoPrestamo.add(gastos).add(comisiones).setScale(0, RoundingMode.HALF_EVEN);
         return capital;
     }
 
     public void setCapital(BigDecimal capital) {
-        this.capital = capital;
+        this.capital = capital.setScale(0, RoundingMode.HALF_EVEN);
     }
 
     public BigDecimal getImpuestoIVA() {
@@ -205,7 +205,7 @@ public class Prestamo implements Serializable {
     }
 
     public void setImpuestoIVA(BigDecimal impuestoIVA) {
-        this.impuestoIVA = impuestoIVA;
+        this.impuestoIVA = impuestoIVA.setScale(0, RoundingMode.HALF_EVEN);
     }
 
     public Cliente getCliente() {
@@ -253,7 +253,7 @@ public class Prestamo implements Serializable {
     }
 
     public void setGastos(BigDecimal gastos) {
-        this.gastos = gastos;
+        this.gastos = gastos.setScale(0, RoundingMode.HALF_EVEN);
     }
 
     public BigDecimal getComisiones() {
@@ -261,7 +261,7 @@ public class Prestamo implements Serializable {
     }
 
     public void setComisiones(BigDecimal comisiones) {
-        this.comisiones = comisiones;
+        this.comisiones = comisiones.setScale(0, RoundingMode.HALF_EVEN);
     }
 
     public BigDecimal getMontoCuota() {
@@ -269,7 +269,7 @@ public class Prestamo implements Serializable {
     }
 
     public void setMontoCuota(BigDecimal montoCuota) {
-        this.montoCuota = montoCuota;
+        this.montoCuota = montoCuota.setScale(0, RoundingMode.HALF_EVEN);
     }
 
     public PeriodoPago getPeriodoPago() {
@@ -310,15 +310,15 @@ public class Prestamo implements Serializable {
     }
 
     public void setTotalIntereses(BigDecimal totalIntereses) {
-        this.totalIntereses = totalIntereses;
+        this.totalIntereses = totalIntereses.setScale(0, RoundingMode.HALF_EVEN);
     }
 
     public BigDecimal getTotalOperacion() {
-        return totalOperacion;
+        return totalOperacion.setScale(0, RoundingMode.HALF_EVEN);
     }
 
     public void setTotalOperacion(BigDecimal totalOperacion) {
-        this.totalOperacion = totalOperacion;
+        this.totalOperacion = totalOperacion.setScale(0, RoundingMode.HALF_EVEN);
     }
 
     public Long getId() {
