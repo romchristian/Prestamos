@@ -85,9 +85,9 @@ public class FacturaVenta implements Serializable {
     @ManyToOne
     private Cotizacion cotizacion;
     
-    @OneToMany(mappedBy = "facturaVenta",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "facturaVenta",cascade = CascadeType.PERSIST)
     private List<FacturaVentaDetalle> detalles;
-    @OneToMany(mappedBy = "facturaVenta",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "facturaVenta",cascade = CascadeType.PERSIST)
     private List<Pago> pagos;
 
     public List<FacturaVentaDetalle> getDetalles() {

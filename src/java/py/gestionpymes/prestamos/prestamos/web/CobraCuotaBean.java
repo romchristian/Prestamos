@@ -4,7 +4,7 @@
  */
 package py.gestionpymes.prestamos.prestamos.web;
 
-import com.sun.org.apache.xalan.internal.xsltc.trax.TrAXFilter;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -20,8 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.Conversation;
-import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -29,12 +27,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import py.gestionpymes.prestamos.adm.dao.MonedaFacade;
-import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.contabilidad.FacturaVenta;
 import py.gestionpymes.prestamos.contabilidad.FacturaVentaDetalle;
@@ -285,7 +281,14 @@ public class CobraCuotaBean implements Serializable {
         }
         return "/prestamos/prestamo/cobraCuota?faces-redirect=true";
     }
+    
+    public String cancelaFactura() {
+        limpia();
+        return "/prestamos/prestamo/cobraCuota?faces-redirect=true";
+    }
 
+    
+    
     @PostConstruct
     public void init() {
 

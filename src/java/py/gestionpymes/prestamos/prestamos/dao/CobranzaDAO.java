@@ -40,7 +40,7 @@ public class CobranzaDAO {
     @EJB
     private PagoDAO pagoDAO;
 
-    public CobroCuota create(FacturaVenta f) throws PagoExcedidoException {
+    public FacturaVenta create(FacturaVenta f) throws PagoExcedidoException {
         // Creo el medio de pago Efectivo por defecto
         Efectivo efe = new Efectivo();
         efe.setFecha(new Date());
@@ -50,7 +50,7 @@ public class CobranzaDAO {
         f.setPagos(new ArrayList<Pago>());
         f.getPagos().add(efe);
 
-        em.merge(f);
+        em.persist(f);
 
         CuentaCliente cc = (CuentaCliente) em.createQuery("select c from CuentaCliente c where c.cliente = :cliente")
                 .setParameter("cliente", f.getCliente()).getSingleResult();
@@ -61,10 +61,18 @@ public class CobranzaDAO {
             occ.setFecha(new Date());
             detCuentaClienteDAO.create(occ);
             
-            
+            DetPrestamo dp = df.getDetPrestamo();
+             if (!dp.afectaSaldoCuota(df.getGravada10(),df.getRefMonto())) {
+                throw new PagoExcedidoException("El monto no puede ser mayor al saldo de la cuota");
+            } else {
+                Prestamo p = dp.getPrestamo();
+                p.setUltimoPago(dp.getUltimoPago());
+                em.merge(dp);
+                em.merge(p);
+            }
         }
 
-        return null;
+        return f;
     }
 
     public CobroCuota create(TreeCuota t) throws PagoExcedidoException {

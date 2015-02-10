@@ -70,8 +70,8 @@ public class TreeCuota {
         this.montoCuota = detPrestamo.getMontoCuota().setScale(0, RoundingMode.HALF_EVEN);
         this.diasMora = detPrestamo.getDiasMora();
         
-        this.montoMoratorio = detPrestamo.calculaMoratorio();
-        this.montoPunitorio = detPrestamo.calculaPunitorio();
+        this.montoMoratorio = detPrestamo.calculaSaldoMoratorio();
+        this.montoPunitorio = detPrestamo.calculaSaldoPunitorio();
         
         this.montoMora = detPrestamo.devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
         this.montoPago = detPrestamo.getMontoPago().setScale(0, RoundingMode.HALF_EVEN);

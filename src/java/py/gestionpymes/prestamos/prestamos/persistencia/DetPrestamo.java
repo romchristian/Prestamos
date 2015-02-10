@@ -46,8 +46,6 @@ public class DetPrestamo implements Serializable {
     private BigDecimal montoMora = new BigDecimal(BigInteger.ZERO);
     private BigDecimal moraPunitorio = new BigDecimal(BigInteger.ZERO);
     private BigDecimal moraMoratorio = new BigDecimal(BigInteger.ZERO);
-    private BigDecimal saldoPunitorio = new BigDecimal(BigInteger.ZERO);
-    private BigDecimal saldoMoratorio = new BigDecimal(BigInteger.ZERO);
     private BigDecimal ivaMoraPunitorio = new BigDecimal(BigInteger.ZERO);
     private BigDecimal ivaMoraMoratorio = new BigDecimal(BigInteger.ZERO);
 
@@ -133,26 +131,7 @@ public class DetPrestamo implements Serializable {
     public void setMoraMoratorio(BigDecimal moraMoratorio) {
         this.moraMoratorio = moraMoratorio;
     }
-
-    public BigDecimal getSaldoPunitorio() {
-        return saldoPunitorio;
-    }
-
-    public void setSaldoPunitorio(BigDecimal saldoPunitorio) {
-        this.saldoPunitorio = saldoPunitorio;
-    }
-
-    public BigDecimal getSaldoMoratorio() {
-        return saldoMoratorio;
-    }
-
-    public void setSaldoMoratorio(BigDecimal saldoMoratorio) {
-        this.saldoMoratorio = saldoMoratorio;
-    }
     
-    
-    
-
     public BigDecimal getImpuestoIvaCuota() {
         impuestoIvaCuota = cuotaInteres.multiply(new BigDecimal(0.1));
         return impuestoIvaCuota;
@@ -283,9 +262,9 @@ public class DetPrestamo implements Serializable {
         if (saldoCuota.compareTo(new BigDecimal(0)) == 0) {
             return montoMora.setScale(0, RoundingMode.HALF_EVEN);
         } else {
-            BigDecimal moratorio = calculaMoratorio();
+            BigDecimal moratorio = calculaSaldoMoratorio();
             System.out.println("moratorio: " + moratorio);
-            BigDecimal punitorio = calculaPunitorio();
+            BigDecimal punitorio = calculaSaldoPunitorio();
             System.out.println("punitorio: " + punitorio);
             BigDecimal R = moratorio.add(punitorio);
             System.out.println("R: " + R);
@@ -294,7 +273,15 @@ public class DetPrestamo implements Serializable {
 
     }
 
-    public BigDecimal calculaMoratorio() {
+    public BigDecimal calculaSaldoMoratorio(){
+        return calculaMontoPorDiasMoratorio().subtract(moraMoratorio);
+    }
+    
+    public BigDecimal calculaSaldoPunitorio(){
+        return calculaMontoPorDiasPunitorio().subtract(moraPunitorio);
+    }
+    
+    public BigDecimal calculaMontoPorDiasMoratorio() {
         BigDecimal R = new BigDecimal(BigInteger.ZERO);
         System.out.println("HOLA 0 :" + getDiasMora());
         if (getDiasMora() > 0) {
@@ -309,7 +296,7 @@ public class DetPrestamo implements Serializable {
         return R;
     }
 
-    public BigDecimal calculaPunitorio() {
+    public BigDecimal calculaMontoPorDiasPunitorio() {
         BigDecimal R = new BigDecimal(BigInteger.ZERO);
         if (getDiasMora() > 0) {
             double interesDiario = getInteresPunitorio() / 100d / 12d / 30d;
@@ -348,10 +335,12 @@ public class DetPrestamo implements Serializable {
 
     public BigDecimal getSaldoCuota() {
         if (estado == EstadoDetPrestamo.PENDIENTE) {
-            saldoCuota = getMontoCuota().add(devuelveMontoMora()).subtract(getMontoPago()).setScale(0, RoundingMode.HALF_EVEN);
+            saldoCuota = calculaMontoPorDiasMoratorio().add(calculaMontoPorDiasPunitorio()).add(getMontoCuota()).subtract(getMontoPago()).setScale(0, RoundingMode.HALF_EVEN);
         }
         return saldoCuota;
     }
+    
+    
 
     public void setSaldoCuota(BigDecimal saldoCuota) {
         this.saldoCuota = saldoCuota;
@@ -373,25 +362,23 @@ public class DetPrestamo implements Serializable {
    
         if ((saldoCuota.add(mora).compareTo(monto)) >= 0) {
 
-            
-            
             montoPago = montoPago.add(monto);
             if(refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_CUOTA) == 0){
                 saldoCuota = saldoCuota.subtract(monto);
+            }else if(refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0){
+                moraMoratorio = moraMoratorio.add(monto);
+            }else if(refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_PUNITORIO) == 0){
+                moraPunitorio = moraPunitorio.add(monto);
             }
             
-            
-            
+            ultimoPago = new Date();
             
             R = true;
-            ultimoPago = new Date();
-
+            
             if (saldoCuota.compareTo(new BigDecimal(0)) == 0) {
                 estado = EstadoDetPrestamo.CANCELADO;
                 setDiasMora(Days.daysBetween(new DateTime(fechaVencimiento), new DateTime(new Date())).getDays());
-                setMoraMoratorio(calculaMoratorio());
-                setMoraPunitorio(calculaPunitorio());
-                setMontoMora(devuelveMontoMora());
+                
             }
 
         }
