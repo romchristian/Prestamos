@@ -32,46 +32,78 @@
                                 <tr>
                                     <td width="90%">
                                         <h:panelGrid columns="4">
-                                            <h:outputText value="Titular"
-                                                          style="font-size: 10pt"/>
+                                        <h:outputText value="Fecha Operación: "
+                                                      style="font-size: 10pt"/>
+                                        <p:calendar value="#{prestamoController.selected.fechaInicioOperacion}"
+                                                    pattern="#{formato.patronFecha}" locale="es"/>
+                                        <p:spacer/>
+                                        <p:spacer/>
+                                        <h:outputText value="Titular"
+                                                      style="font-size: 10pt"/>
 
-                                            <p:autoComplete value="#{prestamoController.selected.cliente}"  id="autoCompleteCliente" size="50"
-                                                            completeMethod="#{autoCompleteCliente.completar}"
-                                                            forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
-                                                            >
-                                                <p:ajax event="itemSelect" update="panelCliente"/>
+                                        <p:autoComplete value="#{prestamoController.selected.cliente}"  id="autoCompleteCliente" size="50"
+                                                        completeMethod="#{autoCompleteCliente.completar}"
+                                                        forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
+                                                        >
+                                            <p:ajax event="itemSelect" update="textoConyugeDeudor"/>
 
-                                            </p:autoComplete>
-                                            <p:spacer/>
-                                            <p:spacer/>
-                                            
-                                            <h:outputText value="Conyuge: "
-                                                          style="font-size: 10pt"/>
+                                        </p:autoComplete>
+                                        <p:spacer/>
+                                        <p:spacer/>
+
+
+                                        <h:outputText value="Conyuge: "
+                                                      style="font-size: 10pt"/>
+                                        <p:outputPanel id="textoConyugeDeudor">
                                             <h:outputText value="#{prestamoController.selected.cliente.conyuge != null ? prestamoController.selected.cliente.conyuge.devuelveNombreCompleto():'No asignado'}"
                                                           style="font-size: 10pt"/>
-                                            <p:selectBooleanCheckbox value="#{prestamoController.selected.firmaConyugeTitular}"/>
-                                            <h:outputText value="Marcar si el conyuge firmará el pagaré"/>
+                                        </p:outputPanel>
 
-                                            <h:outputText value="Codeudor"
-                                                          style="font-size: 10pt"/>
+                                        <p:selectBooleanCheckbox value="#{prestamoController.selected.firmaConyugeTitular}"/>
+                                        <h:outputText value="Marcar si el conyuge firmará el pagaré"/>
 
-                                            <p:autoComplete value="#{prestamoController.selected.codeudor}"  id="autoCompleteCodeudor" size="50"
-                                                            completeMethod="#{autoCompleteCliente.completar}"
-                                                            forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento} #{c.devuelveNombreCompleto()}"
-                                                            >
-                                                <p:ajax event="itemSelect" update="panelCliente"/>
 
-                                            </p:autoComplete>
-                                            <p:spacer/>
-                                            <p:spacer/>
-                                            
-                                            <h:outputText value="Conyuge: "
-                                                          style="font-size: 10pt"/>
+                                        <h:outputText value="Codeudor"
+                                                      style="font-size: 10pt"/>
+
+                                        <p:autoComplete value="#{prestamoController.selected.codeudor}"  id="autoCompleteCodeudor" size="50"
+                                                        completeMethod="#{autoCompleteCliente.completar}"
+                                                        forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento} #{c.devuelveNombreCompleto()}"
+                                                        >
+                                            <p:ajax event="itemSelect" update="textoConyugeCoDeudor"/>
+
+                                        </p:autoComplete>
+                                        <p:spacer/>
+                                        <p:spacer/>
+
+                                        <h:outputText value="Conyuge: "
+                                                      style="font-size: 10pt"/>
+                                        <p:outputPanel id="textoConyugeCoDeudor">
                                             <h:outputText value="#{prestamoController.selected.codeudor.conyuge != null ? prestamoController.selected.codeudor.conyuge.devuelveNombreCompleto():'No asignado'}"
-                                                          style="font-size: 10pt"/>
-                                            <p:selectBooleanCheckbox value="#{prestamoController.selected.firmaConyugeCodeudor}"/>
-                                            <h:outputText value="Marcar si el conyuge firmará el pagaré"/>
-                                        </h:panelGrid>
+                                                          style="font-size: 10pt"/>    
+                                        </p:outputPanel>
+
+                                        <p:selectBooleanCheckbox value="#{prestamoController.selected.firmaConyugeCodeudor}"/>
+                                        <h:outputText value="Marcar si el conyuge firmará el pagaré"/>
+
+
+                                        <h:outputText value="Empresa: "
+                                                      style="font-size: 10pt"/>
+
+                                        <p:selectOneMenu value="#{prestamoController.selected.empresa}">
+                                            <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
+                                        </p:selectOneMenu>
+
+
+                                        <h:outputText value="Sucursal: "
+                                                      style="font-size: 10pt"/>
+
+                                        <p:selectOneMenu value="#{prestamoController.selected.sucursal}">
+                                            <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
+                                        </p:selectOneMenu>
+
+
+                                    </h:panelGrid>
 
                                     </td>
                                     <td width="10%">
@@ -91,61 +123,86 @@
 
                             <h:panelGrid columns="4">
 
-                                <h:outputText value="Monto Préstamo"/>
-                                <h:inputText value="#{prestamoController.selected.montoPrestamo}"  id="montoPrestamo">
-                                    <f:convertNumber locale="#{formato.locale}"/>
-                                </h:inputText>
+                            <h:outputText value="Monto Préstamo"/>
+                            <h:inputText value="#{prestamoController.selected.montoPrestamo}"  id="montoPrestamo">
+                                <f:convertNumber locale="#{formato.locale}"/>
+                            </h:inputText>
 
-                                <h:outputText value="Capital"/>
-                                <h:inputText value="#{prestamoController.selected.capital}"  id="montoCapital" disabled="true"/>
-
-
-                                <h:outputText value="Monto Gastos"/>
-                                <h:inputText value="#{prestamoController.selected.gastos}">
-                                    <f:convertNumber locale="#{formato.locale}"/>
-                                </h:inputText>
-                                <h:outputText value="Plazo"/>
-                                <h:inputText value="#{prestamoController.selected.plazo}"/>
-                                <h:outputText value="Tasa"/>
-                                <h:inputText value="#{prestamoController.selected.tasa}">
-
-                                </h:inputText>
-                                <h:outputText value="Periodicidad de Pago"/>
-                                <h:selectOneMenu value="#{prestamoController.selected.periodoPago}">
-                                    <f:selectItems value="#{productorEnums.obtPeriodosPago()}"/>
-                                </h:selectOneMenu>
-                                <h:outputText value="Sistema de Amotización"/>
-                                <p:selectOneMenu value="#{prestamoController.selected.sistemaAmortizacion}">
-
-                                    <f:selectItem itemLabel="FRANCES" itemValue="FRANCES"/>
-                                    <f:selectItem itemLabel="INTERES SIMPLE" itemValue="INTERES_SIMPLE"/>
-
-                                </p:selectOneMenu>
-
-                                <h:outputText value="Monto Cuota"/>
-                                <h:inputText value="#{prestamoController.selected.montoCuota}" disabled="true">
-                                    <f:convertNumber locale="es" maxFractionDigits="2"/>
-                                </h:inputText>
-
-                                <h:outputText value="Moneda"/>
-                                <p:selectOneMenu value="#{prestamoController.selected.moneda}">
-                                    <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
-                                </p:selectOneMenu>
-
-                                <h:outputText value="Total Interes"/>
-                                <h:inputText value="#{prestamoController.selected.totalIntereses}" disabled="true">
-                                    <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
-                                </h:inputText>
-                                <p:spacer/>
-                                <p:spacer/>
-                                <h:outputText value="Total Operacion"/>
-                                <h:inputText value="#{prestamoController.selected.totalOperacion}" disabled="true">
-                                    <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
-                                </h:inputText>
+                            <h:outputText value="Tasa"/>
+                            <h:inputText value="#{prestamoController.selected.tasa}">
+                            </h:inputText>
 
 
-                                <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="@(.tablaDetalles),panelDatos"/>
-                            </h:panelGrid>
+                            <h:outputText value="Monto Comisiones"/>
+                            <h:inputText value="#{prestamoController.selected.comisiones}">
+                                <f:convertNumber locale="#{formato.locale}"/>
+                            </h:inputText>
+
+                            <h:outputText value="Plazo"/>
+                            <h:inputText value="#{prestamoController.selected.plazo}"/>
+
+
+                            <h:outputText value="Monto Gastos"/>
+                            <h:inputText value="#{prestamoController.selected.gastos}">
+                                <f:convertNumber locale="#{formato.locale}"/>
+                            </h:inputText>
+
+                            <h:outputText value="Periodicidad de Pago"/>
+                            <h:selectOneMenu value="#{prestamoController.selected.periodoPago}">
+                                <f:selectItems value="#{productorEnums.obtPeriodosPago()}"/>
+                            </h:selectOneMenu>
+
+
+                            <h:outputText value="Capital"/>
+                            <h:inputText value="#{prestamoController.selected.capital}"  id="montoCapital" disabled="true">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:inputText>
+
+                            <h:outputText value="Sistema de Amotización"/>
+                            <p:selectOneMenu value="#{prestamoController.selected.sistemaAmortizacion}">
+
+                                <f:selectItem itemLabel="FRANCES" itemValue="FRANCES"/>
+                                <f:selectItem itemLabel="INTERES SIMPLE" itemValue="INTERES_SIMPLE"/>
+
+                            </p:selectOneMenu>
+
+                            <h:outputText value="Total Interes"/>
+                            <h:inputText value="#{prestamoController.selected.totalIntereses}" disabled="true">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:inputText>
+
+                            <h:outputText value="Moneda"/>
+                            <p:selectOneMenu value="#{prestamoController.selected.moneda}">
+                                <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
+                            </p:selectOneMenu>
+
+
+                            <h:outputText value="Total IVA"/>
+                            <h:inputText value="#{prestamoController.selected.impuestoIVA}" disabled="true">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:inputText>
+
+                            <p:spacer/>
+                            <p:spacer/>
+
+
+                            <h:outputText value="Total Operacion"/>
+                            <h:inputText value="#{prestamoController.selected.totalOperacion}" disabled="true">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:inputText>
+
+                            <p:spacer/>
+                            <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="@(.tablaDetalles),panelDatos"/>
+
+                            <h:outputText value="Monto Cuota"/>
+                            <h:inputText value="#{prestamoController.selected.montoCuota}" disabled="true" >
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:inputText>
+
+                            <p:spacer/>
+                            <p:spacer/>
+
+                        </h:panelGrid>
 
                         </p:panel>
 

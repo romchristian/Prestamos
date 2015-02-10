@@ -137,18 +137,15 @@ public class CobraCuotaBean implements Serializable {
         }
 
         if (cuotaSeleccionada == null) {
-            JsfUtil.addErrorMessage("Debe seleccionar al menos uno cuota");
+            JsfUtil.addErrorMessage("Debe seleccionar al menos una cuota");
             return null;
         }
 
         facturaVenta = new FacturaVenta();
         facturaVenta.setCliente(cliente);
-        if (cuotaSeleccionada != null) {
-            facturaVenta.setEmpresa(cuotaSeleccionada.getEmpresa());
-            facturaVenta.setSucursal(cuotaSeleccionada.getSucursal());
-        }
+        facturaVenta.setEmpresa(cuotaSeleccionada.getEmpresa());
+        facturaVenta.setSucursal(cuotaSeleccionada.getSucursal());
 
-        
         facturaVenta.setFechaCreacion(new Date());
         facturaVenta.setFechaEmision(new Date());
         facturaVenta.setDireccion(cliente.devuelveDireccionParticular());
@@ -161,13 +158,35 @@ public class CobraCuotaBean implements Serializable {
         facturaVenta.setDetalles(new ArrayList<FacturaVentaDetalle>());
         int nrolinea = 1;
         for (TreeCuota t : seleccionados) {
+            BigDecimal aplicaAMoratorio;
+            BigDecimal aplicaAPunitorio;
+            BigDecimal aplicaACuota=new BigDecimal(BigInteger.ZERO);
+            if(t.getMontoPago().compareTo(t.getMontoMora())<0){
+                //afectar punitorio
+                aplicaAPunitorio = t.getMontoPago().multiply(new BigDecimal(0.2));
+                //afecta moratorio
+                aplicaAMoratorio = t.getMontoPago().multiply(new BigDecimal(0.8));
+            }
+            else
+            {
+                //afectar punitorio
+                aplicaAPunitorio = t.getMontoPunitorio();
+                //afecta moratorio
+                aplicaAMoratorio = t.getMontoMoratorio();
+                //aplicar a cuota la diferencia
+                aplicaACuota = t.getMontoPago().subtract(t.getMontoMora());
+            }
+            
             FacturaVentaDetalle d = new FacturaVentaDetalle();
             d.setFacturaVenta(facturaVenta);
             d.setNrolinea(nrolinea);
             d.setCantidad(new BigDecimal(BigInteger.ONE));
 
             d.setDescripcion("Pago de " + t.getDescDetPrestamo() + ", Prestamo #" + t.getPrestamo().getId());
-            d.setPrecioUnitario(t.getMontoCuota());
+            //Prioridad de calculo 0.8 del monto pagomora == moratorio ; 0.20
+            //montoPago - (Moratorio + punitorio)
+            //saldo
+            d.setPrecioUnitario(aplicaACuota);
             d.setGravada10(d.getCantidad().multiply(d.getPrecioUnitario()));
             facturaVenta.getDetalles().add(d);
             nrolinea++;
@@ -179,7 +198,7 @@ public class CobraCuotaBean implements Serializable {
                 d2.setCantidad(new BigDecimal(BigInteger.ONE));
 
                 d2.setDescripcion("Pago por mora de la " + t.getDescDetPrestamo() + ", Prestamo #" + t.getPrestamo().getId());
-                d2.setPrecioUnitario(t.getMontoMoratorio());
+                d2.setPrecioUnitario(aplicaAMoratorio);
                 d2.setGravada10(d2.getCantidad().multiply(d2.getPrecioUnitario()));
                 facturaVenta.getDetalles().add(d2);
                 nrolinea++;
@@ -192,7 +211,7 @@ public class CobraCuotaBean implements Serializable {
                 d3.setCantidad(new BigDecimal(BigInteger.ONE));
 
                 d3.setDescripcion("Pago punitorio de la " + t.getDescDetPrestamo() + ", Prestamo #" + t.getPrestamo().getId());
-                d3.setPrecioUnitario(t.getMontoPunitorio());
+                d3.setPrecioUnitario(aplicaAPunitorio);
                 d3.setGravada10(d3.getCantidad().multiply(d3.getPrecioUnitario()));
                 facturaVenta.getDetalles().add(d3);
                 nrolinea++;
@@ -202,18 +221,17 @@ public class CobraCuotaBean implements Serializable {
             BigDecimal totalgravada05 = new BigDecimal(BigInteger.ZERO);
             BigDecimal totalgravada10 = new BigDecimal(BigInteger.ZERO);
             for (FacturaVentaDetalle fd : facturaVenta.getDetalles()) {
-                if(fd.getExenta() != null ){
+                if (fd.getExenta() != null) {
                     totalexento = totalexento.add(fd.getExenta());
                 }
-                if(fd.getGravada05() != null ){
+                if (fd.getGravada05() != null) {
                     totalgravada05 = totalgravada05.add(fd.getGravada05());
                 }
-                
-                if(fd.getGravada10()!= null ){
+
+                if (fd.getGravada10() != null) {
                     totalgravada10 = totalgravada10.add(fd.getGravada10());
                 }
-                
-                
+
             }
 
             BigDecimal total = totalgravada10.add(totalgravada05).add(totalexento);
