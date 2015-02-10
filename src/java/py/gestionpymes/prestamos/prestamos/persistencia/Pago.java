@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.*;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
+import py.gestionpymes.prestamos.contabilidad.FacturaVenta;
 
 /**
  *
@@ -30,6 +31,19 @@ public abstract class Pago implements Serializable {
     private Cotizacion cotizacion;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fecha;
+    
+    @ManyToOne
+    private FacturaVenta facturaVenta;
+
+    public FacturaVenta getFacturaVenta() {
+        return facturaVenta;
+    }
+
+    public void setFacturaVenta(FacturaVenta facturaVenta) {
+        this.facturaVenta = facturaVenta;
+    }
+    
+    
 
     public Cotizacion getCotizacion() {
         return cotizacion;

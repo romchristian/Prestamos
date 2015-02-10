@@ -4,6 +4,7 @@
  */
 package py.gestionpymes.prestamos.prestamos.web;
 
+import com.sun.org.apache.xalan.internal.xsltc.trax.TrAXFilter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -154,21 +155,20 @@ public class CobraCuotaBean implements Serializable {
         facturaVenta.setCodEstablecimiento("001");
         facturaVenta.setPuntoExpedicion("001");
         facturaVenta.setNumero("0000001");
+        facturaVenta.setMoneda(cuotaSeleccionada.getMoneda());
 
         facturaVenta.setDetalles(new ArrayList<FacturaVentaDetalle>());
         int nrolinea = 1;
         for (TreeCuota t : seleccionados) {
             BigDecimal aplicaAMoratorio;
             BigDecimal aplicaAPunitorio;
-            BigDecimal aplicaACuota=new BigDecimal(BigInteger.ZERO);
-            if(t.getMontoPago().compareTo(t.getMontoMora())<0){
+            BigDecimal aplicaACuota = new BigDecimal(BigInteger.ZERO);
+            if (t.getMontoPago().compareTo(t.getMontoMora()) < 0) {
                 //afectar punitorio
                 aplicaAPunitorio = t.getMontoPago().multiply(new BigDecimal(0.2));
                 //afecta moratorio
                 aplicaAMoratorio = t.getMontoPago().multiply(new BigDecimal(0.8));
-            }
-            else
-            {
+            } else {
                 //afectar punitorio
                 aplicaAPunitorio = t.getMontoPunitorio();
                 //afecta moratorio
@@ -176,11 +176,13 @@ public class CobraCuotaBean implements Serializable {
                 //aplicar a cuota la diferencia
                 aplicaACuota = t.getMontoPago().subtract(t.getMontoMora());
             }
-            
+
             FacturaVentaDetalle d = new FacturaVentaDetalle();
             d.setFacturaVenta(facturaVenta);
             d.setNrolinea(nrolinea);
             d.setCantidad(new BigDecimal(BigInteger.ONE));
+            d.setDetPrestamo(t.getDetPrestamo());
+            d.setRefMonto(FacturaVentaDetalle.MONTO_CUOTA);
 
             d.setDescripcion("Pago de " + t.getDescDetPrestamo() + ", Prestamo #" + t.getPrestamo().getId());
             //Prioridad de calculo 0.8 del monto pagomora == moratorio ; 0.20
@@ -201,6 +203,9 @@ public class CobraCuotaBean implements Serializable {
                 d2.setPrecioUnitario(aplicaAMoratorio);
                 d2.setGravada10(d2.getCantidad().multiply(d2.getPrecioUnitario()));
                 facturaVenta.getDetalles().add(d2);
+                d2.setDetPrestamo(t.getDetPrestamo());
+                d2.setRefMonto(FacturaVentaDetalle.MONTO_MORATORIO);
+
                 nrolinea++;
             }
 
@@ -214,6 +219,8 @@ public class CobraCuotaBean implements Serializable {
                 d3.setPrecioUnitario(aplicaAPunitorio);
                 d3.setGravada10(d3.getCantidad().multiply(d3.getPrecioUnitario()));
                 facturaVenta.getDetalles().add(d3);
+                d3.setDetPrestamo(t.getDetPrestamo());
+                d3.setRefMonto(FacturaVentaDetalle.MONTO_PUNITORIO);
                 nrolinea++;
             }
 
@@ -255,25 +262,28 @@ public class CobraCuotaBean implements Serializable {
             facturaVenta.setTotalIva(ivatotal.setScale(0, RoundingMode.HALF_EVEN));
 
         }
-
+        limpia();
         return "/contabilidad/facturaVenta/CreaFactura?faces-redirect=true";
     }
 
-    public void paga() {
+    public void limpia() {
+        for (TreeCuota t : seleccionados) {
+            t.setSeleccionado(false);
+        }
+        montoActual = new BigDecimal(BigInteger.ZERO);
+        cliente = null;
+        seleccionados.clear();
+    }
+
+    public String paga() {
         try {
-            for (TreeCuota t : seleccionados) {
-
-                cobranzaDAO.create(t);
-                t.setSeleccionado(false);
-
-            }
-
-            seleccionados.clear();
+            cobranzaDAO.create(facturaVenta);
+            limpia();
             cargaPrestamos();
         } catch (PagoExcedidoException ex) {
             Logger.getLogger(CobraCuotaBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return "/prestamos/prestamo/cobraCuota?faces-redirect=true";
     }
 
     @PostConstruct

@@ -41,7 +41,7 @@
 
 
                 <div class="ui-grid ui-grid-responsive">
-                    <div class="ui-grid-row" style="width: 80%; margin: 0 auto 0 auto">
+                    <div class="ui-grid-row" style="width: 75%;">
                         <div class="ui-grid-col-8">
                             <div style="background-color: #ddd;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
                                  -moz-border-radius: 5px;
@@ -80,9 +80,9 @@
                                     <h:outputText value="RUC: #{cobraCuotaBean.facturaVenta.empresa.ruc}" style="font-size: 12pt; font-weight: bold;"/>
                                     <h:panelGrid columns="6">
                                         <h:outputText value="Nro.:" style="font-size: 12pt; font-weight: bold;"/>
-                                        <h:inputText value="#{cobraCuotaBean.facturaVenta.codEstablecimiento}" size="3" style="font-size: 12pt; font-weight: bold;" maxlength="3"/>
+                                        <h:inputText value="#{cobraCuotaBean.facturaVenta.codEstablecimiento}" size="3" style="font-size: 12pt; font-weight: bold; max-width: 30px" maxlength="3"/>
                                         <h:outputText value=" - " style="font-size: 12pt; font-weight: bold;"/>
-                                        <h:inputText value="#{cobraCuotaBean.facturaVenta.puntoExpedicion}" size="3" style="font-size: 12pt; font-weight: bold;" maxlength="3"/>
+                                        <h:inputText value="#{cobraCuotaBean.facturaVenta.puntoExpedicion}" size="3" style="font-size: 12pt; font-weight: bold;max-width: 30px" maxlength="3"/>
                                         <h:outputText value=" - " style="font-size: 12pt; font-weight: bold;"/>
                                         <h:inputText value="#{cobraCuotaBean.facturaVenta.numero}" size="7" style="font-size: 12pt; font-weight: bold;" maxlength="7"/>
                                     </h:panelGrid>
@@ -94,7 +94,7 @@
                         </div>  
                     </div>
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-12" style="width: 80%; margin: 0 auto 0 auto">
+                        <div class="ui-grid-col-12" style="width: 75%;">
                             <div style="background-color: #ddd;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
                                  -moz-border-radius: 5px;
                                  border-radius: 5px;
@@ -129,6 +129,7 @@
                                         </h:outputText>
                                     </p:column>
                                 </p:dataTable>
+                                
                                 <p:panelGrid columns="4" columnClasses="colsub1,colsub2,colsub3,colsub4" style="width: 100%">
                                     <h:outputText value="SUBTOTALES" style="font-size: 10pt; font-weight: bold"/>
                                     <h:outputText value="#{cobraCuotaBean.facturaVenta.totalExento}" style="font-size: 10pt; font-weight: bold">
@@ -141,25 +142,26 @@
                                         <f:convertNumber locale="#{formato.locale}"/>
                                     </h:outputText>
                                 </p:panelGrid>
+                                
                                 <p:panelGrid columns="2" columnClasses="colsub1,colsub2" style="width: 100%">
                                     <h:outputText value="TOTAL" style="font-size: 14pt; font-weight: bold"/>
                                     <h:outputText value="#{cobraCuotaBean.facturaVenta.total}" style="font-size: 14pt; font-weight: bold">
                                         <f:convertNumber locale="#{formato.locale}"/>
-                                    </h:outputText>
-                                    
+                                    </h:outputText>    
                                 </p:panelGrid>
+                                
                             </div>
 
                         </div>
                     </div>
 
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-12" style="width: 80%; margin: 0 auto 0 auto">
+                        <div class="ui-grid-col-12" style="width: 75%;">
                             <div style="background-color: #ddd;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
                                  -moz-border-radius: 5px;
                                  border-radius: 5px;
                                  margin-bottom: 5px">
-
+                                <p:commandButton value="Confirmar" action="#{cobraCuotaBean.paga()}"/>
                             </div>
                         </div>
                     </div>

@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,9 +20,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
+import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
+import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
+import py.gestionpymes.prestamos.prestamos.persistencia.Pago;
 
 /**
  *
@@ -29,6 +33,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
  */
 @Entity
 public class FacturaVenta implements Serializable {
+    
     
 
     private static final long serialVersionUID = 1L;
@@ -75,9 +80,15 @@ public class FacturaVenta implements Serializable {
     private BigDecimal iva05;
     private BigDecimal iva10;
     private BigDecimal totalIva;
+    @ManyToOne
+    private Moneda moneda;
+    @ManyToOne
+    private Cotizacion cotizacion;
     
-    @OneToMany(mappedBy = "facturaVenta")
+    @OneToMany(mappedBy = "facturaVenta",cascade = CascadeType.ALL)
     private List<FacturaVentaDetalle> detalles;
+    @OneToMany(mappedBy = "facturaVenta",cascade = CascadeType.ALL)
+    private List<Pago> pagos;
 
     public List<FacturaVentaDetalle> getDetalles() {
         return detalles;
@@ -86,7 +97,30 @@ public class FacturaVenta implements Serializable {
     public void setDetalles(List<FacturaVentaDetalle> detalles) {
         this.detalles = detalles;
     }
-    
+
+    public List<Pago> getPagos() {
+        return pagos;
+    }
+
+    public void setPagos(List<Pago> pagos) {
+        this.pagos = pagos;
+    }
+
+    public Moneda getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(Moneda moneda) {
+        this.moneda = moneda;
+    }
+
+    public Cotizacion getCotizacion() {
+        return cotizacion;
+    }
+
+    public void setCotizacion(Cotizacion cotizacion) {
+        this.cotizacion = cotizacion;
+    }
     
     
     

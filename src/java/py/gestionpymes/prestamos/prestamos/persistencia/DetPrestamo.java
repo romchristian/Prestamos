@@ -17,6 +17,7 @@ import javax.persistence.*;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
+import py.gestionpymes.prestamos.contabilidad.FacturaVentaDetalle;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoDetPrestamo;
 
 /**
@@ -45,6 +46,8 @@ public class DetPrestamo implements Serializable {
     private BigDecimal montoMora = new BigDecimal(BigInteger.ZERO);
     private BigDecimal moraPunitorio = new BigDecimal(BigInteger.ZERO);
     private BigDecimal moraMoratorio = new BigDecimal(BigInteger.ZERO);
+    private BigDecimal saldoPunitorio = new BigDecimal(BigInteger.ZERO);
+    private BigDecimal saldoMoratorio = new BigDecimal(BigInteger.ZERO);
     private BigDecimal ivaMoraPunitorio = new BigDecimal(BigInteger.ZERO);
     private BigDecimal ivaMoraMoratorio = new BigDecimal(BigInteger.ZERO);
 
@@ -130,6 +133,25 @@ public class DetPrestamo implements Serializable {
     public void setMoraMoratorio(BigDecimal moraMoratorio) {
         this.moraMoratorio = moraMoratorio;
     }
+
+    public BigDecimal getSaldoPunitorio() {
+        return saldoPunitorio;
+    }
+
+    public void setSaldoPunitorio(BigDecimal saldoPunitorio) {
+        this.saldoPunitorio = saldoPunitorio;
+    }
+
+    public BigDecimal getSaldoMoratorio() {
+        return saldoMoratorio;
+    }
+
+    public void setSaldoMoratorio(BigDecimal saldoMoratorio) {
+        this.saldoMoratorio = saldoMoratorio;
+    }
+    
+    
+    
 
     public BigDecimal getImpuestoIvaCuota() {
         impuestoIvaCuota = cuotaInteres.multiply(new BigDecimal(0.1));
@@ -343,18 +365,24 @@ public class DetPrestamo implements Serializable {
         this.ultimoPago = ultimoPago;
     }
 
-    public boolean afectaSaldoCuota(BigDecimal monto) {
+    public boolean afectaSaldoCuota(BigDecimal monto, String refMonto) {
         boolean R = false;
         saldoCuota.setScale(0, RoundingMode.HALF_EVEN);
         monto.setScale(0, RoundingMode.HALF_EVEN);
         BigDecimal mora = devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
-        System.out.println("Saldo Cuota + Mora : " + saldoCuota.add(devuelveMontoMora()));
-        System.out.println("Monto : " + monto);
-
+   
         if ((saldoCuota.add(mora).compareTo(monto)) >= 0) {
 
+            
+            
             montoPago = montoPago.add(monto);
-            saldoCuota = saldoCuota.subtract(monto);
+            if(refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_CUOTA) == 0){
+                saldoCuota = saldoCuota.subtract(monto);
+            }
+            
+            
+            
+            
             R = true;
             ultimoPago = new Date();
 
