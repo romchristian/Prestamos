@@ -18,12 +18,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.flow.FlowScoped;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
@@ -31,7 +30,6 @@ import javax.inject.Named;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import py.gestionpymes.prestamos.adm.dao.MonedaFacade;
-import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.contabilidad.FacturaVenta;
 import py.gestionpymes.prestamos.contabilidad.FacturaVentaDetalle;
 import py.gestionpymes.prestamos.prestamos.dao.CobranzaDAO;
@@ -46,8 +44,8 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
  *
  * @author cromero
  */
-@Named
-@SessionScoped
+@Named(value = "cobraCuotaBean")
+@FlowScoped(value = "cobraCuota")
 public class CobraCuotaBean implements Serializable {
 
     @EJB
@@ -57,10 +55,10 @@ public class CobraCuotaBean implements Serializable {
     @EJB
     private CobranzaDAO cobranzaDAO;
 
-    private TreeNode root;
+    private TreeNode root =  new DefaultTreeNode("prestamos", null);
     private Cliente cliente;
     private List<TreeCuota> seleccionados = new ArrayList<TreeCuota>();
-    private List<TreeCuota> disponibles;
+    private List<TreeCuota> disponibles = new ArrayList<TreeCuota>();;
     private BigDecimal totalAPagar;
     private TreeCuota cuotaSeleccionada;
     private BigDecimal montoActual;
@@ -128,15 +126,7 @@ public class CobraCuotaBean implements Serializable {
     }
 
     public String generaFactura() {
-        if (cliente == null) {
-            JsfUtil.addErrorMessage("Debe Seleccionar un cliente");
-            return null;
-        }
-
-        if (cuotaSeleccionada == null) {
-            JsfUtil.addErrorMessage("Debe seleccionar al menos una cuota");
-            return null;
-        }
+        
 
         facturaVenta = new FacturaVenta();
         facturaVenta.setCliente(cliente);
@@ -259,7 +249,7 @@ public class CobraCuotaBean implements Serializable {
 
         }
         limpia();
-        return "/contabilidad/facturaVenta/CreaFactura?faces-redirect=true";
+        return "/cobraCuota/creaFactura";
     }
 
     public void limpia() {
@@ -267,8 +257,8 @@ public class CobraCuotaBean implements Serializable {
             t.setSeleccionado(false);
         }
         montoActual = new BigDecimal(BigInteger.ZERO);
-        cliente = null;
         seleccionados.clear();
+        //cuotaSeleccionada = null;
     }
 
     public String paga() {
@@ -279,22 +269,12 @@ public class CobraCuotaBean implements Serializable {
         } catch (PagoExcedidoException ex) {
             Logger.getLogger(CobraCuotaBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "/prestamos/prestamo/cobraCuota?faces-redirect=true";
+        return "endFlow";
     }
     
-    public String cancelaFactura() {
-        limpia();
-        return "/prestamos/prestamo/cobraCuota?faces-redirect=true";
-    }
-
     
     
-    @PostConstruct
-    public void init() {
-
-        cargaPrestamos();
-    }
-
+    
     public BigDecimal getTotalAPagar() {
         totalAPagar = new BigDecimal(BigInteger.ZERO);
         for (TreeCuota t : seleccionados) {
@@ -332,10 +312,10 @@ public class CobraCuotaBean implements Serializable {
         this.cliente = cliente;
     }
 
-    public String buscaPrestamos() {
+    public void buscaPrestamos() {
 
         cargaPrestamos();
-        return "cobraCuota?faces-redirect=true";
+        
     }
 
     private void cargaPrestamos() {
@@ -353,6 +333,8 @@ public class CobraCuotaBean implements Serializable {
         for (Prestamo p : prestamoDAO.findAllClienteEstado(cliente, EstadoPrestamo.VIGENTE)) {
             TreeNode nodoPrestamo = new DefaultTreeNode(new TreeCuota(p), root);
 
+            nodoPrestamo.setExpanded(true);
+            
             Collections.sort(p.getDetalles(), comp);
 
             for (DetPrestamo d : p.getDetalles()) {

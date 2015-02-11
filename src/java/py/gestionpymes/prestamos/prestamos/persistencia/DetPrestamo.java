@@ -263,11 +263,11 @@ public class DetPrestamo implements Serializable {
             return montoMora.setScale(0, RoundingMode.HALF_EVEN);
         } else {
             BigDecimal moratorio = calculaSaldoMoratorio();
-            System.out.println("moratorio: " + moratorio);
+            
             BigDecimal punitorio = calculaSaldoPunitorio();
-            System.out.println("punitorio: " + punitorio);
+            
             BigDecimal R = moratorio.add(punitorio);
-            System.out.println("R: " + R);
+            
             return R;
         }
 
@@ -283,9 +283,9 @@ public class DetPrestamo implements Serializable {
     
     public BigDecimal calculaMontoPorDiasMoratorio() {
         BigDecimal R = new BigDecimal(BigInteger.ZERO);
-        System.out.println("HOLA 0 :" + getDiasMora());
+        
         if (getDiasMora() > 0) {
-            System.out.println("HOLA 1 :" + interesMoratorio);
+        
             double interesDiario = getInteresMoratorio() / 100d / 12d / 30d;
             double interesMora = interesDiario * getDiasMora();
 
@@ -367,15 +367,20 @@ public class DetPrestamo implements Serializable {
                 saldoCuota = saldoCuota.subtract(monto);
             }else if(refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0){
                 moraMoratorio = moraMoratorio.add(monto);
+                saldoCuota = saldoCuota.subtract(monto);
             }else if(refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_PUNITORIO) == 0){
                 moraPunitorio = moraPunitorio.add(monto);
+                saldoCuota = saldoCuota.subtract(monto);
             }
             
             ultimoPago = new Date();
             
             R = true;
             
+            System.out.println("SALDO CUOTAAAAAA: "  + saldoCuota);
+            
             if (saldoCuota.compareTo(new BigDecimal(0)) == 0) {
+                System.out.println("CANCELOOOOOOOOOOOOOO");
                 estado = EstadoDetPrestamo.CANCELADO;
                 setDiasMora(Days.daysBetween(new DateTime(fechaVencimiento), new DateTime(new Date())).getDays());
                 

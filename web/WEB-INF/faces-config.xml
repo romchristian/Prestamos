@@ -10,31 +10,20 @@
         <converter-class>py.gestionpymes.prestamos.prestamos.web.ClienteConverter</converter-class>
     </converter>
     
+    <flow-definition id="cobraCuota">
+        
+        <method-call id="limpia"> 
+            <default-outcome>cobraCuota</default-outcome>
+            <method>#{cobraCuotaBean.limpia()}</method>
+        </method-call>
+        
+        <flow-return id="endFlow">
+            <from-outcome>/home/home</from-outcome>
+        </flow-return>
+        
+    </flow-definition>
+        
     <application>
-        <resource-bundle>
-            <base-name>/Bundle</base-name>
-            <var>bundle</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/Bundle</base-name>
-            <var>bundle</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/Bundle</base-name>
-            <var>bundle</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/Bundle</base-name>
-            <var>bundle</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/Bundle</base-name>
-            <var>bundle</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/Bundle</base-name>
-            <var>bundle</var>
-        </resource-bundle>
         <resource-bundle>
             <base-name>/Bundle</base-name>
             <var>bundle</var>

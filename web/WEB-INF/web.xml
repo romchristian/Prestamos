@@ -125,7 +125,7 @@
         <web-resource-collection>
             <web-resource-name>CobroCuota</web-resource-name>
             <description/>
-            <url-pattern>/prestamos/prestamo/cobraCuota.xhtml</url-pattern>
+            <url-pattern>/cobraCuota/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
