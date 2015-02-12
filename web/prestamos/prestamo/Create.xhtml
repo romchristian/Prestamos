@@ -96,6 +96,13 @@
                                         <p:selectOneMenu value="#{prestamoController.selected.sucursal}">
                                             <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
                                         </p:selectOneMenu>
+                                        
+                                        <h:outputText value="Vendedor: "
+                                                      style="font-size: 10pt"/>
+
+                                        <p:selectOneMenu value="#{prestamoController.selected.vendedor}">
+                                            <f:selectItems value="#{vendedorController.itemsAvailableSelectOne}"/>
+                                        </p:selectOneMenu>
 
 
                                     </h:panelGrid>

@@ -4,10 +4,16 @@
  */
 package py.gestionpymes.prestamos.prestamos.web;
 
+import com.sun.faces.config.WebConfiguration;
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,9 +28,13 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 
 import javax.inject.Named;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
+import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 import py.gestionpymes.prestamos.reportes.jasper.ReporteController;
@@ -45,6 +55,7 @@ public class PrestamoController implements Serializable {
     @Inject
     private ReporteController reporteController;
     private Pagare pagare;
+    private DetPrestamo detPrestamo;
 
     public long getId() {
         return id;
@@ -89,13 +100,52 @@ public class PrestamoController implements Serializable {
 
     public void imprimeLiquidacionPrestamo() {
 
-        Prestamo p = new Prestamo();
-        p=selected;
-        
-        List<Prestamo> data = new ArrayList<>();
-        data.add(p);
+        List<LiquidacionPrestamo> data = new ArrayList<>();
 
-        reporteController.generaPDF(new HashMap(), data, "reportes/prestamos/liquidacion.jasper");
+        for (DetPrestamo dp : selected.getDetalles()) {
+            data.add(new LiquidacionPrestamo(dp));
+        }
+
+        Comparator<LiquidacionPrestamo> comp = new Comparator<LiquidacionPrestamo>() {
+
+            @Override
+            public int compare(LiquidacionPrestamo o1, LiquidacionPrestamo o2) {
+                return o1.getNroCuota() > o2.getNroCuota() ? 1 : -1;
+            }
+        };
+
+        Collections.sort(data, comp);
+        DateTime dateTimeOpercion = new DateTime(selected.getFechaInicioOperacion());
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy");
+
+        NumberFormat nf = NumberFormat.getInstance(new Locale("es", "py"));
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("nroOperacion", "1111");//nf.format(selected.getId())
+        params.put("empresa", selected.getEmpresa() == null ? " " : selected.getEmpresa().getRazonSocial());
+        params.put("sucursal", selected.getSucursal() == null ? " " : selected.getSucursal().getNombre());
+        params.put("vendedor", selected.getVendedor() == null ? " " : selected.getVendedor().devuelveNombreCompleto());
+        params.put("nombreCliente", selected.getCliente() == null ? " " : selected.getCliente().devuelveNombreCompleto());
+        params.put("codeudor", selected.getCodeudor() == null ? "" : selected.getCodeudor().devuelveNombreCompleto());
+        params.put("montoPrestamo", nf.format(selected.getMontoPrestamo()));
+        params.put("capital", nf.format(selected.getCapital()));
+        params.put("plazo", nf.format(selected.getPlazo()));
+        params.put("tasa", nf.format(selected.getTasa()));
+        params.put("periodoPago", selected.getPeriodoPago().name());
+        params.put("sistemaAmortizacion", selected.getSistemaAmortizacion().name());
+        params.put("fechaOperacion", fmt.print(dateTimeOpercion));
+        params.put("periodoPago", selected.getPeriodoPago().name());
+        params.put("gastos", nf.format(selected.getGastos()));
+        params.put("comisiones", nf.format(selected.getComisiones()));
+        params.put("impuestoIVA", nf.format(selected.getImpuestoIVA()));
+        params.put("montoCuota", nf.format(selected.getMontoCuota()));
+        params.put("totalIntereses", nf.format(selected.getTotalIntereses()));
+        params.put("totalOperacion", nf.format(selected.getTotalOperacion()));
+        params.put("moneda", selected.getMoneda() == null ? "" : selected.getMoneda().getNombre());
+        params.put("firmaConyugeTitular", selected.isFirmaConyugeTitular() == false ? "no" : "si");
+        params.put("firmaConyugeCodeudor", selected.isFirmaConyugeCodeudor() == false ? "no" : "si");
+
+        reporteController.generaPDF(params, data, "reportes/prestamos/liquidacion.jasper");
     }
 
     public void desembolsa() {
@@ -218,6 +268,7 @@ public class PrestamoController implements Serializable {
 
     public List<Prestamo> getItemsAvailableSelectOne() {
         return getFacade().findAll();
+
     }
 
     @FacesConverter(forClass = Prestamo.class)

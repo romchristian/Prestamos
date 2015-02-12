@@ -34,4 +34,15 @@ public class Vendedor extends Persona implements Serializable{
         this.apellidos = apellidos;
     }
     
+    public String devuelveNombreCompleto(){
+        
+        return getNombres()+" "+getApellidos();
+    }
+
+    @Override
+    public String toString() {
+        return devuelveNombreCompleto();
+    }
+    
+    
 }

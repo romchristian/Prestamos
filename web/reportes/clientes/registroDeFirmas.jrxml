@@ -29,6 +29,7 @@
 	<field name="primerApellido" class="java.lang.String"/>
 	<field name="segundoApellido" class="java.lang.String"/>
 	<field name="nroDocumento" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -42,7 +43,7 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="318" splitType="Stretch">
+		<band height="372" splitType="Stretch">
 			<textField>
 				<reportElement x="4" y="77" width="551" height="20" uuid="79a874d4-2c84-4b8f-a13f-983ce82ef6b2"/>
 				<textElement verticalAlignment="Middle"/>
@@ -60,54 +61,38 @@
 				<textFieldExpression><![CDATA["Documento Nro.: " + $F{nroDocumento}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="11" y="130" width="268" height="76" uuid="2c88ad55-5ae6-459d-8602-dc73bc991514"/>
+				<reportElement x="11" y="171" width="268" height="76" uuid="2c88ad55-5ae6-459d-8602-dc73bc991514"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="279" y="130" width="268" height="76" uuid="34196855-b9c9-476d-9389-07b74847184a"/>
+				<reportElement x="420" y="171" width="127" height="76" uuid="34196855-b9c9-476d-9389-07b74847184a"/>
 			</rectangle>
 			<rectangle>
-				<reportElement style="table" x="279" y="206" width="268" height="76" uuid="f937989c-c3e6-4d64-820c-72f45cb45d6a"/>
+				<reportElement style="table" x="420" y="247" width="127" height="76" uuid="f937989c-c3e6-4d64-820c-72f45cb45d6a"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="11" y="206" width="268" height="76" uuid="b83a5f15-9cf1-4867-b411-900600e2f261"/>
+				<reportElement x="11" y="247" width="268" height="76" uuid="b83a5f15-9cf1-4867-b411-900600e2f261"/>
 			</rectangle>
-			<staticText>
-				<reportElement x="17" y="180" width="256" height="20" uuid="8390ca9d-4676-4db6-8630-3122bd698a78"/>
-				<textElement textAlignment="Center" verticalAlignment="Top"/>
-				<text><![CDATA[--------------------------------------------------------------------------------------]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="285" y="257" width="256" height="20" uuid="40047d49-549d-4cbb-bd45-60d209e8e8ab"/>
-				<textElement textAlignment="Center" verticalAlignment="Top"/>
-				<text><![CDATA[--------------------------------------------------------------------------------------]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="17" y="257" width="256" height="20" uuid="a715c5d9-6ea3-4eee-9e6c-cefd04b087f0"/>
-				<textElement textAlignment="Center" verticalAlignment="Top"/>
-				<text><![CDATA[--------------------------------------------------------------------------------------]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="285" y="180" width="256" height="20" uuid="17b99318-f22c-475f-9325-340cd3c5af61"/>
-				<textElement textAlignment="Center" verticalAlignment="Top"/>
-				<text><![CDATA[--------------------------------------------------------------------------------------]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="0" y="0" width="555" height="45" uuid="50395d94-2f00-46c5-807e-5d30ce57f7a4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="18" isBold="true" isUnderline="true"/>
+					<font fontName="Arial" size="12" isBold="true" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[REGISTRO DE FIRMAS DE CLIENTE]]></text>
+				<text><![CDATA[REGISTRO DE FIRMAS E IMPRESION DACTILAR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="291" width="555" height="26" uuid="b0b2d588-02f2-400e-8fde-13955d59098a"/>
+				<reportElement x="0" y="334" width="555" height="38" uuid="b0b2d588-02f2-400e-8fde-13955d59098a"/>
 				<box>
 					<topPen lineStyle="Double"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font fontName="Arial Narrow"/>
 				</textElement>
-				<text><![CDATA[PARA USO EXCLUSIVO DE CREDI PYME'S S.A.]]></text>
+				<text><![CDATA[LAS FIRMAS E IMPRESIÓN DACTILAR QUE OBRAN PRECEDENTEMENTE FUERON HECHAS SIN PRESIÓN, COACCIÓN, DE MANERA TOTALMENTE VOLUNTARIA Y EN USO DE TODAS MIS FACULTADES FISICA Y PSIQUICAS.]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="5" y="117" width="542" height="20" uuid="ea6b03de-b7fb-4afe-b1d8-38249567d922"/>
+				<textFieldExpression><![CDATA["DOMICILIO: " + $F{direccion} +" BARRIO CIUDAD - PAIS"]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
