@@ -121,45 +121,4 @@ public class CobradorController implements Serializable {
         return getFacade().findAll();
     }
 
-    @FacesConverter(forClass = Cobrador.class)
-    public static class CobradorControllerConverter implements Converter {
-
-        @Override
-        public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-            if (value == null || value.length() == 0) {
-                return null;
-            }
-            CobradorController controller = (CobradorController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "cobradorController");
-            return controller.getCobrador(getKey(value));
-        }
-
-        java.lang.Long getKey(String value) {
-            java.lang.Long key;
-            key = Long.valueOf(value);
-            return key;
-        }
-
-        String getStringKey(java.lang.Long value) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(value);
-            return sb.toString();
-        }
-
-        @Override
-        public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
-            if (object == null) {
-                return null;
-            }
-            if (object instanceof Cobrador) {
-                Cobrador o = (Cobrador) object;
-                return getStringKey(o.getId());
-            } else {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Cobrador.class.getName()});
-                return null;
-            }
-        }
-
-    }
-
 }

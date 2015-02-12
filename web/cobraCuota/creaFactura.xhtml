@@ -25,16 +25,24 @@
                     width: 68%;
                 }
                 .colsub2{
-                    width: 10%;
+                    width: calc(55% + 30px);
                     text-align: right;
                 }
                 .colsub3{
-                    width: 10%;
+
                     text-align: right;
                 }
                 .colsub4{
-                    width: 10%;
+
                     text-align: right;
+                }
+
+                .derecha{
+                    text-align: right;
+                }
+
+                .izquierda{
+                    text-align: left;
                 }
             </style>
             <h:form id="FacturaVentaForm">
@@ -51,14 +59,37 @@
                                     <h:panelGrid columns="4" style="width: 100%" columnClasses="col1,col2,col1,col2">
                                         <h:outputText value="Emisión: "/>
                                         <p:calendar value="#{cobraCuotaBean.facturaVenta.fechaEmision}" locale="es" pattern="#{formato.patronFecha}"/>
-                                        <p:spacer/>
-                                        <p:spacer/>
+
+                                        <h:outputText value="Condicion de Venta: "/>
+
+                                        <p:selectOneMenu value="#{cobraCuotaBean.facturaVenta.condicionVenta}">
+                                            <f:selectItems value="#{productorEnums.obtCondicionesVenta()}"/>
+                                        </p:selectOneMenu>
+
+                                        <h:outputText value="Cobrador: "/>
+                                        
+                                        <p:autoComplete value="#{cobraCuotaBean.facturaVenta.cobrador}"  id="autoCompleteCobrador" size="50"
+                                                        completeMethod="#{autoCompleteCobrador.completar}"
+                                                        forceSelection="true" converter="cobradorConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.toString()}"
+                                                        >
+
+                                        </p:autoComplete>
+                                        
+                                        
+                                        <h:outputText value="Cant. Cuotas: "/>
+                                        <h:inputText value="#{cobraCuotaBean.facturaVenta.cantidadCuota}"
+                                                     size="3" style="font-size: 12pt; font-weight: bold;max-width: 30px" maxlength="3"/>
+
+
+
                                         <h:outputText value="Razon Social: "/>
                                         <h:inputText value="#{cobraCuotaBean.facturaVenta.razonSocial}"  style="width: 95%"/>
                                         <h:outputText value="RUC: "/>
                                         <h:inputText value="#{cobraCuotaBean.facturaVenta.ruc}"/>
                                         <h:outputText value="Direccion: "/>
                                         <h:inputText value="#{cobraCuotaBean.facturaVenta.direccion}"  style="width: 95%"/>
+
+                                        
                                     </h:panelGrid>
                                 </p:outputPanel>
                             </div>
@@ -104,8 +135,13 @@
                                     <p:column headerText="Cant." style="width: 30px">
                                         #{d.cantidad}
                                     </p:column>
-                                    <p:column headerText="Descripción" style="width: 55%">
+                                    <p:column headerText="Descripción" style="width: 55%;text-align: left">
                                         #{d.descripcion}
+
+                                        <f:facet name="footer" class="izquierda">
+                                            <h:outputText value="SUBTOTALES" style="font-size: 10pt; font-weight: bold"/>
+                                        </f:facet>
+
                                     </p:column>
                                     <p:column headerText="Precio Unitario" style="text-align: right">
                                         <h:outputText value="#{d.precioUnitario}">
@@ -116,40 +152,71 @@
                                         <h:outputText value="#{d.exenta}">
                                             <f:convertNumber locale="#{formato.locale}"/>
                                         </h:outputText>
-
+                                        <f:facet name="footer" class="derecha">
+                                            <h:outputText value="#{cobraCuotaBean.facturaVenta.totalExento}" style="font-size: 10pt; font-weight: bold">
+                                                <f:convertNumber locale="#{formato.locale}"/>
+                                            </h:outputText>
+                                        </f:facet>
                                     </p:column>
                                     <p:column headerText="Gravada 05" style="text-align: right">
                                         <h:outputText value="#{d.gravada05}">
                                             <f:convertNumber locale="#{formato.locale}"/>
                                         </h:outputText>
+                                        <f:facet name="footer" class="derecha">
+                                            <h:outputText value="#{cobraCuotaBean.facturaVenta.totalGravada05}" style="font-size: 10pt; font-weight: bold">
+                                                <f:convertNumber locale="#{formato.locale}"/>
+                                            </h:outputText>
+                                        </f:facet>
                                     </p:column>
                                     <p:column headerText="Gravada 10" style="text-align: right">
                                         <h:outputText value="#{d.gravada10}">
                                             <f:convertNumber locale="#{formato.locale}"/>
                                         </h:outputText>
+
+                                        <f:facet name="footer" class="derecha">
+                                            <h:outputText value="#{cobraCuotaBean.facturaVenta.totalGravada10}" style="font-size: 10pt; font-weight: bold">
+                                                <f:convertNumber locale="#{formato.locale}"/>
+                                            </h:outputText>
+                                        </f:facet>
                                     </p:column>
+
+                                    <f:facet name="footer">
+
+                                        <table width="100%" border="0" style="margin: 0; padding: 0;border: none;">
+                                            <tr>
+                                                <td width="80%" align="right" style="margin: 0; padding: 0;border: none;">
+                                                    <h:outputText value="TOTAL:" style="font-size: 14pt; font-weight: bold;margin-left: 50px"/>
+                                                </td>
+                                                <td width="20%" align="right" style="margin: 0; padding: 0;border: none;">
+                                                    <h:outputText value="#{cobraCuotaBean.facturaVenta.total}" style="font-size: 14pt; font-weight: bold">
+                                                        <f:convertNumber locale="#{formato.locale}"/>
+                                                    </h:outputText>    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="margin: 0; padding: 0;border: none;margin-top: 10px" align="right">
+                                                    <h:outputText value="IVA 05:" style="font-size: 10pt; font-weight: bold;margin-left: 50px;margin-top: 15px"/>
+                                                    <h:outputText value="#{cobraCuotaBean.facturaVenta.iva05}" style="font-size: 10pt; font-weight: bold;margin-left: 30px;margin-top: 15px">
+                                                        <f:convertNumber locale="#{formato.locale}"/>
+                                                    </h:outputText>    
+                                                    <h:outputText value="IVA 10:" style="font-size: 10pt; font-weight: bold;margin-left: 50px;margin-top: 15px"/>
+                                                    <h:outputText value="#{cobraCuotaBean.facturaVenta.iva10}" style="font-size: 10pt; font-weight: bold;margin-left: 30px;margin-top: 15px">
+                                                        <f:convertNumber locale="#{formato.locale}"/>
+                                                    </h:outputText>    
+                                                    <h:outputText value="TOTAL IVA:" style="font-size: 10pt; font-weight: bold;margin-left: 50px;margin-top: 15px"/>
+
+                                                </td>
+                                                <td  style="margin: 0; padding: 0;border: none;margin-top: 10px" align="right">
+                                                    <h:outputText value="#{cobraCuotaBean.facturaVenta.totalIva}" style="font-size: 10pt; font-weight: bold;margin-left: 50px;margin-top: 15px">
+                                                        <f:convertNumber locale="#{formato.locale}"/>
+                                                    </h:outputText>    
+                                                </td>
+                                            </tr>
+                                        </table>
+
+
+                                    </f:facet>
                                 </p:dataTable>
-                                
-                                <p:panelGrid columns="4" columnClasses="colsub1,colsub2,colsub3,colsub4" style="width: 100%">
-                                    <h:outputText value="SUBTOTALES" style="font-size: 10pt; font-weight: bold"/>
-                                    <h:outputText value="#{cobraCuotaBean.facturaVenta.totalExento}" style="font-size: 10pt; font-weight: bold">
-                                        <f:convertNumber locale="#{formato.locale}"/>
-                                    </h:outputText>
-                                    <h:outputText value="#{cobraCuotaBean.facturaVenta.totalGravada05}" style="font-size: 10pt; font-weight: bold">
-                                        <f:convertNumber locale="#{formato.locale}"/>
-                                    </h:outputText>
-                                    <h:outputText value="#{cobraCuotaBean.facturaVenta.totalGravada10}" style="font-size: 10pt; font-weight: bold">
-                                        <f:convertNumber locale="#{formato.locale}"/>
-                                    </h:outputText>
-                                </p:panelGrid>
-                                
-                                <p:panelGrid columns="2" columnClasses="colsub1,colsub2" style="width: 100%">
-                                    <h:outputText value="TOTAL" style="font-size: 14pt; font-weight: bold"/>
-                                    <h:outputText value="#{cobraCuotaBean.facturaVenta.total}" style="font-size: 14pt; font-weight: bold">
-                                        <f:convertNumber locale="#{formato.locale}"/>
-                                    </h:outputText>    
-                                </p:panelGrid>
-                                
                             </div>
 
                         </div>
@@ -157,19 +224,16 @@
 
                     <div class="ui-grid-row">
                         <div class="ui-grid-col-12" style="width: 75%;">
-                            <div style="background-color: #ddd;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
+                            <div style="background-color: #ddd;border: 1px solid black;padding: 10px;min-height: 50px;-webkit-border-radius: 10px;
                                  -moz-border-radius: 5px;
                                  border-radius: 5px;
-                                 margin-bottom: 5px">
-                                <p:commandButton value="Confirmar" action="#{cobraCuotaBean.paga()}"/>
-                                <p:commandButton value="Cancelar" action="limpia"/>
+                                 margin-bottom: 5px;">
+                                <p:commandButton value="Cancelar" action="limpia" style="float: left"/>
+                                <p:commandButton value="Confirmar" action="#{cobraCuotaBean.paga()}" style="float: right"/>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
 
             </h:form>
 

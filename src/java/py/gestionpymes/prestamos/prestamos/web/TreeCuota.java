@@ -15,6 +15,7 @@ import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoDetPrestamo;
 
 
 /**
@@ -36,6 +37,7 @@ public class TreeCuota {
     private Integer diasMora;
     private BigDecimal montoMora;
     private BigDecimal montoPago;
+    private BigDecimal montoAPagar;
     private BigDecimal saldoCuota;
     private boolean esPrestamo;
     private boolean cancelado;
@@ -43,6 +45,8 @@ public class TreeCuota {
     private boolean seleccionado;
     private Empresa empresa;
     private Sucursal sucursal;
+    private BigDecimal cuotaCapital;
+    private BigDecimal cuotaInteres;
     private BigDecimal montoMoratorio;
     private BigDecimal montoPunitorio;
     
@@ -72,8 +76,16 @@ public class TreeCuota {
         
         this.montoMoratorio = detPrestamo.calculaSaldoMoratorio();
         this.montoPunitorio = detPrestamo.calculaSaldoPunitorio();
+        this.cuotaCapital = detPrestamo.getCuotaCapital();
+        this.cuotaInteres = this.montoCuota.subtract(this.cuotaCapital);
         
-        this.montoMora = detPrestamo.devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
+        //this.montoMora = detPrestamo.devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
+        if(detPrestamo.getEstado() == EstadoDetPrestamo.CANCELADO){
+            this.montoMora = detPrestamo.getMoraMoratorio().add(detPrestamo.getMoraPunitorio());
+        }else{
+            this.montoMora = detPrestamo.devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
+        }
+        
         this.montoPago = detPrestamo.getMontoPago().setScale(0, RoundingMode.HALF_EVEN);
         this.saldoCuota = detPrestamo.getSaldoCuota().setScale(0, RoundingMode.HALF_EVEN);
         this.prestamo = detPrestamo.getPrestamo();
@@ -83,6 +95,32 @@ public class TreeCuota {
         this.esPrestamo = false;
         this.cancelado = true;
     }
+
+    public BigDecimal getMontoAPagar() {
+        return montoAPagar;
+    }
+
+    public void setMontoAPagar(BigDecimal montoAPagar) {
+        this.montoAPagar = montoAPagar;
+    }
+
+    public BigDecimal getCuotaCapital() {
+        return cuotaCapital;
+    }
+
+    public void setCuotaCapital(BigDecimal cuotaCapital) {
+        this.cuotaCapital = cuotaCapital;
+    }
+
+    public BigDecimal getCuotaInteres() {
+        return cuotaInteres;
+    }
+
+    public void setCuotaInteres(BigDecimal cuotaInteres) {
+        this.cuotaInteres = cuotaInteres;
+    }
+    
+    
 
     public BigDecimal getMontoMoratorio() {
         return montoMoratorio;

@@ -105,6 +105,24 @@
 
                                 <p:column style="width:100px;font-size: 12px;">
                                     <f:facet name="header">
+                                        Cuota Capital
+                                    </f:facet>
+                                    <h:outputText value="#{c.cuotaCapital}">
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                    </h:outputText>
+                                </p:column>
+                                
+                                <p:column style="width:100px;font-size: 12px;">
+                                    <f:facet name="header">
+                                        Cuota Interes
+                                    </f:facet>
+                                    <h:outputText value="#{c.cuotaInteres}">
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                    </h:outputText>
+                                </p:column>
+                                
+                                <p:column style="width:100px;font-size: 12px;">
+                                    <f:facet name="header">
                                         Monto Cuota
                                     </f:facet>
                                     <h:outputText value="#{c.montoCuota}">
@@ -132,7 +150,19 @@
 
                                 <p:column style="width:100px;font-size: 12px;">
                                     <f:facet name="header">
-                                        Saldo
+                                        Monto Pagado
+                                    </f:facet>
+                                    <h:inputText value="#{c.montoPago}" rendered="#{(not p.esPrestamo) and p.modoEdicion}">
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                    </h:inputText>
+                                    <h:outputText value="#{c.montoPago}" rendered="#{(not p.esPrestamo) and (not p.modoEdicion)}">
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                    </h:outputText>
+                                </p:column>
+                                
+                                <p:column style="width:100px;font-size: 12px;">
+                                    <f:facet name="header">
+                                        Saldo Pendiente
                                     </f:facet>
                                     <h:outputText value="#{c.saldoCuota}">
                                         <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
@@ -141,12 +171,12 @@
 
                                 <p:column style="width:100px;font-size: 12px;">
                                     <f:facet name="header">
-                                        Monto Pago
+                                        Monto A Pagar
                                     </f:facet>
-                                    <h:inputText value="#{c.montoPago}" rendered="#{(not p.esPrestamo) and p.modoEdicion}">
+                                    <h:inputText value="#{c.montoAPagar}" rendered="#{(not p.esPrestamo) and p.modoEdicion}">
                                         <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                                     </h:inputText>
-                                    <h:outputText value="#{c.montoPago}" rendered="#{(not p.esPrestamo) and (not p.modoEdicion)}">
+                                    <h:outputText value="#{c.montoAPagar}" rendered="#{(not p.esPrestamo) and (not p.modoEdicion)}">
                                         <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                                     </h:outputText>
                                 </p:column>
@@ -172,7 +202,7 @@
                     </div>
                 </div>
 
-                <p:dialog id="dialog" header="Detalle de Cuota" showEffect="fade" widgetVar="cuotaDialog"  resizable="false">
+                <p:dialog id="dialog" header="Detalle de Cuota" showEffect="fade" widgetVar="cuotaDialog"  resizable="false" position="center">
                     <p:outputPanel id="cuotaPanel">
                         <p:panelGrid  columns="2" columnClasses="label,value">
                             <h:outputLabel for="nroCuota" value="Nro: " />
@@ -187,8 +217,26 @@
                             <h:outputText id="montoMora" value="#{cobraCuotaBean.cuotaSeleccionada.montoMora}" style="font-weight:bold">
                                 <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                             </h:outputText>
+                            
+                            <h:outputLabel for="cuotaInteres" value="Cuota Interes: " />
+                            <h:outputText id="cuotaInteres" value="#{cobraCuotaBean.cuotaSeleccionada.cuotaInteres}" style="font-weight:bold">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:outputText>
+                            
+                            
+                            <h:outputLabel for="pagoMinimo" value="Pago Mínimo: " />
+                            <h:outputText id="pagoMinimo" value="#{cobraCuotaBean.cuotaSeleccionada.cuotaInteres.add(cobraCuotaBean.cuotaSeleccionada.montoMora)}" style="font-weight:bold">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:outputText>
+                            
+                            
+                            
+                            <h:outputLabel for="deudaTotal" value="Deuda total: " />
+                            <h:outputText id="deudaTotal" value="#{cobraCuotaBean.cuotaSeleccionada.saldoCuota}" style="font-weight:bold">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:outputText>
 
-                            <h:outputLabel for="montoPago" value="Monto Pago: " id="lblMontoPago"/>
+                            <h:outputLabel for="montoPago" value="Monto A Pago: " id="lblMontoPago"/>
                             <p:inputText id="montoPago" value="#{cobraCuotaBean.montoActual}" style="font-weight:bold" validator="pagoValidator">
                                 <p:ajax event="blur" update="lblMontoPago,montoPago,:growl" process="montoPago"/>
                                 <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>

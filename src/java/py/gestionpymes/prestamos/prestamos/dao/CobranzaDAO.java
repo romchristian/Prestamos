@@ -5,6 +5,7 @@
 package py.gestionpymes.prestamos.prestamos.dao;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,15 +55,19 @@ public class CobranzaDAO {
 
         CuentaCliente cc = (CuentaCliente) em.createQuery("select c from CuentaCliente c where c.cliente = :cliente")
                 .setParameter("cliente", f.getCliente()).getSingleResult();
-        
+
         for (FacturaVentaDetalle df : f.getDetalles()) {
             OperacionCobroCuotaFactura occ = new OperacionCobroCuotaFactura(df);
             occ.setCuentaCliente(cc);
             occ.setFecha(new Date());
             detCuentaClienteDAO.create(occ);
-            
+
             DetPrestamo dp = df.getDetPrestamo();
-             if (!dp.afectaSaldoCuota(df.getGravada10(),df.getRefMonto())) {
+
+            BigDecimal monto = (df.getGravada10() == null ? new BigDecimal(BigInteger.ZERO):df.getGravada10()).add(df.getGravada05() == null ? new BigDecimal(BigInteger.ZERO) : df.getGravada05())
+                    .add(df.getExenta() == null ? new BigDecimal(BigInteger.ZERO) : df.getExenta());
+
+            if (!dp.afectaSaldoCuota(monto, df.getRefMonto())) {
                 throw new PagoExcedidoException("El monto no puede ser mayor al saldo de la cuota");
             } else {
                 Prestamo p = dp.getPrestamo();
@@ -137,7 +142,6 @@ public class CobranzaDAO {
 //                em.merge(dp);
 //                em.merge(p);
 //            }
-
         }
 
         return cobro;

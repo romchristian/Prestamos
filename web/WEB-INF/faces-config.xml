@@ -10,7 +10,15 @@
         <converter-class>py.gestionpymes.prestamos.prestamos.web.ClienteConverter</converter-class>
     </converter>
     
+    
+    <converter>
+        <converter-id>cobradorConverter</converter-id>
+        <converter-for-class>py.gestionpymes.prestamos.adm.persistencia.Cobrador</converter-for-class>
+        <converter-class>py.gestionpymes.prestamos.adm.web.CobradorConverter</converter-class>
+    </converter>
+    
     <flow-definition id="cobraCuota">
+        
         
         <method-call id="limpia"> 
             <default-outcome>cobraCuota</default-outcome>

@@ -12,6 +12,7 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.persistencia.Estado;
 import py.gestionpymes.prestamos.adm.persistencia.TipoPersona;
+import py.gestionpymes.prestamos.contabilidad.CondicionVenta;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.PeriodoPago;
 import py.gestionpymes.prestamos.prestamos.persistencia.SistemaAmortizacion;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.Calificacion;
@@ -25,7 +26,6 @@ import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDireccion;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDocumento;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoEmpresa;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoReferencia;
-
 
 /**
  *
@@ -64,7 +64,7 @@ public class ProductorEnums implements Serializable {
         }
         return R;
     }
-    
+
     public SelectItem[] obtCicloIngresos() {
         SelectItem[] R = new SelectItem[CicloIngreso.values().length];
         CicloIngreso[] lista = CicloIngreso.values();
@@ -105,8 +105,6 @@ public class ProductorEnums implements Serializable {
         return R;
     }
 
-    
-
     public SelectItem[] obtTiposDireccion() {
         SelectItem[] R = new SelectItem[TipoDireccion.values().length];
         TipoDireccion[] lista = TipoDireccion.values();
@@ -137,10 +135,6 @@ public class ProductorEnums implements Serializable {
         return R;
     }
 
-   
-    
-   
-
     public SelectItem[] obtEstadosCivil() {
         SelectItem[] R = new SelectItem[EstadoCivil.values().length];
         EstadoCivil[] lista = EstadoCivil.values();
@@ -150,8 +144,7 @@ public class ProductorEnums implements Serializable {
         }
         return R;
     }
-    
-  
+
     public SelectItem[] obtTiposContactosTelefonicos() {
         SelectItem[] R = new SelectItem[TipoContactoTelefonico.values().length];
         TipoContactoTelefonico[] lista = TipoContactoTelefonico.values();
@@ -171,7 +164,7 @@ public class ProductorEnums implements Serializable {
         }
         return R;
     }
-    
+
     public SelectItem[] obtCategoria() {
         SelectItem[] R = new SelectItem[Calificacion.values().length];
         Calificacion[] lista = Calificacion.values();
@@ -181,8 +174,7 @@ public class ProductorEnums implements Serializable {
         }
         return R;
     }
-    
-    
+
     public SelectItem[] obtEstadosPrestamo() {
         SelectItem[] R = new SelectItem[EstadoPrestamo.values().length];
         EstadoPrestamo[] lista = EstadoPrestamo.values();
@@ -192,5 +184,15 @@ public class ProductorEnums implements Serializable {
         }
         return R;
     }
-   
+
+    public SelectItem[] obtCondicionesVenta() {
+        SelectItem[] R = new SelectItem[CondicionVenta.values().length];
+        CondicionVenta[] lista = CondicionVenta.values();
+        for (int i = 0; i < lista.length; i++) {
+            CondicionVenta tp = lista[i];
+            R[i] = new SelectItem(tp, tp.toString());
+        }
+        return R;
+    }
+
 }

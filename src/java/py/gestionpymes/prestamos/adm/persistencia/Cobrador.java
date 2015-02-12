@@ -7,7 +7,6 @@ package py.gestionpymes.prestamos.adm.persistencia;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import py.gestionpymes.prestamos.adm.persistencia.Persona;
 
 /**
  *
@@ -33,5 +32,12 @@ public class Cobrador extends Persona implements Serializable{
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
     }
+
+    @Override
+    public String toString() {
+        return nombres + ", " + apellidos;
+    }
+    
+    
     
 }
