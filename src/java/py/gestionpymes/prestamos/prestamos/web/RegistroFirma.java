@@ -18,6 +18,7 @@ public class RegistroFirma {
     private String primerApellido;
     private String segundoApellido;
     private String nroDocumento;
+    private String direccion;
     
     private Cliente cliente;
 
@@ -29,12 +30,18 @@ public class RegistroFirma {
         primerApellido = this.cliente.getPrimerApellido();
         segundoApellido = this.cliente.getSegundoApellido();
         nroDocumento = this.cliente.getNroDocumento();
+        direccion = this.cliente.devuelveDireccionParticular();
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
     
     
-    
-    
-
     public String getPrimerNombre() {
         return primerNombre;
     }

@@ -75,8 +75,8 @@ public class Prestamo implements Serializable {
     private Moneda moneda;
     @ManyToOne
     private Cotizacion cotizacion;
-    private boolean firmaConyugeTitular;
-    private boolean firmaConyugeCodeudor;
+    private boolean firmaConyugeTitular=false;
+    private boolean firmaConyugeCodeudor=false;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date ultimoPago;
 
