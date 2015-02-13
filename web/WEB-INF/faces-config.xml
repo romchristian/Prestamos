@@ -4,6 +4,11 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
     
+    
+    <factory>
+        <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
+    </factory>
+ 
     <converter>
         <converter-id>clienteConverter</converter-id>
         <converter-for-class>py.gestionpymes.prestamos.prestamos.persistencia.Cliente</converter-for-class>
@@ -15,6 +20,12 @@
         <converter-id>cobradorConverter</converter-id>
         <converter-for-class>py.gestionpymes.prestamos.adm.persistencia.Cobrador</converter-for-class>
         <converter-class>py.gestionpymes.prestamos.adm.web.CobradorConverter</converter-class>
+    </converter>
+    
+    <converter>
+        <converter-id>vendedorConverter</converter-id>
+        <converter-for-class>py.gestionpymes.prestamos.adm.persistencia.Vendedor</converter-for-class>
+        <converter-class>py.gestionpymes.prestamos.adm.web.VendedorConverter</converter-class>
     </converter>
     
     <flow-definition id="cobraCuota">

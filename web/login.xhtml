@@ -33,7 +33,7 @@
                 font-weight: 400;
                 src: local('Exo Regular'), local('Exo-Regular'), url(#{resource['font/kA_pX0U45Eb7PbHijV1x2w.woff2']}) format('woff2'), url(#{resource['font/wocyXRLWPo2Av-yUTmmbTA.woff']}) format('woff');
             }
-            
+
 
             body{
                 margin: 0;
@@ -206,13 +206,21 @@
         </div>
         <br/>
 
-        <form method="POST" action="j_security_check">
+        <!--        <form method="POST" action="j_security_check">
+                    <div class="login">
+                        <input type="text" placeholder="usuario" name="j_username"/><br/>
+                        <input type="password" placeholder="contraseña" name="j_password"/><br/>
+                        <input type="submit" value="Entrar"/>
+                    </div>
+                </form>-->
+
+        <h:form>
             <div class="login">
-                <input type="text" placeholder="usuario" name="j_username"/><br/>
-                <input type="password" placeholder="contraseña" name="j_password"/><br/>
-                <input type="submit" value="Entrar"/>
+                <p:inputText value="#{autenticador.username}" placeholder="usuario"/>
+                <p:password value="#{autenticador.password}" placeholder="contraseña"/>
+                <h:commandButton value="Entrar" action="#{autenticador.login()}"/>
             </div>
-        </form>
+        </h:form>
 
 
     </h:body>

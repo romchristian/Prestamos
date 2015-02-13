@@ -100,9 +100,12 @@
                                         <h:outputText value="Vendedor: "
                                                       style="font-size: 10pt"/>
 
-                                        <p:selectOneMenu value="#{prestamoController.selected.vendedor}">
-                                            <f:selectItems value="#{vendedorController.itemsAvailableSelectOne}"/>
-                                        </p:selectOneMenu>
+                                        <p:autoComplete value="#{prestamoController.selected.vendedor}"  id="autoCompleteCobrador" size="50"
+                                                        completeMethod="#{autoCompleteVendedor.completar}"
+                                                        forceSelection="true" converter="vendedorConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
+                                                        >
+
+                                        </p:autoComplete>
 
 
                                     </h:panelGrid>

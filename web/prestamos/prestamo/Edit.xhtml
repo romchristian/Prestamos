@@ -13,25 +13,25 @@
         <f:viewParam name="id" value="#{prestamoController.id}"/>
         <f:viewAction action="#{prestamoController.cargaDatos()}"/>
     </f:metadata>
-    
+
     <ui:define name="title">
         Editar Nuevo Préstamo
     </ui:define>
 
     <ui:define name="body">
         <h:form id="PrestamoEditForm">
-            
-                <p:tabView>
 
-                    <p:tab title="Datos Operación">
-                        
-                        <p:panel  id="panelCliente" style="background-color: #ddd">
+            <p:tabView>
+
+                <p:tab title="Datos Operación">
+
+                    <p:panel  id="panelCliente" style="background-color: #ddd">
 
 
-                            <table>
-                                <tr>
-                                    <td width="90%">
-                                        <h:panelGrid columns="4">
+                        <table>
+                            <tr>
+                                <td width="90%">
+                                    <h:panelGrid columns="4">
                                         <h:outputText value="Fecha Operación: "
                                                       style="font-size: 10pt"/>
                                         <p:calendar value="#{prestamoController.selected.fechaInicioOperacion}"
@@ -101,34 +101,37 @@
                                         <p:selectOneMenu value="#{prestamoController.selected.sucursal}">
                                             <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
                                         </p:selectOneMenu>
-                                        
+
                                         <h:outputText value="Vendedor: "
                                                       style="font-size: 10pt"/>
 
-                                        <p:selectOneMenu value="#{prestamoController.selected.vendedor}">
-                                            <f:selectItems value="#{vendedorController.itemsAvailableSelectOne}"/>
-                                        </p:selectOneMenu>
+                                        <p:autoComplete value="#{prestamoController.selected.vendedor}"  id="autoCompleteCobrador" size="50"
+                                                        completeMethod="#{autoCompleteVendedor.completar}"
+                                                        forceSelection="true" converter="vendedorConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
+                                                        >
+
+                                        </p:autoComplete>
 
 
                                     </h:panelGrid>
 
-                                    </td>
-                                    <td width="10%">
-                                        <h:panelGrid columns="2">
-                                            <p:commandButton action="#{prestamoController.create}" value="#{bundle.Save}" update="@(.tablaDetalles),:growl"  styleClass="btn btn-danger"/>
-                                            <p:commandButton value="#{bundle.Cancel}"  action="List.xhtml?faces-redirect=true"/>
-                                        </h:panelGrid>
-                                    </td>
-                                </tr>
-                            </table>    
+                                </td>
+                                <td width="10%">
+                                    <h:panelGrid columns="2">
+                                        <p:commandButton action="#{prestamoController.create}" value="#{bundle.Save}" update="@(.tablaDetalles),:growl"  styleClass="btn btn-danger"/>
+                                        <p:commandButton value="#{bundle.Cancel}"  action="List.xhtml?faces-redirect=true"/>
+                                    </h:panelGrid>
+                                </td>
+                            </tr>
+                        </table>    
 
-                        </p:panel>
-
-
-                        <p:panel id="panelDatos">
+                    </p:panel>
 
 
-                            <h:panelGrid columns="4">
+                    <p:panel id="panelDatos">
+
+
+                        <h:panelGrid columns="4">
 
                             <h:outputText value="Monto Préstamo"/>
                             <h:inputText value="#{prestamoController.selected.montoPrestamo}"  id="montoPrestamo">
@@ -211,44 +214,44 @@
 
                         </h:panelGrid>
 
-                        </p:panel>
+                    </p:panel>
 
-                    </p:tab>
-                    <p:tab title="Detalle Cuotas">
+                </p:tab>
+                <p:tab title="Detalle Cuotas">
 
-                        <p:dataTable value="#{prestamoController.selected.detalles}" var="d" id="tablaDetalles" styleClass="tablaDetalles">
-                            <p:column headerText="Cuota">
-                                <h:outputText value="#{d.nroCuota}"/>
-                            </p:column>
-                            <p:column headerText="Saldo Capital">
-                                <h:outputText value="#{d.saldoCapital}">
-                                    <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Monto cuota">
-                                <h:outputText value="#{d.montoCuota}">
-                                    <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Vencimiento">
-                                <h:outputText value="#{d.fechaVencimiento}">
-                                    <f:convertDateTime pattern="#{formato.patronFecha}"/>
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Cuota Capital">
-                                <h:outputText value="#{d.cuotaCapital}">
-                                    <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Cuota Interes">
-                                <h:outputText value="#{d.cuotaInteres}">
-                                    <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
-                                </h:outputText>
-                            </p:column>
-                        </p:dataTable>
+                    <p:dataTable value="#{prestamoController.selected.detalles}" var="d" id="tablaDetalles" styleClass="tablaDetalles">
+                        <p:column headerText="Cuota">
+                            <h:outputText value="#{d.nroCuota}"/>
+                        </p:column>
+                        <p:column headerText="Saldo Capital">
+                            <h:outputText value="#{d.saldoCapital}">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Monto cuota">
+                            <h:outputText value="#{d.montoCuota}">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Vencimiento">
+                            <h:outputText value="#{d.fechaVencimiento}">
+                                <f:convertDateTime pattern="#{formato.patronFecha}"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Cuota Capital">
+                            <h:outputText value="#{d.cuotaCapital}">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Cuota Interes">
+                            <h:outputText value="#{d.cuotaInteres}">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
 
-                    </p:tab>
-                </p:tabView>
+                </p:tab>
+            </p:tabView>
 
 
 

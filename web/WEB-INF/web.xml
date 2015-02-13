@@ -15,7 +15,7 @@
     </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+           120
         </session-timeout>
     </session-config>
     <welcome-file-list>
@@ -245,10 +245,7 @@
             <form-error-page>/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
-    <error-page>
-        <error-code>403</error-code>
-        <location>/sinpermiso.xhtml</location>
-    </error-page>
+
     <security-role>
         <description/>
         <role-name>admin</role-name>
@@ -309,4 +306,28 @@
         <description/>
         <role-name>contabilidad</role-name>
     </security-role>
+    
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/home/home.xhtml</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.sql.SQLException</exception-type>
+        <location>/errorSQL.xhtml</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.RuntimeException</exception-type>
+        <location>/errorRuntime.xhtml</location>
+    </error-page>
+    
+    <error-page>
+        <error-code>404</error-code>
+        <location>/home/home.xhtml</location>
+    </error-page>
+    
+    <error-page>
+        <error-code>403</error-code>
+        <location>/sinpermiso.xhtml</location>
+    </error-page>
+
 </web-app>
