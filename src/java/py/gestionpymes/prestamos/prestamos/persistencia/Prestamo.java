@@ -14,6 +14,8 @@ import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
@@ -32,7 +34,7 @@ public class Prestamo implements Serializable {
 
     public static final String TODOS = "py.gestionpymes.jpa.prestamos.Prestamo.TODOS";
     public static final String POR_CLIENTE = "py.gestionpymes.jpa.prestamos.Prestamo.POR_CLIENTE";
-    @OneToMany(mappedBy = "prestamo", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "prestamo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<DetPrestamo> detalles;
     private static final long serialVersionUID = 1L;
     @Id
@@ -75,14 +77,24 @@ public class Prestamo implements Serializable {
     private Moneda moneda;
     @ManyToOne
     private Cotizacion cotizacion;
-    private boolean firmaConyugeTitular=false;
-    private boolean firmaConyugeCodeudor=false;
+    private boolean firmaConyugeTitular = false;
+    private boolean firmaConyugeCodeudor = false;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date ultimoPago;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaPrimerVencimiento;
 
     public Prestamo() {
         this.estado = EstadoPrestamo.PENDIENTE_DESEMBOLSO;
         this.sistemaAmortizacion = SistemaAmortizacion.FRANCES;
+    }
+
+    public Date getFechaPrimerVencimiento() {
+        return fechaPrimerVencimiento;
+    }
+
+    public void setFechaPrimerVencimiento(Date fechaPrimerVencimiento) {
+        this.fechaPrimerVencimiento = fechaPrimerVencimiento;
     }
 
     public Vendedor getVendedor() {
@@ -331,32 +343,71 @@ public class Prestamo implements Serializable {
 
     public void calcula() {
         detalles = getSistema().calculaCuotas();
-        
 
         totalIntereses = BigDecimal.ZERO;
         impuestoIVA = BigDecimal.ZERO;
         totalOperacion = BigDecimal.ZERO;
-        
+
+        double interesPorDia = getTasa() / 100d / 365d;
+        int difPrimerVencimiento = Days.daysBetween(new DateTime(fechaInicioOperacion), new DateTime(fechaPrimerVencimiento)).getDays();
+
+        BigDecimal montoDif = new BigDecimal(interesPorDia * difPrimerVencimiento, MathContext.DECIMAL128).multiply(getCapital()).setScale(0, RoundingMode.HALF_EVEN);
+
         for (DetPrestamo d : getDetalles()) {
+
             totalIntereses = totalIntereses.add(d.getCuotaInteres());
-            impuestoIVA = impuestoIVA.add(d.getImpuestoIvaCuota());      
+            impuestoIVA = impuestoIVA.add(d.getCuotaInteres().multiply(new BigDecimal(0.1)).setScale(plazo, RoundingMode.HALF_EVEN));
         }
-        
-        
+
         totalOperacion = getCapital().add(totalIntereses).add(impuestoIVA);
-        
+
         System.out.println("TOTAL IVA: " + impuestoIVA.doubleValue());
         System.out.println("PLAZO: " + plazo);
-        BigDecimal ivaMesFijo = impuestoIVA.divide(new BigDecimal(plazo),MathContext.DECIMAL128);
-        
+        BigDecimal ivaMesFijo = impuestoIVA.divide(new BigDecimal(plazo), MathContext.DECIMAL128);
+
         for (DetPrestamo d : getDetalles()) {
-            BigDecimal montoIvaIncluido = d.getMontoCuota().add(ivaMesFijo);
-            d.setMontoCuota(montoIvaIncluido);
-            d.setSaldoCuota(montoIvaIncluido);
+            BigDecimal interesIvaIncluido = d.getCuotaInteres().add(ivaMesFijo);
+
+            BigDecimal ivaInteres = interesIvaIncluido.divide(new BigDecimal(11), 0, RoundingMode.HALF_EVEN);
+            d.setCuotaInteres(interesIvaIncluido.subtract(ivaInteres));
+            d.setImpuestoIvaCuota(ivaInteres);
+
+            BigDecimal nuevomontoCuota = d.getCuotaInteres().add(d.getCuotaCapital()).add(d.getImpuestoIvaCuota());
+
+            d.setMontoCuota(nuevomontoCuota);
+            d.setSaldoCuota(nuevomontoCuota);
         }
-        
+
+        totalIntereses = BigDecimal.ZERO;
+        impuestoIVA = BigDecimal.ZERO;
+        totalOperacion = BigDecimal.ZERO;
+
+        System.out.println("DIFF DIAS: " + difPrimerVencimiento);
+        System.out.println("DIFF MONTO: " + montoDif);
+        System.out.println("DIFF IVA: " + montoDif.multiply(new BigDecimal(0.1)).setScale(0, RoundingMode.HALF_EVEN));
+        for (DetPrestamo d : getDetalles()) {
+            if (d.getNroCuota() == 1 && difPrimerVencimiento > 0) {
+                d.setCuotaInteres(d.getCuotaInteres().add(montoDif));
+                d.setImpuestoIvaCuota(d.getImpuestoIvaCuota().add(montoDif.multiply(new BigDecimal(0.1)).setScale(0, RoundingMode.HALF_EVEN)));
+
+                totalIntereses = totalIntereses.add(d.getCuotaInteres());
+
+                impuestoIVA = impuestoIVA.add(d.getImpuestoIvaCuota());
+
+                BigDecimal nuevomontoCuota = d.getCuotaInteres().add(d.getCuotaCapital()).add(d.getImpuestoIvaCuota());
+                d.setMontoCuota(nuevomontoCuota);
+                d.setSaldoCuota(nuevomontoCuota);
+
+            } else {
+                totalIntereses = totalIntereses.add(d.getCuotaInteres());
+                impuestoIVA = impuestoIVA.add(d.getImpuestoIvaCuota());
+            }
+
+        }
+
+        totalOperacion = getCapital().add(totalIntereses).add(impuestoIVA);
+
         montoCuota = getSistema().getCuota().add(ivaMesFijo);
-        
 
         montoCuota.setScale(0, RoundingMode.HALF_EVEN);
         totalIntereses.setScale(0, RoundingMode.HALF_EVEN);

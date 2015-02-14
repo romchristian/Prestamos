@@ -7,7 +7,7 @@
 
     <h:form prependId="false">
       <p:idleMonitor
-         timeout="#{session.maxInactiveInterval * 1000 - 125000}"
+         timeout="#{session.maxInactiveInterval * 1000 - 60000}"
          onidle="startIdleMonitor()"
          onactive="PF('timeoutDialog').hide()" />
  
@@ -42,7 +42,7 @@
       <p:remoteCommand name="keepAlive" actionListener="#{autenticador.keepSessionAlive}" />
    </h:form>
    <script type="text/javascript">
-      var TIME = 120; // in seconds
+      var TIME = 60; // in seconds
       var countTimer = TIME;
       var processTimer;
       var timer_is_on = 0;

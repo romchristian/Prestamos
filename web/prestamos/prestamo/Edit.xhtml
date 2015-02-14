@@ -36,8 +36,10 @@
                                                       style="font-size: 10pt"/>
                                         <p:calendar value="#{prestamoController.selected.fechaInicioOperacion}"
                                                     pattern="#{formato.patronFecha}" locale="es"/>
-                                        <p:spacer/>
-                                        <p:spacer/>
+                                        <h:outputText value="Primer Vencimiento: "
+                                                      style="font-size: 10pt"/>
+                                        <p:calendar value="#{prestamoController.selected.fechaPrimerVencimiento}"
+                                                    pattern="#{formato.patronFecha}" locale="es"/>
                                         <h:outputText value="Titular"
                                                       style="font-size: 10pt"/>
 
@@ -225,12 +227,12 @@
                         </p:column>
                         <p:column headerText="Saldo Capital">
                             <h:outputText value="#{d.saldoCapital}">
-                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                             </h:outputText>
                         </p:column>
                         <p:column headerText="Monto cuota">
                             <h:outputText value="#{d.montoCuota}">
-                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                             </h:outputText>
                         </p:column>
                         <p:column headerText="Vencimiento">
@@ -240,12 +242,17 @@
                         </p:column>
                         <p:column headerText="Cuota Capital">
                             <h:outputText value="#{d.cuotaCapital}">
-                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                             </h:outputText>
                         </p:column>
                         <p:column headerText="Cuota Interes">
                             <h:outputText value="#{d.cuotaInteres}">
-                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="2"/>
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Impuesto IVA">
+                            <h:outputText value="#{d.impuestoIvaCuota}">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                             </h:outputText>
                         </p:column>
                     </p:dataTable>

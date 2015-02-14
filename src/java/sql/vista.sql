@@ -23,7 +23,7 @@ CREATE OR REPLACE VIEW users AS SELECT usuario AS userid, clave AS password FROM
 ALTER TABLE users OWNER TO postgres;
 
 INSERT INTO moneda(abreviacion, decimales, estado, monedalocal, nombre, version) VALUES ('GS', 0, 'ACTIVO', TRUE, 'GUARANIES', 1);
-INSERT INTO empresa(razonsocial, ruc, dv,estado,version) VALUES ('CREDI PYMES', '8001490', '2', 'ACTIVO', 1);
+INSERT INTO empresa(razonsocial, ruc, dv,estado,version) VALUES ('CREDI PYMES S.A.', '80065663-6', '2', 'ACTIVO', 1);
 INSERT INTO sucursal( estado, nombre, version, empresa_id) VALUES ('ACTIVO', 'MATRIZ',1,1);
 
 INSERT INTO categoria(calificacion) VALUES (0);

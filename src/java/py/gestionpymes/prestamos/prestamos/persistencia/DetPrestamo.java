@@ -76,23 +76,27 @@ public class DetPrestamo implements Serializable {
         this.montoCuota = cuotaCapital.add(cuotaInteres);
 
         GregorianCalendar gc = new GregorianCalendar(new Locale("es", "py"));
-        gc.setTime(prestamo.getFechaInicioOperacion());
+        gc.setTime(prestamo.getFechaPrimerVencimiento());
         int dias = 0;
 
         switch (prestamo.getPeriodoPago()) {
             case MENSUAL:
-                dias = 30;
+                gc.add(Calendar.MONTH, nroCuota-1);
                 break;
             case QUINCENAL:
                 dias = 15;
+                 dias *= (nroCuota-1);
+                gc.add(Calendar.DAY_OF_MONTH, dias);
                 break;
             case SEMANAL:
                 dias = 7;
+                 dias *= (nroCuota-1);
+                gc.add(Calendar.DAY_OF_MONTH, dias);
                 break;
         }
 
-        dias *= nroCuota;
-        gc.add(Calendar.DAY_OF_YEAR, dias);
+       
+        
         this.fechaVencimiento = gc.getTime();
         interesMoratorio = prestamo.getTasa();
         interesPunitorio = prestamo.getTasa() * 0.2f;
@@ -133,7 +137,6 @@ public class DetPrestamo implements Serializable {
     }
     
     public BigDecimal getImpuestoIvaCuota() {
-        impuestoIvaCuota = cuotaInteres.multiply(new BigDecimal(0.1));
         return impuestoIvaCuota;
     }
 
@@ -286,7 +289,7 @@ public class DetPrestamo implements Serializable {
         
         if (getDiasMora() > 0) {
         
-            double interesDiario = getInteresMoratorio() / 100d / 12d / 30d;
+            double interesDiario = getInteresMoratorio() / 100d / 365d;
             double interesMora = interesDiario * getDiasMora();
 
             R = new BigDecimal(interesMora).multiply(saldoCapital).setScale(0, RoundingMode.HALF_EVEN);
@@ -299,7 +302,7 @@ public class DetPrestamo implements Serializable {
     public BigDecimal calculaMontoPorDiasPunitorio() {
         BigDecimal R = new BigDecimal(BigInteger.ZERO);
         if (getDiasMora() > 0) {
-            double interesDiario = getInteresPunitorio() / 100d / 12d / 30d;
+            double interesDiario = getInteresPunitorio() / 100d / 365d;
             double interesMora = interesDiario * getDiasMora();
             R = new BigDecimal(interesMora).multiply(saldoCapital).setScale(0, RoundingMode.HALF_EVEN);
             setIvaMoraPunitorio(R.multiply(new BigDecimal(0.1)).setScale(0, RoundingMode.HALF_EVEN));

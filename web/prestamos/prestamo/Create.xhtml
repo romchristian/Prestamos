@@ -31,8 +31,10 @@
                                                       style="font-size: 10pt"/>
                                         <p:calendar value="#{prestamoController.selected.fechaInicioOperacion}"
                                                     pattern="#{formato.patronFecha}" locale="es"/>
-                                        <p:spacer/>
-                                        <p:spacer/>
+                                        <h:outputText value="Primer Vencimiento: "
+                                                      style="font-size: 10pt"/>
+                                        <p:calendar value="#{prestamoController.selected.fechaPrimerVencimiento}"
+                                                    pattern="#{formato.patronFecha}" locale="es"/>
                                         <h:outputText value="Titular"
                                                       style="font-size: 10pt"/>
 
@@ -96,7 +98,7 @@
                                         <p:selectOneMenu value="#{prestamoController.selected.sucursal}">
                                             <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
                                         </p:selectOneMenu>
-                                        
+
                                         <h:outputText value="Vendedor: "
                                                       style="font-size: 10pt"/>
 
