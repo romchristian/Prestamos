@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6c88e18a-0f8c-4300-a01b-540a2c2f6851">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="44"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -30,6 +30,7 @@
 	<field name="segundoApellido" class="java.lang.String"/>
 	<field name="nroDocumento" class="java.lang.String"/>
 	<field name="direccion" class="java.lang.String"/>
+	<field name="ciudad" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -57,20 +58,17 @@
 				<text><![CDATA[Datos del Cliente]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="4" y="97" width="275" height="20" uuid="7f70ec5d-0082-4707-9a6c-55b52303e83b"/>
+				<reportElement x="4" y="117" width="275" height="20" uuid="7f70ec5d-0082-4707-9a6c-55b52303e83b"/>
 				<textFieldExpression><![CDATA["Documento Nro.: " + $F{nroDocumento}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="11" y="171" width="268" height="76" uuid="2c88ad55-5ae6-459d-8602-dc73bc991514"/>
+				<reportElement x="100" y="151" width="200" height="53" uuid="2c88ad55-5ae6-459d-8602-dc73bc991514"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="420" y="171" width="127" height="76" uuid="34196855-b9c9-476d-9389-07b74847184a"/>
+				<reportElement x="443" y="151" width="103" height="53" uuid="34196855-b9c9-476d-9389-07b74847184a"/>
 			</rectangle>
 			<rectangle>
-				<reportElement style="table" x="420" y="247" width="127" height="76" uuid="f937989c-c3e6-4d64-820c-72f45cb45d6a"/>
-			</rectangle>
-			<rectangle>
-				<reportElement x="11" y="247" width="268" height="76" uuid="b83a5f15-9cf1-4867-b411-900600e2f261"/>
+				<reportElement style="table" x="443" y="235" width="103" height="53" uuid="f937989c-c3e6-4d64-820c-72f45cb45d6a"/>
 			</rectangle>
 			<staticText>
 				<reportElement x="0" y="0" width="555" height="45" uuid="50395d94-2f00-46c5-807e-5d30ce57f7a4"/>
@@ -90,8 +88,28 @@
 				<text><![CDATA[LAS FIRMAS E IMPRESIÓN DACTILAR QUE OBRAN PRECEDENTEMENTE FUERON HECHAS SIN PRESIÓN, COACCIÓN, DE MANERA TOTALMENTE VOLUNTARIA Y EN USO DE TODAS MIS FACULTADES FISICA Y PSIQUICAS.]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="5" y="117" width="542" height="20" uuid="ea6b03de-b7fb-4afe-b1d8-38249567d922"/>
-				<textFieldExpression><![CDATA["DOMICILIO: " + $F{direccion} +" BARRIO CIUDAD - PAIS"]]></textFieldExpression>
+				<reportElement x="4" y="97" width="542" height="20" uuid="ea6b03de-b7fb-4afe-b1d8-38249567d922"/>
+				<textFieldExpression><![CDATA["DOMICILIO: " + $F{direccion}== null ? " ": $F{direccion} +" "+$F{ciudad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="151" width="85" height="20" uuid="48efa458-dfae-40fd-aafe-d3ce989752f8"/>
+				<textFieldExpression><![CDATA["FIRMA (1)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="235" width="85" height="20" uuid="07cabb66-70ac-4898-ad66-0cc8f7d3592b"/>
+				<textFieldExpression><![CDATA["FIRMA (2)"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="100" y="235" width="200" height="53" uuid="ba4f2068-3dde-4365-b63c-ccfaa965014f"/>
+			</rectangle>
+			<textField>
+				<reportElement x="335" y="151" width="85" height="36" uuid="c16e401d-9eed-47e2-b6ba-cfca60fd7320"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["IMPRESION DACTILAR"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="335" y="235" width="79" height="20" uuid="72296dca-15c3-478e-b60f-202676dff942"/>
+				<textFieldExpression><![CDATA["MEDIA FIRMA"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

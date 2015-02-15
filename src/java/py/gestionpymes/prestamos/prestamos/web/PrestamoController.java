@@ -6,6 +6,7 @@ package py.gestionpymes.prestamos.prestamos.web;
 
 import com.sun.faces.config.WebConfiguration;
 import java.io.Serializable;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -117,11 +118,14 @@ public class PrestamoController implements Serializable {
         Collections.sort(data, comp);
         DateTime dateTimeOpercion = new DateTime(selected.getFechaInicioOperacion());
         DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy");
+        
+        DateTime dateTimeVencimiento = new DateTime(selected.getFechaPrimerVencimiento());
+        DateTimeFormatter fmtVenc = DateTimeFormat.forPattern("dd/MM/yyyy");
 
         NumberFormat nf = NumberFormat.getInstance(new Locale("es", "py"));
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("nroOperacion", "1111");//nf.format(selected.getId())
+        params.put("nroOperacion", nf.format(selected.getId()));//nf.format(selected.getId())
         params.put("empresa", selected.getEmpresa() == null ? " " : selected.getEmpresa().getRazonSocial());
         params.put("sucursal", selected.getSucursal() == null ? " " : selected.getSucursal().getNombre());
         params.put("vendedor", selected.getVendedor() == null ? " " : selected.getVendedor().devuelveNombreCompleto());
@@ -134,11 +138,12 @@ public class PrestamoController implements Serializable {
         params.put("periodoPago", selected.getPeriodoPago().name());
         params.put("sistemaAmortizacion", selected.getSistemaAmortizacion().name());
         params.put("fechaOperacion", fmt.print(dateTimeOpercion));
+        params.put("fechaPrimerVencimiento", fmt.print(dateTimeVencimiento));
         params.put("periodoPago", selected.getPeriodoPago().name());
         params.put("gastos", nf.format(selected.getGastos()));
         params.put("comisiones", nf.format(selected.getComisiones()));
         params.put("impuestoIVA", nf.format(selected.getImpuestoIVA()));
-        params.put("montoCuota", nf.format(selected.getMontoCuota()));
+        params.put("montoDeCuota", nf.format(selected.getMontoCuota().setScale(0, RoundingMode.HALF_EVEN)));
         params.put("totalIntereses", nf.format(selected.getTotalIntereses()));
         params.put("totalOperacion", nf.format(selected.getTotalOperacion()));
         params.put("moneda", selected.getMoneda() == null ? "" : selected.getMoneda().getNombre());
@@ -146,6 +151,63 @@ public class PrestamoController implements Serializable {
         params.put("firmaConyugeCodeudor", selected.isFirmaConyugeCodeudor() == false ? "no" : "si");
 
         reporteController.generaPDF(params, data, "reportes/prestamos/liquidacion.jasper");
+    }
+    
+    public void imprimeDetalleParaCliente(){
+    
+        List<LiquidacionPrestamo> data = new ArrayList<>();
+
+        for (DetPrestamo dp : selected.getDetalles()) {
+            data.add(new LiquidacionPrestamo(dp));
+        }
+
+        Comparator<LiquidacionPrestamo> comp = new Comparator<LiquidacionPrestamo>() {
+
+            @Override
+            public int compare(LiquidacionPrestamo o1, LiquidacionPrestamo o2) {
+                return o1.getNroCuota() > o2.getNroCuota() ? 1 : -1;
+            }
+        };
+
+        Collections.sort(data, comp);
+        DateTime dateTimeOpercion = new DateTime(selected.getFechaInicioOperacion());
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy");
+        
+        
+        DateTime dateTimeVencimiento = new DateTime(selected.getFechaPrimerVencimiento());
+        DateTimeFormatter fmtVenc = DateTimeFormat.forPattern("dd/MM/yyyy");
+        
+        int diaVencimiento = dateTimeVencimiento.getDayOfMonth();
+
+        NumberFormat nf = NumberFormat.getInstance(new Locale("es", "py"));
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("nroOperacion", nf.format(selected.getId()));//nf.format(selected.getId())
+        //params.put("empresa", selected.getEmpresa() == null ? " " : selected.getEmpresa().getRazonSocial());
+        //params.put("sucursal", selected.getSucursal() == null ? " " : selected.getSucursal().getNombre());
+        //params.put("vendedor", selected.getVendedor() == null ? " " : selected.getVendedor().devuelveNombreCompleto());
+        params.put("nombreCliente", selected.getCliente() == null ? " " : selected.getCliente().devuelveNombreCompleto());
+        //params.put("codeudor", selected.getCodeudor() == null ? "" : selected.getCodeudor().devuelveNombreCompleto());
+        params.put("montoPrestamo", nf.format(selected.getMontoPrestamo().setScale(0, RoundingMode.HALF_EVEN)));
+        //params.put("capital", nf.format(selected.getCapital()));
+        params.put("plazo", nf.format(selected.getPlazo()));
+        params.put("diaVencimiento", nf.format(diaVencimiento));
+        //params.put("periodoPago", selected.getPeriodoPago().name());
+        //params.put("sistemaAmortizacion", selected.getSistemaAmortizacion().name());
+        params.put("fechaOperacion", fmt.print(dateTimeOpercion));
+        //params.put("fechaPrimerVencimiento", fmt.print(dateTimeVencimiento));
+        //params.put("periodoPago", selected.getPeriodoPago().name());
+        //params.put("gastos", nf.format(selected.getGastos()));
+        //params.put("comisiones", nf.format(selected.getComisiones()));
+        //params.put("impuestoIVA", nf.format(selected.getImpuestoIVA()));
+        params.put("montoDeCuota", nf.format(selected.getMontoCuota().setScale(0, RoundingMode.HALF_EVEN)));
+        //params.put("totalIntereses", nf.format(selected.getTotalIntereses()));
+        //params.put("totalOperacion", nf.format(selected.getTotalOperacion()));
+        params.put("moneda", selected.getMoneda() == null ? "" : selected.getMoneda().getNombre());
+        //params.put("firmaConyugeTitular", selected.isFirmaConyugeTitular() == false ? "no" : "si");
+        //params.put("firmaConyugeCodeudor", selected.isFirmaConyugeCodeudor() == false ? "no" : "si");
+
+        reporteController.generaPDF(params, data, "reportes/prestamos/DetalleParaCliente.jasper");
     }
 
     public void desembolsa() {

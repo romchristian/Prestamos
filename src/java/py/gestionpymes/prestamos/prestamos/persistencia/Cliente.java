@@ -215,6 +215,16 @@ public class Cliente extends Persona {
         return null;
     }
 
+    public String devuelveCiudadParticular(){
+    
+        for (Direccion d : direcciones) {
+            if(d.getTipo().PARTICULAR==TipoDireccion.PARTICULAR){
+                return d.getCiudad()+" - "+d.getPais();
+            }
+        }
+        return null;
+    }
+    
     public Cliente getConyuge() {
         return conyuge;
     }

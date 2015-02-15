@@ -349,8 +349,9 @@ public class Prestamo implements Serializable {
         totalOperacion = BigDecimal.ZERO;
 
         double interesPorDia = getTasa() / 100d / 365d;
-        int difPrimerVencimiento = Days.daysBetween(new DateTime(fechaInicioOperacion), new DateTime(fechaPrimerVencimiento)).getDays();
-
+        int difPrimerVencimiento = Days.daysBetween(new DateTime(fechaInicioOperacion).plusMonths(1), new DateTime(fechaPrimerVencimiento)).getDays();
+        
+        
         BigDecimal montoDif = new BigDecimal(interesPorDia * difPrimerVencimiento, MathContext.DECIMAL128).multiply(getCapital()).setScale(0, RoundingMode.HALF_EVEN);
 
         for (DetPrestamo d : getDetalles()) {

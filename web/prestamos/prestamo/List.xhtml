@@ -25,8 +25,8 @@
                              rows="10"
                              rowsPerPageTemplate="10,20,30,40,50">
 
-                    <p:ajax event="rowSelect"   update="createButton editButton imprimirButton confirmarButton cancelarButton imprimirLiqButton"/>
-                    <p:ajax event="rowUnselect" update="createButton editButton imprimirButton confirmarButton cancelarButton imprimirLiqButton"/>
+                    <p:ajax event="rowSelect"   update="createButton editButton imprimirButton confirmarButton cancelarButton imprimirLiqButton imprimirDetClieButton"/>
+                    <p:ajax event="rowUnselect" update="createButton editButton imprimirButton confirmarButton cancelarButton imprimirLiqButton imprimirDetClieButton"/>
 
                     <f:facet name="header">
                         <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" action="#{prestamoController.prepareCreate}" 
@@ -42,15 +42,18 @@
                                          disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
                                          rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_pagare'))}"/>
 
+                        <p:commandButton id="imprimirLiqButton" action="#{prestamoController.imprimeLiquidacionPrestamo()}" value="Imprimir Liq. Prestamo" ajax="false" update="datalist"
+                                         disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
+                                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_pagare'))}"/>
+
+                        <p:commandButton id="imprimirDetClieButton" action="#{prestamoController.imprimeDetalleParaCliente()}" value="Imprimir Det. Cliente" ajax="false" update="datalist"
+                                         disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
+                                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_pagare'))}"/>
+
 
                         <p:commandButton id="confirmarButton" action="#{prestamoController.confirmaPagare()}" value="Confirmar Firma" update="datalist"
                                          disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
                                          rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_confirma_pagare'))}"/>
-                        
-                        
-                        <p:commandButton id="imprimirLiqButton" action="#{prestamoController.imprimeLiquidacionPrestamo()}" value="Imprimir Liq. Prestamo" ajax="false" update="datalist"
-                                         disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
-                                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_pagare'))}"/>
 
 
                         <p:commandButton id="cancelarButton" action="#{prestamoController.anulaConfimacion()}" value="Cancelar Pagare" update="datalist"

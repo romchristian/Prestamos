@@ -34,9 +34,23 @@
 
                 <p:column style="font-size: 12px">
                     <f:facet name="header">
-                        Descripción
+                        Nro. Op.
                     </f:facet>
-                    <h:outputText value="Prestamo nro: #{p.id}"/>
+                    <h:outputText value="#{p.id}"/>
+                </p:column>
+                <p:column style="font-size: 12px">
+                    <f:facet name="header">
+                        Titular
+                    </f:facet>
+                    <h:outputText value="#{p.cliente.devuelveNombreCompleto()}"/>
+                </p:column>
+                <p:column style="font-size: 12px">
+                    <f:facet name="header">
+                        Monto Préstamo
+                    </f:facet>
+                    <h:outputText value="#{p.montoPrestamo}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
                 </p:column>
                 <p:column style="font-size: 12px">
                     <f:facet name="header">

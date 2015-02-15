@@ -154,7 +154,7 @@
                             <p:panel styleClass="panelDirecciones">
 
 
-                                <p:panelGrid columns="7">                                
+                                <p:panelGrid columns="6">                                
                                     <p:outputLabel value="#{bundle.CreateDireccionLabel_tipo}" for="tipo" />
                                     <p:selectOneMenu value="#{clienteController.direccionSeleccionada.tipo}" id="tipo">
                                         <f:selectItems value="#{productorEnums.obtTiposDireccion()}"/>
@@ -165,6 +165,13 @@
 
                                     <p:outputLabel value="#{bundle.CreateDireccionLabel_nrocasa}" for="nrocasa" />
                                     <p:inputText id="nrocasa" value="#{clienteController.direccionSeleccionada.nrocasa}" title="#{bundle.CreateDireccionTitle_nrocasa}" />
+
+                                    <p:outputLabel value="#{bundle.CreateDireccionLabel_ciudad}" for="ciudad" />
+                                    <p:inputText id="ciudad" value="#{clienteController.direccionSeleccionada.ciudad}" title="#{bundle.CreateDireccionTitle_ciudad}" />
+
+                                    <p:outputLabel value="#{bundle.CreateDireccionTitle_pais}" for="pais" />
+                                    <p:inputText id="pais" value="#{clienteController.direccionSeleccionada.pais}" title="#{bundle.CreateDireccionTitle_pais}" />
+
                                     <p:commandButton value="Agregar" update="@(.panelDirecciones)" action="#{clienteController.agregaDireccion()}"/>
                                 </p:panelGrid>   
                                 <p:dataTable value="#{clienteController.selected.direcciones}" var="d" id="tablaDireccciones">
@@ -176,6 +183,12 @@
                                     </p:column>
                                     <p:column headerText="NRO">
                                         #{d.nrocasa}
+                                    </p:column>
+                                    <p:column headerText="CIUDAD">
+                                        #{d.ciudad}
+                                    </p:column>
+                                    <p:column headerText="PAÍS">
+                                        #{d.pais}
                                     </p:column>
                                     <p:column headerText="ACCION">
                                         <p:commandButton value="X" action="#{clienteController.removerDireccion(d)}" update="@(.panelDirecciones)"/>

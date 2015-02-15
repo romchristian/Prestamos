@@ -30,11 +30,11 @@
                                         <h:outputText value="Fecha Operación: "
                                                       style="font-size: 10pt"/>
                                         <p:calendar value="#{prestamoController.selected.fechaInicioOperacion}"
-                                                    pattern="#{formato.patronFecha}" locale="es"/>
+                                                    pattern="#{formato.patronFecha}" locale="es" required="true"/>
                                         <h:outputText value="Primer Vencimiento: "
                                                       style="font-size: 10pt"/>
                                         <p:calendar value="#{prestamoController.selected.fechaPrimerVencimiento}"
-                                                    pattern="#{formato.patronFecha}" locale="es"/>
+                                                    pattern="#{formato.patronFecha}" locale="es" required="true"/>
                                         <h:outputText value="Titular"
                                                       style="font-size: 10pt"/>
 
@@ -130,26 +130,26 @@
                         <h:panelGrid columns="4">
 
                             <h:outputText value="Monto Préstamo"/>
-                            <h:inputText value="#{prestamoController.selected.montoPrestamo}"  id="montoPrestamo">
+                            <h:inputText value="#{prestamoController.selected.montoPrestamo}"  id="montoPrestamo" required="true">
                                 <f:convertNumber locale="#{formato.locale}"/>
                             </h:inputText>
 
                             <h:outputText value="Tasa"/>
-                            <h:inputText value="#{prestamoController.selected.tasa}">
+                            <h:inputText value="#{prestamoController.selected.tasa}" required="true">
                             </h:inputText>
 
 
                             <h:outputText value="Monto Comisiones"/>
-                            <h:inputText value="#{prestamoController.selected.comisiones}">
+                            <h:inputText value="#{prestamoController.selected.comisiones}" required="true">
                                 <f:convertNumber locale="#{formato.locale}"/>
                             </h:inputText>
 
                             <h:outputText value="Plazo"/>
-                            <h:inputText value="#{prestamoController.selected.plazo}"/>
+                            <h:inputText value="#{prestamoController.selected.plazo}" required="true"/>
 
 
                             <h:outputText value="Monto Gastos"/>
-                            <h:inputText value="#{prestamoController.selected.gastos}">
+                            <h:inputText value="#{prestamoController.selected.gastos}" required="true">
                                 <f:convertNumber locale="#{formato.locale}"/>
                             </h:inputText>
 

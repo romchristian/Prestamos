@@ -18,13 +18,14 @@
 	<parameter name="gastos" class="java.lang.String"/>
 	<parameter name="comisiones" class="java.lang.String"/>
 	<parameter name="impuestoIVA" class="java.lang.String"/>
-	<parameter name="montoCuota" class="java.lang.String"/>
+	<parameter name="montoDeCuota" class="java.lang.String"/>
 	<parameter name="totalIntereses" class="java.lang.String"/>
 	<parameter name="totalOperacion" class="java.lang.String"/>
 	<parameter name="moneda" class="java.lang.String"/>
 	<parameter name="firmaConyugeTitular" class="java.lang.String"/>
 	<parameter name="firmaConyugeCodeudor" class="java.lang.String"/>
 	<parameter name="nroOperacion" class="java.lang.String"/>
+	<parameter name="fechaPrimerVencimiento" class="java.lang.String"/>
 	<field name="empresa" class="java.lang.String"/>
 	<field name="sucursal" class="java.lang.String"/>
 	<field name="vendedor" class="java.lang.String"/>
@@ -146,7 +147,7 @@
 			</textField>
 			<textField>
 				<reportElement x="248" y="224" width="233" height="20" uuid="32696780-965f-4c01-9c64-75deefe2f269"/>
-				<textFieldExpression><![CDATA["Monto cuota: "+$P{montoCuota}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Monto cuota: "+$P{montoDeCuota}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="248" y="158" width="233" height="20" uuid="1898e022-45e8-4867-b47f-e5f75147d8fd"/>
@@ -163,6 +164,10 @@
 				</textElement>
 				<text><![CDATA[CUOTAS Y VENCIMIENTOS]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="2" y="246" width="234" height="20" uuid="b91d1af9-bf56-4a59-afdb-1606d6cc52f5"/>
+				<textFieldExpression><![CDATA["Primer Vencimiento: "+$P{fechaPrimerVencimiento}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>

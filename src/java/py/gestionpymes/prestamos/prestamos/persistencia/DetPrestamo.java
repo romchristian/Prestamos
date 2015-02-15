@@ -380,10 +380,10 @@ public class DetPrestamo implements Serializable {
             
             R = true;
             
-            System.out.println("SALDO CUOTAAAAAA: "  + saldoCuota);
+            //System.out.println("SALDO CUOTAAAAAA: "  + saldoCuota);
             
             if (saldoCuota.compareTo(new BigDecimal(0)) == 0) {
-                System.out.println("CANCELOOOOOOOOOOOOOO");
+                //System.out.println("CANCELOOOOOOOOOOOOOO");
                 estado = EstadoDetPrestamo.CANCELADO;
                 setDiasMora(Days.daysBetween(new DateTime(fechaVencimiento), new DateTime(new Date())).getDays());
                 

@@ -33,12 +33,14 @@ public class Pagare {
     private String deudor;
     private String deudorDoc;
     private String deudorDireccion;
+    private String deudorCiudad;
     private String deudorConyuge;
     private String deudorConyugeDoc;
 
     private String coDeudor;
     private String coDeudorDoc;
     private String coDeudorDireccion;
+    private String coDeudorCiudad;
     private String coDeudorConyuge;
     private String coDeudorConyugeDoc;
 
@@ -56,7 +58,7 @@ public class Pagare {
     public Pagare(Prestamo prestamo) {
         this.prestamo = prestamo;
 
-        monto = this.prestamo.getTotalOperacion();
+        monto = this.prestamo.getTotalOperacion().setScale(0, RoundingMode.HALF_EVEN);
         setMontoLetras(this.prestamo.getTotalOperacion().setScale(0, RoundingMode.HALF_EVEN));
         fechaEmision = this.prestamo.getFechaInicioOperacion();
         setFechaEmisionTexto(this.prestamo.getFechaInicioOperacion());
@@ -72,6 +74,7 @@ public class Pagare {
         setDeudor(this.prestamo.getCliente() == null ? null : this.prestamo.getCliente().devuelveNombreCompleto());
         setDeudorDoc(this.prestamo.getCliente() == null ? null : this.prestamo.getCliente().getNroDocumento());
         setDeudorDireccion(this.prestamo.getCliente() == null ? null : this.prestamo.getCliente().devuelveDireccionParticular());
+        setDeudorCiudad(this.prestamo.getCliente() == null ? null : this.prestamo.getCliente().devuelveCiudadParticular());
         if (prestamo.isFirmaConyugeTitular()) {
             setDeudorConyuge(this.prestamo.getCliente().getConyuge() == null ? null : this.prestamo.getCliente().getConyuge().devuelveNombreCompleto());
             setDeudorConyugeDoc(this.prestamo.getCliente().getConyuge() == null ? null : this.prestamo.getCliente().getConyuge().getNroDocumento());
@@ -80,6 +83,7 @@ public class Pagare {
         setCoDeudor(this.prestamo.getCodeudor() == null ? null : this.prestamo.getCodeudor().devuelveNombreCompleto());
         setCoDeudorDoc(this.prestamo.getCodeudor() == null ? null : this.prestamo.getCodeudor().getNroDocumento());
         setCoDeudorDireccion(this.prestamo.getCodeudor() == null ? null : this.prestamo.getCodeudor().devuelveDireccionParticular());
+        setCoDeudorCiudad(this.prestamo.getCodeudor() == null ? null : this.prestamo.getCodeudor().devuelveCiudadParticular());
         if (prestamo.isFirmaConyugeCodeudor()) {
             setCoDeudorConyuge(this.prestamo.getCodeudor().getConyuge() == null ? null : this.prestamo.getCodeudor().getConyuge().devuelveNombreCompleto());
             setCoDeudorConyugeDoc(this.prestamo.getCodeudor().getConyuge() == null ? null : this.prestamo.getCodeudor().getConyuge().getNroDocumento());
@@ -184,6 +188,14 @@ public class Pagare {
         this.deudorDireccion = deudorDireccion;
     }
 
+    public String getDeudorCiudad() {
+        return deudorCiudad;
+    }
+
+    public void setDeudorCiudad(String deudorCiudad) {
+        this.deudorCiudad = deudorCiudad;
+    }
+    
     public String getDeudorConyuge() {
         return deudorConyuge;
     }
@@ -224,6 +236,14 @@ public class Pagare {
         this.coDeudorDireccion = coDeudorDireccion;
     }
 
+    public String getCoDeudorCiudad() {
+        return coDeudorCiudad;
+    }
+
+    public void setCoDeudorCiudad(String coDeudorCiudad) {
+        this.coDeudorCiudad = coDeudorCiudad;
+    }
+    
     public String getCoDeudorConyuge() {
         return coDeudorConyuge;
     }

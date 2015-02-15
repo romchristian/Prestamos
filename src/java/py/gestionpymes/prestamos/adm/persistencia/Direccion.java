@@ -30,6 +30,8 @@ public class Direccion implements Serializable {
     private TipoDireccion tipo;
     private String direccion;
     private String nrocasa;
+    private String ciudad;
+    private String pais;
     private boolean principal;
     @Enumerated(EnumType.STRING)
     private Estado estado;
@@ -47,10 +49,23 @@ public class Direccion implements Serializable {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-    
-    
-    
 
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+    
     public boolean isPrincipal() {
         return principal;
     }

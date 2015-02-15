@@ -39,7 +39,7 @@ public class LiquidacionPrestamo {
     private BigDecimal comisiones = new BigDecimal(BigInteger.ZERO);
     private BigDecimal impuestoIVA = new BigDecimal(BigInteger.ZERO);
     private Date fechaInicioOperacion;
-    private BigDecimal montoCuota = new BigDecimal(BigInteger.ZERO);
+    private BigDecimal montoDeCuota = new BigDecimal(BigInteger.ZERO);
     private BigDecimal totalIntereses = new BigDecimal(BigInteger.ZERO);
     private BigDecimal totalOperacion = new BigDecimal(BigInteger.ZERO);
     private String sistemaAmortizacion;
@@ -48,6 +48,7 @@ public class LiquidacionPrestamo {
     private int nroCuota;
     private Date fechaVencimiento;
     private BigDecimal saldoCapital = new BigDecimal(BigInteger.ZERO);
+     private BigDecimal montoCuota = new BigDecimal(BigInteger.ZERO);
     private BigDecimal cuotaCapital = new BigDecimal(BigInteger.ZERO);// monto del prestamo / plazo
     private BigDecimal cuotaIntereses = new BigDecimal(BigInteger.ZERO);// total interes / plazo
     private BigDecimal impuestoIvaCuota = new BigDecimal(BigInteger.ZERO);
@@ -74,7 +75,7 @@ public class LiquidacionPrestamo {
         this.comisiones = dp.getPrestamo().getGastos().setScale(0, RoundingMode.HALF_EVEN);
         this.impuestoIVA = dp.getPrestamo().getImpuestoIVA().setScale(0, RoundingMode.HALF_EVEN);
         this.fechaInicioOperacion = dp.getPrestamo().getFechaInicioOperacion();
-        this.montoCuota = dp.getPrestamo().getMontoCuota().setScale(0, RoundingMode.HALF_EVEN);
+        this.montoDeCuota = dp.getPrestamo().getMontoCuota().setScale(0, RoundingMode.HALF_EVEN);
         this.totalIntereses = dp.getPrestamo().getTotalIntereses().setScale(0, RoundingMode.HALF_EVEN);
         this.totalOperacion = dp.getPrestamo().getTotalOperacion().setScale(0, RoundingMode.HALF_EVEN);
         this.sistemaAmortizacion = dp.getPrestamo().getSistemaAmortizacion().name();
@@ -84,6 +85,7 @@ public class LiquidacionPrestamo {
         //detalles
         this.nroCuota = dp.getNroCuota();
         this.fechaVencimiento = dp.getFechaVencimiento();
+        this.montoCuota = dp.getMontoCuota().setScale(0, RoundingMode.HALF_EVEN);
         this.saldoCapital = dp.getSaldoCapital().setScale(0, RoundingMode.HALF_EVEN);
         this.cuotaCapital = dp.getCuotaCapital().setScale(0, RoundingMode.HALF_EVEN);// monto del prestamo / plazo
         this.cuotaIntereses = dp.getCuotaInteres().setScale(0, RoundingMode.HALF_EVEN);// total interes / plazo
@@ -108,8 +110,14 @@ public class LiquidacionPrestamo {
         this.firmaConyugeCodeudor = firmaConyugeCodeudor;
     }
 
-    
-    
+    public BigDecimal getMontoDeCuota() {
+        return montoDeCuota;
+    }
+
+    public void setMontoDeCuota(BigDecimal montoDeCuota) {
+        this.montoDeCuota = montoDeCuota;
+    }
+
     public Long getId() {
         return id;
     }
