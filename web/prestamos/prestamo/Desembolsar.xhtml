@@ -14,7 +14,77 @@
 
         <h:form id="PrestamoListForm">
 
-            <p:dataTable id="datalist" value="#{prestamoController.prestamosADesembolsar}" var="p"
+             <h:panelGroup>
+
+                    <div class="ui-grid ui-grid-responsive">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+                                <div style="background-color: #ddd; border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
+                                     -moz-border-radius: 5px;
+                                     border-radius: 5px;
+                                     margin-bottom: 5px">
+
+
+
+
+
+
+
+
+                                    <h:panelGrid columns="4">
+                                        <h:outputText value="Cliente"
+                                                      style="font-size: 10pt"/>
+
+                                        <p:autoComplete value="#{prestamoController.clienteFiltro}"  id="autoCompleteCliente" size="50"
+                                                        completeMethod="#{autoCompleteCliente.completar}"
+                                                        forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}">
+                                            <!--                                            <p:ajax event="itemSelect" update="textoConyugeDeudor"/>-->
+
+                                        </p:autoComplete>
+
+                                        <p:spacer/>
+                                        <p:spacer/>
+                                        
+                                        <h:outputText value="Empresa: "
+                                                      style="font-size: 10pt"/>
+
+                                        <p:selectOneMenu value="#{prestamoController.empresaFiltro}">
+                                            <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
+                                        </p:selectOneMenu>
+
+                                        <h:outputText value="Sucursal: "
+                                                      style="font-size: 10pt"/>
+
+                                        <p:selectOneMenu value="#{prestamoController.sucursalFiltro}">
+                                            <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
+                                        </p:selectOneMenu>
+
+
+                                        <h:outputText value="Incio: "
+                                                      style="font-size: 10pt"/>
+                                        <p:calendar value="#{prestamoController.inicioFiltro}" locale="es"
+                                                    pattern="#{formato.patronFecha}"/>
+
+                                        <h:outputText value="Fin: "
+                                                      style="font-size: 10pt"/>
+                                        <p:calendar value="#{prestamoController.finFiltro}" locale="es"
+                                                    pattern="#{formato.patronFecha}"/> 
+                                        
+                                        <p:spacer/>
+                                        <p:spacer/>
+                                        <p:spacer/>
+                                        <p:commandButton value="Buscar" action="#{prestamoController.buscarADesembolsar()}" update="datalist"/>
+
+                                    </h:panelGrid>
+
+                                </div>
+                            </div>
+
+                        </div>  
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+                               <p:dataTable id="datalist" value="#{prestamoController.prestamosADesembolsar}" var="p"
                          selectionMode="single" selection="#{prestamoController.selected}"
                          paginator="true"
                          paginatorPosition="bottom"
@@ -67,6 +137,16 @@
 
 
             </p:dataTable>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </h:panelGroup>
+            
+            
+            
         </h:form>
 
 

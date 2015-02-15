@@ -6,6 +6,7 @@ package py.gestionpymes.prestamos.prestamos.persistencia;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoOperacion;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -38,7 +39,11 @@ public class OperacionCobroCuotaFactura extends DetCuentaCliente<FacturaVentaDet
         setSucursal(prestamo.getSucursal());
         setMontoCredito(new BigDecimal(BigInteger.ZERO));
         setMoneda(d.getFacturaVenta().getMoneda());
-        setMontoDebito(d.getGravada10());
+         BigDecimal monto = (d.getGravada10() == null ? new BigDecimal(BigInteger.ZERO):d.getGravada10()).add(d.getGravada05() == null ? new BigDecimal(BigInteger.ZERO) : d.getGravada05())
+                    .add(d.getExenta() == null ? new BigDecimal(BigInteger.ZERO) : d.getExenta());
+         
+        setMontoDebito(monto.setScale(0, RoundingMode.HALF_EVEN));
+        
         String desc = "";
         if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_CUOTA) == 0) {
             desc = "Pago de cuota #" + d.getDetPrestamo().getNroCuota()+" del Prestamo # " + prestamo.getId();

@@ -11,6 +11,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 
@@ -32,9 +34,12 @@ import javax.inject.Named;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import py.gestionpymes.prestamos.adm.persistencia.Empresa;
+import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
+import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
@@ -58,6 +63,15 @@ public class PrestamoController implements Serializable {
     private Pagare pagare;
     private DetPrestamo detPrestamo;
 
+    private Empresa empresaFiltro;
+    private Sucursal sucursalFiltro;
+    private Date inicioFiltro;
+    private Date finFiltro;
+    private EstadoPrestamo estadoPrestamoFiltro;
+    private Cliente clienteFiltro;
+
+    private boolean buscaPorCliente;
+
     public long getId() {
         return id;
     }
@@ -71,6 +85,68 @@ public class PrestamoController implements Serializable {
             selected = getPrestamo(id);
         }
 
+    }
+
+    public boolean isBuscaPorCliente() {
+        return buscaPorCliente;
+    }
+
+    public void setBuscaPorCliente(boolean buscaPorCliente) {
+        this.buscaPorCliente = buscaPorCliente;
+    }
+
+    public Cliente getClienteFiltro() {
+        return clienteFiltro;
+    }
+
+    public void setClienteFiltro(Cliente clienteFiltro) {
+        this.clienteFiltro = clienteFiltro;
+    }
+
+    public Empresa getEmpresaFiltro() {
+        return empresaFiltro;
+    }
+
+    public void setEmpresaFiltro(Empresa empresaFiltro) {
+        this.empresaFiltro = empresaFiltro;
+    }
+
+    public Sucursal getSucursalFiltro() {
+        return sucursalFiltro;
+    }
+
+    public void setSucursalFiltro(Sucursal sucursalFiltro) {
+        this.sucursalFiltro = sucursalFiltro;
+    }
+
+    public Date getInicioFiltro() {
+        return inicioFiltro;
+    }
+
+    public void setInicioFiltro(Date inicioFiltro) {
+        this.inicioFiltro = inicioFiltro;
+    }
+
+    public Date getFinFiltro() {
+        return finFiltro;
+    }
+
+    public void setFinFiltro(Date finFiltro) {
+        this.finFiltro = finFiltro;
+    }
+
+    public EstadoPrestamo getEstadoPrestamoFiltro() {
+        return estadoPrestamoFiltro;
+    }
+
+    public void setEstadoPrestamoFiltro(EstadoPrestamo estadoPrestamoFiltro) {
+        this.estadoPrestamoFiltro = estadoPrestamoFiltro;
+    }
+
+    @PostConstruct
+    public void init() {
+        inicioFiltro = new Date();
+        finFiltro = new Date();
     }
 
     public String calcular() {
@@ -118,7 +194,7 @@ public class PrestamoController implements Serializable {
         Collections.sort(data, comp);
         DateTime dateTimeOpercion = new DateTime(selected.getFechaInicioOperacion());
         DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy");
-        
+
         DateTime dateTimeVencimiento = new DateTime(selected.getFechaPrimerVencimiento());
         DateTimeFormatter fmtVenc = DateTimeFormat.forPattern("dd/MM/yyyy");
 
@@ -152,9 +228,9 @@ public class PrestamoController implements Serializable {
 
         reporteController.generaPDF(params, data, "reportes/prestamos/liquidacion.jasper");
     }
-    
-    public void imprimeDetalleParaCliente(){
-    
+
+    public void imprimeDetalleParaCliente() {
+
         List<LiquidacionPrestamo> data = new ArrayList<>();
 
         for (DetPrestamo dp : selected.getDetalles()) {
@@ -172,11 +248,10 @@ public class PrestamoController implements Serializable {
         Collections.sort(data, comp);
         DateTime dateTimeOpercion = new DateTime(selected.getFechaInicioOperacion());
         DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy");
-        
-        
+
         DateTime dateTimeVencimiento = new DateTime(selected.getFechaPrimerVencimiento());
         DateTimeFormatter fmtVenc = DateTimeFormat.forPattern("dd/MM/yyyy");
-        
+
         int diaVencimiento = dateTimeVencimiento.getDayOfMonth();
 
         NumberFormat nf = NumberFormat.getInstance(new Locale("es", "py"));
@@ -212,6 +287,7 @@ public class PrestamoController implements Serializable {
 
     public void desembolsa() {
         ejbFacade.desembolsa(selected);
+        buscarADesembolsar();
     }
 
     public void confirmaPagare() {
@@ -281,10 +357,19 @@ public class PrestamoController implements Serializable {
         }
     }
 
-    public List<Prestamo> getItems() {
-        if (items == null) {
-            items = getFacade().findAll();
+    public void buscar() {
+        if (buscaPorCliente) {
+            items = ejbFacade.findAllPorEmpresaFechaEstadoCliente(empresaFiltro, sucursalFiltro, estadoPrestamoFiltro, inicioFiltro, finFiltro, clienteFiltro);
+        } else {
+            items = ejbFacade.findAllPorEmpresaFechaEstado(empresaFiltro, sucursalFiltro, estadoPrestamoFiltro, inicioFiltro, finFiltro);
         }
+    }
+
+    public void buscarADesembolsar() {
+        items = ejbFacade.findAllPorEmpresaFechaEstadoCliente(empresaFiltro, sucursalFiltro, EstadoPrestamo.EN_DESEMBOLSO, inicioFiltro, finFiltro, clienteFiltro);
+    }
+
+    public List<Prestamo> getItems() {
         return items;
     }
 
@@ -321,7 +406,7 @@ public class PrestamoController implements Serializable {
     }
 
     public List<Prestamo> getPrestamosADesembolsar() {
-        return getFacade().findAllEstado(EstadoPrestamo.EN_DESEMBOLSO);
+        return items;
     }
 
     public List<Prestamo> getItemsAvailableSelectMany() {

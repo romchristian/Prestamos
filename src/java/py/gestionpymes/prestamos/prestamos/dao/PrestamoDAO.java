@@ -4,6 +4,7 @@
  */
 package py.gestionpymes.prestamos.prestamos.dao;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -48,6 +49,41 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
         return em.createQuery("SELECT p from Prestamo p where p.cliente = :cliente and p.estado = :estado")
                 .setParameter("cliente", cliente)
                 .setParameter("estado", estado)
+                .getResultList();
+    }
+
+    public List<Prestamo> findAllPorEmpresaFechaEstado(Empresa e, Sucursal s, EstadoPrestamo estado, Date inicio, Date fin) {
+
+        System.out.println("Empresa: " + e.getRazonSocial());
+        System.out.println("Sucursal: " + s.getNombre());
+        System.out.println("Estado: " + estado);
+        System.out.println("Inicio: " + inicio);
+        System.out.println("Fin: " + fin);
+
+        return em.createQuery("SELECT p from Prestamo p where p.empresa = :emp and p.sucursal = :suc and p.fechaInicioOperacion BETWEEN :inicio and :fin and p.estado = :estado")
+                .setParameter("emp", e)
+                .setParameter("suc", s)
+                .setParameter("inicio", inicio)
+                .setParameter("fin", fin)
+                .setParameter("estado", estado)
+                .getResultList();
+    }
+
+    public List<Prestamo> findAllPorEmpresaFechaEstadoCliente(Empresa e, Sucursal s, EstadoPrestamo estado, Date inicio, Date fin, Cliente cliente) {
+
+        System.out.println("Empresa: " + e.getRazonSocial());
+        System.out.println("Sucursal: " + s.getNombre());
+        System.out.println("Estado: " + estado);
+        System.out.println("Inicio: " + inicio);
+        System.out.println("Fin: " + fin);
+
+        return em.createQuery("SELECT p from Prestamo p where p.empresa = :emp and p.sucursal = :suc and p.fechaInicioOperacion BETWEEN :inicio and :fin and p.estado = :estado and p.cliente = :cliente")
+                .setParameter("emp", e)
+                .setParameter("suc", s)
+                .setParameter("inicio", inicio)
+                .setParameter("fin", fin)
+                .setParameter("estado", estado)
+                .setParameter("cliente", cliente)
                 .getResultList();
     }
 

@@ -15,82 +15,94 @@
         <h:form id="formCobroCuota">
 
 
+
+
             <h:panelGroup>
 
                 <div class="ui-grid ui-grid-responsive">
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-7">
-                            <div style="background-color: #ddd; width: 90%;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
+                        <div class="ui-grid-col-12">
+                            <div style="background-color: #ddd; border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
                                  -moz-border-radius: 5px;
                                  border-radius: 5px;
                                  margin-bottom: 5px">
-                                <p:outputPanel styleClass="escuchaSeleccionCuota">
-                                    <h:panelGrid columns="2">
-                                        <h:outputText value="Titular: "/>
-                                        <p:autoComplete value="#{cuentaClienteController.clienteSeleccionado}"  id="autoCompleteCliente" size="60"
-                                                        completeMethod="#{autoCompleteCliente.completar}"
-                                                        forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
-                                                        >
-                                            <p:ajax event="itemSelect" update="@(.escuchaSeleccionCuota)" listener="#{cuentaClienteController.busca()}"/>
 
-                                        </p:autoComplete>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6">
+                                        <p:outputPanel styleClass="escuchaSeleccionCuota">
+                                            <h:panelGrid columns="2">
+                                                <h:outputText value="Titular: "/>
+                                                <p:autoComplete value="#{cuentaClienteController.clienteSeleccionado}"  id="autoCompleteCliente" size="60"
+                                                                completeMethod="#{autoCompleteCliente.completar}"
+                                                                forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
+                                                                >
+                                                    <p:ajax event="itemSelect" update="@(.escuchaSeleccionCuota)" listener="#{cuentaClienteController.busca()}"/>
 
-                                        <!--                                        <h:outputText value="Mora: "/>
-                                                                                <h:outputText value="{cobraCuotaBean.obtDescMora()}"/>
-                                                                                <h:outputText value="Ultimo Pago: "/>
-                                                                                <h:outputText value="{cobraCuotaBean.obtUltimoPago()}">
-                                                                                    <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFechaHora}"/>
-                                                                                </h:outputText>-->
+                                                </p:autoComplete>
 
-                                    </h:panelGrid>
-                                </p:outputPanel>
+
+                                            </h:panelGrid>
+                                        </p:outputPanel>
+                                    </div>
+                                    <div class="ui-grid-col-6">
+                                        <p:outputPanel styleClass="escuchaSeleccionCuota">
+                                            <h:panelGrid columns="2">
+                                            <h:outputText value="Total Crédito: "/>
+
+                                            <h:outputText value="#{cuentaClienteController.cuentaClienteSeleccionada == null?'0':cuentaClienteController.cuentaClienteSeleccionada.totalCredito}">
+                                                <f:convertNumber locale="#{formato.locale}"/>
+                                            </h:outputText>
+
+                                            <h:outputText value="Total Débito: "/>
+                                            <h:outputText value="#{cuentaClienteController.cuentaClienteSeleccionada == null?'0':cuentaClienteController.cuentaClienteSeleccionada.totalDebito}">
+                                                <f:convertNumber locale="#{formato.locale}"/>
+                                            </h:outputText>
+
+                                            <h:outputText value="Posición: "/>
+                                            <h:outputText value="#{cuentaClienteController.cuentaClienteSeleccionada == null?'0':cuentaClienteController.cuentaClienteSeleccionada.saldo}">
+                                                <f:convertNumber locale="#{formato.locale}"/>
+                                            </h:outputText>
+                                        </h:panelGrid>
+                                        </p:outputPanel>
+                                        
+                                    </div>
+                                </div>
+
                             </div>
 
                         </div>  
 
-
-                        <div class="ui-grid-col-5">
-                            <div style="background-color: #ddd; width: 95%;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
-                                 -moz-border-radius: 5px;
-                                 border-radius: 5px;
-                                 margin-bottom: 5px">
-                                <!--                                <h:outputText value="SALDO:" style="position: absolute; left: calc(90% - 185px);top: calc(5% - 10px)"/>
-                                                                <p:outputPanel styleClass="escuchaSeleccionCuota">
-                                                                    <h:outputText value="#{cobraCuotaBean.totalAPagar}" style="color: #CC0000;font-size: 20pt; font-weight: bold; position: absolute; left: calc(90% - 210px);top: calc(10% - 20px)">
-                                                                        <f:convertNumber locale="#{formato.locale}"/>
-                                                                    </h:outputText>
-                                                                </p:outputPanel>
-                                
-                                                                <p:commandButton value="Confirmar Pago"  action="#{cobraCuotaBean.paga()}" ajax="false" style="position: absolute; left: calc(90% - 195px);top: calc(10% + 10px)"/>-->
-                            </div>
-
-
-                        </div>  
                     </div>
                     <div class="ui-grid-row">
                         <div class="ui-grid-col-12">
                             <p:dataTable value="#{cuentaClienteController.detalles}" var="d" id="dataList"
-                                         styleClass="escuchaSeleccionCuota">
-                                
-                                <p:column headerText="FECHA">
+                                         styleClass="escuchaSeleccionCuota" style="font-size: 10pt">
+
+                                <p:column headerText="FECHA" style="font-size: 10pt;width: 12%">
                                     <h:outputText value="#{d.fecha}">
                                         <f:convertDateTime pattern="#{formato.patronFechaHora}" timeZone="Asuncion/America"/>
                                     </h:outputText>
-                                    
+
                                 </p:column>
-                                <p:column headerText="TIPO OP.">
+                                <p:column headerText="TIPO OP." style="font-size: 10pt;width: 12%">
                                     #{d.tipoOperacion}
                                 </p:column>
-                                <p:column headerText="DESCRIPCION">
+                                <p:column headerText="DESCRIPCION" style="font-size: 10pt;width: 36%;text-align: left">
                                     #{d.descripcion}
                                 </p:column>
-                                <p:column headerText="CREDITO">
-                                    #{d.montoCredito}
+                                <p:column headerText="CREDITO" style="font-size: 10pt;text-align: right;width: 15%">
+                                    <h:outputText value="#{d.montoCredito}" >
+                                        <f:convertNumber locale="#{formato.locale}"/>
+                                    </h:outputText>
+
                                 </p:column>
-                                <p:column headerText="DEBITO">
-                                    #{d.montoDebito}
+                                <p:column headerText="DEBITO" style="font-size: 10pt;text-align: right;width: 15%">
+                                    <h:outputText value="#{d.montoDebito}" >
+                                        <f:convertNumber locale="#{formato.locale}"/>
+                                    </h:outputText>
+
                                 </p:column>
-                                
+
                             </p:dataTable>
                         </div>
                     </div>

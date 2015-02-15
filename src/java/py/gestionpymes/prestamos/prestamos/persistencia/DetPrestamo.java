@@ -19,6 +19,7 @@ import org.joda.time.Days;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 import py.gestionpymes.prestamos.contabilidad.FacturaVentaDetalle;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoDetPrestamo;
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 
 /**
  *
@@ -387,6 +388,12 @@ public class DetPrestamo implements Serializable {
                 estado = EstadoDetPrestamo.CANCELADO;
                 setDiasMora(Days.daysBetween(new DateTime(fechaVencimiento), new DateTime(new Date())).getDays());
                 
+                
+                if(prestamo.devuelveSaldoPrestamo().compareTo(new BigDecimal(BigInteger.ZERO)) == 0){
+                // CANCELO EL PRESTAMO
+                    
+                    prestamo.setEstado(EstadoPrestamo.CANCELADO);
+                }
             }
 
         }

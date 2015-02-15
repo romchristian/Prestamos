@@ -6,6 +6,9 @@ package py.gestionpymes.prestamos.prestamos.persistencia;
 
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoCuenta;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -41,9 +44,62 @@ public class CuentaCliente implements Serializable {
     private String telefono;
     private String nroCuenta;
     private EstadoCuenta estado;
+    @Transient
+    private BigDecimal saldo;
+    @Transient
+    private BigDecimal totalDebito;
+    @Transient
+    private BigDecimal totalCredito;
 
-    @OneToMany(mappedBy = "cuentaCliente",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cuentaCliente", fetch = FetchType.EAGER)
     private List<DetCuentaCliente> detalles;
+
+    public BigDecimal getSaldo() {
+        saldo = getTotalCredito().subtract(getTotalDebito()).setScale(0, RoundingMode.HALF_EVEN);
+        return saldo;
+    }
+
+    public void setSaldo(BigDecimal saldo) {
+        this.saldo = saldo;
+    }
+
+    public BigDecimal getTotalDebito() {
+        if (totalDebito == null) {
+            devuelveTotalDebito();
+        }
+        return totalDebito;
+    }
+
+    public void setTotalDebito(BigDecimal totalDebito) {
+        this.totalDebito = totalDebito;
+    }
+
+    public BigDecimal getTotalCredito() {
+        if (totalCredito == null) {
+            devuelveTotalCredito();
+        }
+        return totalCredito;
+    }
+
+    public void setTotalCredito(BigDecimal totalCredito) {
+        this.totalCredito = totalCredito;
+    }
+
+    public void devuelveTotalCredito() {
+        totalCredito = new BigDecimal(BigInteger.ZERO);
+        for (DetCuentaCliente d : detalles) {
+            totalCredito = totalCredito.add(d.getMontoCredito().setScale(0, RoundingMode.HALF_EVEN));
+        }
+
+    }
+
+    public void devuelveTotalDebito() {
+        totalDebito = new BigDecimal(BigInteger.ZERO);
+        for (DetCuentaCliente d : detalles) {
+            totalDebito = totalDebito.add(d.getMontoDebito().setScale(0, RoundingMode.HALF_EVEN));
+        }
+
+    }
 
     public List<DetCuentaCliente> getDetalles() {
         return detalles;
@@ -52,9 +108,6 @@ public class CuentaCliente implements Serializable {
     public void setDetalles(List<DetCuentaCliente> detalles) {
         this.detalles = detalles;
     }
-    
-    
-    
 
     public Long getVersion() {
         return version;

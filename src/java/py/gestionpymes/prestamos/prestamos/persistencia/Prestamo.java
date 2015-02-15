@@ -84,11 +84,25 @@ public class Prestamo implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaPrimerVencimiento;
 
+    
+    
+    
     public Prestamo() {
         this.estado = EstadoPrestamo.PENDIENTE_DESEMBOLSO;
         this.sistemaAmortizacion = SistemaAmortizacion.FRANCES;
     }
 
+    
+    
+    public BigDecimal devuelveSaldoPrestamo(){
+        BigDecimal R = new BigDecimal(BigInteger.ZERO);
+        for(DetPrestamo d: getDetalles()){
+            R = R.add(d.getSaldoCuota());
+        }
+        
+        return R;
+    }
+    
     public Date getFechaPrimerVencimiento() {
         return fechaPrimerVencimiento;
     }

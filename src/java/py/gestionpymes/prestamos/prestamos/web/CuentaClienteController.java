@@ -39,7 +39,9 @@ public class CuentaClienteController implements Serializable {
             System.out.println("Detalles: " + cuentaClienteSeleccionada.getDetalles());
             if (cuentaClienteSeleccionada != null) {
                 detalles = ejb.findDetalles(cuentaClienteSeleccionada);
+                cuentaClienteSeleccionada.setDetalles(detalles);
             }
+            
         }
     }
 

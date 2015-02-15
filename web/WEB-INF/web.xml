@@ -237,6 +237,19 @@
             <role-name>contabilidad</role-name>
         </auth-constraint>
     </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintImprimeLiquidacion</display-name>
+        <web-resource-collection>
+            <web-resource-name>ImprimeLiquidacion</web-resource-name>
+            <description/>
+            <url-pattern>/prestamos/prestamo/List.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>prestamos_imprime_liquididacion</role-name>
+        </auth-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>prestamosJDBC</realm-name>
@@ -245,7 +258,6 @@
             <form-error-page>/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
-
     <security-role>
         <description/>
         <role-name>admin</role-name>
@@ -306,7 +318,6 @@
         <description/>
         <role-name>contabilidad</role-name>
     </security-role>
-    
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
         <location>/home/home.xhtml</location>
@@ -319,15 +330,20 @@
         <exception-type>java.lang.RuntimeException</exception-type>
         <location>/errorRuntime.xhtml</location>
     </error-page>
-    
     <error-page>
         <error-code>404</error-code>
         <location>/home/home.xhtml</location>
     </error-page>
-    
     <error-page>
         <error-code>403</error-code>
         <location>/sinpermiso.xhtml</location>
     </error-page>
-
+    <security-role>
+        <description/>
+        <role-name>prestamos_imprime_liquididacion</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>prestamos_imprime_detalle_cliente</role-name>
+    </security-role>
 </web-app>
