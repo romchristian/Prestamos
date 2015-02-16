@@ -42,9 +42,10 @@
 
                                 <p:outputLabel value="# documento" for="nrodoc" id="lblnrodoc"/>
                                 <p:inputText value="#{clienteController.selected.nroDocumento}" 
-                                             id="nrodoc" validator="#{validadorCedula.validateCedula}" validatorMessage="El documento ya existe!"
+                                             id="nrodoc" 
                                              required="true">
-                                    <p:ajax event="blur" update="nrodoc,lblnrodoc,@(.mensajes),:growl" process="nrodoc"/>
+                                    <f:validator validatorId="validadorCI"/>
+                                    <p:ajax event="blur" update="nrodoc,lblnrodoc" process="nrodoc"/>
                                 </p:inputText>
 
                                 <h:outputText value="Vigencia Documento"/>

@@ -67,15 +67,15 @@
                                         </p:selectOneMenu>
 
                                         <h:outputText value="Cobrador: "/>
-                                        
+
                                         <p:autoComplete value="#{cobraCuotaBean.facturaVenta.cobrador}"  id="autoCompleteCobrador" size="50"
                                                         completeMethod="#{autoCompleteCobrador.completar}"
                                                         forceSelection="true" converter="cobradorConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.toString()}"
                                                         >
 
                                         </p:autoComplete>
-                                        
-                                        
+
+
                                         <h:outputText value="Cant. Cuotas: "/>
                                         <h:inputText value="#{cobraCuotaBean.facturaVenta.cantidadCuota}"
                                                      size="3" style="max-width: 30px" maxlength="3" disabled="true"/>
@@ -89,7 +89,7 @@
                                         <h:outputText value="Direccion: "/>
                                         <h:inputText value="#{cobraCuotaBean.facturaVenta.direccion}"  style="width: 95%"/>
 
-                                        
+
                                     </h:panelGrid>
                                 </p:outputPanel>
                             </div>
@@ -107,15 +107,38 @@
 
                                 <h:panelGrid columns="1" style="width: 50%;margin: 0 auto 0 auto">
                                     <h:outputText value="#{cobraCuotaBean.facturaVenta.empresa.razonSocial}" style="font-size: 14pt; font-weight: bold;"/>
-                                    <h:outputText value="Timbrado: #{cobraCuotaBean.facturaVenta.timbrado}" style="font-size: 10pt; font-weight: bold;"/>
+                                    <h:panelGrid columns="2">
+                                        <h:outputText value="Timbrado:" style="font-size: 10pt; font-weight: bold;"/>
+                                        <h:inputText value="#{cobraCuotaBean.facturaVenta.timbrado}" style="font-size: 10pt; font-weight: bold;" 
+                                                     binding="#{timbrado}" 
+                                                     required="true"
+                                                     id="timbrado"/>
+                                    </h:panelGrid>
+
                                     <h:outputText value="RUC: #{cobraCuotaBean.facturaVenta.empresa.ruc}" style="font-size: 12pt; font-weight: bold;"/>
                                     <h:panelGrid columns="6">
                                         <h:outputText value="Nro.:" style="font-size: 12pt; font-weight: bold;"/>
-                                        <h:inputText value="#{cobraCuotaBean.facturaVenta.codEstablecimiento}" size="3" style="font-size: 12pt; font-weight: bold; max-width: 30px" maxlength="3"/>
+                                        <h:inputText value="#{cobraCuotaBean.facturaVenta.codEstablecimiento}" size="3" style="font-size: 12pt; font-weight: bold; max-width: 30px" maxlength="3" 
+                                                     binding="#{codEstablecimiento}"
+                                                     id="codEstablecimiento"
+                                                     required="true"/>
                                         <h:outputText value=" - " style="font-size: 12pt; font-weight: bold;"/>
-                                        <h:inputText value="#{cobraCuotaBean.facturaVenta.puntoExpedicion}" size="3" style="font-size: 12pt; font-weight: bold;max-width: 30px" maxlength="3"/>
+                                        <h:inputText value="#{cobraCuotaBean.facturaVenta.puntoExpedicion}" size="3" style="font-size: 12pt; font-weight: bold;max-width: 30px" maxlength="3" 
+                                                     binding="#{puntoExpedicion}"
+                                                     id="puntoExpedicion"
+                                                     required="true"/>
                                         <h:outputText value=" - " style="font-size: 12pt; font-weight: bold;"/>
-                                        <h:inputText value="#{cobraCuotaBean.facturaVenta.numero}" size="7" style="font-size: 12pt; font-weight: bold;" maxlength="7"/>
+                                        <h:inputText value="#{cobraCuotaBean.facturaVenta.numero}" size="7" style="font-size: 12pt; font-weight: bold;" maxlength="7"
+                                                     id="numero"
+                                                     required="true">
+
+                                            <p:ajax event="blur" update="timbrado,codEstablecimiento,puntoExpedicion,numero" process="timbrado,codEstablecimiento,puntoExpedicion,numero"/>
+
+                                            <f:validator validatorId="validadorNroFactura"/>
+                                            <f:attribute name="timbrado" value="#{timbrado}" />
+                                            <f:attribute name="codEstablecimiento" value="#{codEstablecimiento}" />
+                                            <f:attribute name="puntoExpedicion" value="#{puntoExpedicion}" />
+                                        </h:inputText>
                                     </h:panelGrid>
                                 </h:panelGrid>
 
