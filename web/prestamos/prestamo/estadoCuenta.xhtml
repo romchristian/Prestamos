@@ -39,6 +39,15 @@
                                                     <p:ajax event="itemSelect" update="@(.escuchaSeleccionCuota)" listener="#{cuentaClienteController.busca()}"/>
 
                                                 </p:autoComplete>
+                                                
+                                                <h:outputText value="Dirección: " style="font-size: 12"/>                                                
+                                                <h:outputText style="font-size: 12" value="#{cuentaClienteController.cuentaClienteSeleccionada.cliente == null ? null :cuentaClienteController.cuentaClienteSeleccionada.cliente.devuelveDireccionParticular()}"/>
+                                                
+                                                <h:outputText style="font-size: 12" value="Ciudad: "/>                                                
+                                                <h:outputText style="font-size: 12" value="#{cuentaClienteController.cuentaClienteSeleccionada.cliente == null ? null :cuentaClienteController.cuentaClienteSeleccionada.cliente.devuelveCiudadParticular()}"/>
+                                                
+                                                <h:outputText style="font-size: 12" value="Teléfono: "/>                                                
+                                                <h:outputText style="font-size: 12" value="#{cuentaClienteController.cuentaClienteSeleccionada.cliente == null ? null :cuentaClienteController.cuentaClienteSeleccionada.cliente.devuelveTelefonoParticular()}"/>
 
 
                                             </h:panelGrid>

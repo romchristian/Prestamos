@@ -28,7 +28,7 @@ public class Vehiculo implements Serializable {
     private Long id;
     private String marca;
     private String modelo;
-    private String año;
+    private String anio;
     private double valor;
 
     public Long getId() {
@@ -55,12 +55,12 @@ public class Vehiculo implements Serializable {
         this.modelo = modelo;
     }
 
-    public String getAño() {
-        return año;
+    public String getAnio() {
+        return anio;
     }
 
-    public void setAño(String año) {
-        this.año = año;
+    public void setAnio(String anio) {
+        this.anio = anio;
     }
 
     public double getValor() {

@@ -42,13 +42,14 @@ public class ReporteController {
 
     }
 
-    public void generaPDF(Map parametros, Collection<?> detalles, String archivoPath) {
+    public void generaPDF(Map parametros, Collection<?> detalles, String archivoPath, String nombre) {
         try {
             
             FacesContext context = FacesContext.getCurrentInstance();
             init(parametros, detalles, archivoPath,context);
             
             HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+            response.setHeader( "Content-Disposition", "attachment;filename=" + nombre+".pdf" );
             ServletOutputStream outputStream = response.getOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
             context.responseComplete();

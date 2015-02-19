@@ -342,17 +342,35 @@ public class CobraCuotaBean implements Serializable {
 
         for (Prestamo p : prestamoDAO.findAllClienteEstado(cliente, EstadoPrestamo.VIGENTE)) {
             TreeNode nodoPrestamo = new DefaultTreeNode(new TreeCuota(p), root);
-
             //nodoPrestamo.setExpanded(true);
 
             Collections.sort(p.getDetalles(), comp);
 
+            int i = 0;
             for (DetPrestamo d : p.getDetalles()) {
                 TreeCuota cuota = new TreeCuota(d);
+                cuota.setPadre(nodoPrestamo);
                 TreeNode nodoCuota = new DefaultTreeNode(cuota, nodoPrestamo);
+                calculaSiSePuedePagar(cuota, i,nodoPrestamo);
                 disponibles.add(cuota);
+                
+                i++;
             }
         }
+    }
+    
+    
+    public void calculaSiSePuedePagar(TreeCuota t, int index,TreeNode root){
+        if(index > 0){
+            TreeNode nodoAnterior = root.getChildren().get(index-1);//disponibles.get(index -1);
+            TreeCuota anterior = (TreeCuota) nodoAnterior.getData();
+            if(anterior.getSaldoCuota().compareTo(new BigDecimal(BigInteger.ZERO))==0){
+                t.setDisabledPagar(false);
+            }else{
+                t.setDisabledPagar(true);
+            }
+        }
+        
     }
 
     public void agregaAPagar() {
@@ -364,7 +382,14 @@ public class CobraCuotaBean implements Serializable {
 
         cuotaSeleccionada.setMontoAPagar(montoActual);
 
+        seleccionados.remove(cuotaSeleccionada);
         seleccionados.add(cuotaSeleccionada);
+        
+        if(cuotaSeleccionada.getMontoAPagar().compareTo(cuotaSeleccionada.getSaldoCuota()) == 0){
+            TreeCuota siguiente = (TreeCuota) cuotaSeleccionada.getPadre().getChildren().get(cuotaSeleccionada.getNroCuota()).getData();
+            siguiente.setDisabledPagar(false);
+        } 
+       
 
         montoActual = new BigDecimal(BigInteger.ZERO);
     }

@@ -58,8 +58,7 @@
                                     <p:separator/>
                                 </h:panelGrid>
 
-
-                               <h:panelGrid columns="6" rendered="#{clienteController.selected != null}">
+                                 <h:panelGrid columns="6" rendered="#{clienteController.selected != null}">
                                 <p:outputLabel value="Primer Nombre" for="primerNombre" id="lblprimerNombre"/>
                                 <p:inputText value="#{clienteController.selected.primerNombre}" required="true" id="primerNombre">
                                     <p:ajax event="blur" update="primerNombre lblprimerNombre @(.mensajes)"/>
@@ -69,9 +68,9 @@
                                     <p:ajax event="blur" update="segundoNombre lblsegundoNombre @(.mensajes)"/>
                                 </p:inputText>
                                 
-                                <p:outputLabel value="Nacionalidad" for="nacionalidad"/>
-                                <p:inputText value="#{clienteController.selected.nacionalidad}" id="nacionalidad"/>
-
+                                <p:spacer/>
+                                <p:spacer/>
+                                
                                 <p:outputLabel value="Primer Apellido" for="primerApellido" id="lblprimerApellido"/>            
                                 <p:inputText value="#{clienteController.selected.primerApellido}" required="true" id="primerApellido">
                                     <p:ajax event="blur" update="primerApellido lblprimerApellido @(.mensajes)"/>
@@ -81,6 +80,12 @@
                                 <p:inputText value="#{clienteController.selected.segundoApellido}"  id="segundoApellido">
                                     <p:ajax event="blur" update="segundoApellido lblsegundoApellido @(.mensajes)"/>
                                 </p:inputText>
+                                
+                                <p:spacer/>
+                                <p:spacer/>
+                                
+                                <p:outputLabel value="Nacionalidad" for="nacionalidad"/>
+                                <p:inputText value="#{clienteController.selected.nacionalidad}" id="nacionalidad"/>
 
                                 <p:outputLabel value="Fecha Nac" for="fechaNacimiento"/>
                                 <p:calendar value="#{clienteController.selected.fechaNac}" id="fechaNacimiento" required="true"
@@ -97,14 +102,7 @@
                                     <f:selectItems value="#{productorEnums.obtEstadosCivil()}"/>
                                 </p:selectOneMenu>
 
-
-                                <p:spacer/>
-                                <p:spacer/>
-
                                 <h:outputText value="Conyuge: "/>
-
-
-
 
                                 <p:autoComplete value="#{clienteController.selected.conyuge}"  id="autoCompleteCliente"
                                                 completeMethod="#{autoCompleteCliente.completar}"
@@ -118,14 +116,8 @@
                                     <h:outputText value=" #{clienteController.selected.conyuge != null ? clienteController.selected.conyuge.devuelveNombreCompleto():'No Asignado'}"
                                                   styleClass="clienteSeleccionado"/>
                                 </p:panel>
-
-
+                                
                                 <p:spacer/>
-                                <p:spacer/>
-                                <p:spacer/>
-
-                                <p:outputLabel value="Linea de Crédito" for="lineadecredito"/>
-                                <p:inputText value="#{clienteController.selected.lineaDeCredito}" id="lineadecredito"/>
 
                                 <p:outputLabel value="#{bundle.CreateClienteLabel_categoria}" for="categoria" /> 
                                 <p:selectOneMenu id="categoria" value="#{clienteController.selected.categoria}" >
@@ -133,9 +125,7 @@
                                                    var="categoriaItem"
                                                    itemValue="#{categoriaItem}"/>
                                 </p:selectOneMenu>
-
-                                <p:spacer/>
-                                <p:spacer/>
+                                
                                 <p:outputLabel value="Empresa" for="empresa" /> 
                                 <p:selectOneMenu id="empresa" value="#{clienteController.selected.empresa}" >
                                     <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
@@ -145,12 +135,13 @@
                                 <p:selectOneMenu id="sucursal" value="#{clienteController.selected.sucursal}" >
                                     <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
                                 </p:selectOneMenu>
+                                
+                                <p:outputLabel value="Linea de Crédito" for="lineadecredito"/>
+                                <p:inputText value="#{clienteController.selected.lineaDeCredito}" id="lineadecredito"/>
 
                             </h:panelGrid>
 
-
-                            
-
+                              
                         </p:tab>
                         <p:tab title="Direcciones">
                             <p:panel styleClass="panelDirecciones">

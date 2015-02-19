@@ -35,9 +35,9 @@ public class ValidadorNroFactura implements Validator {
         System.out.println("uiInputCodEstablecimiento: " + uiInputCodEstablecimiento);
         System.out.println("uiInputPuntoExpedicion: " + uiInputPuntoExpedicion);
         
-        String timbrado = uiInputTimbrado == null?null: uiInputTimbrado.getSubmittedValue()+"";
-        String codEstablecimiento = uiInputCodEstablecimiento== null?null:uiInputCodEstablecimiento.getSubmittedValue()+"";
-        String puntoExpedicion = uiInputPuntoExpedicion== null?null:uiInputPuntoExpedicion.getSubmittedValue()+"";
+        String timbrado = uiInputTimbrado == null?null: uiInputTimbrado.getValue()+"";
+        String codEstablecimiento = uiInputCodEstablecimiento== null?null:uiInputCodEstablecimiento.getValue()+"";
+        String puntoExpedicion = uiInputPuntoExpedicion== null?null:uiInputPuntoExpedicion.getValue()+"";
         String numero = (String) value;
         String desc = timbrado +": " + codEstablecimiento+"-"+puntoExpedicion+"-"+numero;
 
