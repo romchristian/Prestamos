@@ -35,6 +35,15 @@
             }
 
 
+            *{
+                margin:0;padding:0;
+            }
+            html,body,.body
+            {
+                height: 100%;
+
+            }
+
             body{
                 margin: 0;
                 padding: 0;
@@ -43,22 +52,20 @@
                 color: #fff;
                 font-family: Arial;
                 font-size: 12px;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
             }
 
             .body{
-                position: absolute;
-                top: -20px;
-                left: -20px;
-                right: -40px;
-                bottom: -40px;
-                width: auto;
-                height: auto;
+               
 
                 background-image: url("#{resource['img/bg.jpg']}");
                 background-size: cover;
                 -webkit-filter: blur(3px);
                 filter: blur(3px);
                 z-index: 0;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
             }
 
             .grad{
@@ -191,33 +198,33 @@
                 color: rgba(255,255,255,0.6);
             }
 
+          
         </style>
+
     </h:head>
 
     <h:body style="padding: 0;margin: 0;">
 
-        <div class="body"></div>
-        <div class="grad"></div>
+
+
+        <div class="body">
+            
+        </div>
+        
         <div class="header">
             <div>Idea<span>Pymes</span></div>
         </div>
         <div class="subtitle">
             <div>Préstamos</div>
         </div>
-        <br/>
+        
 
-        <!--        <form method="POST" action="j_security_check">
-                    <div class="login">
-                        <input type="text" placeholder="usuario" name="j_username"/><br/>
-                        <input type="password" placeholder="contraseña" name="j_password"/><br/>
-                        <input type="submit" value="Entrar"/>
-                    </div>
-                </form>-->
+
 
         <h:form>
             <div class="login">
-                <p:inputText value="#{autenticador.username}" placeholder="usuario"/>
-                <p:password value="#{autenticador.password}" placeholder="contraseña"/>
+                <p:inputText value="#{autenticador.username}" placeholder="usuario" autocomplete="off"/>
+                <p:password value="#{autenticador.password}" placeholder="contraseña" autocomplete="off"/>
                 <h:commandButton value="Entrar" action="#{autenticador.login()}"/>
             </div>
         </h:form>

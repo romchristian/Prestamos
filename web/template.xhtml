@@ -61,13 +61,13 @@
                 height: 45px;
                 line-height: 45px;
                 background: rgba(31,29,89,1);
-                background: -moz-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
-                background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(31,29,89,1)), color-stop(100%, rgba(120,118,196,1)));
-                background: -webkit-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
-                background: -o-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
-                background: -ms-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
-                background: linear-gradient(135deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f1d59', endColorstr='#7876c4', GradientType=1 );
+                background: -moz-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(31,29,89,1) 100%);
+                background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(31,29,89,1)), color-stop(100%, rgba(31,29,89,1)));
+                background: -webkit-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(31,29,89,1) 100%);
+                background: -o-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(31,29,89,1) 100%);
+                background: -ms-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(31,29,89,1) 100%);
+                background: linear-gradient(135deg, rgba(31,29,89,1) 0%, rgba(31,29,89,1) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f1d59', endColorstr='#1f1d59', GradientType=1 );
 
 
             }
@@ -78,6 +78,7 @@
                 padding-top: 45px;
                 -moz-box-sizing: border-box;
                 box-sizing: border-box;
+
             }
             .sideBar
             {
@@ -103,7 +104,7 @@
                 background-repeat: repeat;
 
             }
-            #program{
+            .program{
                 font-family: 'Exo', sans-serif;
                 color: #fff;
                 font-size: 20px;
@@ -111,7 +112,7 @@
                 padding-left:  15px
             }
 
-            #program div span{
+            .program div span{
                 color: #33ccFF !important;
             }
             .title{
@@ -139,22 +140,27 @@
 
         <p:growl id="growl" life="3000" autoUpdate="true"/>
 
-        <div class="bar">
-            <div id="program">
-                <div>Ideas<span>Pymes - </span> <span style="color: #1fcf5f!important;">Préstamos</span></div>
-            </div>
 
-            <h:form>
-                <div style="color: white!important;position: absolute;top:0px; left: calc(100% - 250px);font-size: 15px">Usuario: #{request.userPrincipal} - <h:commandLink style="color: white;" action="#{autenticador.logout()}" value="Salir"/></div>
-            </h:form>
-        </div>
 
         <div class="container">    
-            <div class="sideBar">
-                <div style="width: 200px; margin: 0 auto 0 auto">
-                    <p:graphicImage library="img" name="logo_trans.png"  width="200"/>
+            <div class="bar">
+                <div class="program" style="float: left">
+                    <div>Ideas<span>Pymes - </span> <span style="color: #1fcf5f!important;">Préstamos</span></div>
                 </div>
-                <br/>
+
+                <div style="float: right;padding-right: 10px;">
+                    <h:form>
+                        <div class="program" style="float: left;font-size: 18px">
+                            <div>Usuario: <span>#{request.userPrincipal} - </span> <span style="color: #1fcf5f!important;"><h:commandLink style="color:#1fcf5f!important;z-index: 10" action="#{autenticador.logout()}" value=" Salir"/></span></div>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+            <div class="sideBar">
+                <!--                <div style="width: 200px; margin: 0 auto 0 auto">
+                                    <p:graphicImage library="img" name="logo_trans.png"  width="200"/>
+                                </div>
+                                <br/>-->
                 <br/>
                 <h:form>
                     <ui:include src="/menu.xhtml"/>
@@ -170,7 +176,7 @@
                 <div style="padding: 20px">
                     <ui:insert name="body"/>
                 </div>
-                
+
             </div>
         </div>
 
