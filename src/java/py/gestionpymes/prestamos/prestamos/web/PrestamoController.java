@@ -172,7 +172,7 @@ public class PrestamoController implements Serializable {
         List<Pagare> data = new ArrayList<>();
         data.add(pagare);
 
-        reporteController.generaPDF(new HashMap(), data, "reportes/prestamos/pagares.jasper");
+        reporteController.generaPDF(new HashMap(), data, "reportes/prestamos/pagares.jasper","pagare_"+selected.getCliente().getNroDocumento());
     }
 
     public void imprimeLiquidacionPrestamo() {
@@ -226,7 +226,7 @@ public class PrestamoController implements Serializable {
         params.put("firmaConyugeTitular", selected.isFirmaConyugeTitular() == false ? "no" : "si");
         params.put("firmaConyugeCodeudor", selected.isFirmaConyugeCodeudor() == false ? "no" : "si");
 
-        reporteController.generaPDF(params, data, "reportes/prestamos/liquidacion.jasper");
+        reporteController.generaPDF(params, data, "reportes/prestamos/liquidacion.jasper","liquidacion_prestamo_"+selected.getCliente().getNroDocumento());
     }
 
     public void imprimeDetalleParaCliente() {
@@ -282,7 +282,7 @@ public class PrestamoController implements Serializable {
         //params.put("firmaConyugeTitular", selected.isFirmaConyugeTitular() == false ? "no" : "si");
         //params.put("firmaConyugeCodeudor", selected.isFirmaConyugeCodeudor() == false ? "no" : "si");
 
-        reporteController.generaPDF(params, data, "reportes/prestamos/DetalleParaCliente.jasper");
+        reporteController.generaPDF(params, data, "reportes/prestamos/DetalleParaCliente.jasper","detalle_cliente_"+selected.getCliente().getNroDocumento());
     }
 
     public void desembolsa() {

@@ -9,6 +9,7 @@ import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.Locale;
+import org.primefaces.model.TreeNode;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
@@ -49,6 +50,8 @@ public class TreeCuota {
     private BigDecimal cuotaInteres;
     private BigDecimal montoMoratorio;
     private BigDecimal montoPunitorio;
+    private boolean disabledPagar;
+    private TreeNode padre;
     
 
     public TreeCuota() {
@@ -96,6 +99,24 @@ public class TreeCuota {
         this.cancelado = true;
     }
 
+    public TreeNode getPadre() {
+        return padre;
+    }
+
+    public void setPadre(TreeNode padre) {
+        this.padre = padre;
+    }
+
+    
+    public boolean isDisabledPagar() {
+        return disabledPagar;
+    }
+
+    public void setDisabledPagar(boolean sePuedePagar) {
+        this.disabledPagar = sePuedePagar;
+    }
+    
+    
     public BigDecimal getMontoAPagar() {
         return montoAPagar;
     }

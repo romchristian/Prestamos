@@ -172,7 +172,7 @@
 
                                     <h:panelGroup style="text-align: center" rendered="#{not c.esPrestamo}">
                                         <p:graphicImage library="img" name="check.png" rendered="#{c.detPrestamo.estado == 'CANCELADO'}"/>
-                                        <p:commandLink update=":formCobroCuota:cuotaPanel" oncomplete="PF('cuotaDialog').show()" value="Pagar" rendered="#{c.detPrestamo.estado == 'PENDIENTE'}">
+                                        <p:commandLink update=":formCobroCuota:cuotaPanel" oncomplete="PF('cuotaDialog').show()" value="Pagar" rendered="#{(c.detPrestamo.estado == 'PENDIENTE')}" disabled="#{c.disabledPagar}">
                                             <f:setPropertyActionListener value="#{c}" target="#{cobraCuotaBean.cuotaSeleccionada}" />
                                         </p:commandLink>
                                     </h:panelGroup>

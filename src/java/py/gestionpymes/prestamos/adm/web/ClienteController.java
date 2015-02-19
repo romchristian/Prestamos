@@ -66,7 +66,7 @@ public class ClienteController implements Serializable {
         List<RegistroFirma> data = new ArrayList<>();
         data.add(registroFirma);
 
-        reporteController.generaPDF(new HashMap(), data, "reportes/clientes/registroDeFirmas.jasper");
+        reporteController.generaPDF(new HashMap(), data, "reportes/clientes/registroDeFirmas.jasper","registro_firma_"+selected.getNroDocumento());
     }
     
     public void cargaDatos(){

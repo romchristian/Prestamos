@@ -15,6 +15,7 @@ import py.gestionpymes.prestamos.adm.persistencia.Direccion;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Persona;
 import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
+import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoContactoTelefonico;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDireccion;
 import py.gestionpymes.prestamos.prestamos.persistencia.validadores.SoloLetras;
 
@@ -202,6 +203,16 @@ public class Cliente extends Persona {
 
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
+    }
+    
+    public String devuelveTelefonoParticular(){
+    
+        for (ContactoTelefonico c : contactoTelefonicos) {
+            if(c.getTipo().LINEA_BAJA==TipoContactoTelefonico.LINEA_BAJA){
+                return c.getNumero();
+            }
+        }
+        return null;
     }
 
     
