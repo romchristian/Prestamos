@@ -46,22 +46,20 @@
                 src: local('Exo Regular'), local('Exo-Regular'), url(#{resource['font/kA_pX0U45Eb7PbHijV1x2w.woff2']}) format('woff2'), url(#{resource['font/wocyXRLWPo2Av-yUTmmbTA.woff']}) format('woff');
             }
 
-
-            #wrapper {
-
-                left: 263px;
-                position: absolute;
-                top: 100px;
-                padding-right: 15px;
-                z-index: 1;
-                height: 80%;
-                overflow: auto;
+            *{
+                margin:0;padding:0;
+            }
+            html,body,.container, .sideBar, .content
+            {
+                height: 100%;
 
             }
 
+            .bar
+            {
 
-
-            #bar{
+                height: 45px;
+                line-height: 45px;
                 background: rgba(31,29,89,1);
                 background: -moz-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
                 background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(31,29,89,1)), color-stop(100%, rgba(120,118,196,1)));
@@ -70,42 +68,22 @@
                 background: -ms-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
                 background: linear-gradient(135deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f1d59', endColorstr='#7876c4', GradientType=1 );
-                width:100%;
-                position:fixed;
-                top:0px;
-                height:45px;
-                font-family: 'Exo', sans-serif;
-                color: #fff;
-                font-size: 27px;
-                font-weight: bold;
-                left: 0px;
-                z-index: 3;
-                margin:0px auto;
-                padding-left:  25px
+
+
             }
+            .container
+            {
 
-            #bar span{
-                color: #33ccFF !important;
+                margin-top: -45px;
+                padding-top: 45px;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
             }
+            .sideBar
+            {
 
-            #header{
-
-                width:100%;
-                position:fixed;
-                top:45px;
-                height:45px;
-                font-family: 'Exo', sans-serif;
-                color: #444;
-                left: 220px;
-                z-index: 2;
-                margin:0px;
-                padding-left:  25px;
-                background-color: #ddd;
-                border-bottom: 1px solid #0077b3;
-                border-top: 1px solid #0077b3;
-            }
-
-            #sidebar{
+                float:left;
+                width: 250px;
                 background: rgba(254,254,254,1);
                 background: -moz-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
                 background: -webkit-gradient(left top, right top, color-stop(0%, rgba(254,254,254,1)), color-stop(72%, rgba(219,219,219,0.9)), color-stop(99%, rgba(209,209,209,0.86)), color-stop(100%, rgba(226,226,226,0.86)));
@@ -114,21 +92,37 @@
                 background: -ms-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
                 background: linear-gradient(to right, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e2e2e2', GradientType=1 );
-                border-top: 1px solid black;
-                padding:30px;
-                font-family: 'Exo', sans-serif;
-                position: absolute;
-                top: 45px;
-                left: 0;
+                border-right: 1px solid #aaa;
+                overflow:hidden;
+            }
+            .content
+            {
 
-                height: 80%;
-                border-right: 1px solid #0077b3;
+                overflow:auto;
+                background-image: url("#{resource['img/dimension.png']}");
+                background-repeat: repeat;
 
             }
+            #program{
+                font-family: 'Exo', sans-serif;
+                color: #fff;
+                font-size: 20px;
+                font-weight: bold;
+                padding-left:  15px
+            }
 
-            #titulo{
-                height: 50px;
+            #program div span{
+                color: #33ccFF !important;
+            }
+            .title{
+
                 background-color: #ddd;
+
+                vertical-align: middle;
+
+                color: #444;
+                font-size: 18pt;
+                padding: 10px;
             }
 
 
@@ -142,40 +136,44 @@
 
     <h:body style="padding: 0;margin: 0;">
 
+
         <p:growl id="growl" life="3000" autoUpdate="true"/>
 
-
-        <div id="bar">
-            <div>Idea<span>Pymes - </span> <span style="color: #1fcf5f!important;">Préstamos</span></div>
-            <h:form>
-                <div style="color: white!important;position: absolute;top:10px; left: calc(100% - 250px);font-size: 15px">Usuario: #{request.userPrincipal} - <h:commandLink style="color: white;" action="#{autenticador.logout()}" value="Salir"/></div>
-            </h:form>
-        </div>
-
-        <div id="sidebar">
-            <h:form id="menuForm" style="padding: 0;margin: 0;">
-                <ui:include src="/menu.xhtml"/>
-            </h:form>
-        </div>
-
-        <div id="header">
-            <h2><ui:insert name="title">Default Title</ui:insert></h2>
-        </div>
-
-        <div id="wrapper">
-            <div>
-
-
-                <ui:include src="idleMonitor.xhtml"/>
-
-
-                <h:panelGroup>
-                    <ui:insert name="body"/>
-                </h:panelGroup>
-
+        <div class="bar">
+            <div id="program">
+                <div>Ideas<span>Pymes - </span> <span style="color: #1fcf5f!important;">Préstamos</span></div>
             </div>
 
+            <h:form>
+                <div style="color: white!important;position: absolute;top:0px; left: calc(100% - 250px);font-size: 15px">Usuario: #{request.userPrincipal} - <h:commandLink style="color: white;" action="#{autenticador.logout()}" value="Salir"/></div>
+            </h:form>
         </div>
+
+        <div class="container">    
+            <div class="sideBar">
+                <div style="width: 200px; margin: 0 auto 0 auto">
+                    <p:graphicImage library="img" name="logo_trans.png"  width="200"/>
+                </div>
+                <br/>
+                <br/>
+                <h:form>
+                    <ui:include src="/menu.xhtml"/>
+                </h:form>
+
+            </div>
+            <div class="content">
+                <div class="title">
+                    <ui:insert name="title"/>
+                </div>
+
+                <ui:include src="idleMonitor.xhtml"/>
+                <div style="padding: 20px">
+                    <ui:insert name="body"/>
+                </div>
+                
+            </div>
+        </div>
+
 
         <script type="text/javascript">
 
