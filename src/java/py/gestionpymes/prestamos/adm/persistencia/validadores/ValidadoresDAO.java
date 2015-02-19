@@ -13,9 +13,9 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import py.gestionpymes.prestamos.contabilidad.FacturaVenta;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDocumento;
-
 
 /**
  *
@@ -23,20 +23,26 @@ import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDocumento;
  */
 @Named
 @Stateless
-public class ValidadorCedula implements Serializable {
+public class ValidadoresDAO implements Serializable {
 
     @PersistenceContext(unitName = "PrestamosPU")
     private EntityManager em;
-   
 
-    public void validateCedula(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        if (hayDocumento((String) value, TipoDocumento.CI)) {
+    public boolean hayNroFactura(String nroTimbrado, String nroEstablecimiento, String nroPuntoExpedicion, String nro) {
 
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"La cédula " + ((String) value) + " ya existe!",
-                    "La cédula " + ((String) value) + " ya existe!");
-            
-            throw new ValidatorException(message);
+        boolean R = false;
+        try {
+
+            FacturaVenta f = (FacturaVenta) em.createQuery("SELECT f FROM FacturaVenta f where f.timbrado = :t and f.codEstablecimiento = :codEst and f.puntoExpedicion = :pexp and f.numero = :nro")
+                    .setParameter("t", nroTimbrado)
+                    .setParameter("codEst", nroEstablecimiento)
+                    .setParameter("pexp", nroPuntoExpedicion)
+                    .setParameter("nro", nro)
+                    .getSingleResult();
+            R = true;
+        } catch (Exception e) {
         }
+        return R;
     }
 
     public boolean hayDocumento(String nro, TipoDocumento tipoDocumento) {
