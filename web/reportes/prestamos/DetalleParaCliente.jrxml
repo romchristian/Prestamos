@@ -11,6 +11,7 @@
 	<parameter name="moneda" class="java.lang.String"/>
 	<parameter name="nroOperacion" class="java.lang.String"/>
 	<parameter name="diaVencimiento" class="java.lang.String"/>
+	<parameter name="nroDocumento" class="java.lang.String"/>
 	<field name="montoCuota" class="java.math.BigDecimal"/>
 	<field name="nroCuota" class="java.lang.Integer"/>
 	<field name="fechaVencimiento" class="java.util.Date"/>
@@ -31,7 +32,7 @@
 				<textFieldExpression><![CDATA["Monto del Prestamo: "+$P{montoPrestamo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="1" y="43" width="211" height="20" uuid="517d8aff-37fb-49ab-bb2d-05cff4a928b8"/>
+				<reportElement x="1" y="43" width="133" height="20" uuid="517d8aff-37fb-49ab-bb2d-05cff4a928b8"/>
 				<textFieldExpression><![CDATA["Nro.  Operación: "+$P{nroOperacion}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -54,7 +55,7 @@
 				<text><![CDATA[CUOTAS Y VENCIMIENTOS]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="1" y="23" width="211" height="20" uuid="066c288b-fd79-4d6f-ad13-895a51b43ff5"/>
+				<reportElement x="139" y="43" width="133" height="20" uuid="066c288b-fd79-4d6f-ad13-895a51b43ff5"/>
 				<textFieldExpression><![CDATA["Fecha Op.: "+$P{fechaOperacion}]]></textFieldExpression>
 			</textField>
 			<rectangle radius="10">
@@ -66,6 +67,14 @@
 					<font size="65" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{diaVencimiento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="289" y="106" width="74" height="19" uuid="e2e27adf-3b9c-4d1f-bff9-045da56398cc"/>
+				<text><![CDATA[Día de pago!]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="23" width="271" height="20" uuid="c9338bf9-3e26-47c4-b78c-4b7e11de2ec1"/>
+				<textFieldExpression><![CDATA["Documento: " + $P{nroDocumento}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -97,7 +106,7 @@
 	<detail>
 		<band height="21" splitType="Stretch">
 			<textField pattern="#,##0">
-				<reportElement x="12" y="0" width="29" height="20" uuid="76c93291-d001-42e2-894b-a43199160855"/>
+				<reportElement x="11" y="0" width="29" height="20" uuid="76c93291-d001-42e2-894b-a43199160855"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{nroCuota}]]></textFieldExpression>
 			</textField>

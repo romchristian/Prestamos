@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6c88e18a-0f8c-4300-a01b-540a2c2f6851">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="44"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -47,18 +47,23 @@
 		<band height="372" splitType="Stretch">
 			<textField>
 				<reportElement x="4" y="77" width="551" height="20" uuid="79a874d4-2c84-4b8f-a13f-983ce82ef6b2"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Cliente: "+$F{primerApellido}+" "+$F{segundoApellido}+", "+$F{primerNombre}+" "+$F{segundoNombre}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="4" y="57" width="109" height="20" uuid="a5831318-b52b-4a49-bbaf-242e2f471c82"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true" isUnderline="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[Datos del Cliente]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="4" y="117" width="275" height="20" uuid="7f70ec5d-0082-4707-9a6c-55b52303e83b"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Documento Nro.: " + $F{nroDocumento}]]></textFieldExpression>
 			</textField>
 			<rectangle>
@@ -73,7 +78,7 @@
 			<staticText>
 				<reportElement x="0" y="0" width="555" height="45" uuid="50395d94-2f00-46c5-807e-5d30ce57f7a4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true" isUnderline="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REGISTRO DE FIRMAS E IMPRESION DACTILAR]]></text>
 			</staticText>
@@ -83,20 +88,29 @@
 					<topPen lineStyle="Double"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial Narrow"/>
+					<font fontName="Times New Roman"/>
 				</textElement>
 				<text><![CDATA[LAS FIRMAS E IMPRESIÓN DACTILAR QUE OBRAN PRECEDENTEMENTE FUERON HECHAS SIN PRESIÓN, COACCIÓN, DE MANERA TOTALMENTE VOLUNTARIA Y EN USO DE TODAS MIS FACULTADES FISICA Y PSIQUICAS.]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="4" y="97" width="542" height="20" uuid="ea6b03de-b7fb-4afe-b1d8-38249567d922"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA["DOMICILIO: " + $F{direccion}== null ? " ": $F{direccion} +" "+$F{ciudad}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="4" y="151" width="85" height="20" uuid="48efa458-dfae-40fd-aafe-d3ce989752f8"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA["FIRMA (1)"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="4" y="235" width="85" height="20" uuid="07cabb66-70ac-4898-ad66-0cc8f7d3592b"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA["FIRMA (2)"]]></textFieldExpression>
 			</textField>
 			<rectangle>
@@ -104,11 +118,16 @@
 			</rectangle>
 			<textField>
 				<reportElement x="335" y="151" width="85" height="36" uuid="c16e401d-9eed-47e2-b6ba-cfca60fd7320"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA["IMPRESION DACTILAR"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="335" y="235" width="79" height="20" uuid="72296dca-15c3-478e-b60f-202676dff942"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA["MEDIA FIRMA"]]></textFieldExpression>
 			</textField>
 		</band>
