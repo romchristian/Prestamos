@@ -33,7 +33,7 @@
 	<field name="montoPrestamo" class="java.math.BigDecimal"/>
 	<field name="capital" class="java.math.BigDecimal"/>
 	<field name="plazo" class="java.lang.Integer"/>
-	<field name="tasa" class="java.lang.Integer"/>
+	<field name="tasa" class="java.math.BigDecimal"/>
 	<field name="periodoPago" class="java.lang.String"/>
 	<field name="sistemaAmortizacion" class="java.lang.String"/>
 	<field name="fechaInicioOperacion" class="java.util.Date"/>

@@ -264,14 +264,14 @@ public class DetPrestamo implements Serializable {
     }
 
     public void calculaCuotaIvaIncluido() {
-        BigDecimal ivaMesFijo = prestamo.getImpuestoIVA().divide(new BigDecimal(prestamo.getPlazo()));
-        montoCuota = montoCuota.add(ivaMesFijo).setScale(0, RoundingMode.HALF_EVEN);
+        BigDecimal ivaMesFijo = prestamo.getImpuestoIVA().divide(new BigDecimal(prestamo.getPlazo())).setScale(8, RoundingMode.HALF_DOWN);
+        montoCuota = montoCuota.add(ivaMesFijo).setScale(8, RoundingMode.HALF_DOWN);
         saldoCuota = montoCuota;
     }
 
     public BigDecimal devuelveMontoMora() {
         if (saldoCuota.compareTo(new BigDecimal(0)) == 0) {
-            return montoMora.setScale(0, RoundingMode.HALF_EVEN);
+            return montoMora.setScale(8, RoundingMode.HALF_DOWN);
         } else {
             BigDecimal moratorio = calculaSaldoMoratorio();
             
@@ -300,8 +300,8 @@ public class DetPrestamo implements Serializable {
             double interesDiario = getInteresMoratorio() / 100d / 365d;
             double interesMora = interesDiario * getDiasMora();
 
-            R = new BigDecimal(interesMora).multiply(saldoCapital).setScale(0, RoundingMode.HALF_EVEN);
-            setIvaMoraMoratorio(R.multiply(new BigDecimal(0.1)).setScale(0, RoundingMode.HALF_EVEN));
+            R = new BigDecimal(interesMora).multiply(saldoCapital).setScale(8, RoundingMode.HALF_DOWN);
+            setIvaMoraMoratorio(R.multiply(new BigDecimal(0.1)).setScale(8, RoundingMode.HALF_EVEN));
             R = R.add(getIvaMoraMoratorio());
         }
         return R;
@@ -312,8 +312,8 @@ public class DetPrestamo implements Serializable {
         if (getDiasMora() > 0) {
             double interesDiario = getInteresPunitorio() / 100d / 365d;
             double interesMora = interesDiario * getDiasMora();
-            R = new BigDecimal(interesMora).multiply(saldoCapital).setScale(0, RoundingMode.HALF_EVEN);
-            setIvaMoraPunitorio(R.multiply(new BigDecimal(0.1)).setScale(0, RoundingMode.HALF_EVEN));
+            R = new BigDecimal(interesMora).multiply(saldoCapital).setScale(8, RoundingMode.HALF_DOWN);
+            setIvaMoraPunitorio(R.multiply(new BigDecimal(0.1)).setScale(8, RoundingMode.HALF_EVEN));
             R = R.add(getIvaMoraPunitorio());
         }
         return R;
@@ -346,7 +346,7 @@ public class DetPrestamo implements Serializable {
 
     public BigDecimal getSaldoCuota() {
         if (estado == EstadoDetPrestamo.PENDIENTE) {
-            saldoCuota = calculaMontoPorDiasMoratorio().add(calculaMontoPorDiasPunitorio()).add(getMontoCuota()).subtract(getMontoPago()).setScale(0, RoundingMode.HALF_EVEN);
+            saldoCuota = calculaMontoPorDiasMoratorio().add(calculaMontoPorDiasPunitorio()).add(getMontoCuota()).subtract(getMontoPago()).setScale(8, RoundingMode.HALF_EVEN);
         }
         return saldoCuota;
     }
@@ -367,9 +367,9 @@ public class DetPrestamo implements Serializable {
 
     public boolean afectaSaldoCuota(BigDecimal monto, String refMonto) {
         boolean R = false;
-        saldoCuota.setScale(0, RoundingMode.HALF_EVEN);
-        monto.setScale(0, RoundingMode.HALF_EVEN);
-        BigDecimal mora = devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
+        saldoCuota.setScale(8, RoundingMode.HALF_EVEN);
+        monto.setScale(8, RoundingMode.HALF_EVEN);
+        BigDecimal mora = devuelveMontoMora().setScale(8, RoundingMode.HALF_EVEN);
    
         if ((saldoCuota.add(mora).compareTo(monto)) >= 0) {
 

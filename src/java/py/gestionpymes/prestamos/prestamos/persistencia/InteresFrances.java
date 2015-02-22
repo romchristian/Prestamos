@@ -28,9 +28,9 @@ public class InteresFrances extends Sistema {
 
         for (int i = 0; i < p.getPlazo(); i++) {
             int nroCuota = i;
-            BigDecimal saldoCapital = getSaldoCapital(nroCuota).setScale(0, RoundingMode.HALF_EVEN);
-            BigDecimal cuotaInteres = getCuotaInteres(saldoCapital).setScale(0, RoundingMode.HALF_EVEN);
-            BigDecimal cuotaCapital = getCuotaCapital(cuotaInteres).setScale(0, RoundingMode.HALF_EVEN);
+            BigDecimal saldoCapital = getSaldoCapital(nroCuota).setScale(8, RoundingMode.HALF_EVEN);
+            BigDecimal cuotaInteres = getCuotaInteres(saldoCapital).setScale(8, RoundingMode.HALF_DOWN);
+            BigDecimal cuotaCapital = getCuotaCapital(cuotaInteres).setScale(8, RoundingMode.HALF_EVEN);
 
             DetPrestamo d = new DetPrestamo(p, nroCuota + 1, cuotaCapital, cuotaInteres, saldoCapital);
             detalles.add(d);
@@ -61,7 +61,7 @@ public class InteresFrances extends Sistema {
 
     /**
      *
-     * @return
+     * @return Cuota de Amortización
      */
     private BigDecimal getCuotaAmortizacion(int nroCuota) {
         BigDecimal V = getPrestamo().getCapital();// Capital sumar comision
@@ -88,20 +88,20 @@ public class InteresFrances extends Sistema {
 //        BigDecimal op2 = op1.divide(new BigDecimal(i,MathContext.DECIMAL128),0,RoundingMode.HALF_EVEN);
 //        BigDecimal VP = getCuota().multiply(op2);//getCuota() * ((1-Math.pow((1+i),-getPlazo()+nroCuota))/i);
 
-        BigDecimal amortizacionAcumulada = new BigDecimal(BigInteger.ZERO);
+        BigDecimal amortizacionAcumulada = new BigDecimal(BigInteger.ZERO).setScale(8, RoundingMode.HALF_EVEN);
         for (int i = 1; i <= nroCuota; i++) {
-            amortizacionAcumulada = amortizacionAcumulada.add(getCuotaAmortizacion(i));
+            amortizacionAcumulada = amortizacionAcumulada.add(getCuotaAmortizacion(i)).setScale(8, RoundingMode.HALF_EVEN);
         }
 
         return getPrestamo().getCapital().subtract(amortizacionAcumulada);
     }
 
     public BigDecimal getCuotaInteres(BigDecimal vp) {
-        return vp.multiply(new BigDecimal(getInteresPeriodico()).setScale(7, RoundingMode.HALF_EVEN));
+        return vp.multiply(new BigDecimal(getInteresPeriodico()).setScale(8, RoundingMode.HALF_EVEN));
     }
 
     public BigDecimal getCuotaCapital(BigDecimal cuotaInteres) {
-        return getCuota().subtract(cuotaInteres);
+        return getCuota().subtract(cuotaInteres).setScale(8, RoundingMode.HALF_EVEN);
     }
 
     /**

@@ -26,7 +26,7 @@ public class InteresSimple extends Sistema {
 
         for (int i = 0; i < p.getPlazo(); i++) {
             int nroCuota = i + 1;
-            BigDecimal cuotaCapital = p.getCapital().divide(new BigDecimal(p.getPlazo()), 0, RoundingMode.HALF_EVEN); //(p.getCapital() ) / p.getPlazo();
+            BigDecimal cuotaCapital = p.getCapital().divide(new BigDecimal(p.getPlazo()), 6, RoundingMode.HALF_EVEN); //(p.getCapital() ) / p.getPlazo();
             BigDecimal cuotaInteres = calculaInteres(nroCuota, p);
             BigDecimal saldoCapital = p.getCapital().subtract(cuotaCapital.multiply(new BigDecimal(nroCuota - 1)));
 
@@ -39,13 +39,13 @@ public class InteresSimple extends Sistema {
 
     @Override
     protected BigDecimal getCuota() {
-        BigDecimal R = getPrestamo().getTotalOperacion().divide(new BigDecimal(getPrestamo().getPlazo()), 0, RoundingMode.HALF_EVEN);
+        BigDecimal R = getPrestamo().getTotalOperacion().divide(new BigDecimal(getPrestamo().getPlazo()), 6, RoundingMode.HALF_EVEN);
         return R;
     }
 
     private BigDecimal calculaInteres(int nroCuota, Prestamo p) {
         BigDecimal R;
-        BigDecimal div1 = p.getTasa().divide(new BigDecimal(100), 4, RoundingMode.HALF_EVEN);//tasa interes anual
+        BigDecimal div1 = p.getTasa().divide(new BigDecimal(100), 6, RoundingMode.HALF_EVEN);//tasa interes anual
 
         int periocidad = 1;
         switch (p.getPeriodoPago()) {
@@ -61,7 +61,7 @@ public class InteresSimple extends Sistema {
         }
         
         
-        BigDecimal div2 = div1.divide(new BigDecimal(12*periocidad), 4, RoundingMode.HALF_EVEN);//interes mensual
+        BigDecimal div2 = div1.divide(new BigDecimal(12*periocidad), 6, RoundingMode.HALF_EVEN);//interes mensual
                 
         R = p.getCapital().multiply(div2); //interes del mes
 

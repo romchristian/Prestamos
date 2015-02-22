@@ -33,7 +33,7 @@ public class LiquidacionPrestamo {
     private BigDecimal montoPrestamo = new BigDecimal(BigInteger.ZERO);
     private BigDecimal capital = new BigDecimal(BigInteger.ZERO);
     private int plazo;
-    private int tasa;
+    private BigDecimal tasa= new BigDecimal(BigInteger.ZERO);
     private String periodoPago;
     private BigDecimal gastos = new BigDecimal(BigInteger.ZERO);
     private BigDecimal comisiones = new BigDecimal(BigInteger.ZERO);
@@ -70,7 +70,7 @@ public class LiquidacionPrestamo {
         this.capital = dp.getPrestamo().getCapital().setScale(0, RoundingMode.HALF_EVEN);
         this.plazo = dp.getPrestamo().getPlazo();
         //cambiar tipo en Reporte BigDecimal
-        this.tasa = dp.getPrestamo().getTasa().intValue();
+        this.tasa = dp.getPrestamo().getTasa();
         this.periodoPago = dp.getPrestamo().getPeriodoPago().name();
         this.gastos = dp.getPrestamo().getGastos().setScale(0, RoundingMode.HALF_EVEN);
         this.comisiones = dp.getPrestamo().getGastos().setScale(0, RoundingMode.HALF_EVEN);
@@ -191,13 +191,14 @@ public class LiquidacionPrestamo {
         this.plazo = plazo;
     }
 
-    public int getTasa() {
+    public BigDecimal getTasa() {
         return tasa;
     }
 
-    public void setTasa(int tasa) {
+    public void setTasa(BigDecimal tasa) {
         this.tasa = tasa;
     }
+
 
     public String getPeriodoPago() {
         return periodoPago;

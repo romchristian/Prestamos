@@ -180,15 +180,25 @@ public class PrestamoController implements Serializable {
             if (detPlan != null) {
                 selected.setTasa(detPlan.getTasa());
                 if (selected.getMontoPrestamo() != null) {
-                    selected.setGastos(selected.getMontoPrestamo().multiply(detPlan.getPorcentanjeGastos().divide(new BigDecimal(100))).setScale(0, RoundingMode.HALF_EVEN));
-                    selected.setComisiones(selected.getMontoPrestamo().multiply(detPlan.getPorcentanjeComision().divide(new BigDecimal(100))).setScale(0, RoundingMode.HALF_EVEN));
+                    selected.setGastos(selected.getMontoPrestamo().multiply(detPlan.getPorcentanjeGastos().divide(new BigDecimal(100))).setScale(6, RoundingMode.HALF_EVEN));
+                    selected.setComisiones(selected.getMontoPrestamo().multiply(detPlan.getPorcentanjeComision().divide(new BigDecimal(100))).setScale(6, RoundingMode.HALF_EVEN));
                 }
             }
             selected.setSistema(null);
             selected.setDetalles(null);
             selected.calcula();
-            BigDecimal _totalOperacion = selected.getMontoCuota().multiply(new BigDecimal(selected.getPlazo()));
             
+//            BigDecimal _totalOperacion_teorica = selected.getMontoCuota().multiply(new BigDecimal(selected.getPlazo()));
+//            BigDecimal _diffTotaloperacion = new BigDecimal(BigInteger.ZERO);
+//            
+//            if(_totalOperacion_teorica != selected.getTotalOperacion()){
+//            
+//                _diffTotaloperacion=_totalOperacion_teorica.subtract(selected.getTotalOperacion());
+//                
+//            }
+//            
+//            selected.setGastos(selected.getGastos().add(_diffTotaloperacion));
+//            selected.setTotalOperacion(selected.getTotalOperacion().add(_diffTotaloperacion));
         }
 
         return null;

@@ -280,19 +280,19 @@ public class Prestamo implements Serializable {
     }
 
     public BigDecimal getGastos() {
-        return gastos;
+        return gastos.setScale(0, RoundingMode.HALF_DOWN);
     }
 
     public void setGastos(BigDecimal gastos) {
-        this.gastos = gastos.setScale(0, RoundingMode.HALF_EVEN);
+        this.gastos = gastos.setScale(8, RoundingMode.HALF_DOWN);
     }
 
     public BigDecimal getComisiones() {
-        return comisiones;
+        return comisiones.setScale(0, RoundingMode.HALF_DOWN);
     }
 
     public void setComisiones(BigDecimal comisiones) {
-        this.comisiones = comisiones.setScale(0, RoundingMode.HALF_EVEN);
+        this.comisiones = comisiones.setScale(8, RoundingMode.HALF_DOWN);
     }
 
     public BigDecimal getMontoCuota() {
@@ -300,7 +300,7 @@ public class Prestamo implements Serializable {
     }
 
     public void setMontoCuota(BigDecimal montoCuota) {
-        this.montoCuota = montoCuota.setScale(0, RoundingMode.HALF_EVEN);
+        this.montoCuota = montoCuota.setScale(8, RoundingMode.HALF_DOWN);
     }
 
     public PeriodoPago getPeriodoPago() {
@@ -341,15 +341,15 @@ public class Prestamo implements Serializable {
     }
 
     public void setTotalIntereses(BigDecimal totalIntereses) {
-        this.totalIntereses = totalIntereses.setScale(0, RoundingMode.HALF_EVEN);
+        this.totalIntereses = totalIntereses.setScale(8, RoundingMode.HALF_EVEN);
     }
 
     public BigDecimal getTotalOperacion() {
-        return totalOperacion.setScale(0, RoundingMode.HALF_EVEN);
+        return totalOperacion.setScale(8, RoundingMode.HALF_EVEN);
     }
 
     public void setTotalOperacion(BigDecimal totalOperacion) {
-        this.totalOperacion = totalOperacion.setScale(0, RoundingMode.HALF_EVEN);
+        this.totalOperacion = totalOperacion.setScale(8, RoundingMode.HALF_EVEN);
     }
 
     public Long getId() {
@@ -370,28 +370,28 @@ public class Prestamo implements Serializable {
         double interesPorDia = getTasa().doubleValue() / 100d / 365d;
         int difPrimerVencimiento = Days.daysBetween(new DateTime(fechaInicioOperacion).plusMonths(1), new DateTime(fechaPrimerVencimiento)).getDays();
 
-        BigDecimal montoDif = new BigDecimal(interesPorDia * difPrimerVencimiento, MathContext.DECIMAL128).multiply(getCapital()).setScale(0, RoundingMode.HALF_EVEN);
+        BigDecimal montoDif = new BigDecimal(interesPorDia * difPrimerVencimiento, MathContext.DECIMAL128).multiply(getCapital()).setScale(8, RoundingMode.HALF_DOWN);
 
         for (DetPrestamo d : getDetalles()) {
 
             totalIntereses = totalIntereses.add(d.getCuotaInteres());
-            impuestoIVA = impuestoIVA.add(d.getCuotaInteres().multiply(new BigDecimal(0.1)).setScale(plazo, RoundingMode.HALF_EVEN));
+            impuestoIVA = impuestoIVA.add(d.getCuotaInteres().multiply(new BigDecimal(0.1)).setScale(8, RoundingMode.HALF_DOWN));
         }
 
         totalOperacion = getCapital().add(totalIntereses).add(impuestoIVA);
 
-        System.out.println("TOTAL IVA: " + impuestoIVA.doubleValue());
-        System.out.println("PLAZO: " + plazo);
-        BigDecimal ivaMesFijo = impuestoIVA.divide(new BigDecimal(plazo), MathContext.DECIMAL128);
+//        System.out.println("TOTAL IVA: " + impuestoIVA.doubleValue());
+//        System.out.println("PLAZO: " + plazo);
+        BigDecimal ivaMesFijo = impuestoIVA.divide(new BigDecimal(plazo), MathContext.DECIMAL128).setScale(8, RoundingMode.HALF_DOWN);
 
         for (DetPrestamo d : getDetalles()) {
             BigDecimal interesIvaIncluido = d.getCuotaInteres().add(ivaMesFijo);
 
-            BigDecimal ivaInteres = interesIvaIncluido.divide(new BigDecimal(11), 0, RoundingMode.HALF_EVEN);
+            BigDecimal ivaInteres = interesIvaIncluido.divide(new BigDecimal(11), 8, RoundingMode.HALF_DOWN);
             d.setCuotaInteres(interesIvaIncluido.subtract(ivaInteres));
             d.setImpuestoIvaCuota(ivaInteres);
 
-            BigDecimal nuevomontoCuota = d.getCuotaInteres().add(d.getCuotaCapital()).add(d.getImpuestoIvaCuota());
+            BigDecimal nuevomontoCuota = d.getCuotaInteres().add(d.getCuotaCapital()).add(d.getImpuestoIvaCuota()).setScale(8, RoundingMode.HALF_DOWN);
 
             d.setMontoCuota(nuevomontoCuota);
             d.setSaldoCuota(nuevomontoCuota);
@@ -401,13 +401,13 @@ public class Prestamo implements Serializable {
         impuestoIVA = BigDecimal.ZERO;
         totalOperacion = BigDecimal.ZERO;
 
-        System.out.println("DIFF DIAS: " + difPrimerVencimiento);
-        System.out.println("DIFF MONTO: " + montoDif);
-        System.out.println("DIFF IVA: " + montoDif.multiply(new BigDecimal(0.1)).setScale(0, RoundingMode.HALF_EVEN));
+//        System.out.println("DIFF DIAS: " + difPrimerVencimiento);
+//        System.out.println("DIFF MONTO: " + montoDif);
+//        System.out.println("DIFF IVA: " + montoDif.multiply(new BigDecimal(0.1)).setScale(0, RoundingMode.HALF_EVEN));
         for (DetPrestamo d : getDetalles()) {
             if (d.getNroCuota() == 1 && difPrimerVencimiento > 0) {
                 d.setCuotaInteres(d.getCuotaInteres().add(montoDif));
-                d.setImpuestoIvaCuota(d.getImpuestoIvaCuota().add(montoDif.multiply(new BigDecimal(0.1)).setScale(0, RoundingMode.HALF_EVEN)));
+                d.setImpuestoIvaCuota(d.getImpuestoIvaCuota().add(montoDif.multiply(new BigDecimal(0.1)).setScale(0, RoundingMode.HALF_DOWN)));
 
                 totalIntereses = totalIntereses.add(d.getCuotaInteres());
 
@@ -426,12 +426,12 @@ public class Prestamo implements Serializable {
 
         totalOperacion = getCapital().add(totalIntereses).add(impuestoIVA);
 
-        montoCuota = totalOperacion.divide(new BigDecimal(plazo),0,RoundingMode.HALF_EVEN);
+        montoCuota = totalOperacion.divide(new BigDecimal(plazo),8,RoundingMode.HALF_DOWN);
 
-        montoCuota.setScale(0, RoundingMode.HALF_EVEN);
-        totalIntereses.setScale(0, RoundingMode.HALF_EVEN);
-        totalOperacion.setScale(0, RoundingMode.HALF_EVEN);
-        impuestoIVA.setScale(0, RoundingMode.HALF_EVEN);
+        montoCuota.setScale(8, RoundingMode.HALF_EVEN);
+        totalIntereses.setScale(8, RoundingMode.HALF_EVEN);
+        totalOperacion.setScale(8, RoundingMode.HALF_EVEN);
+        impuestoIVA.setScale(8, RoundingMode.HALF_EVEN);
     }
 
     @Override
