@@ -24,37 +24,49 @@ public class InteresSimple extends Sistema {
         List<DetPrestamo> detalles = new ArrayList<>();
         Prestamo p = getPrestamo();
 
-
         for (int i = 0; i < p.getPlazo(); i++) {
             int nroCuota = i + 1;
-            BigDecimal cuotaCapital = p.getCapital().divide( new BigDecimal(p.getPlazo()),0, RoundingMode.HALF_EVEN); //(p.getCapital() ) / p.getPlazo();
+            BigDecimal cuotaCapital = p.getCapital().divide(new BigDecimal(p.getPlazo()), 0, RoundingMode.HALF_EVEN); //(p.getCapital() ) / p.getPlazo();
             BigDecimal cuotaInteres = calculaInteres(nroCuota, p);
-            BigDecimal saldoCapital = p.getCapital().subtract(cuotaCapital.multiply(new BigDecimal(nroCuota-1)));
+            BigDecimal saldoCapital = p.getCapital().subtract(cuotaCapital.multiply(new BigDecimal(nroCuota - 1)));
 
-            DetPrestamo d = new DetPrestamo(p, nroCuota, cuotaCapital, cuotaInteres,saldoCapital);
+            DetPrestamo d = new DetPrestamo(p, nroCuota, cuotaCapital, cuotaInteres, saldoCapital);
             detalles.add(d);
         }
 
         return detalles;
     }
 
-    
     @Override
     protected BigDecimal getCuota() {
-        BigDecimal R = getPrestamo().getTotalOperacion().divide( new BigDecimal(getPrestamo().getPlazo()),0, RoundingMode.HALF_EVEN);
+        BigDecimal R = getPrestamo().getTotalOperacion().divide(new BigDecimal(getPrestamo().getPlazo()), 0, RoundingMode.HALF_EVEN);
         return R;
     }
 
     private BigDecimal calculaInteres(int nroCuota, Prestamo p) {
         BigDecimal R;
-        BigDecimal div1 = new BigDecimal(p.getTasa()).divide(new BigDecimal(100),4,RoundingMode.HALF_EVEN);//tasa interes anual
-        BigDecimal div2 = div1.divide(new BigDecimal(12),4,RoundingMode.HALF_EVEN);//interes mensual
-        R = p.getCapital().multiply(div2); //interes del mes
-        
-        //R = ((p.getCapital()  * ((p.getTasa() / 100d) / 12d))) / p.getPlazo();
-        
-        //R = ((p.getCapital()  * (p.getTasa() / 100d) * (p.getPlazo() / 10d))) / p.getPlazo();error
+        BigDecimal div1 = p.getTasa().divide(new BigDecimal(100), 4, RoundingMode.HALF_EVEN);//tasa interes anual
 
+        int periocidad = 1;
+        switch (p.getPeriodoPago()) {
+            case QUINCENAL:
+                periocidad = 2;
+                break;
+            case SEMANAL:
+                periocidad = 4;
+                break;
+            case DIARIO:
+                periocidad = 30;
+                break;
+        }
+        
+        
+        BigDecimal div2 = div1.divide(new BigDecimal(12*periocidad), 4, RoundingMode.HALF_EVEN);//interes mensual
+                
+        R = p.getCapital().multiply(div2); //interes del mes
+
+        //R = ((p.getCapital()  * ((p.getTasa() / 100d) / 12d))) / p.getPlazo();
+        //R = ((p.getCapital()  * (p.getTasa() / 100d) * (p.getPlazo() / 10d))) / p.getPlazo();error
         return R;
 
     }

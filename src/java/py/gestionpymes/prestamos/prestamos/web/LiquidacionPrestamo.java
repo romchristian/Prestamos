@@ -69,7 +69,8 @@ public class LiquidacionPrestamo {
         this.montoPrestamo = dp.getPrestamo().getMontoPrestamo().setScale(0, RoundingMode.HALF_EVEN);
         this.capital = dp.getPrestamo().getCapital().setScale(0, RoundingMode.HALF_EVEN);
         this.plazo = dp.getPrestamo().getPlazo();
-        this.tasa = dp.getPrestamo().getTasa();
+        //cambiar tipo en Reporte BigDecimal
+        this.tasa = dp.getPrestamo().getTasa().intValue();
         this.periodoPago = dp.getPrestamo().getPeriodoPago().name();
         this.gastos = dp.getPrestamo().getGastos().setScale(0, RoundingMode.HALF_EVEN);
         this.comisiones = dp.getPrestamo().getGastos().setScale(0, RoundingMode.HALF_EVEN);

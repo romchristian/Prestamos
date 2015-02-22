@@ -177,16 +177,16 @@
                                         #{d.tipo}
                                     </p:column>
                                     <p:column headerText="DIRECCION">
-                                        #{d.direccion}
+                                        <p:inputText value="#{d.direccion}"/> 
                                     </p:column>
                                     <p:column headerText="NRO">
-                                        #{d.nrocasa}
+                                        <p:inputText value="#{d.nrocasa}"/> 
                                     </p:column>
                                     <p:column headerText="CIUDAD">
-                                        #{d.ciudad}
+                                        <p:inputText value="#{d.ciudad}"/> 
                                     </p:column>
                                     <p:column headerText="PAÍS">
-                                        #{d.pais}
+                                        <p:inputText value="#{d.pais}"/> 
                                     </p:column>
                                     <p:column headerText="ACCION">
                                         <p:commandButton value="X" action="#{clienteController.removerDireccion(d)}" update="@(.panelDirecciones)"/>

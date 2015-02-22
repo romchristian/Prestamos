@@ -6,6 +6,8 @@ package py.gestionpymes.prestamos.prestamos.web;
 
 import com.sun.faces.config.WebConfiguration;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
+import py.gestionpymes.prestamos.prestamos.persistencia.DetPlanGastos;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
@@ -150,9 +153,43 @@ public class PrestamoController implements Serializable {
     }
 
     public String calcular() {
-        selected.setSistema(null);
-        selected.setDetalles(null);
-        selected.calcula();
+        if (selected.getPlanGastos() != null) {
+            DetPlanGastos detPlan = null;
+            int periocidad = 1;
+            switch (selected.getPeriodoPago()) {
+                case QUINCENAL:
+                    periocidad = 2;
+                    break;
+                case SEMANAL:
+                    periocidad = 4;
+                    break;
+                case DIARIO:
+                    periocidad = 30;
+                    break;    
+            }
+            
+            int plazosdias = selected.getPlazo() * 30 / periocidad;
+            int i = 0;
+            for (DetPlanGastos d : selected.getPlanGastos().getDetalles()) {
+                if (d.getPlazo() == plazosdias) {
+                    detPlan = d;
+                    break;
+                }
+                i++;
+            }
+            if (detPlan != null) {
+                selected.setTasa(detPlan.getTasa());
+                if (selected.getMontoPrestamo() != null) {
+                    selected.setGastos(selected.getMontoPrestamo().multiply(detPlan.getPorcentanjeGastos().divide(new BigDecimal(100))).setScale(0, RoundingMode.HALF_EVEN));
+                    selected.setComisiones(selected.getMontoPrestamo().multiply(detPlan.getPorcentanjeComision().divide(new BigDecimal(100))).setScale(0, RoundingMode.HALF_EVEN));
+                }
+            }
+            selected.setSistema(null);
+            selected.setDetalles(null);
+            selected.calcula();
+            BigDecimal _totalOperacion = selected.getMontoCuota().multiply(new BigDecimal(selected.getPlazo()));
+            
+        }
 
         return null;
     }
@@ -172,7 +209,7 @@ public class PrestamoController implements Serializable {
         List<Pagare> data = new ArrayList<>();
         data.add(pagare);
 
-        reporteController.generaPDF(new HashMap(), data, "reportes/prestamos/pagares.jasper","pagare_"+selected.getCliente().getNroDocumento());
+        reporteController.generaPDF(new HashMap(), data, "reportes/prestamos/pagares.jasper", "pagare_" + selected.getCliente().getNroDocumento());
     }
 
     public void imprimeLiquidacionPrestamo() {
@@ -226,7 +263,7 @@ public class PrestamoController implements Serializable {
         params.put("firmaConyugeTitular", selected.isFirmaConyugeTitular() == false ? "no" : "si");
         params.put("firmaConyugeCodeudor", selected.isFirmaConyugeCodeudor() == false ? "no" : "si");
 
-        reporteController.generaPDF(params, data, "reportes/prestamos/liquidacion.jasper","liquidacion_prestamo_"+selected.getCliente().getNroDocumento());
+        reporteController.generaPDF(params, data, "reportes/prestamos/liquidacion.jasper", "liquidacion_prestamo_" + selected.getCliente().getNroDocumento());
     }
 
     public void imprimeDetalleParaCliente() {
@@ -283,7 +320,7 @@ public class PrestamoController implements Serializable {
         //params.put("firmaConyugeTitular", selected.isFirmaConyugeTitular() == false ? "no" : "si");
         //params.put("firmaConyugeCodeudor", selected.isFirmaConyugeCodeudor() == false ? "no" : "si");
 
-        reporteController.generaPDF(params, data, "reportes/prestamos/DetalleParaCliente.jasper","detalle_cliente_"+selected.getCliente().getNroDocumento());
+        reporteController.generaPDF(params, data, "reportes/prestamos/DetalleParaCliente.jasper", "detalle_cliente_" + selected.getCliente().getNroDocumento());
     }
 
     public void desembolsa() {

@@ -30,35 +30,35 @@
 
 
                         <p:tab title="Datos Personales">
-                            
 
-                                <h:outputText value="Documento"/>
+
+                            <h:outputText value="Documento"/>
+                            <p:separator/>
+
+                            <p:panelGrid columns="5" rendered="#{clienteController.selected != null}">
+                                <h:outputText value="Tipo Doc."/>
+                                <h:outputText value="#{clienteController.selected.tipoDocumento}" />
+
+                                <p:spacer width="20" height="0"/>
+
+                                <p:outputLabel value="# documento" for="nrodoc" id="lblnrodoc"/>
+                                <h:outputText value="#{clienteController.selected.nroDocumento}" id="nrodoc"/>
+
+
+                                <h:outputText value="Vigencia Documento"/>
+                                <p:calendar value="#{clienteController.selected.vigencia}" id="vigencia" required="true"
+                                            locale="es" pattern="dd/MM/yyyy"/>
+                                <p:spacer width="20" height="0"/>
+
+                            </p:panelGrid>
+
+                            <h:panelGrid columns="1" width="100%">
+                                <p:spacer height="5" width="0"/>
+                                <h:outputText value="Persona"/>
                                 <p:separator/>
+                            </h:panelGrid>
 
-                                <p:panelGrid columns="5" rendered="#{clienteController.selected != null}">
-                                    <h:outputText value="Tipo Doc."/>
-                                    <h:outputText value="#{clienteController.selected.tipoDocumento}" />
-
-                                    <p:spacer width="20" height="0"/>
-
-                                    <p:outputLabel value="# documento" for="nrodoc" id="lblnrodoc"/>
-                                    <h:outputText value="#{clienteController.selected.nroDocumento}" id="nrodoc"/>
-
-
-                                    <h:outputText value="Vigencia Documento"/>
-                                    <p:calendar value="#{clienteController.selected.vigencia}" id="vigencia" required="true"
-                                                locale="es" pattern="dd/MM/yyyy"/>
-                                    <p:spacer width="20" height="0"/>
-
-                                </p:panelGrid>
-
-                                <h:panelGrid columns="1" width="100%">
-                                    <p:spacer height="5" width="0"/>
-                                    <h:outputText value="Persona"/>
-                                    <p:separator/>
-                                </h:panelGrid>
-
-                                 <h:panelGrid columns="6" rendered="#{clienteController.selected != null}">
+                            <h:panelGrid columns="6" rendered="#{clienteController.selected != null}">
                                 <p:outputLabel value="Primer Nombre" for="primerNombre" id="lblprimerNombre"/>
                                 <p:inputText value="#{clienteController.selected.primerNombre}" required="true" id="primerNombre">
                                     <p:ajax event="blur" update="primerNombre lblprimerNombre @(.mensajes)"/>
@@ -67,10 +67,10 @@
                                 <p:inputText value="#{clienteController.selected.segundoNombre}"  id="segundoNombre">
                                     <p:ajax event="blur" update="segundoNombre lblsegundoNombre @(.mensajes)"/>
                                 </p:inputText>
-                                
+
                                 <p:spacer/>
                                 <p:spacer/>
-                                
+
                                 <p:outputLabel value="Primer Apellido" for="primerApellido" id="lblprimerApellido"/>            
                                 <p:inputText value="#{clienteController.selected.primerApellido}" required="true" id="primerApellido">
                                     <p:ajax event="blur" update="primerApellido lblprimerApellido @(.mensajes)"/>
@@ -80,10 +80,10 @@
                                 <p:inputText value="#{clienteController.selected.segundoApellido}"  id="segundoApellido">
                                     <p:ajax event="blur" update="segundoApellido lblsegundoApellido @(.mensajes)"/>
                                 </p:inputText>
-                                
+
                                 <p:spacer/>
                                 <p:spacer/>
-                                
+
                                 <p:outputLabel value="Nacionalidad" for="nacionalidad"/>
                                 <p:inputText value="#{clienteController.selected.nacionalidad}" id="nacionalidad"/>
 
@@ -116,7 +116,7 @@
                                     <h:outputText value=" #{clienteController.selected.conyuge != null ? clienteController.selected.conyuge.devuelveNombreCompleto():'No Asignado'}"
                                                   styleClass="clienteSeleccionado"/>
                                 </p:panel>
-                                
+
                                 <p:spacer/>
 
                                 <p:outputLabel value="#{bundle.CreateClienteLabel_categoria}" for="categoria" /> 
@@ -125,7 +125,7 @@
                                                    var="categoriaItem"
                                                    itemValue="#{categoriaItem}"/>
                                 </p:selectOneMenu>
-                                
+
                                 <p:outputLabel value="Empresa" for="empresa" /> 
                                 <p:selectOneMenu id="empresa" value="#{clienteController.selected.empresa}" >
                                     <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
@@ -135,13 +135,13 @@
                                 <p:selectOneMenu id="sucursal" value="#{clienteController.selected.sucursal}" >
                                     <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
                                 </p:selectOneMenu>
-                                
+
                                 <p:outputLabel value="Linea de Crédito" for="lineadecredito"/>
                                 <p:inputText value="#{clienteController.selected.lineaDeCredito}" id="lineadecredito"/>
 
                             </h:panelGrid>
 
-                              
+
                         </p:tab>
                         <p:tab title="Direcciones">
                             <p:panel styleClass="panelDirecciones">
@@ -158,13 +158,13 @@
 
                                     <p:outputLabel value="#{bundle.CreateDireccionLabel_nrocasa}" for="nrocasa" />
                                     <p:inputText id="nrocasa" value="#{clienteController.direccionSeleccionada.nrocasa}" title="#{bundle.CreateDireccionTitle_nrocasa}" />
-                                    
+
                                     <p:outputLabel value="#{bundle.CreateDireccionLabel_ciudad}" for="ciudad" />
                                     <p:inputText id="ciudad" value="#{clienteController.direccionSeleccionada.ciudad}" title="#{bundle.CreateDireccionTitle_ciudad}" />
-                                    
+
                                     <p:outputLabel value="#{bundle.CreateDireccionTitle_pais}" for="pais" />
                                     <p:inputText id="pais" value="#{clienteController.direccionSeleccionada.pais}" title="#{bundle.CreateDireccionTitle_pais}" />
-                                    
+
                                     <p:commandButton value="Agregar" update="@(.panelDirecciones)" action="#{clienteController.agregaDireccion()}"/>
                                 </p:panelGrid>   
                                 <p:dataTable value="#{clienteController.selected.direcciones}" var="d" id="tablaDireccciones">
@@ -172,16 +172,16 @@
                                         #{d.tipo}
                                     </p:column>
                                     <p:column headerText="DIRECCION">
-                                        #{d.direccion}
+                                        <p:inputText value="#{d.direccion}"/> 
                                     </p:column>
                                     <p:column headerText="NRO">
-                                        #{d.nrocasa}
+                                        <p:inputText value="#{d.nrocasa}"/> 
                                     </p:column>
                                     <p:column headerText="CIUDAD">
-                                        #{d.ciudad}
+                                        <p:inputText value="#{d.ciudad}"/> 
                                     </p:column>
                                     <p:column headerText="PAÍS">
-                                        #{d.pais}
+                                        <p:inputText value="#{d.pais}"/> 
                                     </p:column>
                                     <p:column headerText="ACCION">
                                         <p:commandButton value="X" action="#{clienteController.removerDireccion(d)}" update="@(.panelDirecciones)"/>
@@ -215,7 +215,7 @@
                                         #{d.tipo}
                                     </p:column>
                                     <p:column headerText="NUMERO">
-                                        #{d.numero}
+                                        <p:inputText value="#{d.numero}"/>
                                     </p:column>
                                     <p:column headerText="PRINCIPAL">
                                         <p:selectBooleanCheckbox value="#{d.principal}" />

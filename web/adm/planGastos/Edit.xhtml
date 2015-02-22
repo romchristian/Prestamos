@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <f:metadata>
+            <f:viewParam name="id" value="#{planGastosController.id}"/>
+            <f:viewAction action="#{planGastosController.cargaDatos()}"/>
+        </f:metadata>
+
+        <ui:define name="title">
+            <h:outputText value="Editar Plan de Gastos"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+
+            <h:form id="PlanGastosCreateForm">
+                
+                <p:panelGrid columns="2" rendered="#{planGastosController.selected != null}" style="width: 100%">
+                        <p:outputLabel value="#{bundle.CreatePlanGastosLabel_nombre}" for="nombre" />
+                        <p:inputText id="nombre" value="#{planGastosController.selected.nombre}" title="#{bundle.CreatePlanGastosTitle_nombre}"  size="80"/>
+                        <p:outputLabel value="#{bundle.CreatePlanGastosLabel_empresa}" for="empresa" />
+
+                        <p:selectOneMenu id="empresa" value="#{planGastosController.selected.empresa}" >
+                            <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"
+                                           var="empresaItem"
+                                           itemValue="#{empresaItem}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{bundle.CreatePlanGastosLabel_estado}" for="estado" />
+
+                        <p:selectOneMenu id="estado" value="#{planGastosController.selected.estado}" >
+                            <f:selectItems value="#{productorEnums.obtEstados()}"/>
+                        </p:selectOneMenu>
+
+                    </p:panelGrid>
+
+
+                    <p:dataTable value="#{planGastosController.selected.detalles}" var="d" id="detalles">
+                        <f:facet name="header">
+                            <p:commandButton value="Agregar" action="#{planGastosController.agregaDetalle()}" update="detalles"/>
+                        </f:facet>
+                        <p:column headerText="Tasa">
+                            <h:inputText value="#{d.tasa}">
+                                <f:convertNumber locale="#{formato.locale}"/>
+                            </h:inputText>
+                        </p:column>
+                        <p:column headerText="Plazo en Dias">
+                            <h:inputText value="#{d.plazo}"/>
+                        </p:column>
+                        <p:column headerText="% Gastos">
+                            <h:inputText value="#{d.porcentanjeGastos}">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="8"/>
+                            </h:inputText>
+                        </p:column>
+                        <p:column headerText="% Comision">
+                            <h:inputText value="#{d.porcentanjeComision}">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="8"/>
+                            </h:inputText>
+                        </p:column>
+                        <p:column headerText="Acción">
+                            <p:commandButton value="X" action="#{planGastosController.remueveDetalle(d)}"/>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:commandButton actionListener="#{planGastosController.update()}" value="#{bundle.Save}" update="detalles"/>
+                    <p:commandButton value="#{bundle.Cancel}" action="List"/>
+                
+            </h:form>
+
+        </ui:define>
+
+    </ui:composition>
+</html>

@@ -83,7 +83,7 @@
                     <p:button value="#{bundle.Close}" outcome="List"/>
                     <p:spacer/>
                     <p:commandButton id="imprimirButton" action="#{clienteController.imprimeRegistroFirma()}" value="Imprimir Reg. Firmas" ajax="false"
-                                     rendered="#{(request.isUserInRole('admin'))}"/>
+                                     rendered="#{(request.isUserInRole('admin') or request.isUserInRole('clientes_imprime_registro_firma'))}"/>
                 </h:panelGroup>
             </h:form>
 

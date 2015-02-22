@@ -9,6 +9,6 @@ package py.gestionpymes.prestamos.prestamos.persistencia.enums;
  * @author christian
  */
 public enum PeriodoPago {
-    MENSUAL, QUINCENAL, SEMANAL;
+    MENSUAL, QUINCENAL, SEMANAL,DIARIO;
     
 }

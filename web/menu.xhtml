@@ -73,6 +73,8 @@
                          rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>-->
         <h:commandLink  value="Categoria de Clientes" action="/adm/categoria/List" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:commandLink  value="Plan de Gastos y Tasas" action="/adm/planGastos/List" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
     </h:panelGrid>
 </ui:composition>
 

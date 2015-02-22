@@ -57,7 +57,7 @@ public class DetPrestamo implements Serializable {
     @ManyToOne
     private Moneda moneda;
     private EstadoDetPrestamo estado;
-    private int interesMoratorio;//Es la misma tasa del prestamo
+    private float interesMoratorio;//Es la misma tasa del prestamo
     private float interesPunitorio;//Interes punitorio es el 20% del interes moratorio
     private BigDecimal impuestoIvaCuota = new BigDecimal(BigInteger.ZERO);
 
@@ -94,13 +94,18 @@ public class DetPrestamo implements Serializable {
                  dias *= (nroCuota-1);
                 gc.add(Calendar.DAY_OF_MONTH, dias);
                 break;
+             case DIARIO:
+                dias = 1;
+                 dias *= (nroCuota-1);
+                gc.add(Calendar.DAY_OF_MONTH, dias);
+                break;
         }
 
        
         
         this.fechaVencimiento = gc.getTime();
-        interesMoratorio = prestamo.getTasa();
-        interesPunitorio = prestamo.getTasa() * 0.2f;
+        interesMoratorio = prestamo.getTasa().floatValue();
+        interesPunitorio = prestamo.getTasa().floatValue() * 0.2f;
     }
 
     public BigDecimal getIvaMoraPunitorio() {
@@ -145,13 +150,15 @@ public class DetPrestamo implements Serializable {
         this.impuestoIvaCuota = impuestoIvaCuota;
     }
 
-    public int getInteresMoratorio() {
+    public float getInteresMoratorio() {
         return interesMoratorio;
     }
 
-    public void setInteresMoratorio(int interesMoratorio) {
+    public void setInteresMoratorio(float interesMoratorio) {
         this.interesMoratorio = interesMoratorio;
     }
+
+
 
     public float getInteresPunitorio() {
         return interesPunitorio;

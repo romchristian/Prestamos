@@ -54,7 +54,8 @@ public class Prestamo implements Serializable {
     private BigDecimal montoPrestamo = new BigDecimal(BigInteger.ZERO);
     private BigDecimal capital = new BigDecimal(BigInteger.ZERO);
     private int plazo = 12;
-    private int tasa;
+    @Column(precision = 38, scale = 8)
+    private BigDecimal tasa;
     @Enumerated(EnumType.STRING)
     private PeriodoPago periodoPago;
     private BigDecimal gastos = new BigDecimal(BigInteger.ZERO);//Gastos de cobranza domiciliaria
@@ -83,26 +84,30 @@ public class Prestamo implements Serializable {
     private Date ultimoPago;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaPrimerVencimiento;
+    private PlanGastos planGastos;
 
-    
-    
-    
+    public PlanGastos getPlanGastos() {
+        return planGastos;
+    }
+
+    public void setPlanGastos(PlanGastos planGastos) {
+        this.planGastos = planGastos;
+    }
+
     public Prestamo() {
         this.estado = EstadoPrestamo.PENDIENTE_DESEMBOLSO;
         this.sistemaAmortizacion = SistemaAmortizacion.FRANCES;
     }
 
-    
-    
-    public BigDecimal devuelveSaldoPrestamo(){
+    public BigDecimal devuelveSaldoPrestamo() {
         BigDecimal R = new BigDecimal(BigInteger.ZERO);
-        for(DetPrestamo d: getDetalles()){
+        for (DetPrestamo d : getDetalles()) {
             R = R.add(d.getSaldoCuota());
         }
-        
+
         return R;
     }
-    
+
     public Date getFechaPrimerVencimiento() {
         return fechaPrimerVencimiento;
     }
@@ -322,11 +327,11 @@ public class Prestamo implements Serializable {
         this.sistemaAmortizacion = sistemaAmortizacion;
     }
 
-    public int getTasa() {
+    public BigDecimal getTasa() {
         return tasa;
     }
 
-    public void setTasa(int tasa) {
+    public void setTasa(BigDecimal tasa) {
         this.tasa = tasa;
     }
 
@@ -362,10 +367,9 @@ public class Prestamo implements Serializable {
         impuestoIVA = BigDecimal.ZERO;
         totalOperacion = BigDecimal.ZERO;
 
-        double interesPorDia = getTasa() / 100d / 365d;
+        double interesPorDia = getTasa().doubleValue() / 100d / 365d;
         int difPrimerVencimiento = Days.daysBetween(new DateTime(fechaInicioOperacion).plusMonths(1), new DateTime(fechaPrimerVencimiento)).getDays();
-        
-        
+
         BigDecimal montoDif = new BigDecimal(interesPorDia * difPrimerVencimiento, MathContext.DECIMAL128).multiply(getCapital()).setScale(0, RoundingMode.HALF_EVEN);
 
         for (DetPrestamo d : getDetalles()) {
@@ -422,7 +426,7 @@ public class Prestamo implements Serializable {
 
         totalOperacion = getCapital().add(totalIntereses).add(impuestoIVA);
 
-        montoCuota = getSistema().getCuota().add(ivaMesFijo);
+        montoCuota = totalOperacion.divide(new BigDecimal(plazo),0,RoundingMode.HALF_EVEN);
 
         montoCuota.setScale(0, RoundingMode.HALF_EVEN);
         totalIntereses.setScale(0, RoundingMode.HALF_EVEN);

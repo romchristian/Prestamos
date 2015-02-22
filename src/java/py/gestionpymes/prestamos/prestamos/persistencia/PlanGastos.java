@@ -7,6 +7,7 @@ package py.gestionpymes.prestamos.prestamos.persistencia;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.*;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Estado;
@@ -26,12 +27,15 @@ public class PlanGastos implements Serializable {
     @ManyToOne
     private Empresa empresa;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date  creacion = new Date();
+    private Date  creacion;
     private Estado estado;
-    @OneToMany(mappedBy = "planGastos")
+    @OneToMany(mappedBy = "planGastos",cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
     private List<DetPlanGastos> detalles;
 
     public PlanGastos() {
+        this.estado = Estado.ACTIVO;
+        this.creacion = new Date();
+                
     }
    
     public Long getId() {
@@ -74,7 +78,36 @@ public class PlanGastos implements Serializable {
         this.estado = estado;
     }
 
-    
+    public List<DetPlanGastos> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetPlanGastos> detalles) {
+        this.detalles = detalles;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 43 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PlanGastos other = (PlanGastos) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+
     
     @Override
     public String toString() {
