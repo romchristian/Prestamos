@@ -161,20 +161,20 @@ public class PrestamoController implements Serializable {
     public String calcular() {
         if (selected.getPlanGastos() != null) {
             DetPlanGastos detPlan = null;
-            int periocidad = 1;
+            int periocidad = 360;
             switch (selected.getPeriodoPago()) {
                 case QUINCENAL:
-                    periocidad = 2;
+                    periocidad = 15;
                     break;
                 case SEMANAL:
-                    periocidad = 4;
+                    periocidad = 7;
                     break;
                 case DIARIO:
                     periocidad = 30;
                     break;
             }
 
-            int plazosdias = selected.getPlazo() * 30 / periocidad;
+            int plazosdias = selected.getPlazo() * periocidad;
             int i = 0;
             for (DetPlanGastos d : selected.getPlanGastos().getDetalles()) {
                 if (d.getPlazo() == plazosdias) {
