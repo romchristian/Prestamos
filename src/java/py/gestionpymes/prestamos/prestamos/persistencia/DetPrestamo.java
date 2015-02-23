@@ -73,7 +73,7 @@ public class DetPrestamo implements Serializable {
         this.cuotaCapital = cuotaCapital;
         this.cuotaInteres = cuotaInteres;
         this.saldoCapital = saldoCapital;
-        this.impuestoIvaCuota.add(cuotaInteres).multiply(new BigDecimal(0.1));
+        this.impuestoIvaCuota.add(cuotaInteres).multiply(new BigDecimal(0.1),MathContext.DECIMAL128);
         this.montoCuota = cuotaCapital.add(cuotaInteres);
 
         GregorianCalendar gc = new GregorianCalendar(new Locale("es", "py"));

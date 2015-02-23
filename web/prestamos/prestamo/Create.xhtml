@@ -130,9 +130,9 @@
                         <h:panelGrid columns="4">
 
                             <h:outputText value="Plan"/>
-                            <p:selectOneMenu  value="#{prestamoController.selected.planGastos}">
+                            <h:selectOneMenu  value="#{prestamoController.selected.planGastos}">
                                 <f:selectItems value="#{planGastosController.itemsAvailableSelectOne}"/>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
                             <h:outputText value="Plazo"/>
                             <h:inputText value="#{prestamoController.selected.plazo}" required="true"/>
 
@@ -142,12 +142,12 @@
                             </h:inputText>
 
                             <h:outputText value="Tasa"/>
-                            <h:inputText value="#{prestamoController.selected.tasa}" required="true" disabled="true">
+                            <h:inputText value="#{prestamoController.selected.tasa}" required="true" >
                             </h:inputText>
 
 
                             <h:outputText value="Monto Comisiones"/>
-                            <h:inputText value="#{prestamoController.selected.comisiones}" required="true" disabled="true">
+                            <h:inputText value="#{prestamoController.selected.comisiones}" required="true">
                                 <f:convertNumber locale="#{formato.locale}"/>
                             </h:inputText>
 
@@ -207,7 +207,7 @@
                             </h:inputText>
 
                             <p:spacer/>
-                            <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="@(.tablaDetalles),panelDatos"/>
+                            <p:spacer/>
 
                             <h:outputText value="Monto Cuota"/>
                             <h:inputText value="#{prestamoController.selected.montoCuota}" disabled="true" >
@@ -216,6 +216,9 @@
 
                             <p:spacer/>
                             <p:spacer/>
+                            
+                            <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="@(.tablaDetalles),panelDatos"/>
+                            <p:commandButton value="Ajustar" action="#{prestamoController.ajustar()}" update="@(.tablaDetalles),panelDatos"/>
 
                         </h:panelGrid>
 

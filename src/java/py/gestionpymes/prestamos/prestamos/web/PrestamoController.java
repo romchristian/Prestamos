@@ -152,6 +152,12 @@ public class PrestamoController implements Serializable {
         finFiltro = new Date();
     }
 
+    public void ajustar() {
+        selected.setSistema(null);
+        selected.setDetalles(null);
+        selected.calcula();
+    }
+
     public String calcular() {
         if (selected.getPlanGastos() != null) {
             DetPlanGastos detPlan = null;
@@ -165,9 +171,9 @@ public class PrestamoController implements Serializable {
                     break;
                 case DIARIO:
                     periocidad = 30;
-                    break;    
+                    break;
             }
-            
+
             int plazosdias = selected.getPlazo() * 30 / periocidad;
             int i = 0;
             for (DetPlanGastos d : selected.getPlanGastos().getDetalles()) {
@@ -187,18 +193,22 @@ public class PrestamoController implements Serializable {
             selected.setSistema(null);
             selected.setDetalles(null);
             selected.calcula();
-            
-//            BigDecimal _totalOperacion_teorica = selected.getMontoCuota().multiply(new BigDecimal(selected.getPlazo()));
-//            BigDecimal _diffTotaloperacion = new BigDecimal(BigInteger.ZERO);
-//            
-//            if(_totalOperacion_teorica != selected.getTotalOperacion()){
-//            
-//                _diffTotaloperacion=_totalOperacion_teorica.subtract(selected.getTotalOperacion());
-//                
+
+            BigDecimal _totalOperacion_teorica = selected.getMontoCuota().multiply(new BigDecimal(selected.getPlazo()));
+            BigDecimal _diffTotaloperacion = new BigDecimal(BigInteger.ZERO);
+//
+//            if (_totalOperacion_teorica != selected.getTotalOperacion()) {
+//
+//                _diffTotaloperacion = _totalOperacion_teorica.subtract(selected.getTotalOperacion());
+//
+//                selected.setComisiones(selected.getComisiones().add(_diffTotaloperacion));
+//
+//                //Recalculo con gastos modificados
+//                selected.setSistema(null);
+//                selected.setDetalles(null);
+//                selected.calcula();
 //            }
-//            
-//            selected.setGastos(selected.getGastos().add(_diffTotaloperacion));
-//            selected.setTotalOperacion(selected.getTotalOperacion().add(_diffTotaloperacion));
+
         }
 
         return null;

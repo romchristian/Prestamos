@@ -135,27 +135,25 @@
 
                         <h:panelGrid columns="4">
 
+                            <h:outputText value="Plan"/>
+                            <h:selectOneMenu  value="#{prestamoController.selected.planGastos}">
+                                <f:selectItems value="#{planGastosController.itemsAvailableSelectOne}"/>
+                            </h:selectOneMenu>
+                            <h:outputText value="Plazo"/>
+                            <h:inputText value="#{prestamoController.selected.plazo}" required="true"/>
+
                             <h:outputText value="Monto Préstamo"/>
-                            <h:inputText value="#{prestamoController.selected.montoPrestamo}"  id="montoPrestamo">
+                            <h:inputText value="#{prestamoController.selected.montoPrestamo}"  id="montoPrestamo" required="true">
                                 <f:convertNumber locale="#{formato.locale}"/>
                             </h:inputText>
 
                             <h:outputText value="Tasa"/>
-                            <h:inputText value="#{prestamoController.selected.tasa}">
+                            <h:inputText value="#{prestamoController.selected.tasa}" required="true" >
                             </h:inputText>
 
 
                             <h:outputText value="Monto Comisiones"/>
-                            <h:inputText value="#{prestamoController.selected.comisiones}">
-                                <f:convertNumber locale="#{formato.locale}"/>
-                            </h:inputText>
-
-                            <h:outputText value="Plazo"/>
-                            <h:inputText value="#{prestamoController.selected.plazo}"/>
-
-
-                            <h:outputText value="Monto Gastos"/>
-                            <h:inputText value="#{prestamoController.selected.gastos}">
+                            <h:inputText value="#{prestamoController.selected.comisiones}" required="true">
                                 <f:convertNumber locale="#{formato.locale}"/>
                             </h:inputText>
 
@@ -165,9 +163,9 @@
                             </h:selectOneMenu>
 
 
-                            <h:outputText value="Capital"/>
-                            <h:inputText value="#{prestamoController.selected.capital}"  id="montoCapital" disabled="true">
-                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            <h:outputText value="Monto Gastos"/>
+                            <h:inputText value="#{prestamoController.selected.gastos}" required="true" disabled="true">
+                                <f:convertNumber locale="#{formato.locale}"/>
                             </h:inputText>
 
                             <h:outputText value="Sistema de Amotización"/>
@@ -178,15 +176,26 @@
 
                             </p:selectOneMenu>
 
-                            <h:outputText value="Total Interes"/>
-                            <h:inputText value="#{prestamoController.selected.totalIntereses}" disabled="true">
+
+                            <h:outputText value="Capital"/>
+                            <h:inputText value="#{prestamoController.selected.capital}"  id="montoCapital" disabled="true">
                                 <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                             </h:inputText>
+
+
 
                             <h:outputText value="Moneda"/>
                             <p:selectOneMenu value="#{prestamoController.selected.moneda}">
                                 <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
                             </p:selectOneMenu>
+
+                            <h:outputText value="Total Interes"/>
+                            <h:inputText value="#{prestamoController.selected.totalIntereses}" disabled="true">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:inputText>
+                            <p:spacer/>
+                            <p:spacer/>
+
 
 
                             <h:outputText value="Total IVA"/>
@@ -204,7 +213,7 @@
                             </h:inputText>
 
                             <p:spacer/>
-                            <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="@(.tablaDetalles),panelDatos"/>
+                            <p:spacer/>
 
                             <h:outputText value="Monto Cuota"/>
                             <h:inputText value="#{prestamoController.selected.montoCuota}" disabled="true" >
@@ -213,6 +222,9 @@
 
                             <p:spacer/>
                             <p:spacer/>
+                            
+                            <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="@(.tablaDetalles),panelDatos"/>
+                            <p:commandButton value="Ajustar" action="#{prestamoController.ajustar()}" update="@(.tablaDetalles),panelDatos"/>
 
                         </h:panelGrid>
 
