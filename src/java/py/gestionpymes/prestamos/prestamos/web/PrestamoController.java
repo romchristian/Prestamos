@@ -174,7 +174,7 @@ public class PrestamoController implements Serializable {
                     break;
             }
 
-            int plazosdias = selected.getPlazo() * periocidad;
+            int plazosdias = selected.getPlazo() * periocidad;//22-03-2015 modifique para poder calcular bien los días, no traía el PanGastos por no calcular bien los días.
             int i = 0;
             for (DetPlanGastos d : selected.getPlanGastos().getDetalles()) {
                 if (d.getPlazo() == plazosdias) {
