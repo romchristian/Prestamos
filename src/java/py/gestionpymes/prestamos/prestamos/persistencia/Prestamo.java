@@ -84,6 +84,8 @@ public class Prestamo implements Serializable {
     private Date ultimoPago;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaPrimerVencimiento;
+    
+    @ManyToOne
     private PlanGastos planGastos;
 
     public PlanGastos getPlanGastos() {

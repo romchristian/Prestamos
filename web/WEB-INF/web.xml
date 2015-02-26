@@ -265,6 +265,32 @@
             <role-name>clientes_imprime_registro_firma</role-name>
         </auth-constraint>
     </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintPrestamos_historico</display-name>
+        <web-resource-collection>
+            <web-resource-name>Prestamos_historico</web-resource-name>
+            <description/>
+            <url-pattern>/prestamos/prestamoHistorico/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>prestamos_historico</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintPrestamos_ajuste</display-name>
+        <web-resource-collection>
+            <web-resource-name>prestamos_ajuste</web-resource-name>
+            <description/>
+            <url-pattern>/prestamos/prestamo/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>prestamos_ajuste</role-name>
+        </auth-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>prestamosJDBC</realm-name>
@@ -360,5 +386,13 @@
     <security-role>
         <description/>
         <role-name>clientes_imprime_registro_firma</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>prestamos_historico</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>prestamos_ajuste</role-name>
     </security-role>
 </web-app>

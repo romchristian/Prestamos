@@ -19,11 +19,13 @@ import py.gestionpymes.prestamos.prestamos.persistencia.CobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.CuentaCliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetCobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
+import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamoHistorico;
 import py.gestionpymes.prestamos.prestamos.persistencia.Efectivo;
 import py.gestionpymes.prestamos.prestamos.persistencia.OperacionCobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.OperacionCobroCuotaFactura;
 import py.gestionpymes.prestamos.prestamos.persistencia.Pago;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
+import py.gestionpymes.prestamos.prestamos.persistencia.PrestamoHistorico;
 import py.gestionpymes.prestamos.prestamos.web.TreeCuota;
 
 /**
@@ -62,9 +64,18 @@ public class CobranzaDAO {
             occ.setFecha(new Date());
             detCuentaClienteDAO.create(occ);
 
+            if (df.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0
+                    || df.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_PUNITORIO) == 0) {
+
+                OperacionCobroCuotaFactura occ2 = new OperacionCobroCuotaFactura(df, true);
+                occ.setCuentaCliente(cc);
+                occ.setFecha(new Date());
+                detCuentaClienteDAO.create(occ2);
+            }
+
             DetPrestamo dp = df.getDetPrestamo();
 
-            BigDecimal monto = (df.getGravada10() == null ? new BigDecimal(BigInteger.ZERO):df.getGravada10()).add(df.getGravada05() == null ? new BigDecimal(BigInteger.ZERO) : df.getGravada05())
+            BigDecimal monto = (df.getGravada10() == null ? new BigDecimal(BigInteger.ZERO) : df.getGravada10()).add(df.getGravada05() == null ? new BigDecimal(BigInteger.ZERO) : df.getGravada05())
                     .add(df.getExenta() == null ? new BigDecimal(BigInteger.ZERO) : df.getExenta());
 
             if (!dp.afectaSaldoCuota(monto, df.getRefMonto())) {
@@ -142,6 +153,77 @@ public class CobranzaDAO {
 //                em.merge(dp);
 //                em.merge(p);
 //            }
+        }
+
+        return cobro;
+    }
+
+    public CobroCuota create(DetPrestamoHistorico d) throws PagoExcedidoException {
+
+        CobroCuota cobro = new CobroCuota(d.getPrestamo());
+
+        Efectivo efe = new Efectivo();
+        efe.setFecha(new Date());
+        efe.setMoneda(d.getPrestamo().getMoneda());
+        efe.setMonto(d.getMontoPago());
+
+        pagoDAO.edit(efe);
+
+        CuentaCliente cc = (CuentaCliente) em.createQuery("select c from CuentaCliente c where c.cliente = :cliente")
+                .setParameter("cliente", d.getPrestamo().getCliente()).getSingleResult();
+
+        DetCobroCuota dcc = new DetCobroCuota();
+        dcc.setCobroCuota(cobro);
+        dcc.setPago(efe);
+        dcc.setMoneda(efe.getMoneda());
+        dcc.setMonto(efe.getMonto().subtract(d.getMontoMora() == null ? new BigDecimal(BigInteger.ZERO) : d.getMontoMora()));
+        dcc.setDetPrestamoHistorico(d);
+        dcc.setFecha(d.getUltimoPago());
+        dcc.setRefMonto(FacturaVentaDetalle.MONTO_CUOTA);
+        cobro.getDetalles().add(dcc);
+
+        if (d.getMontoMora() != null && d.getMontoMora().compareTo(BigDecimal.ZERO) > 0) {
+            DetCobroCuota dcc2 = new DetCobroCuota();
+            dcc2.setCobroCuota(cobro);
+            dcc2.setPago(efe);
+            dcc2.setMoneda(efe.getMoneda());
+            dcc2.setMonto(efe.getMonto().subtract(d.getMontoMora()));
+            dcc2.setDetPrestamoHistorico(d);
+            dcc2.setFecha(d.getUltimoPago());
+            dcc2.setRefMonto(FacturaVentaDetalle.MONTO_MORATORIO);
+            cobro.getDetalles().add(dcc2);
+        }
+
+        cobro.setConcepto("Pago cuota " + d.getNroCuota() + " Prestamo Historico nro " + d.getPrestamo().getId());
+
+        Integer ultmoid = 0;
+
+        try {
+            ultmoid = (Integer) em.createQuery("SELECT MAX(r.id) FROM Recibo r").getSingleResult();
+        } catch (Exception e) {
+        }
+
+        if (ultmoid == null) {
+            ultmoid = 0;
+        }
+        cobro.setNro((ultmoid + 1) + "");
+
+        em.merge(cobro);
+
+        for (DetCobroCuota dt : cobro.getDetalles()) {
+            OperacionCobroCuota occ = new OperacionCobroCuota(dt,false);
+            occ.setCuentaCliente(cc);
+            occ.setFecha(new Date());
+            detCuentaClienteDAO.edit(occ);
+
+            if (dt.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0) {
+
+                OperacionCobroCuota occ2 = new OperacionCobroCuota(dt, true);
+                occ.setCuentaCliente(cc);
+                occ.setFecha(new Date());
+                detCuentaClienteDAO.edit(occ2);
+            }
+
         }
 
         return cobro;

@@ -32,12 +32,35 @@ public class DetCobroCuota implements Serializable {
     @ManyToOne
     private DetPrestamo detPrestamo;
     @ManyToOne
+    private DetPrestamoHistorico detPrestamoHistorico;
+    @ManyToOne
     private Moneda moneda;
     @ManyToOne
     private Cotizacion cotizacion;
     @ManyToOne
     private FacturaVenta facturaVenta;
+    private String refMonto;
 
+    public String getRefMonto() {
+        return refMonto;
+    }
+
+    public void setRefMonto(String refMonto) {
+        this.refMonto = refMonto;
+    }
+    
+    
+
+    public DetPrestamoHistorico getDetPrestamoHistorico() {
+        return detPrestamoHistorico;
+    }
+
+    public void setDetPrestamoHistorico(DetPrestamoHistorico detPrestamoHistorico) {
+        this.detPrestamoHistorico = detPrestamoHistorico;
+    }
+
+    
+    
     public FacturaVenta getFacturaVenta() {
         return facturaVenta;
     }

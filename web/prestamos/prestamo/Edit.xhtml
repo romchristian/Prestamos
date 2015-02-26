@@ -224,7 +224,7 @@
                             <p:spacer/>
                             
                             <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="@(.tablaDetalles),panelDatos"/>
-                            <p:commandButton value="Ajustar" action="#{prestamoController.ajustar()}" update="@(.tablaDetalles),panelDatos"/>
+                            <p:commandButton value="Ajustar" action="#{prestamoController.ajustar()}" update="@(.tablaDetalles),panelDatos" rendered="#{{request.isUserInRole('admin') or request.isUserInRole('prestamos_ajuste')}}"/>
 
                         </h:panelGrid>
 

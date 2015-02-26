@@ -1,0 +1,258 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+                template="/template.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:define name="title">
+        Crear Nuevo Préstamo
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form id="PrestamoCreateForm">
+
+
+
+
+            <p:panel  id="panelCliente" style="background-color: #ddd">
+
+                <table>
+                    <tr>
+                        <td width="90%">
+                            <h:panelGrid columns="4">
+                                <h:outputText value="Fecha Operación: "
+                                              style="font-size: 10pt"/>
+                                <p:calendar value="#{prestamoHistoricoController.selected.fechaInicioOperacion}"
+                                            pattern="#{formato.patronFecha}" locale="es" required="true"/>
+
+                                <p:outputPanel>
+                                    <h:outputText value="Primer Vencimiento: "
+                                                  style="font-size: 10pt"/>
+                                    <p:calendar value="#{prestamoHistoricoController.selected.fechaPrimerVencimiento}"
+                                                pattern="#{formato.patronFecha}" locale="es" required="true"/>
+                                </p:outputPanel>
+
+                                <p:spacer/>
+
+                                <h:outputText value="Titular"
+                                              style="font-size: 10pt; vertical-align: top"/>
+
+                                <p:autoComplete value="#{prestamoHistoricoController.selected.cliente}"  id="autoCompleteCliente" size="50"
+                                                completeMethod="#{autoCompleteCliente.completar}"
+                                                forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
+                                                >
+                                    <p:ajax event="itemSelect" update="textoConyugeDeudor"/>
+
+                                </p:autoComplete>
+                                <p:spacer/>
+                                <p:spacer/>
+
+
+                                <h:outputText value="Conyuge: "
+                                              style="font-size: 10pt"/>
+                                <p:outputPanel id="textoConyugeDeudor">
+                                    <h:outputText value="#{prestamoHistoricoController.selected.cliente.conyuge != null ? prestamoHistoricoController.selected.cliente.conyuge.devuelveNombreCompleto():'No asignado'}"
+                                                  style="font-size: 10pt"/>
+                                </p:outputPanel>
+
+                                <p:outputPanel>
+                                    <p:selectBooleanCheckbox value="#{prestamoHistoricoController.selected.firmaConyugeTitular}"/>
+                                    <h:outputText value="Marcar si el conyuge firmará el pagaré"/>
+                                </p:outputPanel>
+                                <p:spacer/>
+
+
+                                <h:outputText value="Codeudor"
+                                              style="font-size: 10pt"/>
+
+                                <p:autoComplete value="#{prestamoHistoricoController.selected.codeudor}"  id="autoCompleteCodeudor" size="50"
+                                                completeMethod="#{autoCompleteCliente.completar}"
+                                                forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento} #{c.devuelveNombreCompleto()}"
+                                                >
+                                    <p:ajax event="itemSelect" update="textoConyugeCoDeudor"/>
+
+                                </p:autoComplete>
+                                <p:spacer/>
+                                <p:spacer/>
+
+                                <h:outputText value="Conyuge: "
+                                              style="font-size: 10pt"/>
+                                <p:outputPanel id="textoConyugeCoDeudor">
+                                    <h:outputText value="#{prestamoHistoricoController.selected.codeudor.conyuge != null ? prestamoHistoricoController.selected.codeudor.conyuge.devuelveNombreCompleto():'No asignado'}"
+                                                  style="font-size: 10pt"/>    
+                                </p:outputPanel>
+
+                                <p:outputPanel>
+                                    <p:selectBooleanCheckbox value="#{prestamoHistoricoController.selected.firmaConyugeCodeudor}"/>
+                                    <h:outputText value="Marcar si el conyuge firmará el pagaré"/>
+                                </p:outputPanel>
+                                <p:spacer/>
+
+
+                                <h:outputText value="Empresa: "
+                                              style="font-size: 10pt"/>
+
+                                <p:selectOneMenu value="#{prestamoHistoricoController.selected.empresa}">
+                                    <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
+                                </p:selectOneMenu>
+
+
+                                <p:outputPanel style="vertical-align: top">
+                                    <h:outputText value="Sucursal: "
+                                                  style="font-size: 10pt"/>
+
+                                    <p:selectOneMenu value="#{prestamoHistoricoController.selected.sucursal}">
+                                        <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
+                                    </p:selectOneMenu>
+                                </p:outputPanel>
+                                <p:spacer/>
+
+                                <h:outputText value="Vendedor: "
+                                              style="font-size: 10pt"/>
+
+                                <p:autoComplete value="#{prestamoHistoricoController.selected.vendedor}"  id="autoCompleteCobrador" size="50"
+                                                completeMethod="#{autoCompleteVendedor.completar}"
+                                                forceSelection="true" converter="vendedorConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
+                                                >
+
+                                </p:autoComplete>
+
+
+                            </h:panelGrid>
+
+                        </td>
+                        <td width="10%">
+                            <h:panelGrid columns="2">
+                                <p:commandButton action="#{prestamoHistoricoController.create}" value="#{bundle.Save}" update="@(.tablaDetalles),:growl"  styleClass="btn btn-danger"/>
+                                <p:commandButton value="#{bundle.Cancel}"  action="List.xhtml?faces-redirect=true"/>
+                            </h:panelGrid>
+                        </td>
+                    </tr>
+                </table>    
+
+            </p:panel>
+
+
+            <p:panel id="panelDatos">
+
+                <h:panelGrid columns="4">
+
+
+                    <h:outputText value="Plazo"/>
+                    <h:inputText value="#{prestamoHistoricoController.selected.plazo}" required="true"/>
+
+
+                    <h:outputText value="Moneda"/>
+                    <p:selectOneMenu value="#{prestamoHistoricoController.selected.moneda}">
+                        <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
+                    </p:selectOneMenu>
+
+                    <h:outputText value="Monto Préstamo"/>
+                    <h:inputText value="#{prestamoHistoricoController.selected.montoPrestamo}"  id="montoPrestamo" required="true">
+                        <f:convertNumber locale="#{formato.locale}"/>
+                    </h:inputText>
+
+                    <h:outputText value="Periodicidad de Pago"/>
+                    <h:selectOneMenu value="#{prestamoHistoricoController.selected.periodoPago}">
+                        <f:selectItems value="#{productorEnums.obtPeriodosPago()}"/>
+                    </h:selectOneMenu>
+
+
+                    <h:outputText value="Monto Cuota"/>
+                    <h:inputText value="#{prestamoHistoricoController.selected.montoCuota}" >
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:inputText>
+
+
+                    <p:spacer/>
+                    <p:spacer/>
+
+
+
+                    <h:outputText value="Monto Comisiones"/>
+                    <h:inputText value="#{prestamoHistoricoController.selected.comisiones}" required="true"  disabled="true">
+                        <f:convertNumber locale="#{formato.locale}"/>
+                    </h:inputText>
+
+                    <p:spacer/>
+                    <p:spacer/>
+
+
+                    <h:outputText value="Monto Gastos"/>
+                    <h:inputText value="#{prestamoHistoricoController.selected.gastos}" required="true" disabled="true">
+                        <f:convertNumber locale="#{formato.locale}"/>
+                    </h:inputText>
+
+
+                    <p:spacer/>
+                    <p:spacer/>
+
+
+
+                    <h:outputText value="Total Operacion"/>
+                    <h:inputText value="#{prestamoHistoricoController.selected.totalOperacion}" disabled="true">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:inputText>
+
+                    <p:spacer/>
+
+
+
+                    <p:commandButton value="Calcular" action="#{prestamoHistoricoController.calcular()}" update="@(.tablaDetalles),panelDatos"/>
+
+
+                </h:panelGrid>
+
+            </p:panel>
+            <p:dataTable value="#{prestamoHistoricoController.selected.detalles}" var="d" id="tablaDetalles" styleClass="tablaDetalles">
+                
+                <p:column headerText="#" style="width: 30px">
+                    <h:outputText value="#{d.nroCuota}"/>
+                </p:column>
+                
+                <p:column headerText="Monto cuota" style="width: 15%">
+                    <h:outputText value="#{d.montoCuota}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Vencimiento">
+                    <p:calendar value="#{d.fechaVencimiento}" locale="es" pattern="#{formato.patronFecha}" disabled="true"/>
+                </p:column>
+
+                <p:column headerText="Monto Mora">
+                    <h:inputText value="#{d.montoMora}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:inputText>
+                </p:column>
+
+                <p:column headerText="Pagar" style="width: 40px;text-align: center">
+                    <p:selectBooleanCheckbox value="#{d.pagado}">
+                        <p:ajax update="@(.tablaDetalles)" process="@this , @(.tablaDetalles)" listener="#{prestamoHistoricoController.pagar(d)}"/>
+                    </p:selectBooleanCheckbox>
+                </p:column>
+
+                <p:column headerText="Monto Pagado">
+                   
+                    <h:inputText value="#{d.montoPago}" disabled="#{not d.pagado}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:inputText>
+                </p:column>
+
+                <p:column headerText="Fecha Pago">
+                    <p:calendar value="#{d.ultimoPago}" locale="es" pattern="#{formato.patronFecha}" disabled="#{not d.pagado}"/>
+                </p:column>
+
+            </p:dataTable>
+
+
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+

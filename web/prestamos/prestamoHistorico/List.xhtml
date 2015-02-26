@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:gpymes="http://java.sun.com/jsf/composite/gpymes">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="title">
+            Listado de Prestamos Históricos
+        </ui:define>
+        <ui:define name="body">
+
+            <h:form id="PrestamoListForm">
+
+
+
+                <h:panelGroup>
+
+                    <div class="ui-grid ui-grid-responsive">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+                                <div style="background-color: #ddd; border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
+                                     -moz-border-radius: 5px;
+                                     border-radius: 5px;
+                                     margin-bottom: 5px">
+
+
+
+
+                                    <h:panelGrid columns="4">
+                                        <h:outputText value="Cliente"
+                                                      style="font-size: 10pt"/>
+
+                                        <p:autoComplete value="#{prestamoHistoricoController.clienteFiltro}"  id="autoCompleteCliente" size="50"
+                                                        completeMethod="#{autoCompleteCliente.completar}"
+                                                        forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
+                                                        disabled="#{not prestamoHistoricoController.buscaPorCliente}"
+                                                        >
+                                            <!--                                            <p:ajax event="itemSelect" update="textoConyugeDeudor"/>-->
+
+                                        </p:autoComplete>
+
+                                        <p:spacer/>
+
+
+                                        <h:panelGroup style="vertical-align: top;">
+                                            <p:selectBooleanCheckbox value="#{prestamoHistoricoController.buscaPorCliente}" >
+                                                <p:ajax update="autoCompleteCliente"/>
+                                            </p:selectBooleanCheckbox>
+                                            <p:spacer width="10"/>
+                                            <h:outputText value="Buscar por cliente" style="font-size: 10pt;padding: 0;margin: 0;"/>
+                                        </h:panelGroup>
+
+
+
+
+                                        <h:outputText value="Empresa: "
+                                                      style="font-size: 10pt"/>
+
+                                        <p:selectOneMenu value="#{prestamoHistoricoController.empresaFiltro}">
+                                            <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
+                                        </p:selectOneMenu>
+
+                                        <h:outputText value="Sucursal: "
+                                                      style="font-size: 10pt"/>
+
+                                        <p:selectOneMenu value="#{prestamoHistoricoController.sucursalFiltro}">
+                                            <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
+                                        </p:selectOneMenu>
+
+
+                                        <h:outputText value="Incio: "
+                                                      style="font-size: 10pt"/>
+                                        <p:calendar value="#{prestamoHistoricoController.inicioFiltro}" locale="es"
+                                                    pattern="#{formato.patronFecha}"/>
+
+                                        <h:outputText value="Fin: "
+                                                      style="font-size: 10pt"/>
+                                        <p:calendar value="#{prestamoHistoricoController.finFiltro}" locale="es"
+                                                    pattern="#{formato.patronFecha}"/> 
+
+                                        <h:outputText value="Estado: "
+                                                      style="font-size: 10pt"/>
+
+                                        <p:selectOneMenu value="#{prestamoHistoricoController.estadoPrestamoFiltro}">
+                                            <f:selectItems value="#{productorEnums.obtEstadosPrestamo()}"/>
+                                        </p:selectOneMenu>
+                                        <p:spacer/>
+                                        <p:commandButton value="Buscar" action="#{prestamoHistoricoController.buscar()}" update="datalist"/>
+
+                                    </h:panelGrid>
+
+                                </div>
+                            </div>
+
+                        </div>  
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+                                <p:dataTable id="datalist" value="#{prestamoHistoricoController.items}" var="p"
+                                             selectionMode="single" selection="#{prestamoHistoricoController.selected}"
+                                             paginator="true"
+                                             paginatorPosition="bottom"
+                                             paginatorAlwaysVisible="false"
+                                             rowKey="#{p.id}"
+                                             rows="10"
+                                             rowsPerPageTemplate="10,20,30,40,50">
+
+                                    <p:ajax event="rowSelect"   update="createButton editButton"/>
+                                    <p:ajax event="rowUnselect" update="createButton editButton"/>
+
+                                    <f:facet name="header">
+                                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" action="#{prestamoHistoricoController.prepareCreate}" 
+                                                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_edicion'))}"/>
+
+                                        <p:button id="editButton" value="#{bundle.Edit}"  outcome="Edit.xhtml"
+                                                  disabled="#{prestamoHistoricoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoHistoricoController.haySeleccion() ? 'false':'true'}"
+                                                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_edicion'))}">
+                                            <f:param name="id" value="#{prestamoHistoricoController.selected.id == null ? 0:prestamoHistoricoController.selected.id }"/>
+                                        </p:button>
+                                    </f:facet>
+
+                                    <p:column style="font-size: 12px">
+                                        <f:facet name="header">
+                                            Descripción
+                                        </f:facet>
+                                        <h:outputText value="Prestamo nro: #{p.id}"/>
+                                    </p:column>
+                                    <p:column style="font-size: 12px">
+                                        <f:facet name="header">
+                                            Fecha
+                                        </f:facet>
+                                        <h:outputText value="#{p.fecha}">
+                                            <f:convertDateTime pattern="#{formato.patronFecha}"/>
+                                        </h:outputText>
+                                    </p:column>                    
+                                    <p:column style="font-size: 12px">
+                                        <f:facet name="header">
+                                            Cliente
+                                        </f:facet>
+                                        <h:outputText value="#{p.cliente.devuelveNombreCompleto()}"/>
+                                    </p:column>
+                                    <p:column style="font-size: 12px">
+                                        <f:facet name="header">
+                                            Monto
+                                        </f:facet>
+                                        <h:outputText value="#{p.montoPrestamo}">
+                                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column style="font-size: 12px">
+                                        <f:facet name="header">
+                                            Estado
+                                        </f:facet>
+                                        <h:outputText value="#{p.estado}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </h:panelGroup>
+
+            </h:form>
+
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>
+

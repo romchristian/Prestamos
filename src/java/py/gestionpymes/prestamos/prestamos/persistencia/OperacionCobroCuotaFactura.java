@@ -39,23 +39,51 @@ public class OperacionCobroCuotaFactura extends DetCuentaCliente<FacturaVentaDet
         setSucursal(prestamo.getSucursal());
         setMontoCredito(new BigDecimal(BigInteger.ZERO));
         setMoneda(d.getFacturaVenta().getMoneda());
-         BigDecimal monto = (d.getGravada10() == null ? new BigDecimal(BigInteger.ZERO):d.getGravada10()).add(d.getGravada05() == null ? new BigDecimal(BigInteger.ZERO) : d.getGravada05())
-                    .add(d.getExenta() == null ? new BigDecimal(BigInteger.ZERO) : d.getExenta());
-         
+        BigDecimal monto = (d.getGravada10() == null ? new BigDecimal(BigInteger.ZERO) : d.getGravada10()).add(d.getGravada05() == null ? new BigDecimal(BigInteger.ZERO) : d.getGravada05())
+                .add(d.getExenta() == null ? new BigDecimal(BigInteger.ZERO) : d.getExenta());
+
         setMontoDebito(monto.setScale(0, RoundingMode.HALF_EVEN));
-        
+
         String desc = "";
         if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_CUOTA) == 0) {
-            desc = "Pago de cuota #" + d.getDetPrestamo().getNroCuota()+" del Prestamo # " + prestamo.getId();
+            desc = "Pago de cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
         } else if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0) {
-            desc = "Pago moratorio por la cuota #" + d.getDetPrestamo().getNroCuota()+" del Prestamo # " + prestamo.getId();
+            desc = "Pago moratorio por la cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
         } else if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_PUNITORIO) == 0) {
-            desc = "Pago punitorio por la cuota #" + d.getDetPrestamo().getNroCuota()+" del Prestamo # " + prestamo.getId();
+            desc = "Pago punitorio por la cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
         }
 
         setDescripcion(desc);
 
     }
+
+    public OperacionCobroCuotaFactura(FacturaVentaDetalle d, boolean esCredito) {
+        this(d);
+
+        Prestamo prestamo = d.getDetPrestamo().getPrestamo();
+
+        String desc = "";
+        if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0) {
+            setMontoDebito(new BigDecimal(BigInteger.ZERO));
+            BigDecimal monto = (d.getGravada10() == null ? new BigDecimal(BigInteger.ZERO) : d.getGravada10()).add(d.getGravada05() == null ? new BigDecimal(BigInteger.ZERO) : d.getGravada05())
+                    .add(d.getExenta() == null ? new BigDecimal(BigInteger.ZERO) : d.getExenta());
+
+            setMontoCredito(monto.setScale(0, RoundingMode.HALF_EVEN));
+            desc = "Recargo moratorio por la cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
+        } else if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_PUNITORIO) == 0) {
+            setMontoDebito(new BigDecimal(BigInteger.ZERO));
+            BigDecimal monto = (d.getGravada10() == null ? new BigDecimal(BigInteger.ZERO) : d.getGravada10()).add(d.getGravada05() == null ? new BigDecimal(BigInteger.ZERO) : d.getGravada05())
+                    .add(d.getExenta() == null ? new BigDecimal(BigInteger.ZERO) : d.getExenta());
+
+            setMontoCredito(monto.setScale(0, RoundingMode.HALF_EVEN));
+            desc = "Recargo punitorio por la cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
+        }
+
+        setDescripcion(desc);
+
+    }
+
+  
 
     public FacturaVentaDetalle getFacturaVentaDetalle() {
         return facturaVentaDetalle;

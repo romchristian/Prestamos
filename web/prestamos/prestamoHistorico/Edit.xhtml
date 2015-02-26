@@ -8,13 +8,18 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
 
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{prestamoController.id}"/>
+        <f:viewAction action="#{prestamoController.cargaDatos()}"/>
+    </f:metadata>
+
     <ui:define name="title">
-        Crear Nuevo Préstamo
+        Editar Nuevo Préstamo
     </ui:define>
 
     <ui:define name="body">
-        <h:form id="PrestamoCreateForm">
-
+        <h:form id="PrestamoEditForm">
 
             <p:tabView>
 
@@ -30,11 +35,11 @@
                                         <h:outputText value="Fecha Operación: "
                                                       style="font-size: 10pt"/>
                                         <p:calendar value="#{prestamoController.selected.fechaInicioOperacion}"
-                                                    pattern="#{formato.patronFecha}" locale="es" required="true"/>
+                                                    pattern="#{formato.patronFecha}" locale="es"/>
                                         <h:outputText value="Primer Vencimiento: "
                                                       style="font-size: 10pt"/>
                                         <p:calendar value="#{prestamoController.selected.fechaPrimerVencimiento}"
-                                                    pattern="#{formato.patronFecha}" locale="es" required="true"/>
+                                                    pattern="#{formato.patronFecha}" locale="es"/>
                                         <h:outputText value="Titular"
                                                       style="font-size: 10pt"/>
 
@@ -127,6 +132,7 @@
 
                     <p:panel id="panelDatos">
 
+
                         <h:panelGrid columns="4">
 
                             <h:outputText value="Plan"/>
@@ -218,7 +224,7 @@
                             <p:spacer/>
                             
                             <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="@(.tablaDetalles),panelDatos"/>
-                            <p:commandButton value="Ajustar" action="#{prestamoController.ajustar()}" update="@(.tablaDetalles),panelDatos" rendered="#{{request.isUserInRole('admin') or request.isUserInRole('prestamos_ajuste')}}"/>
+                            <p:commandButton value="Ajustar" action="#{prestamoController.ajustar()}" update="@(.tablaDetalles),panelDatos"/>
 
                         </h:panelGrid>
 
@@ -265,10 +271,6 @@
 
                 </p:tab>
             </p:tabView>
-
-
-
-
 
 
 

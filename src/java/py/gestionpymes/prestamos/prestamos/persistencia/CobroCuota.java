@@ -23,7 +23,10 @@ public class CobroCuota extends Recibo {
     private Cliente cliente;
     @ManyToOne
     private Prestamo prestamo;
-    @OneToMany(mappedBy = "cobroCuota", cascade = CascadeType.PERSIST, orphanRemoval = true,fetch = FetchType.EAGER)
+    @ManyToOne
+    private PrestamoHistorico prestamoHistorico;
+
+    @OneToMany(mappedBy = "cobroCuota", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<DetCobroCuota> detalles;
 
     public CobroCuota() {
@@ -32,13 +35,28 @@ public class CobroCuota extends Recibo {
     public CobroCuota(Prestamo prestamo) {
         this.prestamo = prestamo;
         this.cliente = prestamo.getCliente();
-        
+
+    }
+
+    public CobroCuota(PrestamoHistorico prestamo) {
+        this.prestamoHistorico = prestamo;
+        this.cliente = prestamo.getCliente();
+
     }
 
     public CobroCuota(String concepto) {
         super("Cobro cuota/s");
     }
 
+    public PrestamoHistorico getPrestamoHistorico() {
+        return prestamoHistorico;
+    }
+
+    public void setPrestamoHistorico(PrestamoHistorico prestamoHistorico) {
+        this.prestamoHistorico = prestamoHistorico;
+    }
+
+    
     public List<DetCobroCuota> getDetalles() {
         if (detalles == null) {
             detalles = new ArrayList<>();

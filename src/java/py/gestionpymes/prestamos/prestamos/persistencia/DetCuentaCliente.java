@@ -43,6 +43,8 @@ public abstract class DetCuentaCliente<T> implements Serializable {
     @ManyToOne
     private Prestamo prestamo;
     @ManyToOne
+    private PrestamoHistorico prestamoHistorico;
+    @ManyToOne
     private Moneda moneda;
     @ManyToOne
     private Cotizacion cotizacion;
@@ -61,6 +63,14 @@ public abstract class DetCuentaCliente<T> implements Serializable {
 
     public void setSucursal(Sucursal sucursal) {
         this.sucursal = sucursal;
+    }
+
+    public PrestamoHistorico getPrestamoHistorico() {
+        return prestamoHistorico;
+    }
+
+    public void setPrestamoHistorico(PrestamoHistorico prestamoHistorico) {
+        this.prestamoHistorico = prestamoHistorico;
     }
     
     

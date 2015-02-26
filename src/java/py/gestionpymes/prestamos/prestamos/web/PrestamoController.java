@@ -485,7 +485,7 @@ public class PrestamoController implements Serializable {
                 return null;
             }
             PrestamoController controller = (PrestamoController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "categoriaController");
+                    getValue(facesContext.getELContext(), null, "prestamoController");
             return controller.getPrestamo(getKey(value));
         }
 

@@ -9,5 +9,5 @@ package py.gestionpymes.prestamos.prestamos.persistencia.enums;
  * @author christian
  */
 public enum EstadoPrestamo {
- PENDIENTE_DESEMBOLSO, EN_DESEMBOLSO,VIGENTE,CANCELADO,CARTERA_VENDIDA;
+ PENDIENTE_DESEMBOLSO, EN_DESEMBOLSO,VIGENTE,CANCELADO,CARTERA_VENDIDA,INCOBRABLE;
 }

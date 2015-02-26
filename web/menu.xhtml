@@ -13,6 +13,10 @@
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_lectura'))}"/>
         <h:commandLink  value="Prestamos" action="/prestamos/prestamo/List" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_lectura'))}"/>
+        
+        <h:commandLink  value="Prestamos Históricos" action="/prestamos/prestamoHistorico/List" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_historico'))}"/>
+        
         <h:commandLink  value="Desembolsa Prestamos" action="/prestamos/prestamo/Desembolsar" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_desembolsa'))}"/>
         <h:commandLink  value="Cobro Cuotas" action="cobraCuota"
