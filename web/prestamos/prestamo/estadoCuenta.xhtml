@@ -85,11 +85,12 @@
                     <div class="ui-grid-row">
                         <div class="ui-grid-col-12">
                             <p:dataTable value="#{cuentaClienteController.detalles}" var="d" id="dataList"
+                                         sortMode="multiple"
                                          styleClass="escuchaSeleccionCuota" style="font-size: 10pt">
 
-                                <p:column headerText="FECHA" style="font-size: 10pt;width: 12%">
+                                <p:column headerText="FECHA" style="font-size: 10pt;width: 12%" sortBy="#{d.fecha}">
                                     <h:outputText value="#{d.fecha}">
-                                        <f:convertDateTime pattern="#{formato.patronFechaHora}" timeZone="Asuncion/America"/>
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" locale="#{formato.locale}" timeZone="America/Asuncion"/>
                                     </h:outputText>
 
                                 </p:column>

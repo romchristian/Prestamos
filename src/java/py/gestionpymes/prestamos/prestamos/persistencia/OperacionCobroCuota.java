@@ -41,31 +41,35 @@ public class OperacionCobroCuota extends DetCuentaCliente<DetCobroCuota> {
     }
 
     public OperacionCobroCuota(DetCobroCuota d, boolean esCredito) {
+        this();
 
         PrestamoHistorico prestamo = d.getCobroCuota().getPrestamoHistorico();
         setPrestamoHistorico(prestamo);
         setEmpresa(prestamo.getEmpresa());
         setSucursal(prestamo.getSucursal());
         setMontoCredito(new BigDecimal(BigInteger.ZERO));
-        setMoneda(d.getFacturaVenta().getMoneda());
+        setMoneda(d.getMoneda());
 
         String desc = "";
         if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0) {
+            System.out.println("Entre en Moratorio 2");
             if (esCredito) {
+                System.out.println("Entre en Moratorio 3");
                 setMontoDebito(new BigDecimal(BigInteger.ZERO));
                 setMontoCredito(d.getMonto().setScale(0, RoundingMode.HALF_EVEN));
-                desc = "Recargo moratorio por la cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
+                System.out.println("Monto Credito : " + getMontoCredito());
+                desc = "Recargo moratorio por la cuota #" + d.getDetPrestamoHistorico().getNroCuota() + " del Prestamo # " + prestamo.getId();
             } else {
                 setMontoDebito(d.getMonto().setScale(0, RoundingMode.HALF_EVEN));
                 setMontoCredito(new BigDecimal(BigInteger.ZERO));
-                desc = "Pago moratorio por la cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
+                desc = "Pago moratorio por la cuota #" + d.getDetPrestamoHistorico().getNroCuota() + " del Prestamo # " + prestamo.getId();
             }
 
         } else if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_CUOTA) == 0) {
             setMontoDebito(d.getMonto().setScale(0, RoundingMode.HALF_EVEN));
             setMontoCredito(new BigDecimal(BigInteger.ZERO));
 
-            desc = "Pago por la cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
+            desc = "Pago por la cuota #" + d.getDetPrestamoHistorico().getNroCuota() + " del Prestamo # " + prestamo.getId();
         }
 
         setDescripcion(desc);

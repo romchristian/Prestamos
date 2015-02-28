@@ -146,9 +146,12 @@ public class PrestamoHistoricoController implements Serializable {
                 if (persistAction != PersistAction.DELETE) {
                     
                     
-                    getFacade().edit(selected);
+                   selected =  getFacade().guardar(selected);
+                    
+                    getFacade().desembolsa(selected);
                     
                     for(DetPrestamoHistorico d: selected.getDetalles()){
+                        d.setPrestamo(selected);
                         cobranzaDAO.create(d);
                     }
                     

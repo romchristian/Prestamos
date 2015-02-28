@@ -60,6 +60,8 @@ public class Prestamo implements Serializable {
     private PeriodoPago periodoPago;
     private BigDecimal gastos = new BigDecimal(BigInteger.ZERO);//Gastos de cobranza domiciliaria
     private BigDecimal comisiones = new BigDecimal(BigInteger.ZERO);//Comisiones por Asesoramiento Financiero
+    private BigDecimal impuestoIVAcomisiones = new BigDecimal(BigInteger.ZERO);//Comisiones por Asesoramiento Financiero
+    private BigDecimal impuestoIVAgastos = new BigDecimal(BigInteger.ZERO);//Comisiones por Asesoramiento Financiero
     private BigDecimal impuestoIVA = new BigDecimal(BigInteger.ZERO);
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaInicioOperacion;
@@ -241,6 +243,22 @@ public class Prestamo implements Serializable {
         this.impuestoIVA = impuestoIVA.setScale(0, RoundingMode.HALF_EVEN);
     }
 
+    public BigDecimal getImpuestoIVAcomisiones() {
+        return impuestoIVAcomisiones;
+    }
+
+    public void setImpuestoIVAcomisiones(BigDecimal impuestoIVAcomisiones) {
+        this.impuestoIVAcomisiones = impuestoIVAcomisiones.setScale(0, RoundingMode.HALF_EVEN);
+    }
+
+    public BigDecimal getImpuestoIVAgastos() {
+        return impuestoIVAgastos;
+    }
+
+    public void setImpuestoIVAgastos(BigDecimal impuestoIVAgastos) {
+        this.impuestoIVAgastos = impuestoIVAgastos.setScale(0, RoundingMode.HALF_EVEN);
+    }
+
     public Cliente getCliente() {
         return cliente;
     }
@@ -279,6 +297,9 @@ public class Prestamo implements Serializable {
 
     public void setFechaInicioOperacion(Date fechaInicioOperacion) {
         this.fechaInicioOperacion = fechaInicioOperacion;
+        DateTime d = new DateTime(fechaInicioOperacion);
+        d.plusMonths(1);
+        this.fechaPrimerVencimiento = d.toDate();
     }
 
     public BigDecimal getGastos() {
@@ -368,6 +389,7 @@ public class Prestamo implements Serializable {
         totalIntereses = BigDecimal.ZERO;
         impuestoIVA = BigDecimal.ZERO;
         totalOperacion = BigDecimal.ZERO;
+        
 
         BigDecimal interesPorDia = new BigDecimal(getTasa().doubleValue() / 100d / 365d, MathContext.DECIMAL128);
         int difPrimerVencimiento = Days.daysBetween(new DateTime(fechaInicioOperacion).plusMonths(1), new DateTime(fechaPrimerVencimiento)).getDays();
@@ -454,7 +476,9 @@ public class Prestamo implements Serializable {
         montoCuota.setScale(0, RoundingMode.HALF_EVEN);
         totalIntereses.setScale(0, RoundingMode.HALF_EVEN);
         totalOperacion.setScale(0, RoundingMode.HALF_EVEN);
-        impuestoIVA.setScale(0, RoundingMode.HALF_EVEN);
+        impuestoIVA.setScale(0, RoundingMode.HALF_EVEN);//Total de impuestos de los itereses generados a devengar
+        impuestoIVAcomisiones = getComisiones().divide(new BigDecimal(11),0, RoundingMode.HALF_EVEN);
+        impuestoIVAgastos = getGastos().divide(new BigDecimal(11),0, RoundingMode.HALF_EVEN);        
     }
 
     @Override

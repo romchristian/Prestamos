@@ -68,8 +68,8 @@ public class CobranzaDAO {
                     || df.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_PUNITORIO) == 0) {
 
                 OperacionCobroCuotaFactura occ2 = new OperacionCobroCuotaFactura(df, true);
-                occ.setCuentaCliente(cc);
-                occ.setFecha(new Date());
+                occ2.setCuentaCliente(cc);
+                occ2.setFecha(new Date());
                 detCuentaClienteDAO.create(occ2);
             }
 
@@ -187,7 +187,7 @@ public class CobranzaDAO {
             dcc2.setCobroCuota(cobro);
             dcc2.setPago(efe);
             dcc2.setMoneda(efe.getMoneda());
-            dcc2.setMonto(efe.getMonto().subtract(d.getMontoMora()));
+            dcc2.setMonto(d.getMontoMora());
             dcc2.setDetPrestamoHistorico(d);
             dcc2.setFecha(d.getUltimoPago());
             dcc2.setRefMonto(FacturaVentaDetalle.MONTO_MORATORIO);
@@ -210,18 +210,21 @@ public class CobranzaDAO {
 
         em.merge(cobro);
 
+        boolean hayMora = false;
+        DetCobroCuota dtMora;
         for (DetCobroCuota dt : cobro.getDetalles()) {
             OperacionCobroCuota occ = new OperacionCobroCuota(dt,false);
             occ.setCuentaCliente(cc);
             occ.setFecha(new Date());
-            detCuentaClienteDAO.edit(occ);
+            em.merge(occ);
 
-            if (dt.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0) {
-
+            if (dt.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO)==0) {
+                
+                System.out.println("Entre en Moratorio 1");
                 OperacionCobroCuota occ2 = new OperacionCobroCuota(dt, true);
-                occ.setCuentaCliente(cc);
-                occ.setFecha(new Date());
-                detCuentaClienteDAO.edit(occ2);
+                occ2.setCuentaCliente(cc);
+                occ2.setFecha(new Date());
+                em.merge(occ2);
             }
 
         }

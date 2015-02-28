@@ -161,7 +161,7 @@ public class PrestamoController implements Serializable {
     public String calcular() {
         if (selected.getPlanGastos() != null) {
             DetPlanGastos detPlan = null;
-            int periocidad = 360;
+            int periocidad = 30;
             switch (selected.getPeriodoPago()) {
                 case QUINCENAL:
                     periocidad = 15;
@@ -170,7 +170,7 @@ public class PrestamoController implements Serializable {
                     periocidad = 7;
                     break;
                 case DIARIO:
-                    periocidad = 30;
+                    periocidad = 1;
                     break;
             }
 

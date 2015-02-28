@@ -17,6 +17,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.CuentaCliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.OperacionDesembolsoPrestamo;
+import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.PrestamoHistorico;
 
 /**
@@ -125,7 +126,10 @@ public class PrestamoHistoricoDAO extends AbstractFacade<py.gestionpymes.prestam
         return prestamo;
     }
     
-    
-    
-
+   
+    public PrestamoHistorico guardar(PrestamoHistorico p){
+        PrestamoHistorico R = em.merge(p);
+        
+        return R;
+    }
 }

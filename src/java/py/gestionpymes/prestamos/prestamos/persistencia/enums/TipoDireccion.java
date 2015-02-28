@@ -9,5 +9,5 @@ package py.gestionpymes.prestamos.prestamos.persistencia.enums;
  * @author christian
  */
 public enum TipoDireccion {
- LABORAL, PARTICULAR, AUXILIAR    
+ PARTICULAR, LABORAL, AUXILIAR    
 }
