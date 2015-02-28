@@ -16,6 +16,7 @@ import java.util.List;
 import javax.persistence.*;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import py.gestionpymes.prestamos.adm.persistencia.Canal;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
@@ -45,6 +46,8 @@ public class Prestamo implements Serializable {
     private Empresa empresa;
     @ManyToOne
     private Sucursal sucursal;
+    @ManyToOne
+    private Canal canal;
     @ManyToOne
     private Vendedor vendedor;
     @ManyToOne
@@ -86,9 +89,17 @@ public class Prestamo implements Serializable {
     private Date ultimoPago;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaPrimerVencimiento;
-    
+
     @ManyToOne
     private PlanGastos planGastos;
+
+    public Canal getCanal() {
+        return canal;
+    }
+
+    public void setCanal(Canal canal) {
+        this.canal = canal;
+    }
 
     public PlanGastos getPlanGastos() {
         return planGastos;
@@ -297,9 +308,12 @@ public class Prestamo implements Serializable {
 
     public void setFechaInicioOperacion(Date fechaInicioOperacion) {
         this.fechaInicioOperacion = fechaInicioOperacion;
-        DateTime d = new DateTime(fechaInicioOperacion);
-        d.plusMonths(1);
-        this.fechaPrimerVencimiento = d.toDate();
+        if (fechaInicioOperacion != null) {
+            DateTime d = new DateTime(fechaInicioOperacion);
+            
+            this.fechaPrimerVencimiento = d.plusMonths(1).toDate();
+        }
+
     }
 
     public BigDecimal getGastos() {
@@ -389,7 +403,6 @@ public class Prestamo implements Serializable {
         totalIntereses = BigDecimal.ZERO;
         impuestoIVA = BigDecimal.ZERO;
         totalOperacion = BigDecimal.ZERO;
-        
 
         BigDecimal interesPorDia = new BigDecimal(getTasa().doubleValue() / 100d / 365d, MathContext.DECIMAL128);
         int difPrimerVencimiento = Days.daysBetween(new DateTime(fechaInicioOperacion).plusMonths(1), new DateTime(fechaPrimerVencimiento)).getDays();
@@ -472,13 +485,13 @@ public class Prestamo implements Serializable {
         }
 
         totalOperacion = getCapital().add(totalIntereses).add(impuestoIVA);
-        
+
         montoCuota.setScale(0, RoundingMode.HALF_EVEN);
         totalIntereses.setScale(0, RoundingMode.HALF_EVEN);
         totalOperacion.setScale(0, RoundingMode.HALF_EVEN);
         impuestoIVA.setScale(0, RoundingMode.HALF_EVEN);//Total de impuestos de los itereses generados a devengar
-        impuestoIVAcomisiones = getComisiones().divide(new BigDecimal(11),0, RoundingMode.HALF_EVEN);
-        impuestoIVAgastos = getGastos().divide(new BigDecimal(11),0, RoundingMode.HALF_EVEN);        
+        impuestoIVAcomisiones = getComisiones().divide(new BigDecimal(11), 0, RoundingMode.HALF_EVEN);
+        impuestoIVAgastos = getGastos().divide(new BigDecimal(11), 0, RoundingMode.HALF_EVEN);
     }
 
     @Override
