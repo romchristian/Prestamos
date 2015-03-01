@@ -18,20 +18,37 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.view.ViewScoped;
 
 @Named("canalController")
-@SessionScoped
+@ViewScoped
 public class CanalController implements Serializable {
 
     @EJB
     private py.gestionpymes.prestamos.adm.dao.CanalFacade ejbFacade;
     private List<Canal> items = null;
     private Canal selected;
+    private long id;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    
+    public void cargaDatos(){
+        
+        selected = getCanal(id);
+    
+    }
 
     public CanalController() {
     }
 
     public Canal getSelected() {
+        
         return selected;
     }
 

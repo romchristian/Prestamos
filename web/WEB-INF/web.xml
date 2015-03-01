@@ -291,6 +291,20 @@
             <role-name>prestamos_ajuste</role-name>
         </auth-constraint>
     </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintAplicarDescuentos</display-name>
+        <web-resource-collection>
+            <web-resource-name>AplicarDescuentos</web-resource-name>
+            <description/>
+            <url-pattern>/prestamos/prestamo/List.xhtml</url-pattern>
+            <url-pattern>/prestamos/prestamo/EditDescuento.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>prestamos_aplicar_descuentos</role-name>
+        </auth-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>prestamosJDBC</realm-name>
@@ -394,5 +408,9 @@
     <security-role>
         <description/>
         <role-name>prestamos_ajuste</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>prestamos_aplicar_descuentos</role-name>
     </security-role>
 </web-app>

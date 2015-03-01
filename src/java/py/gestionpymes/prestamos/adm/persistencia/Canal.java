@@ -19,8 +19,6 @@ public class Canal implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Version
-    private Long version;
     @ManyToOne
     private Empresa empresa;
     private String nombre;
@@ -37,14 +35,7 @@ public class Canal implements Serializable {
         this.nombre = nombre;
     }
 
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
+  
     public Estado getEstado() {
         return estado;
     }

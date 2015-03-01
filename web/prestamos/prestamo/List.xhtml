@@ -114,8 +114,8 @@
                                              rows="10"
                                              rowsPerPageTemplate="10,20,30,40,50">
 
-                                    <p:ajax event="rowSelect"   update="createButton editButton imprimirButton confirmarButton cancelarButton imprimirLiqButton imprimirDetClieButton"/>
-                                    <p:ajax event="rowUnselect" update="createButton editButton imprimirButton confirmarButton cancelarButton imprimirLiqButton imprimirDetClieButton"/>
+                                    <p:ajax event="rowSelect"   update="createButton editButton imprimirButton confirmarButton cancelarButton imprimirLiqButton imprimirDetClieButton aplicarDescButton"/>
+                                    <p:ajax event="rowUnselect" update="createButton editButton imprimirButton confirmarButton cancelarButton imprimirLiqButton imprimirDetClieButton aplicarDescButton"/>
 
                                     <f:facet name="header">
                                         <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" action="#{prestamoController.prepareCreate}" 
@@ -124,6 +124,12 @@
                                         <p:button id="editButton" value="#{bundle.Edit}"  outcome="Edit.xhtml"
                                                   disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion() ? 'false':'true'}"
                                                   rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_edicion'))}">
+                                            <f:param name="id" value="#{prestamoController.selected.id == null ? 0:prestamoController.selected.id }"/>
+                                        </p:button>
+
+                                        <p:button id="aplicarDescButton" value="Aplicar Descuento"  outcome="EditDescuento.xhtml"
+                                                  disabled="#{prestamoController.selected.estado == 'VIGENTE' and prestamoController.haySeleccion() ? 'false':'true'}"
+                                                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_aplicar_descuentos'))}">
                                             <f:param name="id" value="#{prestamoController.selected.id == null ? 0:prestamoController.selected.id }"/>
                                         </p:button>
 
@@ -148,6 +154,8 @@
                                         <p:commandButton id="cancelarButton" action="#{prestamoController.anulaConfimacion()}" value="Cancelar Pagare" update="datalist"
                                                          disabled="#{prestamoController.selected.estado == 'EN_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
                                                          rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_cancela_pagare'))}"/>
+
+
 
                                     </f:facet>
 

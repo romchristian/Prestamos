@@ -12,12 +12,7 @@
             <h:form id="CanalCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{canalController.selected != null}">
-                        <p:outputLabel value="#{bundle.CreateCanalLabel_version}" for="version" />
-                        <p:inputText id="version" value="#{canalController.selected.version}" title="#{bundle.CreateCanalTitle_version}" />
-                        <p:outputLabel value="#{bundle.CreateCanalLabel_estado}" for="estado" />
-                        <p:inputText id="estado" value="#{canalController.selected.estado}" title="#{bundle.CreateCanalTitle_estado}" />
-                        <p:outputLabel value="#{bundle.CreateCanalLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{canalController.selected.id}" title="#{bundle.CreateCanalTitle_id}" />
+                                            
                         <p:outputLabel value="#{bundle.CreateCanalLabel_empresa}" for="empresa" />
                         <p:selectOneMenu id="empresa" value="#{canalController.selected.empresa}" >
                             <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"

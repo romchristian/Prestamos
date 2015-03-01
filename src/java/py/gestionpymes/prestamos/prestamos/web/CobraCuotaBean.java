@@ -148,6 +148,32 @@ public class CobraCuotaBean implements Serializable {
             BigDecimal aplicaAMoratorio;
             BigDecimal aplicaAPunitorio;
             BigDecimal aplicaACuota = new BigDecimal(BigInteger.ZERO);
+            
+            
+            boolean descuentaTodo = false;
+            BigDecimal descuento = t.getDescuento();
+            
+            descuento = descuento.subtract(t.getMontoMoratorio());
+            System.out.println("D1: " + descuento);
+            if(descuento.compareTo(new BigDecimal(BigInteger.ZERO)) > 0){
+                
+                 descuento = descuento.subtract(t.getMontoPunitorio());
+                 System.out.println("D2: " + descuento);
+                 if(descuento.compareTo(new BigDecimal(BigInteger.ZERO)) > 0){
+                     descuento = descuento.subtract(t.getCuotaInteres());
+                     System.out.println("D3: " + descuento);
+                     if(descuento.compareTo(new BigDecimal(BigInteger.ZERO)) <= 0){
+                         //cubro todo
+                         System.out.println("D4" + descuento);
+                         descuentaTodo = true;
+                     }
+                 }
+            }
+            
+         
+            
+            
+            
             if (t.getMontoAPagar().compareTo(t.getMontoMora()) < 0) {
                 //afectar punitorio
                 aplicaAPunitorio = t.getMontoAPagar().multiply(new BigDecimal(0.2));
@@ -179,9 +205,13 @@ public class CobraCuotaBean implements Serializable {
             DetPrestamo dp = t.getDetPrestamo();
             BigDecimal diffMontoPago = dp.getMontoPago().subtract((dp.calculaMontoPorDiasMoratorio().add(dp.calculaMontoPorDiasPunitorio()).add(t.getCuotaInteres())));
 
-            if (diffMontoPago.compareTo(new BigDecimal(BigInteger.ZERO)) >= 0) {
+            System.out.println("Descuenta Todo: " + descuentaTodo);
+            if (descuentaTodo) {
                 d.setExenta(aplicaACuota);
-            } else {
+            } else if (diffMontoPago.compareTo(new BigDecimal(BigInteger.ZERO)) >= 0) {
+                d.setExenta(aplicaACuota);
+            }
+            else {
                 BigDecimal exento = aplicaACuota.subtract(t.getCuotaInteres());
                 if (exento.compareTo(new BigDecimal(BigInteger.ZERO)) >= 0) {
                     
@@ -193,6 +223,7 @@ public class CobraCuotaBean implements Serializable {
             facturaVenta.getDetalles().add(d);
             nrolinea++;
 
+            
             if (t.getMontoMoratorio().compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
                 FacturaVentaDetalle d2 = new FacturaVentaDetalle();
                 d2.setFacturaVenta(facturaVenta);

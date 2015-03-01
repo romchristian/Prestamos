@@ -5,6 +5,7 @@
 package py.gestionpymes.prestamos.prestamos.web;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Date;
@@ -50,6 +51,8 @@ public class TreeCuota {
     private BigDecimal cuotaInteres;
     private BigDecimal montoMoratorio;
     private BigDecimal montoPunitorio;
+    private BigDecimal descuento;
+    private boolean tieneDescuento;
     private boolean disabledPagar;
     private TreeNode padre;
     
@@ -77,6 +80,7 @@ public class TreeCuota {
         this.montoCuota = detPrestamo.getMontoCuota().setScale(0, RoundingMode.HALF_EVEN);
         this.diasMora = detPrestamo.getDiasMora();
         
+        this.descuento = detPrestamo.getDescuento();
         this.montoMoratorio = detPrestamo.calculaSaldoMoratorio();
         this.montoPunitorio = detPrestamo.calculaSaldoPunitorio();
         this.cuotaCapital = detPrestamo.getCuotaCapital();
@@ -98,6 +102,31 @@ public class TreeCuota {
         this.esPrestamo = false;
         this.cancelado = true;
     }
+
+    public boolean isTieneDescuento() {
+        if(tieneDescuento && descuento != null && descuento.compareTo(new BigDecimal(BigInteger.ZERO))> 0){
+            tieneDescuento = true;
+        }else {
+            tieneDescuento = false;
+        }
+        return tieneDescuento;
+    }
+
+    public void setTieneDescuento(boolean tieneDescuento) {
+        this.tieneDescuento = tieneDescuento;
+    }
+
+    
+    
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
+    }
+    
+    
 
     public TreeNode getPadre() {
         return padre;

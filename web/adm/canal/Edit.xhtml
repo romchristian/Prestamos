@@ -12,12 +12,10 @@
             <h:form id="CanalEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{canalController.selected != null}">
-                        <p:outputLabel value="#{bundle.EditCanalLabel_version}" for="version" />
-                        <p:inputText id="version" value="#{canalController.selected.version}" title="#{bundle.EditCanalTitle_version}" />
-                        <p:outputLabel value="#{bundle.EditCanalLabel_estado}" for="estado" />
-                        <p:inputText id="estado" value="#{canalController.selected.estado}" title="#{bundle.EditCanalTitle_estado}" />
+
+
                         <p:outputLabel value="#{bundle.EditCanalLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{canalController.selected.id}" title="#{bundle.EditCanalTitle_id}" />
+                        <p:inputText id="id" value="#{canalController.selected.id}" title="#{bundle.EditCanalTitle_id}" disabled="true" />
                         <p:outputLabel value="#{bundle.EditCanalLabel_empresa}" for="empresa" />
                         <p:selectOneMenu id="empresa" value="#{canalController.selected.empresa}" >
                             <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
@@ -27,6 +25,11 @@
                         </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.EditCanalLabel_nombre}" for="nombre" />
                         <p:inputText id="nombre" value="#{canalController.selected.nombre}" title="#{bundle.EditCanalTitle_nombre}" />
+                        <p:outputLabel value="#{bundle.EditCanalLabel_estado}" for="estado" />
+                        <p:selectOneMenu value="#{canalController.selected.estado}" id="estado">
+                            <f:selectItems value="#{productorEnums.obtEstados()}"/>
+                        </p:selectOneMenu>
+                        
                     </p:panelGrid>
                     <p:commandButton actionListener="#{canalController.update}" value="#{bundle.Save}" update="display,:CanalListForm:datalist,:growl" oncomplete="handleSubmit(args, 'CanalEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="CanalEditDialog.hide()"/>

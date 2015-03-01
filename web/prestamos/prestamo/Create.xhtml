@@ -13,6 +13,7 @@
     </ui:define>
 
     <ui:define name="body">
+        
         <h:form id="PrestamoCreateForm">
 
 
@@ -31,7 +32,7 @@
                                                       style="font-size: 10pt"/>
                                         <p:calendar value="#{prestamoController.selected.fechaInicioOperacion}"
                                                     pattern="#{formato.patronFecha}" locale="es" required="true">
-                                            <p:ajax process="@this" update="fechaVencimiento" event="blur"/>
+                                            <p:ajax event="dateSelect" listener="#{prestamoController.afectaPrimerVencimieto}" update="fechaVencimiento" />
                                         </p:calendar>
                                         <h:outputText value="Primer Vencimiento: "
                                                       style="font-size: 10pt"/>
@@ -124,7 +125,8 @@
                                 </td>
                                 <td width="10%">
                                     <h:panelGrid columns="2">
-                                        <p:commandButton action="#{prestamoController.create}" value="#{bundle.Save}" update="@(.tablaDetalles),:growl"  styleClass="btn btn-danger"/>
+                                        <p:commandButton action="#{prestamoController.create}" value="#{bundle.Save}" update="@(.tablaDetalles),:growl"  styleClass="btn btn-danger"
+                                                         disabled="#{not prestamoController.sePuedeGuardar}" id="btnGuardar"/>
                                         <p:commandButton value="#{bundle.Cancel}"  action="List.xhtml?faces-redirect=true"/>
                                     </h:panelGrid>
                                 </td>
@@ -237,12 +239,12 @@
 
 
 
-                            <p:spacer/>
+                            <p:spacer/> 
                             <p:spacer/>
                             
                             
-                            <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="@(.tablaDetalles),panelDatos"/>
-                            <p:commandButton value="Ajustar" action="#{prestamoController.ajustar()}" update="@(.tablaDetalles),panelDatos" 
+                            <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="@(.tablaDetalles),panelDatos,panelCliente" process="panelCliente,panelDatos"/>
+                            <p:commandButton value="Ajustar" action="#{prestamoController.ajustar()}" update="@(.tablaDetalles),panelDatos,panelCliente" process="panelCliente,panelDatos" 
                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_ajuste'))}"/>
 
                         </h:panelGrid>
@@ -309,6 +311,7 @@
 
 
         </h:form>
+    
     </ui:define>
 
 </ui:composition>

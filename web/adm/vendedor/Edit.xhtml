@@ -52,7 +52,12 @@
                         <p:inputText id="version" value="#{vendedorController.selected.version}" title="#{bundle.CreateVendedorTitle_version}" />
 
                         <p:outputLabel value="#{bundle.CreateVendedorLabel_estado}" for="estado" />
-                        <p:inputText id="estado" value="#{vendedorController.selected.estado}" title="#{bundle.CreateVendedorTitle_estado}" />
+                        <p:selectOneMenu id="estado" value="#{vendedorController.selected.estado}" >
+                            <f:selectItems value="#{estadoController.itemsAvailableSelectOne}"
+                                           var="estadoItem"
+                                           itemValue="#{estadoItem}"/>
+                        </p:selectOneMenu>
+                        
                     </p:panelGrid>
                     <p:commandButton actionListener="#{vendedorController.update}" value="#{bundle.Save}" update="display,:VendedorListForm:datalist,:growl" oncomplete="handleSubmit(args, 'VendedorEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="VendedorEditDialog.hide()"/>

@@ -19,7 +19,9 @@
     </ui:define>
 
     <ui:define name="body">
+               
         <h:form id="PrestamoEditForm">
+
 
             <p:tabView>
 
@@ -35,11 +37,13 @@
                                         <h:outputText value="Fecha Operación: "
                                                       style="font-size: 10pt"/>
                                         <p:calendar value="#{prestamoController.selected.fechaInicioOperacion}"
-                                                    pattern="#{formato.patronFecha}" locale="es"/>
+                                                    pattern="#{formato.patronFecha}" locale="es" required="true">
+                                            <p:ajax event="dateSelect" listener="#{prestamoController.afectaPrimerVencimieto}" update="fechaVencimiento" />
+                                        </p:calendar>
                                         <h:outputText value="Primer Vencimiento: "
                                                       style="font-size: 10pt"/>
-                                        <p:calendar value="#{prestamoController.selected.fechaPrimerVencimiento}"
-                                                    pattern="#{formato.patronFecha}" locale="es"/>
+                                        <p:calendar value="#{prestamoController.selected.fechaPrimerVencimiento}" id="fechaVencimiento"
+                                                    pattern="#{formato.patronFecha}" locale="es" required="true"/>
                                         <h:outputText value="Titular"
                                                       style="font-size: 10pt"/>
 
@@ -104,6 +108,13 @@
                                             <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
                                         </p:selectOneMenu>
 
+                                        <h:outputText value="Canal: "
+                                                      style="font-size: 10pt"/>
+
+                                        <p:selectOneMenu value="#{prestamoController.selected.canal}">
+                                            <f:selectItems value="#{canalController.itemsAvailableSelectOne}"/>
+                                        </p:selectOneMenu>
+
                                         <h:outputText value="Vendedor: "
                                                       style="font-size: 10pt"/>
 
@@ -120,7 +131,8 @@
                                 </td>
                                 <td width="10%">
                                     <h:panelGrid columns="2">
-                                        <p:commandButton action="#{prestamoController.create}" value="#{bundle.Save}" update="@(.tablaDetalles),:growl"  styleClass="btn btn-danger"/>
+                                        <p:commandButton action="#{prestamoController.create}" value="#{bundle.Save}" update="@(.tablaDetalles),:growl"  styleClass="btn btn-danger"
+                                                         disabled="#{not prestamoController.sePuedeGuardar}" id="btnGuardar"/>
                                         <p:commandButton value="#{bundle.Cancel}"  action="List.xhtml?faces-redirect=true"/>
                                     </h:panelGrid>
                                 </td>
@@ -132,41 +144,25 @@
 
                     <p:panel id="panelDatos">
 
-
                         <h:panelGrid columns="4">
-
-                            <h:outputText value="Plan"/>
-                            <h:selectOneMenu  value="#{prestamoController.selected.planGastos}">
-                                <f:selectItems value="#{planGastosController.itemsAvailableSelectOne}"/>
-                            </h:selectOneMenu>
-                            <h:outputText value="Plazo"/>
-                            <h:inputText value="#{prestamoController.selected.plazo}" required="true"/>
 
                             <h:outputText value="Monto Préstamo"/>
                             <h:inputText value="#{prestamoController.selected.montoPrestamo}"  id="montoPrestamo" required="true">
                                 <f:convertNumber locale="#{formato.locale}"/>
                             </h:inputText>
 
-                            <h:outputText value="Tasa"/>
-                            <h:inputText value="#{prestamoController.selected.tasa}" required="true" >
-                            </h:inputText>
-
-
-                            <h:outputText value="Monto Comisiones"/>
-                            <h:inputText value="#{prestamoController.selected.comisiones}" required="true">
-                                <f:convertNumber locale="#{formato.locale}"/>
-                            </h:inputText>
+                            <h:outputText value="Plazo"/>
+                            <h:inputText value="#{prestamoController.selected.plazo}" required="true"/>
 
                             <h:outputText value="Periodicidad de Pago"/>
                             <h:selectOneMenu value="#{prestamoController.selected.periodoPago}">
                                 <f:selectItems value="#{productorEnums.obtPeriodosPago()}"/>
                             </h:selectOneMenu>
 
-
-                            <h:outputText value="Monto Gastos"/>
-                            <h:inputText value="#{prestamoController.selected.gastos}" required="true" disabled="true">
-                                <f:convertNumber locale="#{formato.locale}"/>
-                            </h:inputText>
+                            <h:outputText value="Plan"/>
+                            <h:selectOneMenu  value="#{prestamoController.selected.planGastos}">
+                                <f:selectItems value="#{planGastosController.itemsAvailableSelectOne}"/>
+                            </h:selectOneMenu>
 
                             <h:outputText value="Sistema de Amotización"/>
                             <p:selectOneMenu value="#{prestamoController.selected.sistemaAmortizacion}">
@@ -176,18 +172,52 @@
 
                             </p:selectOneMenu>
 
+                            <h:outputText value="Moneda"/>
+                            <p:selectOneMenu value="#{prestamoController.selected.moneda}">
+                                <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
+                            </p:selectOneMenu>
+
+
+                            <h:outputText value="Tasa"/>
+                            <h:inputText value="#{prestamoController.selected.tasa}" required="true" >
+                            </h:inputText>
+
+                            <p:spacer/>
+                            <p:spacer/>
+
+                            <h:outputText value="Monto Comisiones"/>
+                            <h:inputText value="#{prestamoController.selected.comisiones}" required="true">
+                                <f:convertNumber locale="#{formato.locale}"/>
+                            </h:inputText>
+
+                            <h:outputText value="IVA Comisiones"/>
+                            <h:inputText value="#{prestamoController.selected.impuestoIVAcomisiones}" required="true">
+                                <f:convertNumber locale="#{formato.locale}"/>
+                            </h:inputText>
+
+
+                            <h:outputText value="Monto Gastos"/>
+                            <h:inputText value="#{prestamoController.selected.gastos}" required="true" disabled="true">
+                                <f:convertNumber locale="#{formato.locale}"/>
+                            </h:inputText>
+
+                            <h:outputText value="IVA Gastos"/>
+                            <h:inputText value="#{prestamoController.selected.impuestoIVAgastos}" required="true" disabled="true">
+                                <f:convertNumber locale="#{formato.locale}"/>
+                            </h:inputText>
+
+
+
 
                             <h:outputText value="Capital"/>
                             <h:inputText value="#{prestamoController.selected.capital}"  id="montoCapital" disabled="true">
                                 <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                             </h:inputText>
 
+                            <p:spacer/>
+                            <p:spacer/>
 
 
-                            <h:outputText value="Moneda"/>
-                            <p:selectOneMenu value="#{prestamoController.selected.moneda}">
-                                <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
-                            </p:selectOneMenu>
 
                             <h:outputText value="Total Interes"/>
                             <h:inputText value="#{prestamoController.selected.totalIntereses}" disabled="true">
@@ -198,7 +228,7 @@
 
 
 
-                            <h:outputText value="Total IVA"/>
+                            <h:outputText value="IVA Intereses"/>
                             <h:inputText value="#{prestamoController.selected.impuestoIVA}" disabled="true">
                                 <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                             </h:inputText>
@@ -212,22 +242,29 @@
                                 <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                             </h:inputText>
 
-                            <p:spacer/>
-                            <p:spacer/>
 
-                            <h:outputText value="Monto Cuota"/>
-                            <h:inputText value="#{prestamoController.selected.montoCuota}" disabled="true" >
-                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                            </h:inputText>
 
-                            <p:spacer/>
+
+                            <p:spacer/> 
                             <p:spacer/>
                             
-                            <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="@(.tablaDetalles),panelDatos"/>
-                            <p:commandButton value="Ajustar" action="#{prestamoController.ajustar()}" update="@(.tablaDetalles),panelDatos" 
+                            
+                            <p:commandButton value="Calcular" action="#{prestamoController.calcular()}" update="@(.tablaDetalles),panelDatos,panelCliente" process="panelCliente,panelDatos"/>
+                            <p:commandButton value="Ajustar" action="#{prestamoController.ajustar()}" update="@(.tablaDetalles),panelDatos,panelCliente" process="panelCliente,panelDatos" 
                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_ajuste'))}"/>
 
                         </h:panelGrid>
+
+                        <div style="position: absolute; left: calc(50% + 1px); top: calc(60% + 100px); 
+                             width: 400px;height: 75px;border: 3px solid #bbb;text-align: center; 
+                             -webkit-border-radius: 10px;
+                             border-radius: 10px;
+                             background-color: #ddd;
+                             -moz-border-radius: 10px;">
+                            <h:outputText value="#{prestamoController.selected.montoCuota}" style="font-size: 26pt;font-weight: bold;top: calc(50% - 16px);position: relative" >
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:outputText>    
+                        </div>
 
                     </p:panel>
 
@@ -275,7 +312,12 @@
 
 
 
+
+
+
+
         </h:form>
+    
     </ui:define>
 
 </ui:composition>

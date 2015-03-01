@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -287,6 +289,16 @@ public class Prestamo implements Serializable {
     }
 
     public List<DetPrestamo> getDetalles() {
+        if (detalles != null) {
+            Comparator<DetPrestamo> com = new Comparator<DetPrestamo>() {
+
+                @Override
+                public int compare(DetPrestamo o1, DetPrestamo o2) {
+                   return o1.getNroCuota() > o2.getNroCuota() ? 1:-1;
+                }
+            };
+            Collections.sort(detalles, com);
+        }
         return detalles;
     }
 
@@ -308,12 +320,6 @@ public class Prestamo implements Serializable {
 
     public void setFechaInicioOperacion(Date fechaInicioOperacion) {
         this.fechaInicioOperacion = fechaInicioOperacion;
-        if (fechaInicioOperacion != null) {
-            DateTime d = new DateTime(fechaInicioOperacion);
-            
-            this.fechaPrimerVencimiento = d.plusMonths(1).toDate();
-        }
-
     }
 
     public BigDecimal getGastos() {

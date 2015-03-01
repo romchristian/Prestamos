@@ -36,6 +36,7 @@ import javax.inject.Named;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.primefaces.event.SelectEvent;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
@@ -72,8 +73,17 @@ public class PrestamoController implements Serializable {
     private Date finFiltro;
     private EstadoPrestamo estadoPrestamoFiltro;
     private Cliente clienteFiltro;
+    private boolean sePuedeGuardar = false;
 
     private boolean buscaPorCliente;
+
+    public boolean isSePuedeGuardar() {
+        return sePuedeGuardar;
+    }
+
+    public void setSePuedeGuardar(boolean sePuedeGuardar) {
+        this.sePuedeGuardar = sePuedeGuardar;
+    }
 
     public long getId() {
         return id;
@@ -156,6 +166,14 @@ public class PrestamoController implements Serializable {
         selected.setSistema(null);
         selected.setDetalles(null);
         selected.calcula();
+        sePuedeGuardar = true;
+    }
+
+    public void afectaPrimerVencimieto(SelectEvent event) {
+        Date date = (Date) event.getObject();
+        DateTime d = new DateTime(date);
+
+        selected.setFechaPrimerVencimiento(d.plusMonths(1).toDate());
     }
 
     public String calcular() {
@@ -194,6 +212,7 @@ public class PrestamoController implements Serializable {
             selected.setDetalles(null);
             selected.calcula();
 
+            sePuedeGuardar = true;
             BigDecimal _totalOperacion_teorica = selected.getMontoCuota().multiply(new BigDecimal(selected.getPlazo()));
             BigDecimal _diffTotaloperacion = new BigDecimal(BigInteger.ZERO);
 //
@@ -212,6 +231,22 @@ public class PrestamoController implements Serializable {
         }
 
         return null;
+    }
+
+    public void cargarDescuento(DetPrestamo d) {
+
+        if (d.isTieneDescuento()) {
+
+            BigDecimal moratorio = d.getMoraMoratorio() == null ? new BigDecimal(BigInteger.ZERO) : d.getMoraMoratorio();
+            BigDecimal punitorio = d.getMoraPunitorio() == null ? new BigDecimal(BigInteger.ZERO) : d.getMoraPunitorio();
+
+            d.setDescuento(punitorio.add(moratorio).add(d.getCuotaInteres()).add(d.getImpuestoIvaCuota()));
+
+        } else {
+            d.setDescuento(new BigDecimal(BigInteger.ZERO));
+           
+        }
+
     }
 
     public Pagare getPagare() {

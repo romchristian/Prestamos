@@ -25,7 +25,12 @@
 
                     <f:facet name="header">
                         <p:button id="createButton" icon="ui-icon-plus"  value="#{bundle.Create}"  outcome="Create"/>
-                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}"   disabled="#{empty planGastosController.selected}"/>
+
+                        <p:button id="viewButton"   icon="ui-icon-search" value="#{bundle.View}"  disabled="#{empty planGastosController.selected}" outcome="View"
+                                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}">
+                            <f:param name="id" value="#{planGastosController.selected.id}"/>
+                        </p:button>
+                        
                         <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}"  disabled="#{empty planGastosController.selected}" outcome="Edit"
                                   rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}">
                             <f:param name="id" value="#{planGastosController.selected.id}"/>
@@ -63,7 +68,6 @@
                 </p:dataTable>
 
             </h:form>
-
 
         </ui:define>
     </ui:composition>
