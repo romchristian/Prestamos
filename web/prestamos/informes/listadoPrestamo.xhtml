@@ -12,7 +12,7 @@
     </ui:define>
     <ui:define name="body">
 
-        <h:form id="formCobroCuota">
+        <h:form id="formListadoPrestamo">
 
 
             <h:panelGroup>
@@ -26,33 +26,72 @@
                                  margin-bottom: 5px">
 
 
-                                <h:panelGrid columns="3">
-                                    <h:outputText value="Empresa: "
-                                                  style="font-size: 10pt"/>
+                                
+                                  <h:panelGrid columns="4">
+                                        <h:outputText value="Cliente"
+                                                      style="font-size: 10pt"/>
 
-                                    <p:selectOneMenu value="#{prestamoListadoBean.empresa}">
-                                        <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
-                                    </p:selectOneMenu>
-                                    <p:spacer/>
+                                        <p:autoComplete value="#{prestamoListadoBean.cliente}"  id="autoCompleteCliente" size="50"
+                                                        completeMethod="#{autoCompleteCliente.completar}"
+                                                        forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
+                                                        disabled="#{not prestamoListadoBean.buscaPorCliente}"
+                                                        >
+                                            <!--                                            <p:ajax event="itemSelect" update="textoConyugeDeudor"/>-->
+                                                
+                                        </p:autoComplete>
+
+                                        <p:spacer/>
 
 
-                                    <h:outputText value="Sucursal: "
-                                                  style="font-size: 10pt"/>
+                                        <h:panelGroup style="vertical-align: top;">
+                                            <p:selectBooleanCheckbox value="#{prestamoListadoBean.buscaPorCliente}" >
+                                                <p:ajax update="autoCompleteCliente"/>
+                                            </p:selectBooleanCheckbox>
+                                            <p:spacer width="10"/>
+                                            <h:outputText value="Buscar por cliente" style="font-size: 10pt;padding: 0;margin: 0;"/>
+                                        </h:panelGroup>
 
-                                    <p:selectOneMenu value="#{prestamoListadoBean.sucursal}">
-                                        <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
-                                    </p:selectOneMenu>
-                                    <p:spacer/>
 
-                                    <h:outputText value="Estado: "
-                                                  style="font-size: 10pt"/>
 
-                                    <p:selectOneMenu value="#{prestamoListadoBean.estado}">
-                                        <f:selectItems value="#{productorEnums.obtEstadosPrestamo()}"/>
-                                    </p:selectOneMenu>
-                                    <p:commandButton value="Buscar" action="#{prestamoListadoBean.buscaPrestamos()}" update="@(.escuchaSeleccionCuota)"/>
 
-                                </h:panelGrid>
+                                        <h:outputText value="Empresa: "
+                                                      style="font-size: 10pt"/>
+
+                                        <p:selectOneMenu value="#{prestamoListadoBean.empresa}">
+                                            <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
+                                        </p:selectOneMenu>
+
+                                        <h:outputText value="Sucursal: "
+                                                      style="font-size: 10pt"/>
+
+                                        <p:selectOneMenu value="#{prestamoListadoBean.sucursal}">
+                                            <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
+                                        </p:selectOneMenu>
+
+
+                                        <h:outputText value="Incio: "
+                                                      style="font-size: 10pt"/>
+                                        <p:calendar value="#{prestamoListadoBean.inicio}" locale="es"
+                                                    pattern="#{formato.patronFecha}"/>
+
+                                        <h:outputText value="Fin: "
+                                                      style="font-size: 10pt"/>
+                                        <p:calendar value="#{prestamoListadoBean.fin}" locale="es"
+                                                    pattern="#{formato.patronFecha}" timeZone="America/Asuncion"/> 
+
+                                        <h:outputText value="Estado: "
+                                                      style="font-size: 10pt"/>
+
+                                        <p:selectOneMenu value="#{prestamoListadoBean.estado}">
+                                            <f:selectItems value="#{productorEnums.obtEstadosPrestamo()}"/>
+                                        </p:selectOneMenu>
+                                        <p:spacer/>
+                                        <p:commandButton value="Buscar" action="#{prestamoListadoBean.buscaPrestamos()}" update="treeDataList"/>
+
+                                    </h:panelGrid>
+                                
+                                
+                              
                             </div>
                         </div>
 
@@ -68,7 +107,7 @@
                                     <f:facet name="header">
                                         Préstamo
                                     </f:facet>
-                                    <h:outputText value="#{c.empresa.razonSocial} - #{c.sucursal.nombre}: #{c.descPrestamo}" />
+                                    <h:outputText value="#{c.cliente} - #{c.nroDocumento}: #{c.descPrestamo}" />
                                 </p:column>
 
                                 <p:column style="font-size: 12px;">

@@ -18,6 +18,7 @@ insert into rol (nombre, estado, version) values ('prestamos_imprime_detalle_cli
 insert into rol (nombre, estado, version) values ('prestamos_historico','ACTIVO',1);
 insert into rol (nombre, estado, version) values ('prestamos_ajuste','ACTIVO',1);
 insert into rol (nombre, estado, version) values ('prestamos_aplicar_descuentos','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('clientes_imprime_registro_firma','ACTIVO',1);
 
 
 insert into persona(dtype,estado,nrodocumento,usuario,clave,nombre) values('Usuario','ACTIVO','','admin','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918','Administrador');
@@ -37,6 +38,33 @@ INSERT INTO categoria(calificacion) VALUES (2);
 INSERT INTO categoria(calificacion) VALUES (3);
 INSERT INTO categoria(calificacion) VALUES (4);
 INSERT INTO categoria(calificacion) VALUES (5);
+
+INSERT INTO plangastos(estado, nombre, empresa_id) VALUES (0, 'PLAN GASTOS - CONSUMO',1);
+
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(50,360,15,21.35085,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(50,420,15,21.35085,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(50,390,15,21.35085,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(51,510,15,24.0543,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(35,120,15,10.6129,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(51,480,15,24.0543,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(35,180,15,10.6129,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(38,240,15,16.739,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(43,300,15,21.5126,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(35,60,15,10.6129,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(51,570,15,24.2592,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(51,660,15,24.2592,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(51,720,15,27.236,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(35,210,15,16.739,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(38,270,15,16.739,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(35,150,15,10.6129,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(51,690,15,24.2592,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(51,450,15,24.0543,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(43,330,15,21.5126,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(51,600,15,24.2592,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(51,630,15,24.2592,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(35,30,15,10.6129,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(35,90,15,10.6129,1);
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(51,540,15,24.2592,1);
 
 
 

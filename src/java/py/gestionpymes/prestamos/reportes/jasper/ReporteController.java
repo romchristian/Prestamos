@@ -6,12 +6,16 @@
 package py.gestionpymes.prestamos.reportes.jasper;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -22,16 +26,27 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import py.gestionpymes.prestamos.prestamos.web.Pagare;
 
 /**
  *
  * @author Acer
  */
 @Named
-@RequestScoped
-public class ReporteController {
+@ApplicationScoped
+public class ReporteController implements Serializable {
 
     private JasperPrint jasperPrint;
+
+    @PostConstruct
+    private void inicializa() {
+        try {
+            List<Pagare> lista = new ArrayList<>();
+            init(new HashMap(), lista, "reportes/prestamos/pagares.jasper", FacesContext.getCurrentInstance());
+        } catch (JRException ex) {
+            Logger.getLogger(ReporteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void init(Map parametros, Collection<?> lista, String nombre, FacesContext context) throws JRException {
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(lista);
@@ -44,16 +59,36 @@ public class ReporteController {
 
     public void generaPDF(Map parametros, Collection<?> detalles, String archivoPath, String nombre) {
         try {
-            
+
             FacesContext context = FacesContext.getCurrentInstance();
-            init(parametros, detalles, archivoPath,context);
-            
+            init(parametros, detalles, archivoPath, context);
+
             HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
-            response.setHeader( "Content-Disposition", "attachment;filename=" + nombre+".pdf" );
+            response.setHeader("Content-Disposition", "attachment;filename=" + nombre + ".pdf");
             ServletOutputStream outputStream = response.getOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
             context.responseComplete();
-            
+
+        } catch (JRException ex) {
+            throw new RuntimeException(ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ReporteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    public void generaExcel(Map parametros, Collection<?> detalles, String archivoPath, String nombre) {
+        try {
+
+            FacesContext context = FacesContext.getCurrentInstance();
+            init(parametros, detalles, archivoPath, context);
+
+            HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+            response.setHeader("Content-Disposition", "attachment;filename=" + nombre + ".xls");
+            ServletOutputStream outputStream = response.getOutputStream();
+            JasperExportManager.exportReportToXmlStream(jasperPrint, outputStream);
+            context.responseComplete();
+
         } catch (JRException ex) {
             throw new RuntimeException(ex);
         } catch (IOException ex) {

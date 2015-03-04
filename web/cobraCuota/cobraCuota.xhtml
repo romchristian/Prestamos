@@ -131,6 +131,14 @@
                                         <f:convertNumber locale="#{formato.locale}"/>
                                     </h:outputText>
                                 </p:column>
+                                <p:column style="width:100px;font-size: 12px;">
+                                    <f:facet name="header">
+                                        Descuento
+                                    </f:facet>
+                                    <h:outputText value="#{c.detPrestamo.descuento}">
+                                        <f:convertNumber locale="#{formato.locale}"/>
+                                    </h:outputText>
+                                </p:column>
 
                                 <p:column style="width:100px;font-size: 12px;">
                                     <f:facet name="header">
@@ -208,12 +216,15 @@
                             </h:outputText>
 
 
-                            <h:outputLabel for="pagoMinimo" value="Pago Mínimo: " />
-                            <h:outputText id="pagoMinimo" value="#{cobraCuotaBean.cuotaSeleccionada.cuotaInteres.add(cobraCuotaBean.cuotaSeleccionada.montoMora)}" style="font-weight:bold">
+                            <h:outputLabel for="descuento" value="Descuento Mora: " />
+                            <h:outputText id="descuento" value="#{cobraCuotaBean.cuotaSeleccionada.detPrestamo.descuento}" style="font-weight:bold">
                                 <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                             </h:outputText>
 
-
+                            <h:outputLabel for="pagoMinimo" value="Pago Mínimo: " />
+                            <h:outputText id="pagoMinimo" value="#{cobraCuotaBean.cuotaSeleccionada.cuotaInteres.add(cobraCuotaBean.cuotaSeleccionada.montoMora.subtract(cobraCuotaBean.cuotaSeleccionada.descuento))}" style="font-weight:bold">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:outputText>
 
                             <h:outputLabel for="deudaTotal" value="Deuda total: " />
                             <h:outputText id="deudaTotal" value="#{cobraCuotaBean.cuotaSeleccionada.saldoCuota}" style="font-weight:bold">

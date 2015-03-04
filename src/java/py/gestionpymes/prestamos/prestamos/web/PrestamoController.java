@@ -10,15 +10,19 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -34,6 +38,7 @@ import javax.inject.Inject;
 
 import javax.inject.Named;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.primefaces.event.SelectEvent;
@@ -240,7 +245,7 @@ public class PrestamoController implements Serializable {
             BigDecimal moratorio = d.getMoraMoratorio() == null ? new BigDecimal(BigInteger.ZERO) : d.getMoraMoratorio();
             BigDecimal punitorio = d.getMoraPunitorio() == null ? new BigDecimal(BigInteger.ZERO) : d.getMoraPunitorio();
 
-            d.setDescuento(punitorio.add(moratorio).add(d.getCuotaInteres()).add(d.getImpuestoIvaCuota()));
+            d.setDescuento(punitorio.add(moratorio));
 
         } else {
             d.setDescuento(new BigDecimal(BigInteger.ZERO));
@@ -284,12 +289,8 @@ public class PrestamoController implements Serializable {
         };
 
         Collections.sort(data, comp);
-        DateTime dateTimeOpercion = new DateTime(selected.getFechaInicioOperacion());
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy");
-
-        DateTime dateTimeVencimiento = new DateTime(selected.getFechaPrimerVencimiento());
-        DateTimeFormatter fmtVenc = DateTimeFormat.forPattern("dd/MM/yyyy");
-
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("es", "py"));
         NumberFormat nf = NumberFormat.getInstance(new Locale("es", "py"));
 
         Map<String, String> params = new HashMap<String, String>();
@@ -305,8 +306,8 @@ public class PrestamoController implements Serializable {
         params.put("tasa", nf.format(selected.getTasa()));
         params.put("periodoPago", selected.getPeriodoPago().name());
         params.put("sistemaAmortizacion", selected.getSistemaAmortizacion().name());
-        params.put("fechaOperacion", fmt.print(dateTimeOpercion));
-        params.put("fechaPrimerVencimiento", fmt.print(dateTimeVencimiento));
+        params.put("fechaOperacion", sdf.format(selected.getFechaInicioOperacion()));
+        params.put("fechaPrimerVencimiento", sdf.format(selected.getFechaPrimerVencimiento()));
         params.put("periodoPago", selected.getPeriodoPago().name());
         params.put("gastos", nf.format(selected.getGastos()));
         params.put("comisiones", nf.format(selected.getComisiones()));
@@ -344,7 +345,11 @@ public class PrestamoController implements Serializable {
         DateTime dateTimeVencimiento = new DateTime(selected.getFechaPrimerVencimiento());
         DateTimeFormatter fmtVenc = DateTimeFormat.forPattern("dd/MM/yyyy");
 
-        int diaVencimiento = dateTimeVencimiento.getDayOfMonth();
+        //dateTimeVencimiento.t
+        
+        GregorianCalendar gc = new GregorianCalendar(TimeZone.getDefault(), new Locale("es","py"));
+        gc.setTime(selected.getFechaPrimerVencimiento());
+        int diaVencimiento = gc.get(Calendar.DAY_OF_MONTH);
 
         NumberFormat nf = NumberFormat.getInstance(new Locale("es", "py"));
 
@@ -359,7 +364,7 @@ public class PrestamoController implements Serializable {
         params.put("montoPrestamo", nf.format(selected.getMontoPrestamo().setScale(0, RoundingMode.HALF_EVEN)));
         //params.put("capital", nf.format(selected.getCapital()));
         params.put("plazo", nf.format(selected.getPlazo()));
-        params.put("diaVencimiento", nf.format(diaVencimiento));
+        params.put("diaVencimiento", diaVencimiento+"");
         //params.put("periodoPago", selected.getPeriodoPago().name());
         //params.put("sistemaAmortizacion", selected.getSistemaAmortizacion().name());
         params.put("fechaOperacion", fmt.print(dateTimeOpercion));

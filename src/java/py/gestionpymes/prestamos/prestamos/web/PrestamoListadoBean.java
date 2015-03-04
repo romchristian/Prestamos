@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -26,6 +28,9 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalTime;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import py.gestionpymes.prestamos.adm.dao.MonedaFacade;
@@ -64,6 +69,33 @@ public class PrestamoListadoBean implements Serializable {
     private Empresa empresa;
     private Sucursal sucursal;
     private EstadoPrestamo estado;
+    private boolean buscaPorCliente;
+    private Date inicio;
+    private Date fin;
+
+    public boolean isBuscaPorCliente() {
+        return buscaPorCliente;
+    }
+
+    public void setBuscaPorCliente(boolean buscaPorCliente) {
+        this.buscaPorCliente = buscaPorCliente;
+    }
+
+    public Date getInicio() {
+        return inicio;
+    }
+
+    public void setInicio(Date inicio) {
+        this.inicio = inicio;
+    }
+
+    public Date getFin() {
+        return fin;
+    }
+
+    public void setFin(Date fin) {
+        this.fin = fin;
+    }
 
     public EstadoPrestamo getEstado() {
         return estado;
@@ -198,6 +230,20 @@ public class PrestamoListadoBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        DateTime dt = new DateTime(new Date(),DateTimeZone.getDefault());
+        dt.withTime(LocalTime.fromCalendarFields(new GregorianCalendar(new Locale("es", "py"))));
+        
+        inicio = (new DateTime(dt.getYear(), dt.getMonthOfYear(),dt.dayOfMonth().getMinimumValue(),
+                dt.hourOfDay().getMinimumValue(),dt.minuteOfHour().getMinimumValue()))
+                .withTime(LocalTime.fromCalendarFields(new GregorianCalendar(new Locale("es", "py"))))
+                .toDate();
+        fin = (new DateTime(dt.getYear(), dt.getMonthOfYear(),dt.dayOfMonth().getMaximumValue(),
+                dt.hourOfDay().getMaximumValue(),dt.minuteOfHour().getMaximumValue()))
+                .withTime(LocalTime.fromCalendarFields(new GregorianCalendar(new Locale("es", "py"))))
+                .toDate();
+        
+        
+        
         cargaPrestamos();
     }
 
@@ -212,15 +258,16 @@ public class PrestamoListadoBean implements Serializable {
                 return o1.getNroCuota() > o2.getNroCuota() ? 1 : -1;
             }
         };
-        
-        System.out.println("HOLA 1");
 
-        System.out.println("Empre: " + empresa);
-        System.out.println("Suc: " + sucursal);
-        System.out.println("Est: " + estado);
-        if (empresa != null && sucursal != null && estado != null) {
-            System.out.println("HOLA 2");
-            for (Prestamo p : prestamoDAO.findAllPorEmpresa(empresa, sucursal, estado)) {
+        if (empresa != null && sucursal != null) {
+            List<Prestamo> items;
+            if (buscaPorCliente) {
+                items = prestamoDAO.findAllPorEmpresaFechaEstadoCliente(empresa, sucursal, estado, inicio, fin, cliente);
+            } else {
+                items = prestamoDAO.findAllPorEmpresaFechaEstado(empresa, sucursal, estado, inicio, fin);
+            }
+
+            for (Prestamo p : items) {
                 System.out.println("Pres: " + p);
                 TreeNode nodoPrestamo = new DefaultTreeNode(new TreeCuota(p), root);
 
@@ -234,6 +281,7 @@ public class PrestamoListadoBean implements Serializable {
                 }
             }
         }
+
     }
 
     public void agregaAPagar() {
@@ -250,5 +298,4 @@ public class PrestamoListadoBean implements Serializable {
         montoActual = new BigDecimal(BigInteger.ZERO);
     }
 
-    
 }

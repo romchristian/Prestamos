@@ -22,8 +22,6 @@ public class Persona implements Serializable {
     private Long id;
     @Column(updatable = false)
     private String nroDocumento;
-    @Version
-    private Long version;
     @ManyToOne
     private Empresa empresa;
     @ManyToOne
@@ -93,14 +91,6 @@ public class Persona implements Serializable {
 
     public void setTipoDocumento(TipoDocumento tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
     }
 
     public Date getVigencia() {

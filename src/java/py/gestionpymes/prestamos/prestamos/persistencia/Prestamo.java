@@ -60,7 +60,7 @@ public class Prestamo implements Serializable {
     private BigDecimal capital = new BigDecimal(BigInteger.ZERO);
     private int plazo = 12;
     @Column(precision = 38, scale = 8)
-    private BigDecimal tasa;
+    private BigDecimal tasa = new BigDecimal(BigInteger.ZERO);
     @Enumerated(EnumType.STRING)
     private PeriodoPago periodoPago;
     private BigDecimal gastos = new BigDecimal(BigInteger.ZERO);//Gastos de cobranza domiciliaria
@@ -114,6 +114,7 @@ public class Prestamo implements Serializable {
     public Prestamo() {
         this.estado = EstadoPrestamo.PENDIENTE_DESEMBOLSO;
         this.sistemaAmortizacion = SistemaAmortizacion.FRANCES;
+        this.tasa = new BigDecimal(BigInteger.ZERO);
     }
 
     public BigDecimal devuelveSaldoPrestamo() {

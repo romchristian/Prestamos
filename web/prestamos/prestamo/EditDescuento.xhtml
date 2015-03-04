@@ -231,13 +231,13 @@
                 </p:column>
 
                 <p:column headerText="Moratorio">
-                    <h:outputText value="#{d.moraMoratorio}">
+                    <h:outputText value="#{d.calculaSaldoMoratorio()}">
                         <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                     </h:outputText>
                 </p:column>
 
                 <p:column headerText="Punitorio">
-                    <h:outputText value="#{d.moraPunitorio}">
+                    <h:outputText value="#{d.calculaSaldoPunitorio()}">
                         <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                     </h:outputText>
                 </p:column>

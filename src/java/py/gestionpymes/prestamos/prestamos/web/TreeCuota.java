@@ -33,6 +33,8 @@ public class TreeCuota {
     
     private String descPrestamo;
     private String descDetPrestamo;
+    private String cliente;
+    private String nroDocumento;
     private Date fechaVencimiento;
     private int nroCuota;
     private BigDecimal montoCuota;
@@ -66,6 +68,8 @@ public class TreeCuota {
         this.prestamo = prestamo;
         this.empresa = prestamo.getEmpresa();
         this.sucursal = prestamo.getSucursal();
+        this.cliente = prestamo.getCliente().devuelveNombreCompleto();
+        this.nroDocumento = prestamo.getCliente().getNroDocumento();
         NumberFormat nf = NumberFormat.getInstance(new Locale("es","py"));
         this.descPrestamo = "Prestamo # " + prestamo.getId() +" - "+ nf.format(prestamo.getMontoPrestamo());
         this.esPrestamo = true;
@@ -112,13 +116,27 @@ public class TreeCuota {
         return tieneDescuento;
     }
 
+    public String getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
+    public String getNroDocumento() {
+        return nroDocumento;
+    }
+
+    public void setNroDocumento(String nroDocumento) {
+        this.nroDocumento = nroDocumento;
+    }
+    
     public void setTieneDescuento(boolean tieneDescuento) {
         this.tieneDescuento = tieneDescuento;
     }
 
-    
-    
-    public BigDecimal getDescuento() {
+     public BigDecimal getDescuento() {
         return descuento;
     }
 
