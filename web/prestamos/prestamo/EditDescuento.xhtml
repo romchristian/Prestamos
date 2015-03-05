@@ -245,7 +245,7 @@
                 <p:column headerText="Desc.?" style="width: 40px;text-align: center">
                     <p:selectBooleanCheckbox value="#{d.tieneDescuento}">
                         <p:ajax update="@(.tablaDetalles)" process="@this , @(.tablaDetalles)" listener="#{prestamoController.cargarDescuento(d)}"/>
-                        <!--                        <p:ajax update="@(.tablaDetalles)" process="@this , @(.tablaDetalles)" listener="{prestamoController.pagar(d)}"/>-->
+                       
                     </p:selectBooleanCheckbox>
                 </p:column>
 

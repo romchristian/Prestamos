@@ -39,7 +39,7 @@
                         
                         <p:column headerText="Tasa">
                             <h:outputText value="#{d.tasa}">
-                                <f:convertNumber locale="#{formato.locale}"/>
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="8"/>
                             </h:outputText>
                         </p:column>
                         <p:column headerText="Plazo en Dias">

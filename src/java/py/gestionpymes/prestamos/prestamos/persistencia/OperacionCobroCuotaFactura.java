@@ -51,12 +51,44 @@ public class OperacionCobroCuotaFactura extends DetCuentaCliente<FacturaVentaDet
             desc = "Pago moratorio por la cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
         } else if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_PUNITORIO) == 0) {
             desc = "Pago punitorio por la cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
+        }else if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_DESCUENTO) == 0) {
+            desc = "Exoneración de mora por la cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
         }
 
         setDescripcion(desc);
 
     }
 
+    
+     public OperacionCobroCuotaFactura(FacturaVentaDetalle d, BigDecimal credito, BigDecimal debito) {
+        this();
+        this.facturaVentaDetalle = d;
+        this.facturaVenta = d.getFacturaVenta();
+        Prestamo prestamo = d.getDetPrestamo().getPrestamo();
+        setPrestamo(prestamo);
+        setEmpresa(prestamo.getEmpresa());
+        setSucursal(prestamo.getSucursal());
+        setMontoCredito(credito.setScale(0, RoundingMode.HALF_EVEN));
+        setMoneda(d.getFacturaVenta().getMoneda());
+        
+
+        setMontoDebito(debito.setScale(0, RoundingMode.HALF_EVEN));
+
+        String desc = "";
+        if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_CUOTA) == 0) {
+            desc = "Pago de cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
+        } else if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0) {
+            desc = "Pago moratorio por la cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
+        } else if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_PUNITORIO) == 0) {
+            desc = "Pago punitorio por la cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
+        }else if (d.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_DESCUENTO) == 0) {
+            desc = "Exoneración de mora por la cuota #" + d.getDetPrestamo().getNroCuota() + " del Prestamo # " + prestamo.getId();
+        }
+
+        setDescripcion(desc);
+
+    }
+     
     public OperacionCobroCuotaFactura(FacturaVentaDetalle d, boolean esCredito) {
         this(d);
 

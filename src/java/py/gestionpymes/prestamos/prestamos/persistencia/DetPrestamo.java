@@ -277,13 +277,13 @@ public class DetPrestamo implements Serializable {
 
     public void calculaCuotaIvaIncluido() {
         BigDecimal ivaMesFijo = prestamo.getImpuestoIVA().divide(new BigDecimal(prestamo.getPlazo())).setScale(8, RoundingMode.HALF_DOWN);
-        montoCuota = montoCuota.add(ivaMesFijo).setScale(8, RoundingMode.HALF_DOWN);
+        montoCuota = montoCuota.add(ivaMesFijo).setScale(0, RoundingMode.HALF_DOWN);
         saldoCuota = montoCuota;
     }
 
     public BigDecimal devuelveMontoMora() {
         if (saldoCuota.compareTo(new BigDecimal(0)) == 0) {
-            return montoMora.setScale(8, RoundingMode.HALF_DOWN);
+            return montoMora.setScale(0, RoundingMode.HALF_DOWN);
         } else {
             BigDecimal moratorio = calculaSaldoMoratorio();
 
@@ -316,7 +316,7 @@ public class DetPrestamo implements Serializable {
             setIvaMoraMoratorio(R.multiply(new BigDecimal(0.1)).setScale(8, RoundingMode.HALF_EVEN));
             R = R.add(getIvaMoraMoratorio());
         }
-        return R;
+        return R.setScale(0, RoundingMode.HALF_EVEN);
     }
 
     public BigDecimal calculaMontoPorDiasPunitorio() {
@@ -328,7 +328,7 @@ public class DetPrestamo implements Serializable {
             setIvaMoraPunitorio(R.multiply(new BigDecimal(0.1)).setScale(8, RoundingMode.HALF_EVEN));
             R = R.add(getIvaMoraPunitorio());
         }
-        return R;
+        return R.setScale(0, RoundingMode.HALF_EVEN);
     }
 
     public BigDecimal getMontoPago() {
@@ -383,28 +383,30 @@ public class DetPrestamo implements Serializable {
 
     public boolean afectaSaldoCuota(BigDecimal monto, String refMonto) {
         boolean R = false;
-        saldoCuota.setScale(8, RoundingMode.HALF_EVEN);
-        monto.setScale(8, RoundingMode.HALF_EVEN);
-        BigDecimal mora = devuelveMontoMora().setScale(8, RoundingMode.HALF_EVEN);
+        saldoCuota.setScale(0, RoundingMode.HALF_EVEN);
+        monto.setScale(0, RoundingMode.HALF_EVEN);
+        BigDecimal mora = devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
 
-        if ((saldoCuota.add(mora).compareTo(monto)) >= 0) {
+        
+        
+        if ((saldoCuota.add(mora).add(descuento).compareTo(monto)) >= 0) {
 
             montoPago = montoPago.add(monto);
-            if (refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_CUOTA) == 0) {
-                saldoCuota = saldoCuota.subtract(monto);
-            } else if (refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0) {
+            saldoCuota = saldoCuota.subtract(monto);
+            
+            if (refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0) {
                 moraMoratorio = moraMoratorio.add(monto);
-                saldoCuota = saldoCuota.subtract(monto);
+               
             } else if (refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_PUNITORIO) == 0) {
                 moraPunitorio = moraPunitorio.add(monto);
-                saldoCuota = saldoCuota.subtract(monto);
+                
             }
 
             ultimoPago = new Date();
 
             R = true;
 
-            //System.out.println("SALDO CUOTAAAAAA: "  + saldoCuota);
+           
             if (saldoCuota.compareTo(new BigDecimal(0)) == 0) {
                 //System.out.println("CANCELOOOOOOOOOOOOOO");
                 estado = EstadoDetPrestamo.CANCELADO;

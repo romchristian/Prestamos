@@ -24,7 +24,7 @@ public class FacturaVentaDetalle implements Serializable {
     public final static String MONTO_CUOTA = "monto_cuota";
     public final static String MONTO_MORATORIO = "monto_moratorio";
     public final static String MONTO_PUNITORIO = "monto_punitorio";
-     public final static String MONTO_DESCUENTO = "monto_descuento";
+    public final static String MONTO_DESCUENTO = "monto_descuento";
     
     private static final long serialVersionUID = 1L;
     @Id

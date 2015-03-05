@@ -7,6 +7,7 @@ package py.gestionpymes.prestamos.prestamos.web;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -174,7 +175,7 @@ public class CobraCuotaBean implements Serializable {
             
             
             
-            if (t.getMontoAPagar().compareTo(t.getMontoMora()) < 0) {
+            if (t.getMontoAPagar().compareTo(t.getMontoMora().subtract(t.getDescuento())) < 0) {
                 //afectar punitorio
                 aplicaAPunitorio = t.getMontoAPagar().multiply(new BigDecimal(0.2));
                 //afecta moratorio
@@ -185,7 +186,7 @@ public class CobraCuotaBean implements Serializable {
                 //afecta moratorio
                 aplicaAMoratorio = t.getMontoMoratorio();
                 //aplicar a cuota la diferencia
-                aplicaACuota = t.getMontoAPagar().subtract(t.getMontoMora());
+                aplicaACuota = t.getMontoAPagar().subtract(t.getMontoMora().subtract(t.getDescuento()));
             }
 
             FacturaVentaDetalle d = new FacturaVentaDetalle();
@@ -251,6 +252,21 @@ public class CobraCuotaBean implements Serializable {
                 facturaVenta.getDetalles().add(d3);
                 d3.setDetPrestamo(t.getDetPrestamo());
                 d3.setRefMonto(FacturaVentaDetalle.MONTO_PUNITORIO);
+                nrolinea++;
+            }
+            
+            if (t.getDescuento().compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
+                FacturaVentaDetalle d4 = new FacturaVentaDetalle();
+                d4.setFacturaVenta(facturaVenta);
+                d4.setNrolinea(nrolinea);
+                d4.setCantidad(new BigDecimal(BigInteger.ONE));
+
+                d4.setDescripcion("Exoneración de Mora " + t.getDescDetPrestamo() + ", Prestamo #" + t.getPrestamo().getId());
+                d4.setPrecioUnitario(t.getDescuento().multiply(new BigDecimal(-1)));
+                d4.setGravada10(d4.getCantidad().multiply(d4.getPrecioUnitario()));
+                facturaVenta.getDetalles().add(d4);
+                d4.setDetPrestamo(t.getDetPrestamo());
+                d4.setRefMonto(FacturaVentaDetalle.MONTO_DESCUENTO);
                 nrolinea++;
             }
 
@@ -437,12 +453,12 @@ public class CobraCuotaBean implements Serializable {
                 CobraCuotaBean controller = (CobraCuotaBean) context.getApplication().getELResolver().
                         getValue(context.getELContext(), null, "cobraCuotaBean");
                 
-                if (montoPago.compareTo(controller.getCuotaSeleccionada().getCuotaInteres().add(controller.getCuotaSeleccionada().getMontoMora())) < 0) {
+                if (montoPago.compareTo(controller.getCuotaSeleccionada().getCuotaInteres().add(controller.getCuotaSeleccionada().getMontoMora()).subtract(controller.getCuotaSeleccionada().getDescuento())) < 0) {
                     FacesMessage msg = new FacesMessage("Debe pagar por lo menos el minimo");
                     throw new ValidatorException(msg);
                 }
                 
-                if (montoPago.compareTo(controller.getCuotaSeleccionada().getSaldoCuota().add(controller.getCuotaSeleccionada().getMontoMora())) > 0) {
+                if (montoPago.compareTo(controller.getCuotaSeleccionada().getSaldoCuota().add(controller.getCuotaSeleccionada().getMontoMora()).subtract(controller.getCuotaSeleccionada().getDescuento())) > 0) {
                     FacesMessage msg = new FacesMessage("El pago excede el monto de la cuota");
                     throw new ValidatorException(msg);
                 }

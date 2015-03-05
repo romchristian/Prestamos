@@ -61,7 +61,7 @@ import py.gestionpymes.prestamos.reportes.jasper.ReporteController;
 @Named("prestamoController")
 @ViewScoped
 public class PrestamoController implements Serializable {
-
+    
     @EJB
     private py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO ejbFacade;
     private List<Prestamo> items = null;
@@ -71,7 +71,7 @@ public class PrestamoController implements Serializable {
     private ReporteController reporteController;
     private Pagare pagare;
     private DetPrestamo detPrestamo;
-
+    
     private Empresa empresaFiltro;
     private Sucursal sucursalFiltro;
     private Date inicioFiltro;
@@ -79,108 +79,108 @@ public class PrestamoController implements Serializable {
     private EstadoPrestamo estadoPrestamoFiltro;
     private Cliente clienteFiltro;
     private boolean sePuedeGuardar = false;
-
+    
     private boolean buscaPorCliente;
-
+    
     public boolean isSePuedeGuardar() {
         return sePuedeGuardar;
     }
-
+    
     public void setSePuedeGuardar(boolean sePuedeGuardar) {
         this.sePuedeGuardar = sePuedeGuardar;
     }
-
+    
     public long getId() {
         return id;
     }
-
+    
     public void setId(long id) {
         this.id = id;
     }
-
+    
     public void cargaDatos() {
         if (id > 0) {
             selected = getPrestamo(id);
         }
-
+        
     }
-
+    
     public boolean isBuscaPorCliente() {
         return buscaPorCliente;
     }
-
+    
     public void setBuscaPorCliente(boolean buscaPorCliente) {
         this.buscaPorCliente = buscaPorCliente;
     }
-
+    
     public Cliente getClienteFiltro() {
         return clienteFiltro;
     }
-
+    
     public void setClienteFiltro(Cliente clienteFiltro) {
         this.clienteFiltro = clienteFiltro;
     }
-
+    
     public Empresa getEmpresaFiltro() {
         return empresaFiltro;
     }
-
+    
     public void setEmpresaFiltro(Empresa empresaFiltro) {
         this.empresaFiltro = empresaFiltro;
     }
-
+    
     public Sucursal getSucursalFiltro() {
         return sucursalFiltro;
     }
-
+    
     public void setSucursalFiltro(Sucursal sucursalFiltro) {
         this.sucursalFiltro = sucursalFiltro;
     }
-
+    
     public Date getInicioFiltro() {
         return inicioFiltro;
     }
-
+    
     public void setInicioFiltro(Date inicioFiltro) {
         this.inicioFiltro = inicioFiltro;
     }
-
+    
     public Date getFinFiltro() {
         return finFiltro;
     }
-
+    
     public void setFinFiltro(Date finFiltro) {
         this.finFiltro = finFiltro;
     }
-
+    
     public EstadoPrestamo getEstadoPrestamoFiltro() {
         return estadoPrestamoFiltro;
     }
-
+    
     public void setEstadoPrestamoFiltro(EstadoPrestamo estadoPrestamoFiltro) {
         this.estadoPrestamoFiltro = estadoPrestamoFiltro;
     }
-
+    
     @PostConstruct
     public void init() {
         inicioFiltro = new Date();
         finFiltro = new Date();
     }
-
+    
     public void ajustar() {
         selected.setSistema(null);
         selected.setDetalles(null);
         selected.calcula();
         sePuedeGuardar = true;
     }
-
+    
     public void afectaPrimerVencimieto(SelectEvent event) {
         Date date = (Date) event.getObject();
         DateTime d = new DateTime(date);
-
+        
         selected.setFechaPrimerVencimiento(d.plusMonths(1).toDate());
     }
-
+    
     public String calcular() {
         if (selected.getPlanGastos() != null) {
             DetPlanGastos detPlan = null;
@@ -196,7 +196,7 @@ public class PrestamoController implements Serializable {
                     periocidad = 1;
                     break;
             }
-
+            
             int plazosdias = selected.getPlazo() * periocidad;//22-03-2015 modifique para poder calcular bien los días, no traía el PanGastos por no calcular bien los días.
             int i = 0;
             for (DetPlanGastos d : selected.getPlanGastos().getDetalles()) {
@@ -216,7 +216,7 @@ public class PrestamoController implements Serializable {
             selected.setSistema(null);
             selected.setDetalles(null);
             selected.calcula();
-
+            
             sePuedeGuardar = true;
             BigDecimal _totalOperacion_teorica = selected.getMontoCuota().multiply(new BigDecimal(selected.getPlazo()));
             BigDecimal _diffTotaloperacion = new BigDecimal(BigInteger.ZERO);
@@ -234,65 +234,68 @@ public class PrestamoController implements Serializable {
 //            }
 
         }
-
+        
         return null;
     }
-
+    
     public void cargarDescuento(DetPrestamo d) {
-
+        System.out.println("isTieneDescuento: " + d.isTieneDescuento());
         if (d.isTieneDescuento()) {
-
-            BigDecimal moratorio = d.getMoraMoratorio() == null ? new BigDecimal(BigInteger.ZERO) : d.getMoraMoratorio();
-            BigDecimal punitorio = d.getMoraPunitorio() == null ? new BigDecimal(BigInteger.ZERO) : d.getMoraPunitorio();
-
+            
+            BigDecimal moratorio = d.calculaSaldoMoratorio() == null ? new BigDecimal(BigInteger.ZERO) : d.calculaSaldoMoratorio();
+            BigDecimal punitorio = d.calculaSaldoPunitorio() == null ? new BigDecimal(BigInteger.ZERO) : d.calculaSaldoPunitorio();
+            
             d.setDescuento(punitorio.add(moratorio));
-
+            
+            System.out.println("Valor moratorio: " + moratorio);
+            System.out.println("Valor punitorio: " + punitorio);
+            System.out.println("Valor de descuento: " + d.getDescuento());
         } else {
             d.setDescuento(new BigDecimal(BigInteger.ZERO));
-           
+            
         }
-
+        
     }
-
+    
     public Pagare getPagare() {
         return pagare;
     }
-
+    
     public void setPagare(Pagare pagare) {
         this.pagare = pagare;
     }
-
+    
     public void imprimePagare() {
-
+        
         pagare = new Pagare(selected);
-
+        
         List<Pagare> data = new ArrayList<>();
         data.add(pagare);
-
+        
         reporteController.generaPDF(new HashMap(), data, "reportes/prestamos/pagares.jasper", "pagare_" + selected.getCliente().getNroDocumento());
     }
-
+    
     public void imprimeLiquidacionPrestamo() {
-
+        
         List<LiquidacionPrestamo> data = new ArrayList<>();
-
+        
         for (DetPrestamo dp : selected.getDetalles()) {
             data.add(new LiquidacionPrestamo(dp));
         }
-
+        
         Comparator<LiquidacionPrestamo> comp = new Comparator<LiquidacionPrestamo>() {
-
+            
             @Override
             public int compare(LiquidacionPrestamo o1, LiquidacionPrestamo o2) {
                 return o1.getNroCuota() > o2.getNroCuota() ? 1 : -1;
             }
         };
-
+        
         Collections.sort(data, comp);
         
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("es", "py"));
         NumberFormat nf = NumberFormat.getInstance(new Locale("es", "py"));
-
+        
         Map<String, String> params = new HashMap<String, String>();
         params.put("nroOperacion", nf.format(selected.getId()));//nf.format(selected.getId())
         params.put("empresa", selected.getEmpresa() == null ? " " : selected.getEmpresa().getRazonSocial());
@@ -318,41 +321,40 @@ public class PrestamoController implements Serializable {
         params.put("moneda", selected.getMoneda() == null ? "" : selected.getMoneda().getNombre());
         params.put("firmaConyugeTitular", selected.isFirmaConyugeTitular() == false ? "no" : "si");
         params.put("firmaConyugeCodeudor", selected.isFirmaConyugeCodeudor() == false ? "no" : "si");
-
+        
         reporteController.generaPDF(params, data, "reportes/prestamos/liquidacion.jasper", "liquidacion_prestamo_" + selected.getCliente().getNroDocumento());
     }
-
+    
     public void imprimeDetalleParaCliente() {
-
+        
         List<LiquidacionPrestamo> data = new ArrayList<>();
-
+        
         for (DetPrestamo dp : selected.getDetalles()) {
             data.add(new LiquidacionPrestamo(dp));
         }
-
+        
         Comparator<LiquidacionPrestamo> comp = new Comparator<LiquidacionPrestamo>() {
-
+            
             @Override
             public int compare(LiquidacionPrestamo o1, LiquidacionPrestamo o2) {
                 return o1.getNroCuota() > o2.getNroCuota() ? 1 : -1;
             }
         };
-
+        
         Collections.sort(data, comp);
         DateTime dateTimeOpercion = new DateTime(selected.getFechaInicioOperacion());
         DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy");
-
+        
         DateTime dateTimeVencimiento = new DateTime(selected.getFechaPrimerVencimiento());
         DateTimeFormatter fmtVenc = DateTimeFormat.forPattern("dd/MM/yyyy");
 
         //dateTimeVencimiento.t
-        
-        GregorianCalendar gc = new GregorianCalendar(TimeZone.getDefault(), new Locale("es","py"));
+        GregorianCalendar gc = new GregorianCalendar(TimeZone.getDefault(), new Locale("es", "py"));
         gc.setTime(selected.getFechaPrimerVencimiento());
         int diaVencimiento = gc.get(Calendar.DAY_OF_MONTH);
-
+        
         NumberFormat nf = NumberFormat.getInstance(new Locale("es", "py"));
-
+        
         Map<String, String> params = new HashMap<String, String>();
         params.put("nroOperacion", nf.format(selected.getId()));//nf.format(selected.getId())
         //params.put("empresa", selected.getEmpresa() == null ? " " : selected.getEmpresa().getRazonSocial());
@@ -364,7 +366,7 @@ public class PrestamoController implements Serializable {
         params.put("montoPrestamo", nf.format(selected.getMontoPrestamo().setScale(0, RoundingMode.HALF_EVEN)));
         //params.put("capital", nf.format(selected.getCapital()));
         params.put("plazo", nf.format(selected.getPlazo()));
-        params.put("diaVencimiento", diaVencimiento+"");
+        params.put("diaVencimiento", diaVencimiento + "");
         //params.put("periodoPago", selected.getPeriodoPago().name());
         //params.put("sistemaAmortizacion", selected.getSistemaAmortizacion().name());
         params.put("fechaOperacion", fmt.print(dateTimeOpercion));
@@ -382,71 +384,71 @@ public class PrestamoController implements Serializable {
 
         reporteController.generaPDF(params, data, "reportes/prestamos/DetalleParaCliente.jasper", "detalle_cliente_" + selected.getCliente().getNroDocumento());
     }
-
+    
     public void desembolsa() {
         ejbFacade.desembolsa(selected);
         buscarADesembolsar();
     }
-
+    
     public void confirmaPagare() {
         selected.setFirmaPagare(true);
         selected.setEstado(EstadoPrestamo.EN_DESEMBOLSO);
         ejbFacade.edit(selected);
     }
-
+    
     public void anulaConfimacion() {
         selected.setFirmaPagare(false);
         selected.setEstado(EstadoPrestamo.PENDIENTE_DESEMBOLSO);
         ejbFacade.edit(selected);
     }
-
+    
     public PrestamoController() {
     }
-
+    
     public Prestamo getSelected() {
         if (selected == null) {
             selected = new Prestamo();
         }
         return selected;
     }
-
+    
     public void setSelected(Prestamo selected) {
         this.selected = selected;
     }
-
+    
     public boolean haySeleccion() {
         return getSelected().getId() != null;
     }
-
+    
     protected void setEmbeddableKeys() {
     }
-
+    
     protected void initializeEmbeddableKey() {
     }
-
+    
     private PrestamoDAO getFacade() {
         return ejbFacade;
     }
-
+    
     public String prepareCreate() {
         selected = new Prestamo();
         initializeEmbeddableKey();
         return "Create.xhtml?faces-redirect=true";
     }
-
+    
     public String create() {
         persist(PersistAction.CREATE, "El prestamo se creo EXITOSAMENTE!");
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
-
+        
         return "List.xhtml?faces-redirect=true";
     }
-
+    
     public void update() {
         persist(PersistAction.UPDATE, "El prestamo se actualizo se creo EXITOSAMENTE!");
     }
-
+    
     public void destroy() {
         persist(PersistAction.DELETE, "El prestamo se elimino se creo EXITOSAMENTE!");
         if (!JsfUtil.isValidationFailed()) {
@@ -454,7 +456,7 @@ public class PrestamoController implements Serializable {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
-
+    
     public void buscar() {
         if (buscaPorCliente) {
             items = ejbFacade.findAllPorEmpresaFechaEstadoCliente(empresaFiltro, sucursalFiltro, estadoPrestamoFiltro, inicioFiltro, finFiltro, clienteFiltro);
@@ -462,15 +464,15 @@ public class PrestamoController implements Serializable {
             items = ejbFacade.findAllPorEmpresaFechaEstado(empresaFiltro, sucursalFiltro, estadoPrestamoFiltro, inicioFiltro, finFiltro);
         }
     }
-
+    
     public void buscarADesembolsar() {
         items = ejbFacade.findAllPorEmpresaFechaEstadoCliente(empresaFiltro, sucursalFiltro, EstadoPrestamo.EN_DESEMBOLSO, inicioFiltro, finFiltro, clienteFiltro);
     }
-
+    
     public List<Prestamo> getItems() {
         return items;
     }
-
+    
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
@@ -498,27 +500,27 @@ public class PrestamoController implements Serializable {
             }
         }
     }
-
+    
     public Prestamo getPrestamo(java.lang.Long id) {
         return getFacade().find(id);
     }
-
+    
     public List<Prestamo> getPrestamosADesembolsar() {
         return items;
     }
-
+    
     public List<Prestamo> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }
-
+    
     public List<Prestamo> getItemsAvailableSelectOne() {
         return getFacade().findAll();
-
+        
     }
-
+    
     @FacesConverter(forClass = Prestamo.class)
     public static class PrestamoControllerConverter implements Converter {
-
+        
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
@@ -528,19 +530,19 @@ public class PrestamoController implements Serializable {
                     getValue(facesContext.getELContext(), null, "prestamoController");
             return controller.getPrestamo(getKey(value));
         }
-
+        
         java.lang.Long getKey(String value) {
             java.lang.Long key;
             key = Long.valueOf(value);
             return key;
         }
-
+        
         String getStringKey(java.lang.Long value) {
             StringBuilder sb = new StringBuilder();
             sb.append(value);
             return sb.toString();
         }
-
+        
         @Override
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {
@@ -554,7 +556,7 @@ public class PrestamoController implements Serializable {
                 return null;
             }
         }
-
+        
     }
-
+    
 }
