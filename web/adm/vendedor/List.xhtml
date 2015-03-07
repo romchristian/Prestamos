@@ -6,99 +6,102 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
+    <ui:composition>
 
+        <ui:decorate template="/plantillaListado.xhtml">
+            <ui:param name="modulo" value="configuracion"/>
 
-        <ui:define name="title">
-            <h:outputText value="Listado de Vendedores"></h:outputText>
-        </ui:define>
+            <ui:define name="title">
+                <h:outputText value="Listado de Vendedores"></h:outputText>
+            </ui:define>
 
-        <ui:define name="body">
-            <h:form id="VendedorListForm">
-                <p:dataTable id="datalist" value="#{vendedorController.items}" var="item"
-                             selectionMode="single" selection="#{vendedorController.selected}"
-                             paginator="true"
-                             rowKey="#{item.id}"
-                             rows="10"
-                             paginatorPosition="bottom"
-                             paginatorAlwaysVisible="false"
-                             rowsPerPageTemplate="10,20,30,40,50"
-                             >
+            <ui:define name="body">
+                <h:form id="VendedorListForm">
+                    <p:dataTable id="datalist" value="#{vendedorController.items}" var="item"
+                                 selectionMode="single" selection="#{vendedorController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 paginatorPosition="bottom"
+                                 paginatorAlwaysVisible="false"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
 
-                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
-                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListVendedorTitle_id}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.id}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListVendedorTitle_nombres}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.nombres}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListVendedorTitle_apellidos}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.apellidos}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListVendedorTitle_tipoDocumento}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.tipoDocumento}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListVendedorTitle_nroDocumento}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.nroDocumento}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListVendedorTitle_vigencia}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.vigencia}">
-                            <f:convertDateTime locale="es" pattern="dd/MM/yyyy" />
-                        </h:outputText>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListVendedorTitle_empresa}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.empresa}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListVendedorTitle_sucursal}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.sucursal}"/>
-                    </p:column>
-                   
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListVendedorTitle_estado}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.estado}"/>
-                    </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVendedorTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVendedorTitle_nombres}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nombres}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVendedorTitle_apellidos}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.apellidos}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVendedorTitle_tipoDocumento}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tipoDocumento}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVendedorTitle_nroDocumento}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nroDocumento}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVendedorTitle_vigencia}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.vigencia}">
+                                <f:convertDateTime locale="es" pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVendedorTitle_empresa}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.empresa}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVendedorTitle_sucursal}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sucursal}"/>
+                        </p:column>
 
-                    <f:facet name="header">
-                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{vendedorController.prepareCreate}" update=":VendedorCreateForm" oncomplete="PF('VendedorCreateDialog').show()"/>
-                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":VendedorViewForm" oncomplete="PF('VendedorViewDialog').show()" disabled="#{empty vendedorController.selected}"/>
-                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":VendedorEditForm" oncomplete="PF('VendedorEditDialog').show()" disabled="#{empty vendedorController.selected}"/>
-                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{vendedorController.destroy}" update=":growl,datalist" disabled="true"/>
-                    </f:facet>
-                </p:dataTable>
-            </h:form>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVendedorTitle_estado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.estado}"/>
+                        </p:column>
 
-            <ui:include src="Create.xhtml"/>
-            <ui:include src="Edit.xhtml"/>
-            <ui:include src="View.xhtml"/>
-        </ui:define>
+                        <f:facet name="header">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{vendedorController.prepareCreate}" update=":VendedorCreateForm" oncomplete="PF('VendedorCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":VendedorViewForm" oncomplete="PF('VendedorViewDialog').show()" disabled="#{empty vendedorController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":VendedorEditForm" oncomplete="PF('VendedorEditDialog').show()" disabled="#{empty vendedorController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{vendedorController.destroy}" update=":growl,datalist" disabled="true"/>
+                        </f:facet>
+                    </p:dataTable>
+                </h:form>
+
+                <ui:include src="Create.xhtml"/>
+                <ui:include src="Edit.xhtml"/>
+                <ui:include src="View.xhtml"/>
+            </ui:define>
+        </ui:decorate>
     </ui:composition>
 
 </html>

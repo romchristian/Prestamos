@@ -6,63 +6,67 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
+    <ui:composition>
+
+        <ui:decorate template="/plantillaListado.xhtml">
+            <ui:param name="modulo" value="configuracion"/>
 
 
-        <ui:define name="title">
-            <h:outputText value="Listado de Canales"></h:outputText>
-        </ui:define>
+            <ui:define name="title">
+                <h:outputText value="Listado de Canales"></h:outputText>
+            </ui:define>
 
-        <ui:define name="body">
-            <h:form id="CanalListForm">
+            <ui:define name="body">
+                <h:form id="CanalListForm">
 
-                <p:dataTable id="datalist" value="#{canalController.items}" var="item"
-                             selectionMode="single" selection="#{canalController.selected}"
-                             rowKey="#{item.id}">
+                    <p:dataTable id="datalist" value="#{canalController.items}" var="item"
+                                 selectionMode="single" selection="#{canalController.selected}"
+                                 rowKey="#{item.id}">
 
-                    <p:ajax event="rowSelect"   update="createButton viewButton editButton"/>
-                    <p:ajax event="rowUnselect" update="createButton viewButton editButton"/>
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton"/>
 
-                    
-                    <p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListCanalTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListCanalTitle_empresa}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.empresa.razonSocial}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListCanalTitle_nombre}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nombre}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListCanalTitle_estado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.estado}"/>
+                        </p:column>
                         <f:facet name="header">
-                            <h:outputText value="#{bundle.ListCanalTitle_id}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.id}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListCanalTitle_empresa}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.empresa.razonSocial}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListCanalTitle_nombre}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.nombre}"/>
-                    </p:column>
-                    
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListCanalTitle_estado}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.estado}"/>
-                    </p:column>
-                    <f:facet name="header">
-                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{canalController.prepareCreate}" update=":CanalCreateForm" oncomplete="PF('CanalCreateDialog').show()"/>
-                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":CanalViewForm" oncomplete="PF('CanalViewDialog').show()" disabled="#{empty canalController.selected}"/>
-                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":CanalEditForm" oncomplete="PF('CanalEditDialog').show()" disabled="#{empty canalController.selected}"/>
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{canalController.prepareCreate}" update=":CanalCreateForm" oncomplete="PF('CanalCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":CanalViewForm" oncomplete="PF('CanalViewDialog').show()" disabled="#{empty canalController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":CanalEditForm" oncomplete="PF('CanalEditDialog').show()" disabled="#{empty canalController.selected}"/>
 
-                    </f:facet>
-                </p:dataTable>
+                        </f:facet>
+                    </p:dataTable>
 
-            </h:form>
+                </h:form>
 
-            <ui:include src="Create.xhtml"/>
-            <ui:include src="Edit.xhtml"/>
-            <ui:include src="View.xhtml"/>
-        </ui:define>
+                <ui:include src="Create.xhtml"/>
+                <ui:include src="Edit.xhtml"/>
+                <ui:include src="View.xhtml"/>
+            </ui:define>
+        </ui:decorate>
     </ui:composition>
 
 </html>

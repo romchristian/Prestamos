@@ -13,7 +13,7 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import py.gestionpymes.prestamos.contabilidad.FacturaVenta;
+import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVenta;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDocumento;
 

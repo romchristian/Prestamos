@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+
+     <h:outputText value="Prestamos" style="font-size: 10pt; position: relative;left: 15px;font-weight: bold;margin-bottom: 20px"/>
+    <br/>
+
+    <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 30px;font-size: 9pt">
+        <h:commandLink  value="Datos de Clientes" action="/adm/cliente/List" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_lectura'))}"/>
+        <h:commandLink  value="Prestamos" action="/prestamos/prestamo/List" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_lectura'))}"/>
+        
+        <h:commandLink  value="Prestamos Históricos" action="/prestamos/prestamoHistorico/List" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_historico'))}"/>
+        
+        <h:commandLink  value="Desembolsa Prestamos" action="/prestamos/prestamo/Desembolsar" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_desembolsa'))}"/>
+        <h:commandLink  value="Cobro Cuotas" action="cobraCuota"
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cobro_cuota'))}"/>
+        <h:commandLink  value="Agenda de Cobros" action="/prestamos/prestamo/agendaCobros" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('agenda_cobro'))}"/>
+
+    </h:panelGrid>
+
+
+</ui:composition>

@@ -8,339 +8,342 @@
 
 
 
-    <ui:composition template="/template.xhtml">
+    <ui:composition>
 
-        <f:metadata>
-            <f:viewParam name="id" value="#{clienteController.id}"/>
-            <f:viewAction action="#{clienteController.cargaDatos()}"/>
-        </f:metadata>
+         <ui:decorate template="/plantillaListado.xhtml">
+            <ui:param name="modulo" value="prestamo"/>
 
-        <ui:define name="title">
-            <h:outputText value="Editar Cliente"></h:outputText>
-        </ui:define>
+            <f:metadata>
+                <f:viewParam name="id" value="#{clienteController.id}"/>
+                <f:viewAction action="#{clienteController.cargaDatos()}"/>
+            </f:metadata>
 
-        <ui:define name="body">
+            <ui:define name="title">
+                <h:outputText value="Editar Cliente"></h:outputText>
+            </ui:define>
 
-            <h:form id="ClienteEditForm">
-                <h:panelGroup id="display" rendered="#{clienteController.selected != null}">
+            <ui:define name="body">
 
-
-
-                    <p:tabView>
-
-
-                        <p:tab title="Datos Personales">
+                <h:form id="ClienteEditForm">
+                    <h:panelGroup id="display" rendered="#{clienteController.selected != null}">
 
 
-                            <h:outputText value="Documento"/>
-                            <p:separator/>
 
-                            <p:panelGrid columns="5" rendered="#{clienteController.selected != null}">
-                                <h:outputText value="Tipo Doc."/>
-                                <h:outputText value="#{clienteController.selected.tipoDocumento}" />
-
-                                <p:spacer width="20" height="0"/>
-
-                                <p:outputLabel value="# documento" for="nrodoc" id="lblnrodoc"/>
-                                <h:outputText value="#{clienteController.selected.nroDocumento}" id="nrodoc"/>
+                        <p:tabView>
 
 
-                                <h:outputText value="Vigencia Documento"/>
-                                <p:calendar value="#{clienteController.selected.vigencia}" id="vigencia" required="true"
-                                            locale="es" pattern="dd/MM/yyyy"/>
-                                <p:spacer width="20" height="0"/>
+                            <p:tab title="Datos Personales">
 
-                            </p:panelGrid>
 
-                            <h:panelGrid columns="1" width="100%">
-                                <p:spacer height="5" width="0"/>
-                                <h:outputText value="Persona"/>
+                                <h:outputText value="Documento"/>
                                 <p:separator/>
-                            </h:panelGrid>
 
-                            <h:panelGrid columns="6" rendered="#{clienteController.selected != null}">
-                                <p:outputLabel value="Primer Nombre" for="primerNombre" id="lblprimerNombre"/>
-                                <p:inputText value="#{clienteController.selected.primerNombre}" required="true" id="primerNombre">
-                                    <p:ajax event="blur" update="primerNombre lblprimerNombre @(.mensajes)"/>
-                                </p:inputText>
-                                <p:outputLabel value="Segun Nombre" for="segundoNombre" id="lblsegundoNombre"/>
-                                <p:inputText value="#{clienteController.selected.segundoNombre}"  id="segundoNombre">
-                                    <p:ajax event="blur" update="segundoNombre lblsegundoNombre @(.mensajes)"/>
-                                </p:inputText>
+                                <p:panelGrid columns="5" rendered="#{clienteController.selected != null}">
+                                    <h:outputText value="Tipo Doc."/>
+                                    <h:outputText value="#{clienteController.selected.tipoDocumento}" />
 
-                                <p:spacer/>
-                                <p:spacer/>
+                                    <p:spacer width="20" height="0"/>
 
-                                <p:outputLabel value="Primer Apellido" for="primerApellido" id="lblprimerApellido"/>            
-                                <p:inputText value="#{clienteController.selected.primerApellido}" required="true" id="primerApellido">
-                                    <p:ajax event="blur" update="primerApellido lblprimerApellido @(.mensajes)"/>
-                                </p:inputText>
-
-                                <p:outputLabel value="Segundo Apellido" for="segundoApellido" id="lblsegundoApellido"/>
-                                <p:inputText value="#{clienteController.selected.segundoApellido}"  id="segundoApellido">
-                                    <p:ajax event="blur" update="segundoApellido lblsegundoApellido @(.mensajes)"/>
-                                </p:inputText>
-
-                                <p:spacer/>
-                                <p:spacer/>
-
-                                <p:outputLabel value="Nacionalidad" for="nacionalidad"/>
-                                <p:inputText value="#{clienteController.selected.nacionalidad}" id="nacionalidad"/>
-
-                                <p:outputLabel value="Fecha Nac" for="fechaNacimiento"/>
-                                <p:calendar value="#{clienteController.selected.fechaNac}" id="fechaNacimiento" required="true"
-                                            pattern="#{formato.patronFecha}" locale="es"/>
-
-                                <p:outputLabel value="Sexo" for="sexo"/>
-                                <p:selectOneMenu value="#{clienteController.selected.sexo}" id="sexo">
-                                    <f:selectItems value="#{productorEnums.obtSexo()}"/>
-                                </p:selectOneMenu>
+                                    <p:outputLabel value="# documento" for="nrodoc" id="lblnrodoc"/>
+                                    <h:outputText value="#{clienteController.selected.nroDocumento}" id="nrodoc"/>
 
 
-                                <p:outputLabel value="Estado Civil" for="estadocivil"/>
-                                <p:selectOneMenu value="#{clienteController.selected.estadoCivil}" id="estadocivil">
-                                    <f:selectItems value="#{productorEnums.obtEstadosCivil()}"/>
-                                </p:selectOneMenu>
+                                    <h:outputText value="Vigencia Documento"/>
+                                    <p:calendar value="#{clienteController.selected.vigencia}" id="vigencia" required="true"
+                                                locale="es" pattern="dd/MM/yyyy"/>
+                                    <p:spacer width="20" height="0"/>
 
-                                <h:outputText value="Conyuge: "/>
+                                </p:panelGrid>
 
-                                <p:autoComplete value="#{clienteController.selected.conyuge}"  id="autoCompleteCliente"
-                                                completeMethod="#{autoCompleteCliente.completar}"
-                                                forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}"
-                                                >
-                                    <p:ajax event="itemSelect" update="panelCliente"/>
+                                <h:panelGrid columns="1" width="100%">
+                                    <p:spacer height="5" width="0"/>
+                                    <h:outputText value="Persona"/>
+                                    <p:separator/>
+                                </h:panelGrid>
 
-                                </p:autoComplete>
+                                <h:panelGrid columns="6" rendered="#{clienteController.selected != null}">
+                                    <p:outputLabel value="Primer Nombre" for="primerNombre" id="lblprimerNombre"/>
+                                    <p:inputText value="#{clienteController.selected.primerNombre}" required="true" id="primerNombre">
+                                        <p:ajax event="blur" update="primerNombre lblprimerNombre @(.mensajes)"/>
+                                    </p:inputText>
+                                    <p:outputLabel value="Segun Nombre" for="segundoNombre" id="lblsegundoNombre"/>
+                                    <p:inputText value="#{clienteController.selected.segundoNombre}"  id="segundoNombre">
+                                        <p:ajax event="blur" update="segundoNombre lblsegundoNombre @(.mensajes)"/>
+                                    </p:inputText>
 
-                                <p:panel id="panelCliente" style="margin: 0;border: none;padding: 0;">
-                                    <h:outputText value=" #{clienteController.selected.conyuge != null ? clienteController.selected.conyuge.devuelveNombreCompleto():'No Asignado'}"
-                                                  styleClass="clienteSeleccionado"/>
-                                </p:panel>
+                                    <p:spacer/>
+                                    <p:spacer/>
 
-                                <p:spacer/>
+                                    <p:outputLabel value="Primer Apellido" for="primerApellido" id="lblprimerApellido"/>            
+                                    <p:inputText value="#{clienteController.selected.primerApellido}" required="true" id="primerApellido">
+                                        <p:ajax event="blur" update="primerApellido lblprimerApellido @(.mensajes)"/>
+                                    </p:inputText>
 
-                                <p:outputLabel value="#{bundle.CreateClienteLabel_categoria}" for="categoria" /> 
-                                <p:selectOneMenu id="categoria" value="#{clienteController.selected.categoria}" >
-                                    <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"
-                                                   var="categoriaItem"
-                                                   itemValue="#{categoriaItem}"/>
-                                </p:selectOneMenu>
+                                    <p:outputLabel value="Segundo Apellido" for="segundoApellido" id="lblsegundoApellido"/>
+                                    <p:inputText value="#{clienteController.selected.segundoApellido}"  id="segundoApellido">
+                                        <p:ajax event="blur" update="segundoApellido lblsegundoApellido @(.mensajes)"/>
+                                    </p:inputText>
 
-                                <p:outputLabel value="Empresa" for="empresa" /> 
-                                <p:selectOneMenu id="empresa" value="#{clienteController.selected.empresa}" >
-                                    <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
-                                </p:selectOneMenu>
+                                    <p:spacer/>
+                                    <p:spacer/>
 
-                                <p:outputLabel value="#{bundle.CreateClienteLabel_sucursal}" for="sucursal" /> 
-                                <p:selectOneMenu id="sucursal" value="#{clienteController.selected.sucursal}" >
-                                    <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
-                                </p:selectOneMenu>
+                                    <p:outputLabel value="Nacionalidad" for="nacionalidad"/>
+                                    <p:inputText value="#{clienteController.selected.nacionalidad}" id="nacionalidad"/>
 
-                                <p:outputLabel value="Linea de Crédito" for="lineadecredito"/>
-                                <p:inputText value="#{clienteController.selected.lineaDeCredito}" id="lineadecredito"/>
-
-                            </h:panelGrid>
-
-
-                        </p:tab>
-                        <p:tab title="Direcciones">
-                            <p:panel styleClass="panelDirecciones">
-
-
-                                <p:panelGrid columns="6">                                
-                                    <p:outputLabel value="#{bundle.CreateDireccionLabel_tipo}" for="tipo" />
-                                    <p:selectOneMenu value="#{clienteController.direccionSeleccionada.tipo}" id="tipo">
-                                        <f:selectItems value="#{productorEnums.obtTiposDireccion()}"/>
-                                    </p:selectOneMenu>
-
-                                    <p:outputLabel value="#{bundle.CreateDireccionLabel_direccion}" for="direccion" />
-                                    <p:inputText id="direccion" value="#{clienteController.direccionSeleccionada.direccion}" title="#{bundle.CreateDireccionTitle_direccion}" />
-
-                                    <p:outputLabel value="#{bundle.CreateDireccionLabel_nrocasa}" for="nrocasa" />
-                                    <p:inputText id="nrocasa" value="#{clienteController.direccionSeleccionada.nrocasa}" title="#{bundle.CreateDireccionTitle_nrocasa}" />
-
-                                    <p:outputLabel value="#{bundle.CreateDireccionLabel_ciudad}" for="ciudad" />
-                                    <p:inputText id="ciudad" value="#{clienteController.direccionSeleccionada.ciudad}" title="#{bundle.CreateDireccionTitle_ciudad}" />
-
-                                    <p:outputLabel value="#{bundle.CreateDireccionTitle_pais}" for="pais" />
-                                    <p:inputText id="pais" value="#{clienteController.direccionSeleccionada.pais}" title="#{bundle.CreateDireccionTitle_pais}" />
-
-                                    <p:commandButton value="Agregar" update="@(.panelDirecciones)" action="#{clienteController.agregaDireccion()}"/>
-                                </p:panelGrid>   
-                                <p:dataTable value="#{clienteController.selected.direcciones}" var="d" id="tablaDireccciones">
-                                    <p:column headerText="TIPO">
-                                        #{d.tipo}
-                                    </p:column>
-                                    <p:column headerText="DIRECCION">
-                                        <p:inputText value="#{d.direccion}"/> 
-                                    </p:column>
-                                    <p:column headerText="NRO">
-                                        <p:inputText value="#{d.nrocasa}"/> 
-                                    </p:column>
-                                    <p:column headerText="CIUDAD">
-                                        <p:inputText value="#{d.ciudad}"/> 
-                                    </p:column>
-                                    <p:column headerText="PAÍS">
-                                        <p:inputText value="#{d.pais}"/> 
-                                    </p:column>
-                                    <p:column headerText="ACCION">
-                                        <p:commandButton value="X" action="#{clienteController.removerDireccion(d)}" update="@(.panelDirecciones)"/>
-                                    </p:column>
-                                </p:dataTable>
-                            </p:panel>
-
-                        </p:tab>
-
-                        <p:tab title="Teléfonos de Contacto">
-
-                            <p:panel styleClass="panelTelefonos">
-
-
-                                <p:panelGrid columns="7">                                
-                                    <p:outputLabel value="Tipo" for="tipoTelefono" />
-                                    <p:selectOneMenu value="#{clienteController.contactoTelefonicoSeleccionado.tipo}" id="tipoTelefono">
-                                        <f:selectItems value="#{productorEnums.obtTiposContactosTelefonicos()}"/>
-                                    </p:selectOneMenu>
-
-                                    <p:outputLabel value="Numero" for="numero" />
-                                    <p:inputText value="#{clienteController.contactoTelefonicoSeleccionado.numero}" id="numero" />
-
-                                    <p:outputLabel value="Principal" for="principal" />
-                                    <p:selectBooleanCheckbox value="#{clienteController.contactoTelefonicoSeleccionado.principal}" id="principal" />
-
-                                    <p:commandButton value="Agregar" update="@(.panelTelefonos)" action="#{clienteController.agregaContactoTelefonicoSeleccionado()}"/>
-                                </p:panelGrid>   
-                                <p:dataTable value="#{clienteController.selected.contactoTelefonicos}" var="d" id="tablaTelefonos">
-                                    <p:column headerText="TIPO">
-                                        #{d.tipo}
-                                    </p:column>
-                                    <p:column headerText="NUMERO">
-                                        <p:inputText value="#{d.numero}"/>
-                                    </p:column>
-                                    <p:column headerText="PRINCIPAL">
-                                        <p:selectBooleanCheckbox value="#{d.principal}" />
-                                    </p:column>
-                                    <p:column headerText="ACCION">
-                                        <p:commandButton value="X" action="#{clienteController.removerContactoTelefonicoSeleccionado(d)}" update="@(.panelTelefonos)"/>
-                                    </p:column>
-                                </p:dataTable>
-                            </p:panel>
-
-                        </p:tab>
-
-                        <p:tab title="Laborales">
-                            <p:panel styleClass="panelLaborales">
-
-
-                                <p:panelGrid columns="8">                                
-
-                                    <p:outputLabel value="Tipo Empresa" for="tipoEmpresa"/>
-                                    <p:selectOneMenu value="#{clienteController.actividadLaboralSelecccionada.tipoEmpresa}" id="tipoEmpresa">
-                                        <f:selectItems value="#{productorEnums.obtTiposEmpresas()}"/>
-                                    </p:selectOneMenu>
-
-                                    <p:outputLabel value="Empresa" for="nombreEmpresa" />
-                                    <p:inputText value="#{clienteController.actividadLaboralSelecccionada.nombreEmpresa}" id="nombreEmpresa"/>
-
-                                    <p:outputLabel value="Cargo" for="cargo" />
-                                    <p:inputText value="#{clienteController.actividadLaboralSelecccionada.cargo}" id="cargo"/>
-
-                                    <p:outputLabel value="Ingreso" for="ingreso" />
-                                    <p:inputText value="#{clienteController.actividadLaboralSelecccionada.ingreso}" id="ingreso"/>
-
-                                    <p:outputLabel value="Ciclo Ingreso" for="cicloIngreso"/>
-                                    <p:selectOneMenu value="#{clienteController.actividadLaboralSelecccionada.cicloIngreso}" id="cicloIngreso">
-                                        <f:selectItems value="#{productorEnums.obtCicloIngresos()}"/>
-                                    </p:selectOneMenu>
-
-                                    <p:outputLabel value="IPS" for="aportaIps" />
-                                    <p:selectBooleanCheckbox value="#{clienteController.actividadLaboralSelecccionada.aportaIPS}" id="aportaIps"/>
-
-                                    <p:outputLabel value="Fecha Ingreso" for="fechaIngreso" />
-                                    <p:calendar value="#{clienteController.actividadLaboralSelecccionada.fechaIngreso}" id="fechaIngreso" 
+                                    <p:outputLabel value="Fecha Nac" for="fechaNacimiento"/>
+                                    <p:calendar value="#{clienteController.selected.fechaNac}" id="fechaNacimiento" required="true"
                                                 pattern="#{formato.patronFecha}" locale="es"/>
 
-                                    <p:commandButton value="Agregar" update="@(.panelLaborales)" action="#{clienteController.agregaActividadLaboralSeleccionada()}"/>
-                                </p:panelGrid>   
-                                <p:dataTable value="#{clienteController.selected.actividadesLaborales}" var="d" id="tablaLaborales">
-                                    <p:column headerText="TIPO EMPRESA">
-                                        #{d.tipoEmpresa}
-                                    </p:column>
-                                    <p:column headerText="EMPRESA">
-                                        #{d.nombreEmpresa}
-                                    </p:column>
-                                    <p:column headerText="CARGO">
-                                        #{d.cargo}
-                                    </p:column>
-                                    <p:column headerText="INGRESO">
-                                        <h:outputText value="#{d.ingreso}">
-                                            <f:convertNumber locale="es"/>                                            
-                                        </h:outputText> 
-                                    </p:column>
-                                    <p:column headerText="CICLO">
-                                        #{d.cicloIngreso}
-                                    </p:column>
-                                    <p:column headerText="IPS">
-                                        #{d.aportaIPS == true ? 'SI':'NO'}
-                                    </p:column>
-                                    <p:column headerText="FECHA INGRESO">
-                                        <h:outputText value="#{d.fechaIngreso}">
-                                            <f:convertDateTime pattern="#{formato.patronFecha}" locale="es"/>                                            
-                                        </h:outputText> 
-                                    </p:column>
-                                    <p:column headerText="ACCION">
-                                        <p:commandButton value="X" action="#{clienteController.removerActividadLaboralSeleccionada(d)}" update="@(.panelLaborales)"/>
-                                    </p:column>
-                                </p:dataTable>
-                            </p:panel>
-                        </p:tab>
-
-
-                        <p:tab title="Referencias">
-
-                            <p:panel styleClass="panelReferencias">
-
-
-                                <p:panelGrid columns="7">                                
-                                    <p:outputLabel value="Tipo" for="tipoReferencia" />
-                                    <p:selectOneMenu value="#{clienteController.referenciaClienteSeleccionada.tipo}" id="tipoReferencia">
-                                        <f:selectItems value="#{productorEnums.obtTipoReferencia()}"/>
+                                    <p:outputLabel value="Sexo" for="sexo"/>
+                                    <p:selectOneMenu value="#{clienteController.selected.sexo}" id="sexo">
+                                        <f:selectItems value="#{productorEnums.obtSexo()}"/>
                                     </p:selectOneMenu>
 
-                                    <p:outputLabel value="Descripcion" for="descripcion" />
-                                    <p:inputText value="#{clienteController.referenciaClienteSeleccionada.descripcion}" id="descripcion" />
 
-                                    <p:outputLabel value="Numero" for="numeroRef" />
-                                    <p:inputText value="#{clienteController.referenciaClienteSeleccionada.telefono}" id="numeroRef" />
+                                    <p:outputLabel value="Estado Civil" for="estadocivil"/>
+                                    <p:selectOneMenu value="#{clienteController.selected.estadoCivil}" id="estadocivil">
+                                        <f:selectItems value="#{productorEnums.obtEstadosCivil()}"/>
+                                    </p:selectOneMenu>
 
-                                    <p:commandButton value="Agregar" update="@(.panelReferencias)" action="#{clienteController.agregaReferenciaClienteSelecionada()}"/>
-                                </p:panelGrid>   
-                                <p:dataTable value="#{clienteController.selected.referenciaClientes}" var="d" id="tablaReferencias">
-                                    <p:column headerText="TIPO">
-                                        #{d.tipo}
-                                    </p:column>
-                                    <p:column headerText="DESCRIPCION">
-                                        #{d.descripcion}
-                                    </p:column>
-                                    <p:column headerText="TELEFONO">
-                                        #{d.telefono}
-                                    </p:column>
-                                    <p:column headerText="ACCION">
-                                        <p:commandButton value="X" action="#{clienteController.removerReferenciaClienteSelecionada(d)}" update="@(.panelReferencias)"/>
-                                    </p:column>
-                                </p:dataTable>
-                            </p:panel>
-                        </p:tab>
-                    </p:tabView>
+                                    <h:outputText value="Conyuge: "/>
 
-                    <p:commandButton action="#{clienteController.update}" value="#{bundle.Save}" update="display,:growl"/>
-                    <p:button value="#{bundle.Cancel}" outcome="List"/>
-                </h:panelGroup>
-            </h:form>
+                                    <p:autoComplete value="#{clienteController.selected.conyuge}"  id="autoCompleteCliente"
+                                                    completeMethod="#{autoCompleteCliente.completar}"
+                                                    forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}"
+                                                    >
+                                        <p:ajax event="itemSelect" update="panelCliente"/>
 
-        </ui:define>
+                                    </p:autoComplete>
+
+                                    <p:panel id="panelCliente" style="margin: 0;border: none;padding: 0;">
+                                        <h:outputText value=" #{clienteController.selected.conyuge != null ? clienteController.selected.conyuge.devuelveNombreCompleto():'No Asignado'}"
+                                                      styleClass="clienteSeleccionado"/>
+                                    </p:panel>
+
+                                    <p:spacer/>
+
+                                    <p:outputLabel value="#{bundle.CreateClienteLabel_categoria}" for="categoria" /> 
+                                    <p:selectOneMenu id="categoria" value="#{clienteController.selected.categoria}" >
+                                        <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"
+                                                       var="categoriaItem"
+                                                       itemValue="#{categoriaItem}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="Empresa" for="empresa" /> 
+                                    <p:selectOneMenu id="empresa" value="#{clienteController.selected.empresa}" >
+                                        <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="#{bundle.CreateClienteLabel_sucursal}" for="sucursal" /> 
+                                    <p:selectOneMenu id="sucursal" value="#{clienteController.selected.sucursal}" >
+                                        <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="Linea de Crédito" for="lineadecredito"/>
+                                    <p:inputText value="#{clienteController.selected.lineaDeCredito}" id="lineadecredito"/>
+
+                                </h:panelGrid>
 
 
+                            </p:tab>
+                            <p:tab title="Direcciones">
+                                <p:panel styleClass="panelDirecciones">
+
+
+                                    <p:panelGrid columns="6">                                
+                                        <p:outputLabel value="#{bundle.CreateDireccionLabel_tipo}" for="tipo" />
+                                        <p:selectOneMenu value="#{clienteController.direccionSeleccionada.tipo}" id="tipo">
+                                            <f:selectItems value="#{productorEnums.obtTiposDireccion()}"/>
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel value="#{bundle.CreateDireccionLabel_direccion}" for="direccion" />
+                                        <p:inputText id="direccion" value="#{clienteController.direccionSeleccionada.direccion}" title="#{bundle.CreateDireccionTitle_direccion}" />
+
+                                        <p:outputLabel value="#{bundle.CreateDireccionLabel_nrocasa}" for="nrocasa" />
+                                        <p:inputText id="nrocasa" value="#{clienteController.direccionSeleccionada.nrocasa}" title="#{bundle.CreateDireccionTitle_nrocasa}" />
+
+                                        <p:outputLabel value="#{bundle.CreateDireccionLabel_ciudad}" for="ciudad" />
+                                        <p:inputText id="ciudad" value="#{clienteController.direccionSeleccionada.ciudad}" title="#{bundle.CreateDireccionTitle_ciudad}" />
+
+                                        <p:outputLabel value="#{bundle.CreateDireccionTitle_pais}" for="pais" />
+                                        <p:inputText id="pais" value="#{clienteController.direccionSeleccionada.pais}" title="#{bundle.CreateDireccionTitle_pais}" />
+
+                                        <p:commandButton value="Agregar" update="@(.panelDirecciones)" action="#{clienteController.agregaDireccion()}"/>
+                                    </p:panelGrid>   
+                                    <p:dataTable value="#{clienteController.selected.direcciones}" var="d" id="tablaDireccciones">
+                                        <p:column headerText="TIPO">
+                                            #{d.tipo}
+                                        </p:column>
+                                        <p:column headerText="DIRECCION">
+                                            <p:inputText value="#{d.direccion}"/> 
+                                        </p:column>
+                                        <p:column headerText="NRO">
+                                            <p:inputText value="#{d.nrocasa}"/> 
+                                        </p:column>
+                                        <p:column headerText="CIUDAD">
+                                            <p:inputText value="#{d.ciudad}"/> 
+                                        </p:column>
+                                        <p:column headerText="PAÍS">
+                                            <p:inputText value="#{d.pais}"/> 
+                                        </p:column>
+                                        <p:column headerText="ACCION">
+                                            <p:commandButton value="X" action="#{clienteController.removerDireccion(d)}" update="@(.panelDirecciones)"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+
+                            </p:tab>
+
+                            <p:tab title="Teléfonos de Contacto">
+
+                                <p:panel styleClass="panelTelefonos">
+
+
+                                    <p:panelGrid columns="7">                                
+                                        <p:outputLabel value="Tipo" for="tipoTelefono" />
+                                        <p:selectOneMenu value="#{clienteController.contactoTelefonicoSeleccionado.tipo}" id="tipoTelefono">
+                                            <f:selectItems value="#{productorEnums.obtTiposContactosTelefonicos()}"/>
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel value="Numero" for="numero" />
+                                        <p:inputText value="#{clienteController.contactoTelefonicoSeleccionado.numero}" id="numero" />
+
+                                        <p:outputLabel value="Principal" for="principal" />
+                                        <p:selectBooleanCheckbox value="#{clienteController.contactoTelefonicoSeleccionado.principal}" id="principal" />
+
+                                        <p:commandButton value="Agregar" update="@(.panelTelefonos)" action="#{clienteController.agregaContactoTelefonicoSeleccionado()}"/>
+                                    </p:panelGrid>   
+                                    <p:dataTable value="#{clienteController.selected.contactoTelefonicos}" var="d" id="tablaTelefonos">
+                                        <p:column headerText="TIPO">
+                                            #{d.tipo}
+                                        </p:column>
+                                        <p:column headerText="NUMERO">
+                                            <p:inputText value="#{d.numero}"/>
+                                        </p:column>
+                                        <p:column headerText="PRINCIPAL">
+                                            <p:selectBooleanCheckbox value="#{d.principal}" />
+                                        </p:column>
+                                        <p:column headerText="ACCION">
+                                            <p:commandButton value="X" action="#{clienteController.removerContactoTelefonicoSeleccionado(d)}" update="@(.panelTelefonos)"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+
+                            </p:tab>
+
+                            <p:tab title="Laborales">
+                                <p:panel styleClass="panelLaborales">
+
+
+                                    <p:panelGrid columns="8">                                
+
+                                        <p:outputLabel value="Tipo Empresa" for="tipoEmpresa"/>
+                                        <p:selectOneMenu value="#{clienteController.actividadLaboralSelecccionada.tipoEmpresa}" id="tipoEmpresa">
+                                            <f:selectItems value="#{productorEnums.obtTiposEmpresas()}"/>
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel value="Empresa" for="nombreEmpresa" />
+                                        <p:inputText value="#{clienteController.actividadLaboralSelecccionada.nombreEmpresa}" id="nombreEmpresa"/>
+
+                                        <p:outputLabel value="Cargo" for="cargo" />
+                                        <p:inputText value="#{clienteController.actividadLaboralSelecccionada.cargo}" id="cargo"/>
+
+                                        <p:outputLabel value="Ingreso" for="ingreso" />
+                                        <p:inputText value="#{clienteController.actividadLaboralSelecccionada.ingreso}" id="ingreso"/>
+
+                                        <p:outputLabel value="Ciclo Ingreso" for="cicloIngreso"/>
+                                        <p:selectOneMenu value="#{clienteController.actividadLaboralSelecccionada.cicloIngreso}" id="cicloIngreso">
+                                            <f:selectItems value="#{productorEnums.obtCicloIngresos()}"/>
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel value="IPS" for="aportaIps" />
+                                        <p:selectBooleanCheckbox value="#{clienteController.actividadLaboralSelecccionada.aportaIPS}" id="aportaIps"/>
+
+                                        <p:outputLabel value="Fecha Ingreso" for="fechaIngreso" />
+                                        <p:calendar value="#{clienteController.actividadLaboralSelecccionada.fechaIngreso}" id="fechaIngreso" 
+                                                    pattern="#{formato.patronFecha}" locale="es"/>
+
+                                        <p:commandButton value="Agregar" update="@(.panelLaborales)" action="#{clienteController.agregaActividadLaboralSeleccionada()}"/>
+                                    </p:panelGrid>   
+                                    <p:dataTable value="#{clienteController.selected.actividadesLaborales}" var="d" id="tablaLaborales">
+                                        <p:column headerText="TIPO EMPRESA">
+                                            #{d.tipoEmpresa}
+                                        </p:column>
+                                        <p:column headerText="EMPRESA">
+                                            #{d.nombreEmpresa}
+                                        </p:column>
+                                        <p:column headerText="CARGO">
+                                            #{d.cargo}
+                                        </p:column>
+                                        <p:column headerText="INGRESO">
+                                            <h:outputText value="#{d.ingreso}">
+                                                <f:convertNumber locale="es"/>                                            
+                                            </h:outputText> 
+                                        </p:column>
+                                        <p:column headerText="CICLO">
+                                            #{d.cicloIngreso}
+                                        </p:column>
+                                        <p:column headerText="IPS">
+                                            #{d.aportaIPS == true ? 'SI':'NO'}
+                                        </p:column>
+                                        <p:column headerText="FECHA INGRESO">
+                                            <h:outputText value="#{d.fechaIngreso}">
+                                                <f:convertDateTime pattern="#{formato.patronFecha}" locale="es"/>                                            
+                                            </h:outputText> 
+                                        </p:column>
+                                        <p:column headerText="ACCION">
+                                            <p:commandButton value="X" action="#{clienteController.removerActividadLaboralSeleccionada(d)}" update="@(.panelLaborales)"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                            </p:tab>
+
+
+                            <p:tab title="Referencias">
+
+                                <p:panel styleClass="panelReferencias">
+
+
+                                    <p:panelGrid columns="7">                                
+                                        <p:outputLabel value="Tipo" for="tipoReferencia" />
+                                        <p:selectOneMenu value="#{clienteController.referenciaClienteSeleccionada.tipo}" id="tipoReferencia">
+                                            <f:selectItems value="#{productorEnums.obtTipoReferencia()}"/>
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel value="Descripcion" for="descripcion" />
+                                        <p:inputText value="#{clienteController.referenciaClienteSeleccionada.descripcion}" id="descripcion" />
+
+                                        <p:outputLabel value="Numero" for="numeroRef" />
+                                        <p:inputText value="#{clienteController.referenciaClienteSeleccionada.telefono}" id="numeroRef" />
+
+                                        <p:commandButton value="Agregar" update="@(.panelReferencias)" action="#{clienteController.agregaReferenciaClienteSelecionada()}"/>
+                                    </p:panelGrid>   
+                                    <p:dataTable value="#{clienteController.selected.referenciaClientes}" var="d" id="tablaReferencias">
+                                        <p:column headerText="TIPO">
+                                            #{d.tipo}
+                                        </p:column>
+                                        <p:column headerText="DESCRIPCION">
+                                            #{d.descripcion}
+                                        </p:column>
+                                        <p:column headerText="TELEFONO">
+                                            #{d.telefono}
+                                        </p:column>
+                                        <p:column headerText="ACCION">
+                                            <p:commandButton value="X" action="#{clienteController.removerReferenciaClienteSelecionada(d)}" update="@(.panelReferencias)"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                            </p:tab>
+                        </p:tabView>
+
+                        <p:commandButton action="#{clienteController.update}" value="#{bundle.Save}" update="display,:growl"/>
+                        <p:button value="#{bundle.Cancel}" outcome="List"/>
+                    </h:panelGroup>
+                </h:form>
+
+            </ui:define>
+
+        </ui:decorate>
 
     </ui:composition>
 </html>

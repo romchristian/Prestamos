@@ -6,22 +6,25 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
+    <ui:composition>
 
-        <f:metadata>
-            <f:viewParam name="id" value="#{planGastosController.id}"/>
-            <f:viewAction action="#{planGastosController.cargaDatos()}"/>
-        </f:metadata>
+        <ui:decorate template="/plantillaListado.xhtml">
+            <ui:param name="modulo" value="configuracion"/>
 
-        <ui:define name="title">
-            <h:outputText value="Editar Plan de Gastos"></h:outputText>
-        </ui:define>
+            <f:metadata>
+                <f:viewParam name="id" value="#{planGastosController.id}"/>
+                <f:viewAction action="#{planGastosController.cargaDatos()}"/>
+            </f:metadata>
 
-        <ui:define name="body">
+            <ui:define name="title">
+                <h:outputText value="Editar Plan de Gastos"></h:outputText>
+            </ui:define>
 
-            <h:form id="PlanGastosCreateForm">
-                
-                <p:panelGrid columns="2" rendered="#{planGastosController.selected != null}" style="width: 100%">
+            <ui:define name="body">
+
+                <h:form id="PlanGastosCreateForm">
+
+                    <p:panelGrid columns="2" rendered="#{planGastosController.selected != null}" style="width: 100%">
                         <p:outputLabel value="#{bundle.CreatePlanGastosLabel_nombre}" for="nombre" />
                         <p:inputText id="nombre" value="#{planGastosController.selected.nombre}" title="#{bundle.CreatePlanGastosTitle_nombre}"  size="80"/>
                         <p:outputLabel value="#{bundle.CreatePlanGastosLabel_empresa}" for="empresa" />
@@ -70,10 +73,10 @@
 
                     <p:commandButton actionListener="#{planGastosController.update()}" value="#{bundle.Save}" update="detalles"/>
                     <p:commandButton value="#{bundle.Cancel}" action="List"/>
-                
-            </h:form>
 
-        </ui:define>
+                </h:form>
 
+            </ui:define>
+        </ui:decorate>
     </ui:composition>
 </html>

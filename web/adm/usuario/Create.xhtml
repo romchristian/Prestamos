@@ -8,45 +8,49 @@
 
 
 
-    <ui:composition template="/template.xhtml">
+    <ui:composition>
 
-        <f:metadata>
-            <f:viewAction action="#{usuarioController.prepareCreate()}"/>
-        </f:metadata>
+        <ui:decorate template="/plantillaListado.xhtml">
+            <ui:param name="modulo" value="configuracion"/>
 
-        <ui:define name="title">
-            <h:outputText value="Listado de Usuarios"></h:outputText>
-        </ui:define>
+            <f:metadata>
+                <f:viewAction action="#{usuarioController.prepareCreate()}"/>
+            </f:metadata>
 
-        <ui:define name="body">
+            <ui:define name="title">
+                <h:outputText value="Crear Usuario"></h:outputText>
+            </ui:define>
 
-            <h:form id="CategoriaCreateForm">
-                <h:panelGroup id="display">
-                    <p:panelGrid columns="2" >
+            <ui:define name="body">
+
+                <h:form id="CategoriaCreateForm">
+                    <h:panelGroup id="display">
+                        <p:panelGrid columns="2" >
 
 
-                        <p:outputLabel value="Nombre" for="nombre" />
-                        <p:inputText id="nombre" value="#{usuarioController.selected.nombre}"/>
-                        <p:outputLabel value="Apellido" for="apellido" />
-                        <p:inputText id="apellido" value="#{usuarioController.selected.apellido}"/>
-                        <p:outputLabel value="Usuario" for="usuario" />
-                        <p:inputText id="usuario" value="#{usuarioController.selected.usuario}"/>
-                        <p:outputLabel for="pwd1" value="Clave:" />
-                        <p:password id="pwd1" value="#{usuarioController.selected.clave}" match="pwd2" required="true" />
-                        <p:outputLabel for="pwd2" value="Confirmar Clave:" />
-                        <p:password id="pwd2" value="#{usuarioController.selected.clave}" required="true" />
+                            <p:outputLabel value="Nombre" for="nombre" />
+                            <p:inputText id="nombre" value="#{usuarioController.selected.nombre}"/>
+                            <p:outputLabel value="Apellido" for="apellido" />
+                            <p:inputText id="apellido" value="#{usuarioController.selected.apellido}"/>
+                            <p:outputLabel value="Usuario" for="usuario" />
+                            <p:inputText id="usuario" value="#{usuarioController.selected.usuario}"/>
+                            <p:outputLabel for="pwd1" value="Clave:" />
+                            <p:password id="pwd1" value="#{usuarioController.selected.clave}" match="pwd2" required="true" />
+                            <p:outputLabel for="pwd2" value="Confirmar Clave:" />
+                            <p:password id="pwd2" value="#{usuarioController.selected.clave}" required="true" />
 
-                        <h:outputText value="Permisos:" />
-                        <p:selectManyCheckbox id="grid" value="#{usuarioController.selected.roles}" layout="grid" columns="3" converter="rolConverter">
-                            <f:selectItems value="#{rolController.items}" var="r" itemLabel="#{r.nombre}" itemValue="#{r}"/>
-                        </p:selectManyCheckbox>
+                            <h:outputText value="Permisos:" />
+                            <p:selectManyCheckbox id="grid" value="#{usuarioController.selected.roles}" layout="grid" columns="3" converter="rolConverter">
+                                <f:selectItems value="#{rolController.items}" var="r" itemLabel="#{r.nombre}" itemValue="#{r}"/>
+                            </p:selectManyCheckbox>
 
-                    </p:panelGrid>
+                        </p:panelGrid>
 
-                    <p:commandButton action="#{usuarioController.create()}" value="#{bundle.Save}" update=":growl,display"/>
-                    <p:button value="#{bundle.Cancel}" outcome="List"/>
-                </h:panelGroup>
-            </h:form>
-        </ui:define>
+                        <p:commandButton action="#{usuarioController.create()}" value="#{bundle.Save}" update=":growl,display"/>
+                        <p:button value="#{bundle.Cancel}" outcome="List"/>
+                    </h:panelGroup>
+                </h:form>
+            </ui:define>
+        </ui:decorate>
     </ui:composition>
 </html>

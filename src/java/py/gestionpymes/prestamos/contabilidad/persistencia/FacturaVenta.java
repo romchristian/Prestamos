@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.gestionpymes.prestamos.contabilidad;
+package py.gestionpymes.prestamos.contabilidad.persistencia;
 
 import py.gestionpymes.prestamos.adm.persistencia.Cobrador;
 import java.io.Serializable;
@@ -89,7 +89,8 @@ public class FacturaVenta implements Serializable {
     private List<FacturaVentaDetalle> detalles;
     @OneToMany(mappedBy = "facturaVenta",cascade = CascadeType.PERSIST)
     private List<Pago> pagos;
-
+   
+    
     public List<FacturaVentaDetalle> getDetalles() {
         return detalles;
     }

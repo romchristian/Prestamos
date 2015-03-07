@@ -12,7 +12,7 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.persistencia.Estado;
 import py.gestionpymes.prestamos.adm.persistencia.TipoPersona;
-import py.gestionpymes.prestamos.contabilidad.CondicionVenta;
+import py.gestionpymes.prestamos.contabilidad.persistencia.CondicionVenta;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.PeriodoPago;
 import py.gestionpymes.prestamos.prestamos.persistencia.SistemaAmortizacion;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.Calificacion;

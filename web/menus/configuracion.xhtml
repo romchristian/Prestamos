@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:outputText value="Configuración" style="font-size: 10pt; position: relative;left: 15px;font-weight: bold;margin-bottom: 20px"
+                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+    <br/>   
+
+    <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 30px;font-size: 9pt">
+        <h:commandLink  value="Usuario" action="/adm/usuario/List" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:commandLink  value="Empresa" action="/adm/empresa/List" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:commandLink  value="Sucursal" action="/adm/sucursal/List" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:commandLink  value="Vendedor" action="/adm/vendedor/List" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:commandLink  value="Cobrador" action="/adm/cobrador/List" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:commandLink  value="Cotizacion" action="/adm/cotizacion/List" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:commandLink  value="Moneda" action="/adm/moneda/List" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:commandLink  value="ImpuestoIVA" action="/adm/impuestoIVA/List" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:commandLink  value="Categoria de Clientes" action="/adm/categoria/List" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:commandLink  value="Plan de Gastos y Tasas" action="/adm/planGastos/List" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:commandLink  value="Canales de Venta" action="/adm/canal/List" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+    </h:panelGrid>
+
+</ui:composition>

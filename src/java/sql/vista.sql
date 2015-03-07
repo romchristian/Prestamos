@@ -32,8 +32,8 @@ INSERT INTO moneda(abreviacion, decimales, estado, monedalocal, nombre, version)
 INSERT INTO empresa(razonsocial, ruc, dv,estado,version) VALUES ('CREDI PYMES S.A.', '80065663-6', '2', 'ACTIVO', 1);
 INSERT INTO sucursal( estado, nombre, version, empresa_id) VALUES ('ACTIVO', 'MATRIZ',1,1);
 
-INSERT INTO persona(dtype, estado, empresa_id,sucursal_id, apellidos, nombres) VALUES ('Vendedor','ACTIVO',1,1,'De Prueba','Vendedor');
-INSERT INTO persona(dtype, estado, empresa_id,sucursal_id, apellidos, nombres) VALUES ('Cobrador','ACTIVO',1,1,'De Prueba','Cobrador');
+-- INSERT INTO persona(dtype, estado, empresa_id,sucursal_id, apellidos, nombres) VALUES ('Vendedor','ACTIVO',1,1,'De Prueba','Vendedor');
+-- INSERT INTO persona(dtype, estado, empresa_id,sucursal_id, apellidos, nombres) VALUES ('Cobrador','ACTIVO',1,1,'De Prueba','Cobrador');
 
 INSERT INTO categoria(calificacion) VALUES (0);
 INSERT INTO categoria(calificacion) VALUES (1);
@@ -42,7 +42,9 @@ INSERT INTO categoria(calificacion) VALUES (3);
 INSERT INTO categoria(calificacion) VALUES (4);
 INSERT INTO categoria(calificacion) VALUES (5);
 
+
 INSERT INTO plangastos(creacion, estado, nombre, empresa_id) VALUES ( now(),0, 'PLAN NORMAL - CONSUMO',1);
+INSERT INTO plangastos(creacion, estado, nombre, empresa_id) VALUES ( now(),0, '"PLAN ASOCIACIONES - CUOTA 125.000 X MILLON"',1);
 
 INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(50.000099,360,15,21.3507,1);
 INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(50,420,15,21.35085,1);
@@ -68,6 +70,6 @@ INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, p
 INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(35,30,15,10.6129,1);
 INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(35,90,15,10.6129,1);
 INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(51,540,15,24.2592,1);
-
+INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(32,360,15,10.0153,2);
 
 

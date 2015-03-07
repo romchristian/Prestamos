@@ -10,8 +10,8 @@ import java.math.RoundingMode;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoOperacion;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import py.gestionpymes.prestamos.contabilidad.FacturaVenta;
-import py.gestionpymes.prestamos.contabilidad.FacturaVentaDetalle;
+import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVenta;
+import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVentaDetalle;
 
 /**
  *

@@ -6,105 +6,109 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
+    <ui:composition>
+
+        <ui:decorate template="/plantillaListado.xhtml">
+            <ui:param name="modulo" value="prestamo"/>
 
 
-        <ui:define name="title">
-            <h:outputText value="#{bundle.ListClienteTitle}"></h:outputText>
-        </ui:define>
+            <ui:define name="title">
+                <h:outputText value="#{bundle.ListClienteTitle}"></h:outputText>
+            </ui:define>
 
-        <ui:define name="body">
-            <h:form id="ClienteListForm">
+            <ui:define name="body">
+                <h:form id="ClienteListForm">
 
-                <p:dataTable id="datalist" value="#{clienteController.items}" var="item"
-                             selectionMode="single" selection="#{clienteController.selected}"
-                             paginator="true"
-                             rowKey="#{item.id}"
-                             rows="10"
-                             paginatorPosition="bottom"
-                             paginatorAlwaysVisible="false"
-                             rowsPerPageTemplate="10,20,30,40,50"
-                             >
+                    <p:dataTable id="datalist" value="#{clienteController.items}" var="item"
+                                 selectionMode="single" selection="#{clienteController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 paginatorPosition="bottom"
+                                 paginatorAlwaysVisible="false"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
 
-                    <p:ajax event="rowSelect"   update="createButton viewButton editButton"/>
-                    <p:ajax event="rowUnselect" update="createButton viewButton editButton"/>
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton"/>
 
-                    <p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListClienteTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListClienteTitle_nroDocumento}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nroDocumento}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListClienteTitle_primerNombre}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.primerNombre}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListClienteTitle_segundoNombre}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.segundoNombre}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListClienteTitle_primerApellido}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.primerApellido}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListClienteTitle_segundoApellido}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.segundoApellido}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListClienteTitle_categoria}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.categoria.calificacion}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListClienteTitle_estado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.estado}"/>
+                        </p:column>
+
                         <f:facet name="header">
-                            <h:outputText value="#{bundle.ListClienteTitle_id}"/>
+                            <p:button id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" outcome="Create" 
+                                      rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion'))}"/>
+                            <p:button id="viewButton"   icon="ui-icon-search" value="#{bundle.View}"  disabled="#{empty clienteController.selected}" outcome="View"
+                                      rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_lectura'))}">
+                                <f:param name="id" value="#{clienteController.selected.id}"/>
+                            </p:button>
+
+                            <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}"  disabled="#{empty clienteController.selected}" outcome="Edit"
+                                      rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion'))}">
+                                <f:param name="id" value="#{clienteController.selected.id}"/>
+                            </p:button>
                         </f:facet>
-                        <h:outputText value="#{item.id}"/>
-                    </p:column>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListClienteTitle_nroDocumento}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.nroDocumento}"/>
-                    </p:column>
+                    </p:dataTable>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListClienteTitle_primerNombre}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.primerNombre}"/>
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListClienteTitle_segundoNombre}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.segundoNombre}"/>
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListClienteTitle_primerApellido}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.primerApellido}"/>
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListClienteTitle_segundoApellido}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.segundoApellido}"/>
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListClienteTitle_categoria}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.categoria.calificacion}"/>
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListClienteTitle_estado}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.estado}"/>
-                    </p:column>
-
-                    <f:facet name="header">
-                        <p:button id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" outcome="Create" 
-                                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion'))}"/>
-                        <p:button id="viewButton"   icon="ui-icon-search" value="#{bundle.View}"  disabled="#{empty clienteController.selected}" outcome="View"
-                                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_lectura'))}">
-                            <f:param name="id" value="#{clienteController.selected.id}"/>
-                        </p:button>
-
-                        <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}"  disabled="#{empty clienteController.selected}" outcome="Edit"
-                                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion'))}">
-                            <f:param name="id" value="#{clienteController.selected.id}"/>
-                        </p:button>
-                    </f:facet>
-                    
-                </p:dataTable>
-
-            </h:form>
+                </h:form>
 
 
-        </ui:define>
+            </ui:define>
+        </ui:decorate>
     </ui:composition>
 
 </html>

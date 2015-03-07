@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.gestionpymes.prestamos.contabilidad;
+package py.gestionpymes.prestamos.contabilidad.persistencia;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

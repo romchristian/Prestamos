@@ -11,7 +11,7 @@ import java.util.Date;
 import javax.persistence.*;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
-import py.gestionpymes.prestamos.contabilidad.FacturaVenta;
+import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVenta;
 
 /**
  *

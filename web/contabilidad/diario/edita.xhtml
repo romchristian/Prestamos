@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{diarioBean.id}"/>
+        <f:viewAction action="#{diarioBean.cargaDatos()}"/>
+    </f:metadata>
+
+    <ui:decorate template="/util/plantillaABM.xhtml">
+        <ui:param name="modulo" value="configuracion"/>
+        <ui:param name="titulo" value=" Edita #{diarioBean.actual.descripcion}"/>
+        <ui:param name="listado" value="Diarios"/>
+        
+        <ui:define name="acciones">
+            <p:commandButton value="Guardar" action="#{diarioBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
+        </ui:define>
+        
+        <ui:define name="col1">
+            <h:panelGroup>
+                <h:panelGrid columns="1">
+                    <p:inputText id="nombre" value="#{diarioBean.actual.descripcion}" styleClass="descripcionPrincipal"/>
+                    <p:watermark for="nombre" value="Nombre" id="watermark"/>
+                    <h:panelGrid columns="2">
+                        <h:outputText value="Padre"/>
+                        <h:selectOneMenu value="#{diarioBean.actual.padre}">
+                            <f:selectItems value="#{diarioBean.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+                        <h:outputText value="Tipo"/>
+                        <h:selectOneMenu value="#{diarioBean.actual.tipo}">
+                            <f:selectItems value="#{productorEnums.obtTiposDiario()}"/>
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:panelGroup>
+        </ui:define>
+
+    </ui:decorate>
+
+
+
+</ui:composition>

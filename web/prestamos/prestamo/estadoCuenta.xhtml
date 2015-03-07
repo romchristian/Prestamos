@@ -3,126 +3,129 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                template="/template.xhtml"
+
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:gpymes="http://java.sun.com/jsf/composite/gpymes">
 
-    <ui:define name="title">
-        Estado Cuenta Cliente
-    </ui:define>
-    <ui:define name="body">
+    <ui:decorate template="/plantillaListado.xhtml">
+        <ui:param name="modulo" value="informe"/>
 
-        <h:form id="formCobroCuota">
+        <ui:define name="title">
+            Estado Cuenta Cliente
+        </ui:define>
+        <ui:define name="body">
 
-
-
-
-            <h:panelGroup>
-
-                <div class="ui-grid ui-grid-responsive">
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-12">
-                            <div style="background-color: #ddd; border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
-                                 -moz-border-radius: 5px;
-                                 border-radius: 5px;
-                                 margin-bottom: 5px">
-
-                                <div class="ui-grid-row">
-                                    <div class="ui-grid-col-6">
-                                        <p:outputPanel styleClass="escuchaSeleccionCuota">
-                                            <h:panelGrid columns="2">
-                                                <h:outputText value="Titular: "/>
-                                                <p:autoComplete value="#{cuentaClienteController.clienteSeleccionado}"  id="autoCompleteCliente" size="60"
-                                                                completeMethod="#{autoCompleteCliente.completar}"
-                                                                forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
-                                                                >
-                                                    <p:ajax event="itemSelect" update="@(.escuchaSeleccionCuota)" listener="#{cuentaClienteController.busca()}"/>
-
-                                                </p:autoComplete>
-                                                
-                                                <h:outputText value="Dirección: " style="font-size: 12"/>                                                
-                                                <h:outputText style="font-size: 12" value="#{cuentaClienteController.cuentaClienteSeleccionada.cliente == null ? null :cuentaClienteController.cuentaClienteSeleccionada.cliente.devuelveDireccionParticular()}"/>
-                                                
-                                                <h:outputText style="font-size: 12" value="Ciudad: "/>                                                
-                                                <h:outputText style="font-size: 12" value="#{cuentaClienteController.cuentaClienteSeleccionada.cliente == null ? null :cuentaClienteController.cuentaClienteSeleccionada.cliente.devuelveCiudadParticular()}"/>
-                                                
-                                                <h:outputText style="font-size: 12" value="Teléfono: "/>                                                
-                                                <h:outputText style="font-size: 12" value="#{cuentaClienteController.cuentaClienteSeleccionada.cliente == null ? null :cuentaClienteController.cuentaClienteSeleccionada.cliente.devuelveTelefonoParticular()}"/>
+            <h:form id="formCobroCuota">
 
 
-                                            </h:panelGrid>
-                                        </p:outputPanel>
+
+
+                <h:panelGroup>
+
+                    <div class="ui-grid ui-grid-responsive">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+                                <div style="background-color: #ddd; border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
+                                     -moz-border-radius: 5px;
+                                     border-radius: 5px;
+                                     margin-bottom: 5px">
+
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-6">
+                                            <p:outputPanel styleClass="escuchaSeleccionCuota">
+                                                <h:panelGrid columns="2">
+                                                    <h:outputText value="Titular: "/>
+                                                    <p:autoComplete value="#{cuentaClienteController.clienteSeleccionado}"  id="autoCompleteCliente" size="60"
+                                                                    completeMethod="#{autoCompleteCliente.completar}"
+                                                                    forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
+                                                                    >
+                                                        <p:ajax event="itemSelect" update="@(.escuchaSeleccionCuota)" listener="#{cuentaClienteController.busca()}"/>
+
+                                                    </p:autoComplete>
+
+                                                    <h:outputText value="Dirección: " style="font-size: 12"/>                                                
+                                                    <h:outputText style="font-size: 12" value="#{cuentaClienteController.cuentaClienteSeleccionada.cliente == null ? null :cuentaClienteController.cuentaClienteSeleccionada.cliente.devuelveDireccionParticular()}"/>
+
+                                                    <h:outputText style="font-size: 12" value="Ciudad: "/>                                                
+                                                    <h:outputText style="font-size: 12" value="#{cuentaClienteController.cuentaClienteSeleccionada.cliente == null ? null :cuentaClienteController.cuentaClienteSeleccionada.cliente.devuelveCiudadParticular()}"/>
+
+                                                    <h:outputText style="font-size: 12" value="Teléfono: "/>                                                
+                                                    <h:outputText style="font-size: 12" value="#{cuentaClienteController.cuentaClienteSeleccionada.cliente == null ? null :cuentaClienteController.cuentaClienteSeleccionada.cliente.devuelveTelefonoParticular()}"/>
+
+
+                                                </h:panelGrid>
+                                            </p:outputPanel>
+                                        </div>
+                                        <div class="ui-grid-col-6">
+                                            <p:outputPanel styleClass="escuchaSeleccionCuota">
+                                                <h:panelGrid columns="2">
+                                                    <h:outputText value="Total Crédito: "/>
+
+                                                    <h:outputText value="#{cuentaClienteController.cuentaClienteSeleccionada == null?'0':cuentaClienteController.cuentaClienteSeleccionada.totalCredito}">
+                                                        <f:convertNumber locale="#{formato.locale}"/>
+                                                    </h:outputText>
+
+                                                    <h:outputText value="Total Débito: "/>
+                                                    <h:outputText value="#{cuentaClienteController.cuentaClienteSeleccionada == null?'0':cuentaClienteController.cuentaClienteSeleccionada.totalDebito}">
+                                                        <f:convertNumber locale="#{formato.locale}"/>
+                                                    </h:outputText>
+
+                                                    <h:outputText value="Posición: "/>
+                                                    <h:outputText value="#{cuentaClienteController.cuentaClienteSeleccionada == null?'0':cuentaClienteController.cuentaClienteSeleccionada.saldo}">
+                                                        <f:convertNumber locale="#{formato.locale}"/>
+                                                    </h:outputText>
+                                                </h:panelGrid>
+                                            </p:outputPanel>
+
+                                        </div>
                                     </div>
-                                    <div class="ui-grid-col-6">
-                                        <p:outputPanel styleClass="escuchaSeleccionCuota">
-                                            <h:panelGrid columns="2">
-                                            <h:outputText value="Total Crédito: "/>
 
-                                            <h:outputText value="#{cuentaClienteController.cuentaClienteSeleccionada == null?'0':cuentaClienteController.cuentaClienteSeleccionada.totalCredito}">
-                                                <f:convertNumber locale="#{formato.locale}"/>
-                                            </h:outputText>
-
-                                            <h:outputText value="Total Débito: "/>
-                                            <h:outputText value="#{cuentaClienteController.cuentaClienteSeleccionada == null?'0':cuentaClienteController.cuentaClienteSeleccionada.totalDebito}">
-                                                <f:convertNumber locale="#{formato.locale}"/>
-                                            </h:outputText>
-
-                                            <h:outputText value="Posición: "/>
-                                            <h:outputText value="#{cuentaClienteController.cuentaClienteSeleccionada == null?'0':cuentaClienteController.cuentaClienteSeleccionada.saldo}">
-                                                <f:convertNumber locale="#{formato.locale}"/>
-                                            </h:outputText>
-                                        </h:panelGrid>
-                                        </p:outputPanel>
-                                        
-                                    </div>
                                 </div>
 
+                            </div>  
+
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+                                <p:dataTable value="#{cuentaClienteController.detalles}" var="d" id="dataList"
+                                             sortMode="multiple"
+                                             styleClass="escuchaSeleccionCuota" style="font-size: 10pt">
+
+                                    <p:column headerText="FECHA" style="font-size: 10pt;width: 12%" sortBy="#{d.fecha}">
+                                        <h:outputText value="#{d.fecha}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" locale="#{formato.locale}" timeZone="America/Asuncion"/>
+                                        </h:outputText>
+
+                                    </p:column>
+                                    <p:column headerText="TIPO OP." style="font-size: 10pt;width: 12%">
+                                        #{d.tipoOperacion}
+                                    </p:column>
+                                    <p:column headerText="DESCRIPCION" style="font-size: 10pt;width: 36%;text-align: left">
+                                        #{d.descripcion}
+                                    </p:column>
+                                    <p:column headerText="CREDITO" style="font-size: 10pt;text-align: right;width: 15%">
+                                        <h:outputText value="#{d.montoCredito}" >
+                                            <f:convertNumber locale="#{formato.locale}"/>
+                                        </h:outputText>
+
+                                    </p:column>
+                                    <p:column headerText="DEBITO" style="font-size: 10pt;text-align: right;width: 15%">
+                                        <h:outputText value="#{d.montoDebito}" >
+                                            <f:convertNumber locale="#{formato.locale}"/>
+                                        </h:outputText>
+
+                                    </p:column>
+
+                                </p:dataTable>
                             </div>
-
-                        </div>  
-
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-12">
-                            <p:dataTable value="#{cuentaClienteController.detalles}" var="d" id="dataList"
-                                         sortMode="multiple"
-                                         styleClass="escuchaSeleccionCuota" style="font-size: 10pt">
-
-                                <p:column headerText="FECHA" style="font-size: 10pt;width: 12%" sortBy="#{d.fecha}">
-                                    <h:outputText value="#{d.fecha}">
-                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" locale="#{formato.locale}" timeZone="America/Asuncion"/>
-                                    </h:outputText>
-
-                                </p:column>
-                                <p:column headerText="TIPO OP." style="font-size: 10pt;width: 12%">
-                                    #{d.tipoOperacion}
-                                </p:column>
-                                <p:column headerText="DESCRIPCION" style="font-size: 10pt;width: 36%;text-align: left">
-                                    #{d.descripcion}
-                                </p:column>
-                                <p:column headerText="CREDITO" style="font-size: 10pt;text-align: right;width: 15%">
-                                    <h:outputText value="#{d.montoCredito}" >
-                                        <f:convertNumber locale="#{formato.locale}"/>
-                                    </h:outputText>
-
-                                </p:column>
-                                <p:column headerText="DEBITO" style="font-size: 10pt;text-align: right;width: 15%">
-                                    <h:outputText value="#{d.montoDebito}" >
-                                        <f:convertNumber locale="#{formato.locale}"/>
-                                    </h:outputText>
-
-                                </p:column>
-
-                            </p:dataTable>
                         </div>
                     </div>
-                </div>
 
 
-            </h:panelGroup>
+                </h:panelGroup>
 
-        </h:form>
+            </h:form>
 
-    </ui:define>
-
+        </ui:define>
+    </ui:decorate>
 </ui:composition>

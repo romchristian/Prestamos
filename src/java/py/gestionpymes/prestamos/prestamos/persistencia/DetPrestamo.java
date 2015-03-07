@@ -17,7 +17,7 @@ import javax.persistence.*;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
-import py.gestionpymes.prestamos.contabilidad.FacturaVentaDetalle;
+import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVentaDetalle;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoDetPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 

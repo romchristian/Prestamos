@@ -4,228 +4,229 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      template="/plantillaListado.xhtml">
 
-    <h:head>
-        <f:facet name="first">
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-            <title>Agenda Cobros</title>
-        </f:facet>
+    
 
-
-
-
-        <h:outputStylesheet library="css" name="default.css"/>
-        <h:outputStylesheet library="css" name="jsfcrud.css"/>
-        <h:outputScript library="js" name="jsfcrud.js"/>
-
-        <style type="text/css">
-            
-            @font-face {
-                font-family: 'Exo';
-                font-style: normal;
-                font-weight: 100;
-                src: local('Exo Thin'), local('Exo-Thin'), url(#{resource['font/bSEuBfAK9i16rKak_EdKNA.woff2']}) format('woff2'), url(#{resource['font/qyfp0OSqk7TET2opvcMBmw.woff']}) format('woff');
-            }
-            @font-face {
-                font-family: 'Exo';
-                font-style: normal;
-                font-weight: 200;
-                src: local('Exo ExtraLight'), local('Exo-ExtraLight'), url(#{resource['font/lA-XzkxvFbAS7qSN5Rm7dw.woff2']}) format('woff2'), url(#{resource['font/z1hPnoJcXaXYata_d2utlw.woff']}) format('woff');
-            }
-            @font-face {
-                font-family: 'Exo';
-                font-style: normal;
-                font-weight: 400;
-                src: local('Exo Regular'), local('Exo-Regular'), url(#{resource['font/kA_pX0U45Eb7PbHijV1x2w.woff2']}) format('woff2'), url(#{resource['font/wocyXRLWPo2Av-yUTmmbTA.woff']}) format('woff');
-            }
-
-
-            .wrapper {
-
-                left: 263px;
-                position: relative;
-                top: 100px;
-                padding-right: 15px;
-                z-index: 1;
-                
-                width: 800px;
-                overflow: auto;
-
-            }
+        <h:head>
+                    <f:facet name="first">
+                        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                        <title>Agenda Cobros</title>
+                    </f:facet>
 
 
 
-            #bar{
-                background: rgba(31,29,89,1);
-                background: -moz-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
-                background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(31,29,89,1)), color-stop(100%, rgba(120,118,196,1)));
-                background: -webkit-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
-                background: -o-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
-                background: -ms-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
-                background: linear-gradient(135deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f1d59', endColorstr='#7876c4', GradientType=1 );
-                width:100%;
-                position:fixed;
-                top:0px;
-                height:45px;
-                font-family: 'Exo', sans-serif;
-                color: #fff;
-                font-size: 27px;
-                font-weight: bold;
-                left: 0px;
-                z-index: 3;
-                margin:0px auto;
-                padding-left:  25px
-            }
 
-            #bar span{
-                color: #33ccFF !important;
-            }
+                    <h:outputStylesheet library="css" name="default.css"/>
+                    <h:outputStylesheet library="css" name="jsfcrud.css"/>
+                    <h:outputScript library="js" name="jsfcrud.js"/>
 
-            #header{
 
-                width:100%;
-                position:fixed;
-                top:45px;
-                height:45px;
-                font-family: 'Exo', sans-serif;
-                color: #444;
-                left: 220px;
-                z-index: 2;
-                margin:0px;
-                padding-left:  25px;
-                background-color: #ddd;
-                border-bottom: 1px solid #0077b3;
-                border-top: 1px solid #0077b3;
-            }
+            <style type="text/css">
 
-            #sidebar{
-                background: rgba(254,254,254,1);
-                background: -moz-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
-                background: -webkit-gradient(left top, right top, color-stop(0%, rgba(254,254,254,1)), color-stop(72%, rgba(219,219,219,0.9)), color-stop(99%, rgba(209,209,209,0.86)), color-stop(100%, rgba(226,226,226,0.86)));
-                background: -webkit-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
-                background: -o-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
-                background: -ms-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
-                background: linear-gradient(to right, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e2e2e2', GradientType=1 );
-                border-top: 1px solid black;
-                padding:30px;
-                font-family: 'Exo', sans-serif;
-                position:fixed;
-                top: 45px;
-                left: 0;
+                @font-face {
+                    font-family: 'Exo';
+                    font-style: normal;
+                    font-weight: 100;
+                    src: local('Exo Thin'), local('Exo-Thin'), url(#{resource['font/bSEuBfAK9i16rKak_EdKNA.woff2']}) format('woff2'), url(#{resource['font/qyfp0OSqk7TET2opvcMBmw.woff']}) format('woff');
+                }
+                @font-face {
+                    font-family: 'Exo';
+                    font-style: normal;
+                    font-weight: 200;
+                    src: local('Exo ExtraLight'), local('Exo-ExtraLight'), url(#{resource['font/lA-XzkxvFbAS7qSN5Rm7dw.woff2']}) format('woff2'), url(#{resource['font/z1hPnoJcXaXYata_d2utlw.woff']}) format('woff');
+                }
+                @font-face {
+                    font-family: 'Exo';
+                    font-style: normal;
+                    font-weight: 400;
+                    src: local('Exo Regular'), local('Exo-Regular'), url(#{resource['font/kA_pX0U45Eb7PbHijV1x2w.woff2']}) format('woff2'), url(#{resource['font/wocyXRLWPo2Av-yUTmmbTA.woff']}) format('woff');
+                }
 
-                height: 80%;
-                border-right: 1px solid #0077b3;
 
-            }
+                .wrapper {
 
-            #titulo{
-                height: 50px;
-                background-color: #ddd;
-            }
+                    left: 263px;
+                    position: relative;
+                    top: 100px;
+                    padding-right: 15px;
+                    z-index: 1;
+
+                    width: 800px;
+                    overflow: auto;
+
+                }
 
 
 
-            .ui-widget {
-                font-size: 12px!important;
-            }
+                #bar{
+                    background: rgba(31,29,89,1);
+                    background: -moz-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
+                    background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(31,29,89,1)), color-stop(100%, rgba(120,118,196,1)));
+                    background: -webkit-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
+                    background: -o-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
+                    background: -ms-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
+                    background: linear-gradient(135deg, rgba(31,29,89,1) 0%, rgba(120,118,196,1) 100%);
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f1d59', endColorstr='#7876c4', GradientType=1 );
+                    width:100%;
+                    position:fixed;
+                    top:0px;
+                    height:45px;
+                    font-family: 'Exo', sans-serif;
+                    color: #fff;
+                    font-size: 27px;
+                    font-weight: bold;
+                    left: 0px;
+                    z-index: 3;
+                    margin:0px auto;
+                    padding-left:  25px
+                }
 
-        </style>
-    </h:head>
+                #bar span{
+                    color: #33ccFF !important;
+                }
 
-    <h:body style="padding: 0;margin: 0;">
+                #header{
 
-        <p:growl id="growl" life="3000" />
+                    width:100%;
+                    position:fixed;
+                    top:45px;
+                    height:45px;
+                    font-family: 'Exo', sans-serif;
+                    color: #444;
+                    left: 220px;
+                    z-index: 2;
+                    margin:0px;
+                    padding-left:  25px;
+                    background-color: #ddd;
+                    border-bottom: 1px solid #0077b3;
+                    border-top: 1px solid #0077b3;
+                }
+
+                #sidebar{
+                    background: rgba(254,254,254,1);
+                    background: -moz-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(254,254,254,1)), color-stop(72%, rgba(219,219,219,0.9)), color-stop(99%, rgba(209,209,209,0.86)), color-stop(100%, rgba(226,226,226,0.86)));
+                    background: -webkit-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                    background: -o-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                    background: -ms-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                    background: linear-gradient(to right, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e2e2e2', GradientType=1 );
+                    border-top: 1px solid black;
+                    padding:30px;
+                    font-family: 'Exo', sans-serif;
+                    position:fixed;
+                    top: 45px;
+                    left: 0;
+
+                    height: 80%;
+                    border-right: 1px solid #0077b3;
+
+                }
+
+                #titulo{
+                    height: 50px;
+                    background-color: #ddd;
+                }
 
 
-        <div id="bar">
-            <div>Idea<span>Pymes - </span> <span style="color: #1fcf5f!important;">Préstamos</span></div>
-            <h:form>
-                <div style="color: white!important;position: absolute;top:10px; left: calc(100% - 250px);font-size: 15px">Usuario: #{request.userPrincipal} - <h:commandLink style="color: white;" action="#{autenticador.logout()}" value="Salir"/></div>
+
+                .ui-widget {
+                    font-size: 12px!important;
+                }
+
+            </style>
+
+
+        </h:head>
+
+        <h:body style="padding: 0;margin: 0;">
+
+            <p:growl id="growl" life="3000" />
+
+
+            <div id="bar">
+                <h:form id="menuForm" style="padding: 0;margin: 0;">
+                     <ui:include src="/plantillaModulo.xhtml"/>
+                </h:form>
+            </div>
+
+           
+
+            <div id="header">
+                <h2>Agenda Cobros</h2>
+            </div>
+
+
+
+
+
+
+
+            <h:form id="form1">
+                <!--            <p:commandButton id="toPrint" value="Print" ajax="false" style="position: relative; top: 100px">
+                                <p:printer target="schedule" />
+                            </p:commandButton>-->
+                <p:schedule value="#{agendaCobrosBean.lazyEventModel}"  styleClass="wrapper" locale="es" id="schedule">
+
+                    <p:ajax event="eventSelect" listener="#{agendaCobrosBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                </p:schedule>
+                <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+                    <h:panelGrid id="eventDetails" columns="1">
+                        <h:outputLabel for="title" value="Descripcion:" />
+                        <p:inputTextarea id="title" value="#{agendaCobrosBean.event.title}" required="true" rows="4" cols="30"/>
+
+                        <h:outputLabel for="from" value="Vencmiento:" />
+                        <h:outputText id="from" value="#{agendaCobrosBean.event.startDate}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-4"/>
+                        </h:outputText>
+
+
+
+
+                    </h:panelGrid>
+                </p:dialog>
+
             </h:form>
-        </div>
-
-        <div id="sidebar">
-            <h:form id="menuForm" style="padding: 0;margin: 0;">
-                <ui:include src="/menu.xhtml"/>
-            </h:form>
-        </div>
-
-        <div id="header">
-            <h2>Agenda Cobros</h2>
-        </div>
 
 
+            <script type="text/javascript">
 
+                PrimeFaces.locales['es'] = {
+                    closeText: 'Cerrar',
+                    prevText: 'Anterior',
+                    nextText: 'Siguiente',
+                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                    dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+                    weekHeader: 'Semana',
+                    firstDay: 1,
+                    isRTL: false,
+                    showMonthAfterYear: false,
+                    yearSuffix: '',
+                    timeOnlyTitle: 'Sólo hora',
+                    timeText: 'Tiempo',
+                    hourText: 'Hora',
+                    minuteText: 'Minuto',
+                    secondText: 'Segundo',
+                    currentText: 'Fecha actual',
+                    ampm: false,
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                    allDayText: 'Todo el día'
+                };
 
-
-
-
-        <h:form id="form1">
-<!--            <p:commandButton id="toPrint" value="Print" ajax="false" style="position: relative; top: 100px">
-                <p:printer target="schedule" />
-            </p:commandButton>-->
-            <p:schedule value="#{agendaCobrosBean.lazyEventModel}"  styleClass="wrapper" locale="es" id="schedule">
-
-                <p:ajax event="eventSelect" listener="#{agendaCobrosBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-            </p:schedule>
-            <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
-                <h:panelGrid id="eventDetails" columns="1">
-                    <h:outputLabel for="title" value="Descripcion:" />
-                    <p:inputTextarea id="title" value="#{agendaCobrosBean.event.title}" required="true" rows="4" cols="30"/>
-
-                    <h:outputLabel for="from" value="Vencmiento:" />
-                    <h:outputText id="from" value="#{agendaCobrosBean.event.startDate}">
-                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-4"/>
-                    </h:outputText>
+            </script>
 
 
 
 
-                </h:panelGrid>
-            </p:dialog>
-
-        </h:form>
-
-
-        <script type="text/javascript">
-
-            PrimeFaces.locales['es'] = {
-                closeText: 'Cerrar',
-                prevText: 'Anterior',
-                nextText: 'Siguiente',
-                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
-                weekHeader: 'Semana',
-                firstDay: 1,
-                isRTL: false,
-                showMonthAfterYear: false,
-                yearSuffix: '',
-                timeOnlyTitle: 'Sólo hora',
-                timeText: 'Tiempo',
-                hourText: 'Hora',
-                minuteText: 'Minuto',
-                secondText: 'Segundo',
-                currentText: 'Fecha actual',
-                ampm: false,
-                month: 'Mes',
-                week: 'Semana',
-                day: 'Día',
-                allDayText: 'Todo el día'
-            };
-
-        </script>
-
-
-
-
-    </h:body>
-
+        </h:body>
+   
 </html>

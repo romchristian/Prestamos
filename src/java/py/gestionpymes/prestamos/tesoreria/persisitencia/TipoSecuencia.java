@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.gestionpymes.prestamos.contabilidad;
+package py.gestionpymes.prestamos.tesoreria.persisitencia;
 
 /**
  *
- * @author Acer
+ * @author Christian
  */
-public enum EstadoFactura {
-  BORRADOR, PENDIENTE, PAGADA,ANULADA
+public enum TipoSecuencia {
+ TICKET, FACTURA
 }

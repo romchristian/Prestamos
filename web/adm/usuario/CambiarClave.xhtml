@@ -8,46 +8,50 @@
 
 
 
-    <ui:composition template="/template.xhtml">
+    <ui:composition>
 
-        <f:metadata>
-            <f:viewParam name="id" value="#{usuarioController.id}"/>
-            <f:viewAction action="#{usuarioController.cargaDatos()}"/>
-        </f:metadata>
+        <ui:decorate template="/plantillaListado.xhtml">
+            <ui:param name="modulo" value="configuracion"/>
 
-        <ui:define name="title">
-            <h:outputText value="Listado de Usuarios"></h:outputText>
-        </ui:define>
+            <f:metadata>
+                <f:viewParam name="id" value="#{usuarioController.id}"/>
+                <f:viewAction action="#{usuarioController.cargaDatos()}"/>
+            </f:metadata>
 
-        <ui:define name="body">
+            <ui:define name="title">
+                <h:outputText value="Cambiar Clave"></h:outputText>
+            </ui:define>
 
-            <h:form id="CategoriaCreateForm">
-                <h:panelGroup id="display">
-                    <p:panelGrid columns="2" >
+            <ui:define name="body">
 
-                        <p:outputLabel value="Estado" for="estado" />
-                        <p:selectOneMenu value="#{usuarioController.selected.estado}" id="estado" disabled="true">
-                            <f:selectItems value="#{productorEnums.obtEstados()}"/>
-                        </p:selectOneMenu>
-                        
-                        <p:outputLabel value="Nombre" for="nombre" />
-                        <p:inputText id="nombre" value="#{usuarioController.selected.nombre}" disabled="true"/>
-                        <p:outputLabel value="Apellido" for="apellido" />
-                        <p:inputText id="apellido" value="#{usuarioController.selected.apellido}" disabled="true"/>
-                        <p:outputLabel value="Usuario" for="usuario" />
-                        <p:inputText id="usuario" value="#{usuarioController.selected.usuario}" disabled="true"/>
-                        
-                        <p:outputLabel for="pwd1" value="Clave:" />
-                        <p:password id="pwd1" value="#{usuarioController.selected.clave}" match="pwd2" required="true" />
-                        <p:outputLabel for="pwd2" value="Confirmar Clave:" />
-                        <p:password id="pwd2" value="#{usuarioController.selected.clave}" required="true" />
+                <h:form id="CategoriaCreateForm">
+                    <h:panelGroup id="display">
+                        <p:panelGrid columns="2" >
 
-                    </p:panelGrid>
+                            <p:outputLabel value="Estado" for="estado" />
+                            <p:selectOneMenu value="#{usuarioController.selected.estado}" id="estado" disabled="true">
+                                <f:selectItems value="#{productorEnums.obtEstados()}"/>
+                            </p:selectOneMenu>
 
-                    <p:commandButton action="#{usuarioController.update()}" value="#{bundle.Save}" update=":growl,display"/>
-                    <p:button value="#{bundle.Cancel}" outcome="List"/>
-                </h:panelGroup>
-            </h:form>
-        </ui:define>
+                            <p:outputLabel value="Nombre" for="nombre" />
+                            <p:inputText id="nombre" value="#{usuarioController.selected.nombre}" disabled="true"/>
+                            <p:outputLabel value="Apellido" for="apellido" />
+                            <p:inputText id="apellido" value="#{usuarioController.selected.apellido}" disabled="true"/>
+                            <p:outputLabel value="Usuario" for="usuario" />
+                            <p:inputText id="usuario" value="#{usuarioController.selected.usuario}" disabled="true"/>
+
+                            <p:outputLabel for="pwd1" value="Clave:" />
+                            <p:password id="pwd1" value="#{usuarioController.selected.clave}" match="pwd2" required="true" />
+                            <p:outputLabel for="pwd2" value="Confirmar Clave:" />
+                            <p:password id="pwd2" value="#{usuarioController.selected.clave}" required="true" />
+
+                        </p:panelGrid>
+
+                        <p:commandButton action="#{usuarioController.update()}" value="#{bundle.Save}" update=":growl,display"/>
+                        <p:button value="#{bundle.Cancel}" outcome="List"/>
+                    </h:panelGroup>
+                </h:form>
+            </ui:define>
+        </ui:decorate>
     </ui:composition>
 </html>
