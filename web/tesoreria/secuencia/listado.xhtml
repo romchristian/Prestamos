@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:decorate template="/plantillaListado.xhtml">
+        <ui:param name="modulo" value="tesoreria"/>
+
+
+
+        <ui:define name="title">
+            Secuencias
+        </ui:define>
+
+        <ui:define name="body">
+
+            <h:form>
+
+
+                <p:dataTable value="#{secuenciaBean.findAll()}" var="m" styleClass="resultado">
+
+                    <f:facet name="header">
+                        
+                        <p:commandButton action="#{secuenciaBean.preparaCreacion()}" 
+                                         value="Crear"
+                                         icon="ui-icon-plus" 
+                                         styleClass="botonVerde flotaIzquierda"/>
+                        
+                    </f:facet>
+
+
+                    <p:column headerText="Nombre">
+                        <h:link value="#{m.nombre}" outcome="edita">
+                            <f:param name="id" value="#{m.id}"/>
+                        </h:link>
+                    </p:column>
+                    <p:column headerText="Rango">
+                        <h:outputText value="#{m.valorInicial} - #{m.valorFinal}"/>
+                    </p:column>
+                    <p:column headerText="Ultimo Nro">
+                        <h:outputText value="#{m.ultimoNumero}"/>
+                    </p:column>
+                    <p:column headerText="Tipo">
+                        <h:outputText value="#{m.tipoSecuencia}"/>
+                    </p:column>
+                    <p:column headerText="Est">
+                        <h:outputText value="#{m.establecimiento}"/>
+                    </p:column>
+                    <p:column headerText="P. Exp.">
+                        <h:outputText value="#{m.puntoExpedicion}"/>
+                    </p:column>
+                    <p:column headerText="Vencimiento">
+                        <h:outputText value="#{m.vencimiento}">
+                            <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:decorate>
+</ui:composition>

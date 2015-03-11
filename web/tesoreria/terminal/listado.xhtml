@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:decorate template="/util/plantillaListado.xhtml">
+        <ui:param name="modulo" value="configuracion"/>
+        <ui:param name="titulo" value="Puntos de ventas"/>
+
+        <ui:define name="acciones">
+            <p:commandButton action="#{puntoVentaBean.preparaCreacion()}" 
+                             value="Nuevo"
+                             rendered="#{autorizador.hayPermisoAccion('CreaOrdenCompra')}"
+                             styleClass="botonVerde flotaIzquierda"/>
+        </ui:define>
+
+        <ui:define name="tabla">
+            <p:dataTable value="#{puntoVentaBean.findAll()}" var="p" rendered="#{not empty puntoVentaBean.findAll()}">
+                <p:column headerText="Nombre">
+                    <h:link value="#{p.nombre}" outcome="edita">
+                        <f:param name="id" value="#{p.id}"/>
+                    </h:link>
+                </p:column>
+                <p:column headerText="Estado">
+                    <h:outputText value="#{p.estado}"/>
+                </p:column>
+            </p:dataTable>
+        </ui:define>
+    </ui:decorate>
+</ui:composition>

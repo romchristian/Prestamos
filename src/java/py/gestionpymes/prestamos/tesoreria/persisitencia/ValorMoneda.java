@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import py.gestionpymes.prestamos.contabilidad.persistencia.MetodoPago;
 
 /**
@@ -27,7 +28,7 @@ public class ValorMoneda implements Serializable {
     private Integer denominacion;
     @ManyToOne
     private MetodoPago metodoPago;
-
+      
     public Long getId() {
         return id;
     }

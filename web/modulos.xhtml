@@ -5,12 +5,10 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-
-
-    <li class="${modulo == 'prestamos'? 'active': ''}"><a href='/Prestamos/prestamos/prestamo/List.xhtml'><span>Prestamos</span></a></li>
-    <li class="${modulo == 'tesoreria'? 'active': ''}"><a href='#'><span>Tesorería</span></a></li>
+    <li class="${modulo == 'prestamo'? 'active': ''}"><a href='/Prestamos/prestamos/prestamo/List.xhtml'><span>Prestamos</span></a></li>
+    <li class="${modulo == 'tesoreria'? 'active': ''}"><a href='/Prestamos/tesoreria/secuencia/listado.xhtml'><span>Tesorería</span></a></li>
     <li class="${modulo == 'contabilidad'? 'active': ''}"><a href='/Prestamos/contabilidad/diario/listado.xhtml'><span>Contabilidad</span></a></li>
-    <li class="${modulo == 'informes'? 'active': ''}"><a href='/Prestamos/prestamos/informes/listadoPrestamo.xhtml'><span>Informes</span></a></li>
+    <li class="${modulo == 'informe'? 'active': ''}"><a href='/Prestamos/prestamos/informes/listadoPrestamo.xhtml'><span>Informes</span></a></li>
     <li class="${modulo == 'configuracion'? 'active': ''}"><a href='/Prestamos/adm/usuario/List.xhtml'><span>Configuración</span></a></li>
 
 </ui:composition>

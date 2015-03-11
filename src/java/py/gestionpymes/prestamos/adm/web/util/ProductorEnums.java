@@ -5,14 +5,13 @@
 package py.gestionpymes.prestamos.adm.web.util;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.persistencia.Estado;
 import py.gestionpymes.prestamos.adm.persistencia.TipoPersona;
 import py.gestionpymes.prestamos.contabilidad.persistencia.CondicionVenta;
+import py.gestionpymes.prestamos.contabilidad.persistencia.TipoDiario;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.PeriodoPago;
 import py.gestionpymes.prestamos.prestamos.persistencia.SistemaAmortizacion;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.Calificacion;
@@ -26,6 +25,8 @@ import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDireccion;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDocumento;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoEmpresa;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoReferencia;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoMetodoPago;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoSecuencia;
 
 /**
  *
@@ -190,6 +191,37 @@ public class ProductorEnums implements Serializable {
         CondicionVenta[] lista = CondicionVenta.values();
         for (int i = 0; i < lista.length; i++) {
             CondicionVenta tp = lista[i];
+            R[i] = new SelectItem(tp, tp.toString());
+        }
+        return R;
+    }
+    
+     public SelectItem[] obtTiposDiario() {
+        SelectItem[] R = new SelectItem[TipoDiario.values().length];
+        TipoDiario[] lista = TipoDiario.values();
+        for (int i = 0; i < lista.length; i++) {
+            TipoDiario tp = lista[i];
+            R[i] = new SelectItem(tp, tp.toString());
+        }
+        return R;
+    }
+    
+    
+    public SelectItem[] obtTiposSecuencias() {
+        SelectItem[] R = new SelectItem[TipoSecuencia.values().length];
+        TipoSecuencia[] lista = TipoSecuencia.values();
+        for (int i = 0; i < lista.length; i++) {
+            TipoSecuencia tp = lista[i];
+            R[i] = new SelectItem(tp, tp.toString());
+        }
+        return R;
+    }
+    
+     public SelectItem[] obtTiposMetodosPagos() {
+        SelectItem[] R = new SelectItem[TipoMetodoPago.values().length];
+        TipoMetodoPago[] lista = TipoMetodoPago.values();
+        for (int i = 0; i < lista.length; i++) {
+            TipoMetodoPago tp = lista[i];
             R[i] = new SelectItem(tp, tp.toString());
         }
         return R;

@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{metodoPagoBean.id}"/>
+        <f:viewAction action="#{metodoPagoBean.cargaDatos()}"/>
+    </f:metadata>
+
+    <ui:decorate template="/util/plantillaABM.xhtml">
+        <ui:param name="modulo" value="configuracion"/>
+        <ui:param name="titulo" value=" Edita #{metodoPagoBean.actual.nombre}"/>
+        <ui:param name="listado" value="Metodos de Pagos"/>
+
+        <ui:define name="acciones">
+            <p:commandButton value="Guardar" action="#{metodoPagoBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
+        </ui:define>
+
+
+
+
+        <ui:define name="col1">
+            <p:inputText id="nombre" value="#{metodoPagoBean.actual.nombre}" styleClass="descripcionPrincipal"/>
+            <p:watermark for="nombre" value="Nombre" id="watermark"/>
+            <br/>
+            <br/>
+            <h:panelGrid columns="2" cellpadding="10">
+
+                <p:outputLabel value="Diario" for="diario"/>
+                <h:selectOneMenu value="#{metodoPagoBean.actual.diario}" id="diario" >
+                    <f:selectItems value="#{diarioBean.itemsAvailableSelectOne}"/>
+                </h:selectOneMenu>
+                <p:outputLabel value="Tipo" for="tipo"/>
+                <h:selectOneMenu value="#{metodoPagoBean.actual.tipoMetodoPago}" id="tipo" >
+                    <f:selectItems value="#{productorEnums.obtTiposMetodosPagos()}"/>
+                </h:selectOneMenu>
+                <p:outputLabel value="Moneda" for="moneda"/>
+                <p:selectOneMenu value="#{metodoPagoBean.actual.moneda}" id="moneda" >
+                    <f:selectItems value="#{monedaBean.itemsAvailableSelectOne}"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+
+        </ui:define>
+        <ui:define name="col2">
+            <p:selectBooleanCheckbox itemLabel="Control Efectivo" value="#{metodoPagoBean.actual.controlEfectivo}"/>
+        </ui:define>
+
+        <ui:define name="detalles">
+            <p:tabView>
+                <p:tab title="Valores de Caja">
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <h:outputLabel value="Valor: *" for="valor"></h:outputLabel>
+                        <p:inputText id="valor" value="#{metodoPagoBean.valorMoneda.denominacion}" required="true"/>
+
+                        <p:commandButton id="btn_add" value="Add" update="valores @parent" action="#{metodoPagoBean.agregar()}">
+                        </p:commandButton>
+                    </h:panelGrid>
+
+                    <p:outputPanel id="valores" styleClass="valores">
+                        <p:dataTable value="#{metodoPagoBean.actual.valoresMonedas}" var="valor" id="valoresTable">
+
+                            <p:column headerText="Valor">
+                                <h:outputText value="#{valor.denominacion}" />
+                            </p:column>
+
+                            <p:column headerText="Action">
+                                <p:commandLink value="Remover" update="@(.valores)" process="@(.valores)">
+
+                                </p:commandLink>
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:outputPanel>
+                </p:tab>
+            </p:tabView>
+
+
+        </ui:define>
+    </ui:decorate>
+
+
+</ui:composition>

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{secuenciaBean.id}"/>
+        <f:viewAction action="#{secuenciaBean.cargaDatos()}"/>
+    </f:metadata>
+
+       <ui:decorate template="/plantillaListado.xhtml">
+        <ui:param name="modulo" value="tesoreria"/>
+
+
+        <ui:define name="title">
+            Nueva Secuencia
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form>
+
+                <p:outputPanel styleClass="panelControles">
+                    <p:inputText id="nombre" value="#{secuenciaBean.actual.nombre}" styleClass="descripcionPrincipal" required="true"/>
+                    <p:watermark for="nombre" value="Nombre" id="watermark"/>
+                    <br/>
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Tipo" for="tipo"/>
+                        <h:selectOneMenu value="#{secuenciaBean.actual.tipoSecuencia}" id="tipo">
+                            <p:ajax update="@(.panelControles)"/>
+                            <f:selectItems value="#{productorEnums.obtTiposSecuencias()}"/>
+                        </h:selectOneMenu>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Timbrado" for="timbrado" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                        <p:inputText value="#{secuenciaBean.actual.timbrado}" id="timbrado" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                        <p:outputLabel value="Establecimiento" for="est" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                        <p:inputText value="#{secuenciaBean.actual.establecimiento}" id="est" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                        <p:outputLabel value="Punto Expedicion" for="pex" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                        <p:inputText value="#{secuenciaBean.actual.puntoExpedicion}" id="pex" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                        <p:outputLabel value="Vencimiento" for="venc" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                        <p:calendar value="#{secuenciaBean.actual.vencimiento}" id="venc" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"
+                                    pattern="#{formato.patronFecha}" locale="es" lang="es"/>
+
+
+                        <p:outputLabel value="Valor Inicial" for="inicio"/>
+                        <p:inputText value="#{secuenciaBean.actual.valorInicial}" id="inicio"/>
+                        <p:outputLabel value="Valor Máximo" for="maximo" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                        <p:inputText value="#{secuenciaBean.actual.valorFinal}" id="maximo" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                    </p:panelGrid>
+                </p:outputPanel>
+                <p:commandButton value="Guardar" action="#{secuenciaBean.edit}"  styleClass="botonRojo flotaIzquierda" ajax="false"/>
+                <p:button value="#{bundle.Cancel}" outcome="listado"/>
+
+            </h:form>
+        </ui:define>
+
+
+    </ui:decorate>
+
+</ui:composition>

@@ -6,38 +6,47 @@
                 xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
                 xmlns:f="http://java.sun.com/jsf/core">
 
-    <f:metadata>
-        <f:viewAction action="#{diarioTreeBean.cargaDatos()}"/>
-    </f:metadata>
 
     <ui:decorate template="/plantillaListado.xhtml">
-        <ui:param name="modulo" value="contabilidad"/>
+        <ui:param name="modulo" value="tesoreria"/>
 
 
 
         <ui:define name="title">
-            Diarios
+            Métodos de Pago
         </ui:define>
 
         <ui:define name="body">
+
             <h:form>
-                <p:treeTable value="#{diarioTreeBean.rootNode}" var="d">
+                <p:dataTable value="#{metodoPagoBean.findAll()}" var="m" styleClass="resultado" >
+
                     <f:facet name="header">
-                        <p:commandButton action="#{diarioBean.preparaCreacion()}" 
+
+                        <p:commandButton action="#{metodoPagoBean.preparaCreacion()}" 
                                          value="Crear"
                                          icon="ui-icon-plus" 
                                          styleClass="botonVerde flotaIzquierda"/>
+
                     </f:facet>
                     <p:column headerText="Nombre">
-                        <h:link value="#{d.descripcion}" outcome="edita">
-                            <f:param name="id" value="#{d.id}"/>
+                        <h:outputText value="#{m.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Descripcion">
+                        <h:outputText value="#{m.diario.descripcion }"/>
+                    </p:column>
+
+                    <p:column headerText="Acciones">
+                        <h:link value="Editar" outcome="edita">
+                            <f:param name="id" value="#{m.id}"/>
                         </h:link>
                     </p:column>
-                    <p:column headerText="Tipo">
-                        <h:outputText value="#{d.tipo}" />
-                    </p:column>
-                </p:treeTable>
+                </p:dataTable>
             </h:form>
+
+
+
+
         </ui:define>
     </ui:decorate>
 </ui:composition>

@@ -20,12 +20,12 @@
                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
         <h:commandLink  value="Cobrador" action="/adm/cobrador/List" 
                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
-        <h:commandLink  value="Cotizacion" action="/adm/cotizacion/List" 
-                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+<!--        <h:commandLink  value="Cotizacion" action="/adm/cotizacion/List" 
+                        rendered="{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
         <h:commandLink  value="Moneda" action="/adm/moneda/List" 
-                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+                        rendered="{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
         <h:commandLink  value="ImpuestoIVA" action="/adm/impuestoIVA/List" 
-                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+                        rendered="{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>-->
         <h:commandLink  value="Categoria de Clientes" action="/adm/categoria/List" 
                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
         <h:commandLink  value="Plan de Gastos y Tasas" action="/adm/planGastos/List" 
