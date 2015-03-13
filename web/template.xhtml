@@ -271,7 +271,9 @@
                 <div style="display: table-cell;vertical-align: middle;">
                     <h:form>
                         <div class="program" style="width: 160px;font-size: 12pt;border: none">
-                            <div>Usuario: <span>#{request.userPrincipal} - </span> <span style="color: #1fcf5f!important;"><h:commandLink style="color:#1fcf5f!important;z-index: 10" action="#{autenticador.logout()}" value=" Salir"/></span></div>
+                            <ui:insert name="logout">
+                                <div>Usuario: <span>#{request.userPrincipal} - </span> <span style="color: #1fcf5f!important;"><h:commandLink style="color:#1fcf5f!important;z-index: 10" action="#{autenticador.logout()}" value=" Salir"/></span></div>
+                            </ui:insert>
                         </div>
                     </h:form>
                 </div>

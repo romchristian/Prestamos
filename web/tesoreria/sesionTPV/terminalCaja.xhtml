@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes">
+
+    <ui:define name="menuModulos">
+        <div style="display: table">
+            <div style="display: table-cell;width: 80%;font-size: 12pt; color: white">
+                Usuario: #{request.userPrincipal} - #{sesionTPVBean.actual.puntoVenta.nombre}
+            </div>
+            <div style="display: table-cell;">
+                <p:clock/>
+            </div>
+
+        </div>
+    </ui:define>
+
+    <ui:define name="logout">
+        <h:form style="width: 100%">
+            <p:commandButton action="#{sesionTPVBean.suspendeSesion()}" value="Pausar" style="float: right;margin-right: 10px;"/>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="menuLateral">        
+        <ui:include src="/menus/terminalCaja.xhtml"/>
+    </ui:define>
+
+    <ui:define name="title">
+        Bienvenido a su Sesión: 
+    </ui:define>
+
+    <ui:define name="body">
+        <h3>CAJA</h3>
+    </ui:define>
+
+</ui:composition>

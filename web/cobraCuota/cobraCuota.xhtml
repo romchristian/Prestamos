@@ -3,260 +3,280 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-
+                template="/template.xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:gpymes="http://java.sun.com/jsf/composite/gpymes">
 
-    <ui:decorate template="/plantillaListado.xhtml">
-        <ui:param name="modulo" value="prestamo"/>
 
-        <ui:define name="title">
-            Cobro de cuotas
-        </ui:define>
-        <ui:define name="body">
+    <ui:define name="menuModulos">
+        <div style="display: table">
+            <div style="display: table-cell;width: 80%;font-size: 12pt; color: white">
+                Usuario: #{request.userPrincipal} - #{sesionTPVBean.actual.puntoVenta.nombre}
+            </div>
+            <div style="display: table-cell;">
+                <p:clock/>
+            </div>
 
-            <h:form id="formCobroCuota">
+        </div>
+    </ui:define>
 
+    <ui:define name="logout">
+        <h:form style="width: 100%">
+            <p:commandButton action="#{sesionTPVBean.suspendeSesion()}" value="Pausar" style="float: right;margin-right: 10px;"/>
+        </h:form>
+    </ui:define>
 
-                <h:panelGroup>
+    <ui:define name="menuLateral">        
+        <ui:include src="/menus/terminalCaja.xhtml"/>
+    </ui:define>
 
-                    <div class="ui-grid ui-grid-responsive">
-                        <div class="ui-grid-row">
-                            <div class="ui-grid-col-7">
-                                <div style="background-color: #ddd; width: 90%;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
-                                     -moz-border-radius: 5px;
-                                     border-radius: 5px;
-                                     margin-bottom: 5px">
-                                    <p:outputPanel styleClass="escuchaSeleccionCuota">
-                                        <h:panelGrid columns="2">
-                                            <h:outputText value="Titular: "/>
-                                            <p:autoComplete value="#{cobraCuotaBean.cliente}"  id="autoCompleteCliente" size="60"
-                                                            completeMethod="#{autoCompleteCliente.completar}"
-                                                            forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
-                                                            >
-                                                <p:ajax event="itemSelect" update="@(.escuchaSeleccionCuota)" listener="#{cobraCuotaBean.buscaPrestamos()}"/>
+    <ui:define name="title">
+        Cobro de cuotas
+    </ui:define>
+    <ui:define name="body">
 
-                                            </p:autoComplete>
-
-
-                                            <h:outputText value="Prestamo: "/>
-                                            <h:outputText value="#{cobraCuotaBean.obtDescCuota()}"/>
-                                            <h:outputText value="Mora: "/>
-                                            <h:outputText value="#{cobraCuotaBean.obtDescMora()}"/>
-                                            <h:outputText value="Ultimo Pago: "/>
-                                            <h:outputText value="#{cobraCuotaBean.obtUltimoPago()}">
-                                                <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFechaHora}"/>
-                                            </h:outputText>
-
-                                        </h:panelGrid>
-                                    </p:outputPanel>
-                                </div>
-
-                            </div>  
+        <h:form id="formCobroCuota">
 
 
-                            <div class="ui-grid-col-5">
-                                <div style="background-color: #ddd; width: 95%;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
-                                     -moz-border-radius: 5px;
-                                     border-radius: 5px;
-                                     margin-bottom: 5px">
-                                    <div style="width: 200px; margin: 0 auto 0 auto;text-align: center">
-                                        <h:outputText value="TOTAL A PAGAR:" />
-                                        <p:outputPanel styleClass="escuchaSeleccionCuota" style="padding-top: 10px">
-                                            <h:outputText value="#{cobraCuotaBean.totalAPagar}" style="color: #CC0000;font-size: 20pt; font-weight: bold;">
-                                                <f:convertNumber locale="#{formato.locale}"/>
-                                            </h:outputText>
-                                        </p:outputPanel>
-                                        <p:commandButton value="Generar Factura"  action="#{cobraCuotaBean.generaFactura()}" ajax="false"/>
-                                    </div>
+            <h:panelGroup>
 
-                                </div>
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-7">
+                            <div style="background-color: #ddd; width: 90%;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
+                                 -moz-border-radius: 5px;
+                                 border-radius: 5px;
+                                 margin-bottom: 5px">
+                                <p:outputPanel styleClass="escuchaSeleccionCuota">
+                                    <h:panelGrid columns="2">
+                                        <h:outputText value="Titular: "/>
+                                        <p:autoComplete value="#{cobraCuotaBean.cliente}"  id="autoCompleteCliente" size="60"
+                                                        completeMethod="#{autoCompleteCliente.completar}"
+                                                        forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}"
+                                                        >
+                                            <p:ajax event="itemSelect" update="@(.escuchaSeleccionCuota)" listener="#{cobraCuotaBean.buscaPrestamos()}"/>
 
-
-                            </div>  
-                        </div>
-                        <div class="ui-grid-row">
-                            <div class="ui-grid-col-12">
+                                        </p:autoComplete>
 
 
-                                <p:treeTable value="#{cobraCuotaBean.root}" var="c" id="treeDataList"
-                                             styleClass="escuchaSeleccionCuota">
-
-
-
-                                    <p:column style="width:200px;font-size: 12px;">
-                                        <f:facet name="header">
-                                            Préstamo
-                                        </f:facet>
-                                        <h:outputText value="#{c.descPrestamo}" />
-                                    </p:column>
-
-                                    <p:column style="font-size: 12px;">
-                                        <f:facet name="header">
-                                            Cuota
-                                        </f:facet>
-                                        <h:outputText value="#{c.descDetPrestamo}" />
-                                    </p:column>
-
-                                    <p:column style="font-size: 12px;">
-                                        <f:facet name="header">
-                                            Vencimiento
-                                        </f:facet>
-                                        <h:outputText value="#{c.fechaVencimiento}">
-                                            <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                                        <h:outputText value="Prestamo: "/>
+                                        <h:outputText value="#{cobraCuotaBean.obtDescCuota()}"/>
+                                        <h:outputText value="Mora: "/>
+                                        <h:outputText value="#{cobraCuotaBean.obtDescMora()}"/>
+                                        <h:outputText value="Ultimo Pago: "/>
+                                        <h:outputText value="#{cobraCuotaBean.obtUltimoPago()}">
+                                            <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFechaHora}"/>
                                         </h:outputText>
-                                    </p:column>
 
-
-                                    <p:column style="width:100px;font-size: 12px;">
-                                        <f:facet name="header">
-                                            Monto Cuota
-                                        </f:facet>
-                                        <h:outputText value="#{c.montoCuota}">
-                                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column style="font-size: 12px;">
-                                        <f:facet name="header">
-                                            Días Mora
-                                        </f:facet>
-                                        <h:outputText value="#{c.diasMora}">
-                                            <f:convertNumber locale="#{formato.locale}"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column style="width:100px;font-size: 12px;">
-                                        <f:facet name="header">
-                                            Monto Mora
-                                        </f:facet>
-                                        <h:outputText value="#{c.montoMora}">
-                                            <f:convertNumber locale="#{formato.locale}"/>
-                                        </h:outputText>
-                                    </p:column>
-                                    <p:column style="width:100px;font-size: 12px;">
-                                        <f:facet name="header">
-                                            Descuento
-                                        </f:facet>
-                                        <h:outputText value="#{c.detPrestamo.descuento}">
-                                            <f:convertNumber locale="#{formato.locale}"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column style="width:100px;font-size: 12px;">
-                                        <f:facet name="header">
-                                            Monto Pagado
-                                        </f:facet>
-                                        <h:inputText value="#{c.montoPago}" rendered="#{(not p.esPrestamo) and p.modoEdicion}">
-                                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                                        </h:inputText>
-                                        <h:outputText value="#{c.montoPago}" rendered="#{(not p.esPrestamo) and (not p.modoEdicion)}">
-                                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column style="width:100px;font-size: 12px;">
-                                        <f:facet name="header">
-                                            Saldo Pendiente
-                                        </f:facet>
-                                        <h:outputText value="#{c.saldoCuota}">
-                                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column style="width:100px;font-size: 12px;">
-                                        <f:facet name="header">
-                                            Monto A Pagar
-                                        </f:facet>
-                                        <h:inputText value="#{c.montoAPagar}" rendered="#{(not p.esPrestamo) and p.modoEdicion}">
-                                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                                        </h:inputText>
-                                        <h:outputText value="#{c.montoAPagar}" rendered="#{(not p.esPrestamo) and (not p.modoEdicion)}">
-                                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column style="font-size: 12px;text-align:center">
-                                        <f:facet name="header">
-                                            Pagar
-                                        </f:facet>
-
-
-                                        <h:panelGroup style="text-align: center" rendered="#{not c.esPrestamo}">
-                                            <p:graphicImage library="img" name="check.png" rendered="#{c.detPrestamo.estado == 'CANCELADO'}"/>
-                                            <p:commandLink update=":formCobroCuota:cuotaPanel" oncomplete="PF('cuotaDialog').show()" value="Pagar" rendered="#{(c.detPrestamo.estado == 'PENDIENTE')}" disabled="#{c.disabledPagar}">
-                                                <f:setPropertyActionListener value="#{c}" target="#{cobraCuotaBean.cuotaSeleccionada}" />
-                                            </p:commandLink>
-                                        </h:panelGroup>
-
-                                    </p:column>
-
-
-                                </p:treeTable>
+                                    </h:panelGrid>
+                                </p:outputPanel>
                             </div>
+
+                        </div>  
+
+
+                        <div class="ui-grid-col-5">
+                            <div style="background-color: #ddd; width: 95%;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
+                                 -moz-border-radius: 5px;
+                                 border-radius: 5px;
+                                 margin-bottom: 5px">
+                                <div style="width: 200px; margin: 0 auto 0 auto;text-align: center">
+                                    <h:outputText value="TOTAL A PAGAR:" />
+                                    <p:outputPanel styleClass="escuchaSeleccionCuota" style="padding-top: 10px">
+                                        <h:outputText value="#{cobraCuotaBean.totalAPagar}" style="color: #CC0000;font-size: 20pt; font-weight: bold;">
+                                            <f:convertNumber locale="#{formato.locale}"/>
+                                        </h:outputText>
+                                    </p:outputPanel>
+                                    <p:commandButton value="Generar Factura"  action="#{cobraCuotaBean.generaFactura()}" ajax="false"/>
+                                </div>
+
+                            </div>
+
+
+                        </div>  
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-12">
+
+
+                            <p:treeTable value="#{cobraCuotaBean.root}" var="c" id="treeDataList"
+                                         styleClass="escuchaSeleccionCuota">
+
+
+
+                                <p:column style="width:200px;font-size: 12px;">
+                                    <f:facet name="header">
+                                        Préstamo
+                                    </f:facet>
+                                    <h:outputText value="#{c.descPrestamo}" />
+                                </p:column>
+
+                                <p:column style="font-size: 12px;">
+                                    <f:facet name="header">
+                                        Cuota
+                                    </f:facet>
+                                    <h:outputText value="#{c.descDetPrestamo}" />
+                                </p:column>
+
+                                <p:column style="font-size: 12px;">
+                                    <f:facet name="header">
+                                        Vencimiento
+                                    </f:facet>
+                                    <h:outputText value="#{c.fechaVencimiento}">
+                                        <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                                    </h:outputText>
+                                </p:column>
+
+
+                                <p:column style="width:100px;font-size: 12px;">
+                                    <f:facet name="header">
+                                        Monto Cuota
+                                    </f:facet>
+                                    <h:outputText value="#{c.montoCuota}">
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column style="font-size: 12px;">
+                                    <f:facet name="header">
+                                        Días Mora
+                                    </f:facet>
+                                    <h:outputText value="#{c.diasMora}">
+                                        <f:convertNumber locale="#{formato.locale}"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column style="width:100px;font-size: 12px;">
+                                    <f:facet name="header">
+                                        Monto Mora
+                                    </f:facet>
+                                    <h:outputText value="#{c.montoMora}">
+                                        <f:convertNumber locale="#{formato.locale}"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column style="width:100px;font-size: 12px;">
+                                    <f:facet name="header">
+                                        Descuento
+                                    </f:facet>
+                                    <h:outputText value="#{c.detPrestamo.descuento}">
+                                        <f:convertNumber locale="#{formato.locale}"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column style="width:100px;font-size: 12px;">
+                                    <f:facet name="header">
+                                        Monto Pagado
+                                    </f:facet>
+                                    <h:inputText value="#{c.montoPago}" rendered="#{(not p.esPrestamo) and p.modoEdicion}">
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                    </h:inputText>
+                                    <h:outputText value="#{c.montoPago}" rendered="#{(not p.esPrestamo) and (not p.modoEdicion)}">
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column style="width:100px;font-size: 12px;">
+                                    <f:facet name="header">
+                                        Saldo Pendiente
+                                    </f:facet>
+                                    <h:outputText value="#{c.saldoCuota}">
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column style="width:100px;font-size: 12px;">
+                                    <f:facet name="header">
+                                        Monto A Pagar
+                                    </f:facet>
+                                    <h:inputText value="#{c.montoAPagar}" rendered="#{(not p.esPrestamo) and p.modoEdicion}">
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                    </h:inputText>
+                                    <h:outputText value="#{c.montoAPagar}" rendered="#{(not p.esPrestamo) and (not p.modoEdicion)}">
+                                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column style="font-size: 12px;text-align:center">
+                                    <f:facet name="header">
+                                        Pagar
+                                    </f:facet>
+
+
+                                    <h:panelGroup style="text-align: center" rendered="#{not c.esPrestamo}">
+                                        <p:graphicImage library="img" name="check.png" rendered="#{c.detPrestamo.estado == 'CANCELADO'}"/>
+                                        <p:commandLink update=":formCobroCuota:cuotaPanel" oncomplete="PF('cuotaDialog').show()" value="Pagar" rendered="#{(c.detPrestamo.estado == 'PENDIENTE')}" disabled="#{c.disabledPagar}">
+                                            <f:setPropertyActionListener value="#{c}" target="#{cobraCuotaBean.cuotaSeleccionada}" />
+                                        </p:commandLink>
+                                    </h:panelGroup>
+
+                                </p:column>
+
+
+                            </p:treeTable>
                         </div>
                     </div>
+                </div>
 
-                    <p:dialog id="dialog" header="Detalle de Cuota" showEffect="fade" widgetVar="cuotaDialog"  resizable="false" position="center">
-                        <p:outputPanel id="cuotaPanel">
-                            <p:panelGrid  columns="2" columnClasses="label,value">
-                                <h:outputLabel for="nroCuota" value="Nro: " />
-                                <h:outputText id="nroCuota" value="#{cobraCuotaBean.cuotaSeleccionada.nroCuota}" style="font-weight:bold" />
+                <p:dialog id="dialog" header="Detalle de Cuota" showEffect="fade" widgetVar="cuotaDialog"  resizable="false" position="center">
+                    <p:outputPanel id="cuotaPanel">
+                        <p:panelGrid  columns="2" columnClasses="label,value">
+                            <h:outputLabel for="nroCuota" value="Nro: " />
+                            <h:outputText id="nroCuota" value="#{cobraCuotaBean.cuotaSeleccionada.nroCuota}" style="font-weight:bold" />
 
-                                <h:outputLabel for="montoCuota" value="Monto Cuota: " />
-                                <h:outputText id="montoCuota" value="#{cobraCuotaBean.cuotaSeleccionada.montoCuota}" style="font-weight:bold">
-                                    <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                                </h:outputText>
+                            <h:outputLabel for="montoCuota" value="Monto Cuota: " />
+                            <h:outputText id="montoCuota" value="#{cobraCuotaBean.cuotaSeleccionada.montoCuota}" style="font-weight:bold">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:outputText>
 
-                                <h:outputLabel for="montoMora" value="Monto Mora: " />
-                                <h:outputText id="montoMora" value="#{cobraCuotaBean.cuotaSeleccionada.montoMora}" style="font-weight:bold">
-                                    <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                                </h:outputText>
+                            <h:outputLabel for="montoMora" value="Monto Mora: " />
+                            <h:outputText id="montoMora" value="#{cobraCuotaBean.cuotaSeleccionada.montoMora}" style="font-weight:bold">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:outputText>
 
-                                <h:outputLabel for="cuotaInteres" value="Cuota Interes: " />
-                                <h:outputText id="cuotaInteres" value="#{cobraCuotaBean.cuotaSeleccionada.cuotaInteres}" style="font-weight:bold">
-                                    <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                                </h:outputText>
-
-
-                                <h:outputLabel for="descuento" value="Descuento Mora: " />
-                                <h:outputText id="descuento" value="#{cobraCuotaBean.cuotaSeleccionada.detPrestamo.descuento}" style="font-weight:bold">
-                                    <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                                </h:outputText>
-
-                                <h:outputLabel for="pagoMinimo" value="Pago Mínimo: " />
-                                <h:outputText id="pagoMinimo" value="#{cobraCuotaBean.cuotaSeleccionada.cuotaInteres.add(cobraCuotaBean.cuotaSeleccionada.montoMora.subtract(cobraCuotaBean.cuotaSeleccionada.descuento))}" style="font-weight:bold">
-                                    <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                                </h:outputText>
-
-                                <h:outputLabel for="deudaTotal" value="Deuda total: " />
-                                <h:outputText id="deudaTotal" value="#{cobraCuotaBean.cuotaSeleccionada.saldoCuota}" style="font-weight:bold">
-                                    <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                                </h:outputText>
-
-                                <h:outputLabel for="montoPago" value="Monto A Pago: " id="lblMontoPago"/>
-                                <p:inputText id="montoPago" value="#{cobraCuotaBean.montoActual}" style="font-weight:bold" validator="pagoValidator">
-                                    <p:ajax event="blur" update="lblMontoPago,montoPago,:growl" process="montoPago"/>
-                                    <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                                </p:inputText>
-
-                                <h:outputLabel for="moneda" value="Moneda: " />
-                                <h:selectOneMenu value="#{cobraCuotaBean.cuotaSeleccionada.moneda}" id="moneda">
-                                    <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
-                                </h:selectOneMenu>
+                            <h:outputLabel for="cuotaInteres" value="Cuota Interes: " />
+                            <h:outputText id="cuotaInteres" value="#{cobraCuotaBean.cuotaSeleccionada.cuotaInteres}" style="font-weight:bold">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:outputText>
 
 
-                            </p:panelGrid>
+                            <h:outputLabel for="descuento" value="Descuento Mora: " />
+                            <h:outputText id="descuento" value="#{cobraCuotaBean.cuotaSeleccionada.detPrestamo.descuento}" style="font-weight:bold">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:outputText>
 
-                            <p:commandButton actionListener="#{cobraCuotaBean.agregaAPagar()}" value="#{bundle.Save}" update="@(.escuchaSeleccionCuota),:growl" oncomplete="handleSubmit(args,'cuotaDialog');" />
-                            <p:commandButton value="#{bundle.Cancel}" onclick="cuotaDialog.hide()"/>
-                        </p:outputPanel>
-                    </p:dialog>
+                            <h:outputLabel for="pagoMinimo" value="Pago Mínimo: " />
+                            <h:outputText id="pagoMinimo" value="#{cobraCuotaBean.cuotaSeleccionada.cuotaInteres.add(cobraCuotaBean.cuotaSeleccionada.montoMora.subtract(cobraCuotaBean.cuotaSeleccionada.descuento))}" style="font-weight:bold">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:outputText>
 
-                </h:panelGroup>
+                            <h:outputLabel for="deudaTotal" value="Deuda total: " />
+                            <h:outputText id="deudaTotal" value="#{cobraCuotaBean.cuotaSeleccionada.saldoCuota}" style="font-weight:bold">
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </h:outputText>
 
-            </h:form>
+                            <h:outputLabel for="montoPago" value="Monto A Pago: " id="lblMontoPago"/>
+                            <p:inputText id="montoPago" value="#{cobraCuotaBean.montoActual}" style="font-weight:bold" validator="pagoValidator">
+                                <p:ajax event="blur" update="lblMontoPago,montoPago,:growl" process="montoPago"/>
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                            </p:inputText>
 
-        </ui:define>
-    </ui:decorate>
+                            <h:outputLabel for="moneda" value="Moneda: " />
+                            <h:selectOneMenu value="#{cobraCuotaBean.cuotaSeleccionada.moneda}" id="moneda">
+                                <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
+                            </h:selectOneMenu>
+
+
+                        </p:panelGrid>
+
+                        <p:commandButton actionListener="#{cobraCuotaBean.agregaAPagar()}" value="#{bundle.Save}" update="@(.escuchaSeleccionCuota),:growl" oncomplete="handleSubmit(args,'cuotaDialog');" />
+                        <p:commandButton value="#{bundle.Cancel}" onclick="cuotaDialog.hide()"/>
+                    </p:outputPanel>
+                </p:dialog>
+
+            </h:panelGroup>
+
+        </h:form>
+
+    </ui:define>
+
 </ui:composition>

@@ -7,19 +7,22 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
 
-    <ui:decorate template="/util/plantillaListado.xhtml">
-        <ui:param name="modulo" value="configuracion"/>
+    <ui:decorate template="/plantillaListado.xhtml">
+        <ui:param name="modulo" value="tesoreria"/>
         <ui:param name="titulo" value="Puntos de ventas"/>
 
-        <ui:define name="acciones">
-            <p:commandButton action="#{puntoVentaBean.preparaCreacion()}" 
-                             value="Nuevo"
-                             rendered="#{autorizador.hayPermisoAccion('CreaOrdenCompra')}"
-                             styleClass="botonVerde flotaIzquierda"/>
+        <ui:define name="title">
+            Cajas Operativa
         </ui:define>
 
-        <ui:define name="tabla">
-            <p:dataTable value="#{puntoVentaBean.findAll()}" var="p" rendered="#{not empty puntoVentaBean.findAll()}">
+        <ui:define name="body">
+            <p:dataTable value="#{puntoVentaBean.findAll()}" var="p">
+                <f:facet name="header">
+                    <p:commandButton action="#{puntoVentaBean.preparaCreacion()}" 
+                                     value="Crear"
+                                     icon="ui-icon-plus"
+                                     styleClass="botonVerde flotaIzquierda"/>
+                </f:facet>
                 <p:column headerText="Nombre">
                     <h:link value="#{p.nombre}" outcome="edita">
                         <f:param name="id" value="#{p.id}"/>

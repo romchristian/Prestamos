@@ -8,6 +8,27 @@
 
     <ui:composition template="/template.xhtml">
 
+        <ui:define name="menuModulos">
+            <div style="display: table">
+                <div style="display: table-cell;width: 80%;font-size: 12pt; color: white">
+                    Usuario: #{request.userPrincipal} - #{sesionTPVBean.actual.puntoVenta.nombre}
+                </div>
+                <div style="display: table-cell;">
+                    <p:clock/>
+                </div>
+
+            </div>
+        </ui:define>
+
+        <ui:define name="logout">
+            <h:form style="width: 100%">
+                <p:commandButton action="#{sesionTPVBean.suspendeSesion()}" value="Pausar" style="float: right;margin-right: 10px;"/>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="menuLateral">        
+            <ui:include src="/menus/terminalCaja.xhtml"/>
+        </ui:define>
 
         <ui:define name="title">
             <h:outputText value="Creación de Factura Venta"></h:outputText>

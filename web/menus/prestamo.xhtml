@@ -17,10 +17,8 @@
         <h:commandLink  value="Prestamos Históricos" action="/prestamos/prestamoHistorico/List" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_historico'))}"/>
         
-        <h:commandLink  value="Desembolsa Prestamos" action="/prestamos/prestamo/Desembolsar" 
-                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_desembolsa'))}"/>
-        <h:commandLink  value="Cobro Cuotas" action="cobraCuota"
-                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cobro_cuota'))}"/>
+        
+        
         <h:commandLink  value="Agenda de Cobros" action="/prestamos/prestamo/agendaCobros" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('agenda_cobro'))}"/>
 

@@ -15,6 +15,7 @@
 
         <ui:define name="acciones">
             <p:commandButton value="Guardar" action="#{metodoPagoBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
+            <p:button value="Cancelar" outcome="listado"/>
         </ui:define>
 
 
@@ -49,10 +50,10 @@
             <p:tabView>
                 <p:tab title="Valores de Caja">
                     <h:panelGrid columns="3" cellpadding="5">
-                        <h:outputLabel value="Valor: *" for="valor"></h:outputLabel>
-                        <p:inputText id="valor" value="#{metodoPagoBean.valorMoneda.denominacion}" required="true"/>
+                        <h:outputLabel value="Valor:" for="valor"></h:outputLabel>
+                        <p:inputText id="valor" value="#{metodoPagoBean.valorMoneda.denominacion}"/>
 
-                        <p:commandButton id="btn_add" value="Add" update="valores @parent" action="#{metodoPagoBean.agregar()}">
+                        <p:commandButton id="btn_add" value="Agregar" icon="ui-icon-plus" update="valores @parent" action="#{metodoPagoBean.agregar()}">
                         </p:commandButton>
                     </h:panelGrid>
 

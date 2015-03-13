@@ -7,17 +7,18 @@
       xmlns:p="http://primefaces.org/ui">
 
 
-    <ui:composition template="/template.xhtml">
-        <p:idleMonitor timeout="1"></p:idleMonitor>
+    <ui:composition >
+        <ui:decorate template="/plantillaListado.xhtml">
+            <ui:param name="modulo" value="tesoreria"/>
+            <ui:define name="title">
+                <h:outputText value="Inicio"></h:outputText>
+            </ui:define>
 
-        <ui:define name="title">
-            <h:outputText value="Inicio"></h:outputText>
-        </ui:define>
+            <ui:define name="body">
+                <p:graphicImage library="img" name="logoideaspymes.png" style="margin: 0 auto 0 auto"/>
 
-        <ui:define name="body">
-            <p:graphicImage library="img" name="logoideaspymes.png" style="margin: 0 auto 0 auto"/>
-            
-        </ui:define>
+            </ui:define>
+        </ui:decorate>
     </ui:composition>
 
 </html>

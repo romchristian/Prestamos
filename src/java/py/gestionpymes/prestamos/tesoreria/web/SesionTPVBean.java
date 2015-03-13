@@ -4,12 +4,14 @@
  */
 package py.gestionpymes.prestamos.tesoreria.web;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ValueChangeEvent;
+import javax.inject.Named;
 import org.primefaces.event.FlowEvent;
 
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
@@ -29,9 +31,9 @@ import py.gestionpymes.prestamos.tesoreria.dao.SesionTPVDAO;
  *
  * @author christian
  */
-@ManagedBean
-@SessionScoped
-public class SesionTPVBean extends BeanGenerico<SesionTPV> {
+@Named
+@javax.enterprise.context.SessionScoped
+public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializable{
 
     @EJB
     private SesionTPVDAO ejb;
@@ -77,6 +79,21 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> {
         getActual().setEstado("Creado");
 
         return "nuevo.xhtml";
+    }
+    
+    
+    public String inciaSesion(SesionTPV s) {
+        setActual(s);
+        getActual().setEstado("ABIERTA");
+        ejb.edit(getActual());
+        return "terminalCaja.xhtml";
+    }
+    
+     public String suspendeSesion() {
+        getActual().setEstado("SUSPENDIDO");
+        ejb.edit(getActual());
+        return "listado.xhtml";
+
     }
 
     public void siCamabiaTPV(ValueChangeEvent event) {

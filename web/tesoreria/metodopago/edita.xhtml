@@ -12,13 +12,14 @@
         <f:viewAction action="#{metodoPagoBean.cargaDatos()}"/>
     </f:metadata>
 
-    <ui:decorate template="/util/plantillaABM.xhtml">
+    <ui:decorate template="/plantillaABM.xhtml">
         <ui:param name="modulo" value="configuracion"/>
         <ui:param name="titulo" value=" Edita #{metodoPagoBean.actual.nombre}"/>
         <ui:param name="listado" value="Metodos de Pagos"/>
 
         <ui:define name="acciones">
             <p:commandButton value="Guardar" action="#{metodoPagoBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
+            <p:button value="Cancelar" outcome="listado"/>
         </ui:define>
 
 
@@ -41,7 +42,7 @@
                 </h:selectOneMenu>
                 <p:outputLabel value="Moneda" for="moneda"/>
                 <p:selectOneMenu value="#{metodoPagoBean.actual.moneda}" id="moneda" >
-                    <f:selectItems value="#{monedaBean.itemsAvailableSelectOne}"/>
+                    <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
                 </p:selectOneMenu>
             </h:panelGrid>
 
@@ -54,10 +55,10 @@
             <p:tabView>
                 <p:tab title="Valores de Caja">
                     <h:panelGrid columns="3" cellpadding="5">
-                        <h:outputLabel value="Valor: *" for="valor"></h:outputLabel>
-                        <p:inputText id="valor" value="#{metodoPagoBean.valorMoneda.denominacion}" required="true"/>
+                        <h:outputLabel value="Valor:" for="valor"></h:outputLabel>
+                        <p:inputText id="valor" value="#{metodoPagoBean.valorMoneda.denominacion}"/>
 
-                        <p:commandButton id="btn_add" value="Add" update="valores @parent" action="#{metodoPagoBean.agregar()}">
+                        <p:commandButton id="btn_add" value="Agregar" icon="ui-icon-plus" update="valores @parent" action="#{metodoPagoBean.agregar()}">
                         </p:commandButton>
                     </h:panelGrid>
 
@@ -69,7 +70,7 @@
                             </p:column>
 
                             <p:column headerText="Action">
-                                <p:commandLink value="Remover" update="@(.valores)" process="@(.valores)">
+                                <p:commandLink value="Remover" update="@(.valores)" process="@(.valores)" action="#{metodoPagoBean.quitarValorMoneda(valor)}">
 
                                 </p:commandLink>
                             </p:column>

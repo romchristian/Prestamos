@@ -37,7 +37,7 @@
         </method-call>
         
         <flow-return id="endFlow">
-            <from-outcome>/home/home</from-outcome>
+            <from-outcome>/tesoreria/sesionTPV/terminalCaja</from-outcome>
         </flow-return>
         
     </flow-definition>

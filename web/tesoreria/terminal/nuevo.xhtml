@@ -8,13 +8,14 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
 
-    <ui:decorate template="/util/plantillaABM.xhtml">
-        <ui:param name="modulo" value="configuracion"/>
-        <ui:param name="titulo" value="Nuevo"/>
+    <ui:decorate template="/plantillaABM.xhtml">
+        <ui:param name="modulo" value="tesoreria"/>
+        <ui:param name="titulo" value="Crear Caja Operativa"/>
         <ui:param name="listado" value="Puntos de Ventas"/>
 
         <ui:define name="acciones">
             <p:commandButton value="Guardar" action="#{puntoVentaBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
+            <p:button value="Cancelar" outcome="listado"/>
         </ui:define>
 
 
@@ -57,9 +58,6 @@
                 </p:column>
             </p:dataTable>
         </ui:define>
-
-
-
     </ui:decorate>
 
 

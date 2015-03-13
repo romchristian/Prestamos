@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:decorate template="/plantillaABM.xhtml">
+        <ui:param name="modulo" value="tesoreria"/>
+        <ui:param name="titulo" value="Edita Sesion #{sesionTPVBean.actual.puntoVenta.nombre}"/>
+        <ui:param name="listado" value="Sesiones"/>
+
+
+        <ui:define name="acciones">
+            <p:commandButton value="Guardar" action="#{sesionTPVBean.edit}"  styleClass="botonRojo flotaIzquierda"/>
+            <p:button value="Cancelar" outcome="listado"/>
+        </ui:define>
+
+
+        <ui:define name="col1">
+            <h:panelGrid columns="2" cellpadding="10">
+                <h:outputText value="Usuario"/>
+
+
+
+                <h:outputText value="TPV"/>
+
+                <p:selectOneMenu value="#{sesionTPVBean.actual.puntoVenta}" valueChangeListener="#{sesionTPVBean.siCamabiaTPV}">
+                    <f:selectItems value="#{puntoVentaBean.itemsAvailableSelectOne}" />
+                    <p:ajax process="@this" update="pnlvalores" />
+                </p:selectOneMenu>
+
+            </h:panelGrid>
+
+            <p:outputPanel id="pnlvalores" styleClass="valores">
+                <p:dataTable value="#{sesionTPVBean.actual.valorEfectivosInicial}" var="valor" id="valoresTable">
+                    <p:column headerText="Valor">
+                        <h:outputText value="#{valor.denominacionMoneda}"/>
+                    </p:column>
+                    <p:column headerText="Cantidad">
+                        <p:inputText value="#{valor.cantidad}" size="5">
+                            <p:ajax event="blur" update="@(.saldoIncial)" />  
+                        </p:inputText>
+                    </p:column>
+                </p:dataTable>
+            </p:outputPanel>
+
+            <p:panel id="saldoIncial" styleClass="saldoIncial">
+                <p:panelGrid columns="2">
+                    <h:outputText value="Saldo Inicial"/>
+                    <h:outputText value="#{sesionTPVBean.actual.saldoInicial}">
+                        <f:convertNumber currencySymbol="PYG"/> 
+                    </h:outputText>
+                </p:panelGrid>
+            </p:panel>
+        </ui:define>
+
+        <ui:define name="col2">
+
+        </ui:define>
+
+        <ui:define name="detalles">
+
+        </ui:define>
+
+    </ui:decorate>
+
+
+
+</ui:composition>

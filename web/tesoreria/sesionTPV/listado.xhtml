@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:decorate template="/plantillaListado.xhtml">
+        <ui:param name="modulo" value="tesoreria"/>
+        <ui:param name="titulo" value="Sesiones"/>
+
+
+
+        <ui:define name="title">
+            Sesiones de Caja
+        </ui:define>
+
+        <ui:define name="body">
+            <p:dataTable value="#{sesionTPVBean.findAll()}" var="m" styleClass="resultado">
+                <f:facet name="header">
+                    <p:commandButton action="#{sesionTPVBean.preparaCreacion()}" 
+                             value="Crear"
+                             icon="ui-icon-plus"
+                             styleClass="botonVerde flotaIzquierda"/>
+                </f:facet> 
+                    
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{m.puntoVenta.nombre}/#{m.usuario.nombre}/ #{m.id}"/>
+                </p:column>
+                <p:column headerText="Fecha Arpertura">
+                    <h:outputText value="#{m.fechaApertura}">
+                        <f:convertDateTime  pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Fecha Cierre">
+                    <h:outputText value="#{m.fechaCierre}">
+                        <f:convertDateTime  pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Acciones">
+                    <h:commandButton action="#{sesionTPVBean.preparaEdicion(m)}" value="Editar" rendered="#{autorizador.hayPermisoAccion('EditaOrdenCompra')}"/>
+                    <p:commandButton action="#{sesionTPVBean.inciaSesion(m)}" value="Comenzar"/>
+                    
+                </p:column>
+            </p:dataTable>
+        </ui:define>
+    </ui:decorate>
+</ui:composition>
