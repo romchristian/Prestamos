@@ -27,7 +27,7 @@ import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 public class Transaccion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     private SesionTPV sesionTPV;
@@ -41,9 +41,21 @@ public class Transaccion implements Serializable {
     private Moneda moneda;
 
     
+    
     public Transaccion() {
         fecha = new Date();
     }
+
+    public Transaccion(SesionTPV sesionTPV, TipoTransaccion tipoTransaccion, String descripcion, BigDecimal monto, Moneda moneda) {
+        this();
+        this.sesionTPV = sesionTPV;
+        this.tipoTransaccion = tipoTransaccion;
+        this.descripcion = descripcion;
+        this.monto = monto;
+        this.moneda = moneda;
+    }
+    
+    
     
     
     public Long getId() {

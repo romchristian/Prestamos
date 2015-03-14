@@ -28,6 +28,25 @@
         <converter-class>py.gestionpymes.prestamos.adm.web.VendedorConverter</converter-class>
     </converter>
     
+    <flow-definition id="desembolsa">
+        
+        
+        <method-call id="limpia"> 
+            <default-outcome>desembolsa</default-outcome>
+            <method>#{desembolsaBean.limpia()}</method>
+        </method-call>
+        
+        <method-call id="paga"> 
+            <default-outcome>endFlow</default-outcome>
+            <method>#{desembolsaBean.paga()}</method>
+        </method-call>
+        
+        <flow-return id="endFlow">
+            <from-outcome>/tesoreria/sesionTPV/terminalCaja</from-outcome>
+        </flow-return>
+        
+    </flow-definition>
+    
     <flow-definition id="cobraCuota">
         
         

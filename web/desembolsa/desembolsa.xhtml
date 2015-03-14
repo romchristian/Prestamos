@@ -50,7 +50,7 @@
                                     <h:outputText value="Cliente"
                                                   style="font-size: 10pt"/>
 
-                                    <p:autoComplete value="#{prestamoController.clienteFiltro}"  id="autoCompleteCliente" size="50"
+                                    <p:autoComplete value="#{desembolsaBean.clienteFiltro}"  id="autoCompleteCliente" size="50"
                                                     completeMethod="#{autoCompleteCliente.completar}"
                                                     forceSelection="true" converter="clienteConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.devuelveNombreCompleto()}">
                                         <!--                                            <p:ajax event="itemSelect" update="textoConyugeDeudor"/>-->
@@ -63,32 +63,32 @@
                                     <h:outputText value="Empresa: "
                                                   style="font-size: 10pt"/>
 
-                                    <p:selectOneMenu value="#{prestamoController.empresaFiltro}">
+                                    <p:selectOneMenu value="#{desembolsaBean.empresaFiltro}">
                                         <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Sucursal: "
                                                   style="font-size: 10pt"/>
 
-                                    <p:selectOneMenu value="#{prestamoController.sucursalFiltro}">
+                                    <p:selectOneMenu value="#{desembolsaBean.sucursalFiltro}">
                                         <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
                                     </p:selectOneMenu>
 
 
                                     <h:outputText value="Incio: "
                                                   style="font-size: 10pt"/>
-                                    <p:calendar value="#{prestamoController.inicioFiltro}" locale="es"
+                                    <p:calendar value="#{desembolsaBean.inicioFiltro}" locale="es"
                                                 pattern="#{formato.patronFecha}"/>
 
                                     <h:outputText value="Fin: "
                                                   style="font-size: 10pt"/>
-                                    <p:calendar value="#{prestamoController.finFiltro}" locale="es"
+                                    <p:calendar value="#{desembolsaBean.finFiltro}" locale="es"
                                                 pattern="#{formato.patronFecha}"/> 
 
                                     <p:spacer/>
                                     <p:spacer/>
                                     <p:spacer/>
-                                    <p:commandButton value="Buscar" action="#{prestamoController.buscarADesembolsar()}" update="datalist"/>
+                                    <p:commandButton value="Buscar" action="#{desembolsaBean.buscarADesembolsar()}" update="datalist"/>
 
                                 </h:panelGrid>
 
@@ -99,8 +99,8 @@
 
                     <div class="ui-grid-row">
                         <div class="ui-grid-col-12">
-                            <p:dataTable id="datalist" value="#{prestamoController.prestamosADesembolsar}" var="p"
-                                         selectionMode="single" selection="#{prestamoController.selected}"
+                            <p:dataTable id="datalist" value="#{desembolsaBean.prestamosADesembolsar}" var="p"
+                                         selectionMode="single" selection="#{desembolsaBean.selected}"
                                          paginator="true"
                                          paginatorPosition="bottom"
                                          paginatorAlwaysVisible="false"
@@ -112,8 +112,8 @@
                                 <p:ajax event="rowUnselect" update="desembolsarButton"/>
 
                                 <f:facet name="header">
-                                    <p:commandButton id="desembolsarButton" action="#{prestamoController.desembolsa()}" value="Desembolsa" update="datalist"
-                                                     disabled="#{prestamoController.selected.estado == 'EN_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
+                                    <p:commandButton id="desembolsarButton" action="resumen" value="Desembolsa" update="datalist"
+                                                     disabled="#{desembolsaBean.selected.estado == 'EN_DESEMBOLSO' and desembolsaBean.haySeleccion()? 'false':'true'}"
                                                      rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_desembolsa'))}"/>
                                 </f:facet>
 

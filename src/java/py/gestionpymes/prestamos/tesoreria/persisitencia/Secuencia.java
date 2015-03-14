@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import py.gestionpymes.prestamos.adm.persistencia.Estado;
 
-
 /**
  *
  * @author Acer
@@ -43,8 +42,31 @@ public class Secuencia implements Serializable {
 
     public Secuencia() {
         this.estado = Estado.ACTIVO;
-        this.valorFinal = valorFinal == null? 0L:valorFinal;
+        this.valorFinal = valorFinal == null ? 0L : valorFinal;
         ultimoNumero = 0L;
+    }
+
+    public String getNumeroFormateado(Long num) {
+      
+        String valor = num+"";
+        int tamaño = valor.length();
+        if (tamaño == 1) {
+            valor = "000000" + valor;
+        } else if (tamaño == 2) {
+            valor = "00000" + valor;
+        } else if (tamaño == 3) {
+            valor = "0000" + valor;
+        } else if (tamaño == 4) {
+            valor = "000" + valor;
+        } else if (tamaño == 5) {
+            valor = "00" + valor;
+        } else if (tamaño == 6) {
+            valor = "0" + valor;
+        } else {
+            valor = valor;
+        }
+
+        return valor;
     }
 
     public Long getId() {
@@ -112,10 +134,15 @@ public class Secuencia implements Serializable {
     }
 
     public Long obtSiguienteNumero() {
-        if (valorFinal > 0 && valorFinal > (ultimoNumero + 1)) {
+        if (valorFinal > 0 && valorFinal < (ultimoNumero + 1)) {
             return null;
         }
-        return ultimoNumero + 1;
+        if(ultimoNumero == 0){
+            return valorInicial;
+            
+        } else {
+            return  ultimoNumero +1;
+        }
     }
 
     public Estado getEstado() {

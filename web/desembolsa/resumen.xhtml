@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:gpymes="http://java.sun.com/jsf/composite/gpymes">
+
+    <ui:define name="menuModulos">
+        <div style="display: table">
+            <div style="display: table-cell;width: 80%;font-size: 12pt; color: white">
+                Usuario: #{request.userPrincipal} - #{sesionTPVBean.actual.puntoVenta.nombre}
+            </div>
+            <div style="display: table-cell;">
+                <p:clock/>
+            </div>
+
+        </div>
+    </ui:define>
+
+    <ui:define name="logout">
+        <h:form style="width: 100%">
+            <p:commandButton action="#{sesionTPVBean.suspendeSesion()}" value="Pausar" style="float: right;margin-right: 10px;"/>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="menuLateral">        
+        <ui:include src="/menus/terminalCaja.xhtml"/>
+    </ui:define>
+
+    <ui:define name="title">
+        Listado de Prestamos a Desembolsar
+    </ui:define>
+    <ui:define name="body">
+
+        <h:form id="PrestamoListForm">
+
+            <h:panelGroup>
+
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-12">
+                            <div style="background-color: #ddd; border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
+                                 -moz-border-radius: 5px;
+                                 border-radius: 5px;
+                                 margin-bottom: 5px">
+
+                                <div style="display: table;width: 100%">
+                                    <div style="display: table-row; width: 100%;text-align: left">
+                                        <h:outputText value="Prestamo #: #{desembolsaBean.selected.id}" style="font-size: 12pt;font-weight: bold"/>
+                                        <br/>
+                                        <p:separator/>
+                                    </div>
+                                    <div style="display: table-row; width: 100%;text-align: center">
+                                        <h:outputText value="Monto a entregar:" style="font-size: 16pt;font-weight: bold"/>
+                                        <br/>
+                                    </div>
+                                    <div style="display: table-row; width: 100%;text-align: center">
+                                        <h:outputText value="#{desembolsaBean.selected.montoPrestamo}" style="font-size: 20pt;font-weight: bold">
+                                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                        </h:outputText>
+                                        <br/>
+                                    </div>
+                                    <div style="display: table-row; width: 100%;text-align: right">
+                                        <p:commandButton value="Siguiente" action="#{desembolsaBean.desembolsa()}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>  
+
+
+                </div>
+
+
+
+            </h:panelGroup>
+
+
+
+        </h:form>
+
+
+
+    </ui:define>
+
+</ui:composition>

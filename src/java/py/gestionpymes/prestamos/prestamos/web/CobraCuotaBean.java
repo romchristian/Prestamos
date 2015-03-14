@@ -26,10 +26,13 @@ import javax.faces.flow.FlowScoped;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import py.gestionpymes.prestamos.adm.dao.MonedaFacade;
+import py.gestionpymes.prestamos.adm.persistencia.Estado;
+import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVenta;
 import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVentaDetalle;
 import py.gestionpymes.prestamos.prestamos.dao.CobranzaDAO;
@@ -39,6 +42,8 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.Secuencia;
+import py.gestionpymes.prestamos.tesoreria.web.SesionTPVBean;
 
 /**
  *
@@ -54,6 +59,8 @@ public class CobraCuotaBean implements Serializable {
     private MonedaFacade monedaDAO;
     @EJB
     private CobranzaDAO cobranzaDAO;
+    @Inject
+    private SesionTPVBean sesionTPVBean;
 
     private TreeNode root = new DefaultTreeNode("prestamos", null);
     private Cliente cliente;
@@ -128,7 +135,24 @@ public class CobraCuotaBean implements Serializable {
 
     public String generaFactura() {
 
+        if (sesionTPVBean.getActual() == null) {
+            return null;
+        }
+
+        Secuencia secuencia = sesionTPVBean.getActual().getPuntoVenta().getSecuencia();
+        if (secuencia.getEstado() == Estado.INACTIVO) {
+            JsfUtil.addErrorMessage("Se agotó su talonario!");
+            return null;
+        }
+
         facturaVenta = new FacturaVenta();
+        facturaVenta.setCodEstablecimiento(secuencia.getEstablecimiento());
+        facturaVenta.setPuntoExpedicion(secuencia.getPuntoExpedicion());
+        facturaVenta.setTimbrado(secuencia.getTimbrado());
+        Long numeroactual = secuencia.obtSiguienteNumero();
+        facturaVenta.setNumero(secuencia.getNumeroFormateado(numeroactual));
+        secuencia.setUltimoNumero(numeroactual);
+
         facturaVenta.setCliente(cliente);
         facturaVenta.setEmpresa(cuotaSeleccionada.getEmpresa());
         facturaVenta.setSucursal(cuotaSeleccionada.getSucursal());
@@ -138,9 +162,6 @@ public class CobraCuotaBean implements Serializable {
         facturaVenta.setDireccion(cliente.devuelveDireccionParticular());
         facturaVenta.setRazonSocial(cliente.devuelveNombreCompleto());
         facturaVenta.setRuc(cliente.getNroDocumento());
-        facturaVenta.setCodEstablecimiento("001");
-        facturaVenta.setPuntoExpedicion("001");
-        facturaVenta.setNumero("0000001");
         facturaVenta.setMoneda(cuotaSeleccionada.getMoneda());
 
         facturaVenta.setDetalles(new ArrayList<FacturaVentaDetalle>());
@@ -149,32 +170,27 @@ public class CobraCuotaBean implements Serializable {
             BigDecimal aplicaAMoratorio;
             BigDecimal aplicaAPunitorio;
             BigDecimal aplicaACuota = new BigDecimal(BigInteger.ZERO);
-            
-            
+
             boolean descuentaTodo = false;
             BigDecimal descuento = t.getDescuento();
-            
+
             descuento = descuento.subtract(t.getMontoMoratorio());
             System.out.println("D1: " + descuento);
-            if(descuento.compareTo(new BigDecimal(BigInteger.ZERO)) > 0){
-                
-                 descuento = descuento.subtract(t.getMontoPunitorio());
-                 System.out.println("D2: " + descuento);
-                 if(descuento.compareTo(new BigDecimal(BigInteger.ZERO)) > 0){
-                     descuento = descuento.subtract(t.getCuotaInteres());
-                     System.out.println("D3: " + descuento);
-                     if(descuento.compareTo(new BigDecimal(BigInteger.ZERO)) <= 0){
-                         //cubro todo
-                         System.out.println("D4" + descuento);
-                         descuentaTodo = true;
-                     }
-                 }
+            if (descuento.compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
+
+                descuento = descuento.subtract(t.getMontoPunitorio());
+                System.out.println("D2: " + descuento);
+                if (descuento.compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
+                    descuento = descuento.subtract(t.getCuotaInteres());
+                    System.out.println("D3: " + descuento);
+                    if (descuento.compareTo(new BigDecimal(BigInteger.ZERO)) <= 0) {
+                        //cubro todo
+                        System.out.println("D4" + descuento);
+                        descuentaTodo = true;
+                    }
+                }
             }
-            
-         
-            
-            
-            
+
             if (t.getMontoAPagar().compareTo(t.getMontoMora().subtract(t.getDescuento())) < 0) {
                 //afectar punitorio
                 aplicaAPunitorio = t.getMontoAPagar().multiply(new BigDecimal(0.2));
@@ -211,11 +227,10 @@ public class CobraCuotaBean implements Serializable {
                 d.setExenta(aplicaACuota);
             } else if (diffMontoPago.compareTo(new BigDecimal(BigInteger.ZERO)) >= 0) {
                 d.setExenta(aplicaACuota);
-            }
-            else {
+            } else {
                 BigDecimal exento = aplicaACuota.subtract(t.getCuotaInteres());
                 if (exento.compareTo(new BigDecimal(BigInteger.ZERO)) >= 0) {
-                    
+
                     d.setExenta(exento);
                     d.setGravada10(t.getCuotaInteres());
                 }
@@ -224,7 +239,6 @@ public class CobraCuotaBean implements Serializable {
             facturaVenta.getDetalles().add(d);
             nrolinea++;
 
-            
             if (t.getMontoMoratorio().compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
                 FacturaVentaDetalle d2 = new FacturaVentaDetalle();
                 d2.setFacturaVenta(facturaVenta);
@@ -254,7 +268,7 @@ public class CobraCuotaBean implements Serializable {
                 d3.setRefMonto(FacturaVentaDetalle.MONTO_PUNITORIO);
                 nrolinea++;
             }
-            
+
             if (t.getDescuento().compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
                 FacturaVentaDetalle d4 = new FacturaVentaDetalle();
                 d4.setFacturaVenta(facturaVenta);
@@ -323,7 +337,7 @@ public class CobraCuotaBean implements Serializable {
 
     public String paga() {
         try {
-            cobranzaDAO.create(facturaVenta);
+            cobranzaDAO.create(facturaVenta, sesionTPVBean.getActual());
             limpia();
             cargaPrestamos();
         } catch (PagoExcedidoException ex) {
@@ -398,26 +412,25 @@ public class CobraCuotaBean implements Serializable {
                 TreeCuota cuota = new TreeCuota(d);
                 cuota.setPadre(nodoPrestamo);
                 TreeNode nodoCuota = new DefaultTreeNode(cuota, nodoPrestamo);
-                calculaSiSePuedePagar(cuota, i,nodoPrestamo);
+                calculaSiSePuedePagar(cuota, i, nodoPrestamo);
                 disponibles.add(cuota);
-                
+
                 i++;
             }
         }
     }
-    
-    
-    public void calculaSiSePuedePagar(TreeCuota t, int index,TreeNode root){
-        if(index > 0){
-            TreeNode nodoAnterior = root.getChildren().get(index-1);//disponibles.get(index -1);
+
+    public void calculaSiSePuedePagar(TreeCuota t, int index, TreeNode root) {
+        if (index > 0) {
+            TreeNode nodoAnterior = root.getChildren().get(index - 1);//disponibles.get(index -1);
             TreeCuota anterior = (TreeCuota) nodoAnterior.getData();
-            if(anterior.getSaldoCuota().compareTo(new BigDecimal(BigInteger.ZERO))==0){
+            if (anterior.getSaldoCuota().compareTo(new BigDecimal(BigInteger.ZERO)) == 0) {
                 t.setDisabledPagar(false);
-            }else{
+            } else {
                 t.setDisabledPagar(true);
             }
         }
-        
+
     }
 
     public void agregaAPagar() {
@@ -431,12 +444,11 @@ public class CobraCuotaBean implements Serializable {
 
         seleccionados.remove(cuotaSeleccionada);
         seleccionados.add(cuotaSeleccionada);
-        
-        if(cuotaSeleccionada.getMontoAPagar().compareTo(cuotaSeleccionada.getSaldoCuota()) == 0){
+
+        if (cuotaSeleccionada.getMontoAPagar().compareTo(cuotaSeleccionada.getSaldoCuota()) == 0) {
             TreeCuota siguiente = (TreeCuota) cuotaSeleccionada.getPadre().getChildren().get(cuotaSeleccionada.getNroCuota()).getData();
             siguiente.setDisabledPagar(false);
-        } 
-       
+        }
 
         montoActual = new BigDecimal(BigInteger.ZERO);
     }
@@ -452,12 +464,12 @@ public class CobraCuotaBean implements Serializable {
 
                 CobraCuotaBean controller = (CobraCuotaBean) context.getApplication().getELResolver().
                         getValue(context.getELContext(), null, "cobraCuotaBean");
-                
+
                 if (montoPago.compareTo(controller.getCuotaSeleccionada().getCuotaInteres().add(controller.getCuotaSeleccionada().getMontoMora()).subtract(controller.getCuotaSeleccionada().getDescuento())) < 0) {
                     FacesMessage msg = new FacesMessage("Debe pagar por lo menos el minimo");
                     throw new ValidatorException(msg);
                 }
-                
+
                 if (montoPago.compareTo(controller.getCuotaSeleccionada().getSaldoCuota().add(controller.getCuotaSeleccionada().getMontoMora()).subtract(controller.getCuotaSeleccionada().getDescuento())) > 0) {
                     FacesMessage msg = new FacesMessage("El pago excede el monto de la cuota");
                     throw new ValidatorException(msg);

@@ -10,7 +10,7 @@
     <br/>   
     
      <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 30px;font-size: 9pt">
-         <h:commandLink  value="Desembolsa Prestamo" action="/tesoreria/sesionTPV/Desembolsar" 
+         <h:commandLink  value="Desembolsa Prestamo" action="desembolsa" 
                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}"/>
         <h:commandLink  value="Cobro Cuotas" action="cobraCuota"
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cobro_cuota'))}"/>

@@ -4,6 +4,7 @@
  */
 package py.gestionpymes.prestamos.prestamos.dao;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -13,11 +14,17 @@ import javax.persistence.PersistenceContext;
 import py.gestionpymes.prestamos.adm.dao.AbstractFacade;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
+import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVenta;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.CuentaCliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.OperacionDesembolsoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.Secuencia;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccion;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.TransaccionDesembolso;
 
 /**
  *
@@ -54,8 +61,6 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
 
     public List<Prestamo> findAllPorEmpresaFechaEstado(Empresa e, Sucursal s, EstadoPrestamo estado, Date inicio, Date fin) {
 
-       
-
         return em.createQuery("SELECT p from Prestamo p where p.empresa = :emp and p.sucursal = :suc and p.fechaInicioOperacion BETWEEN :inicio and :fin and p.estado = :estado")
                 .setParameter("emp", e)
                 .setParameter("suc", s)
@@ -66,8 +71,6 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
     }
 
     public List<Prestamo> findAllPorEmpresaFechaEstadoCliente(Empresa e, Sucursal s, EstadoPrestamo estado, Date inicio, Date fin, Cliente cliente) {
-
-       
 
         return em.createQuery("SELECT p from Prestamo p where p.empresa = :emp and p.sucursal = :suc and p.fechaInicioOperacion BETWEEN :inicio and :fin and p.estado = :estado and p.cliente = :cliente")
                 .setParameter("emp", e)
@@ -113,6 +116,41 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
 
         prestamo.setEstado(EstadoPrestamo.VIGENTE);
         edit(prestamo);
+
+        return prestamo;
+    }
+
+    public Prestamo desembolsa(Prestamo prestamo, FacturaVenta f, SesionTPV s) {
+
+        OperacionDesembolsoPrestamo op = new OperacionDesembolsoPrestamo(prestamo);
+
+        CuentaCliente cc = (CuentaCliente) em.createQuery("select c from CuentaCliente c where c.cliente = :cliente")
+                .setParameter("cliente", prestamo.getCliente()).getSingleResult();
+
+        Integer ultmoid = 0;
+        try {
+            ultmoid = (Integer) em.createQuery("SELECT MAX(r.id) FROM Recibo r").getSingleResult();
+        } catch (Exception e) {
+        }
+
+        op.setCuentaCliente(cc);
+        //HACER: La fecha del desembolso debe ser igual a la fecha del prestamo
+        op.setFecha(prestamo.getFecha());
+
+        detCuentaClienteDAO.create(op);
+
+        prestamo.setEstado(EstadoPrestamo.VIGENTE);
+        edit(prestamo);
+
+        em.persist(f);
+        Secuencia secuencia = s.getPuntoVenta().getSecuencia();
+        em.merge(secuencia);
+
+        Transaccion t = new TransaccionDesembolso(f, prestamo, s,
+                "Desembolso de  prestamo: Prestamo #" + prestamo.getId(), prestamo.getMontoPrestamo(),
+                f.getMoneda());
+        
+        em.persist(t);
 
         return prestamo;
     }
