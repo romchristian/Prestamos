@@ -42,7 +42,7 @@
 
                 <p:column headerText="Acciones">
                     <h:commandButton action="#{sesionTPVBean.preparaEdicion(m)}" value="Editar" rendered="#{autorizador.hayPermisoAccion('EditaOrdenCompra')}"/>
-                    <p:commandButton action="#{sesionTPVBean.inciaSesion(m)}" value="Comenzar"/>
+                    <p:commandButton action="#{sesionTPVBean.inciaSesion(m)}" value="Comenzar" rendered="#{(m.estado != 'CERRADA')}"/>
                     
                 </p:column>
             </p:dataTable>

@@ -340,6 +340,7 @@ public class CobraCuotaBean implements Serializable {
             cobranzaDAO.create(facturaVenta, sesionTPVBean.getActual());
             limpia();
             cargaPrestamos();
+            sesionTPVBean.actualizaTotalTransacciones();
         } catch (PagoExcedidoException ex) {
             Logger.getLogger(CobraCuotaBean.class.getName()).log(Level.SEVERE, null, ex);
         }

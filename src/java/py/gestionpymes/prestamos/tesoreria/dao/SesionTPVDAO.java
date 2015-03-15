@@ -34,6 +34,7 @@ public class SesionTPVDAO extends AbstractDAO<SesionTPV> {
 
     @Override
     public SesionTPV edit(SesionTPV entity) {
+        abmService.getEM().merge(entity.getPuntoVenta());
         return abmService.update(entity);
     }
 

@@ -234,6 +234,7 @@ public class DesembolsaBean implements Serializable {
 
     public void paga() {
         prestamoDAO.desembolsa(selected,facturaVenta, sesionTPVBean.getActual());
+        sesionTPVBean.actualizaTotalTransacciones();
     }
 
     public void limpia() {

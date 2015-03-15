@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes">
+
+    <ui:define name="menuModulos">
+        <div style="display: table">
+            <div style="display: table-cell;width: 80%;font-size: 12pt; color: white">
+                Usuario: #{request.userPrincipal} - #{sesionTPVBean.actual.puntoVenta.nombre}
+            </div>
+            <div style="display: table-cell;">
+                <p:clock/>
+            </div>
+
+        </div>
+    </ui:define>
+
+    <ui:define name="logout">
+        <h:form style="width: 100%">
+            <p:commandButton action="#{sesionTPVBean.suspendeSesion()}" value="Pausar" style="float: right;margin-right: 10px;"/>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="menuLateral">        
+        <ui:include src="/menus/terminalCaja.xhtml"/>
+    </ui:define>
+
+    <ui:define name="title">
+       Nueva Transferencia
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form>
+            <p:panelGrid columns="2">
+                <h:outputText value="Tipo Transaccion"/>
+                <h:selectOneMenu value="#{transaccionBean.actual.tipoTransaccion}">
+                    <f:selectItems value="#{productorEnums.obtTiposTransaccion()}"/>
+                </h:selectOneMenu>
+                <h:outputText value="Descripción"/>
+                <p:inputText value="#{transaccionBean.actual.descripcion}"/>
+                <h:outputText value="Moneda"/>
+                <h:selectOneMenu value="#{transaccionBean.actual.moneda}">
+                    <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
+                </h:selectOneMenu>
+                <h:outputText value="Monto"/>
+                <p:inputText value="#{transaccionBean.actual.monto}">
+                    <f:convertNumber locale="#{formato.locale}"/>
+                </p:inputText>
+            </p:panelGrid>
+            <p:commandButton value="Guardar" action="#{transaccionBean.create()}"/>
+            <p:commandButton value="Cancelar" action="terminalCaja"/>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -31,6 +31,8 @@ public class Transaccion implements Serializable {
     private Long id;
     @ManyToOne
     private SesionTPV sesionTPV;
+    @ManyToOne
+    private PuntoVenta puntoVenta;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fecha;
     @Enumerated(EnumType.STRING)
@@ -53,6 +55,24 @@ public class Transaccion implements Serializable {
         this.descripcion = descripcion;
         this.monto = monto;
         this.moneda = moneda;
+    }
+    
+     public Transaccion(SesionTPV sesionTPV, TipoTransaccion tipoTransaccion, String descripcion, BigDecimal monto, Moneda moneda, PuntoVenta puntoVenta) {
+        this();
+        this.sesionTPV = sesionTPV;
+        this.tipoTransaccion = tipoTransaccion;
+        this.descripcion = descripcion;
+        this.monto = monto;
+        this.moneda = moneda;
+        this.puntoVenta = puntoVenta;
+    }
+
+    public PuntoVenta getPuntoVenta() {
+        return puntoVenta;
+    }
+
+    public void setPuntoVenta(PuntoVenta puntoVenta) {
+        this.puntoVenta = puntoVenta;
     }
     
     

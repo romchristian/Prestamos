@@ -27,6 +27,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoEmpresa;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoReferencia;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoMetodoPago;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoSecuencia;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccion;
 
 /**
  *
@@ -51,6 +52,16 @@ public class ProductorEnums implements Serializable {
         TipoPersona[] lista = TipoPersona.values();
         for (int i = 0; i < lista.length; i++) {
             TipoPersona tp = lista[i];
+            R[i] = new SelectItem(tp, tp.toString());
+        }
+        return R;
+    }
+    
+     public SelectItem[] obtTiposTransaccion() {
+        SelectItem[] R = new SelectItem[TipoTransaccion.values().length];
+        TipoTransaccion[] lista = TipoTransaccion.values();
+        for (int i = 0; i < lista.length; i++) {
+            TipoTransaccion tp = lista[i];
             R[i] = new SelectItem(tp, tp.toString());
         }
         return R;

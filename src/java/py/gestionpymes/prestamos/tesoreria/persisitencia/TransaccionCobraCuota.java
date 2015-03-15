@@ -32,7 +32,7 @@ public class TransaccionCobraCuota extends Transaccion implements Serializable{
     }
 
     public TransaccionCobraCuota(FacturaVenta facturaVenta, Prestamo prestamo, SesionTPV sesionTPV, String descripcion, BigDecimal monto, Moneda moneda) {
-        super(sesionTPV, TipoTransaccion.ENTRADA, descripcion, monto, moneda);
+        super(sesionTPV, TipoTransaccion.ENTRADA, descripcion, monto, moneda,sesionTPV.getPuntoVenta());
         this.facturaVenta = facturaVenta;
         this.prestamo = prestamo;
     }

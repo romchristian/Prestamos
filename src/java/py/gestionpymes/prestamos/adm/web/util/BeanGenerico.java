@@ -73,7 +73,7 @@ public abstract class BeanGenerico<T> implements Serializable {
             setActual(null);
             return "listado.xhtml?faces-redirect=true";
         } else {
-            return null;
+            return  null;
         }
 
     }

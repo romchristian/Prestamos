@@ -4,8 +4,8 @@
  */
 package py.gestionpymes.prestamos.tesoreria.persisitencia;
 
-
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -19,7 +19,6 @@ import javax.persistence.ManyToOne;
 import py.gestionpymes.prestamos.adm.persistencia.Estado;
 import py.gestionpymes.prestamos.contabilidad.persistencia.Diario;
 import py.gestionpymes.prestamos.contabilidad.persistencia.MetodoPago;
-
 
 /**
  *
@@ -41,11 +40,22 @@ public class PuntoVenta implements Serializable {
     private List<MetodoPago> metodoPagos;
     @Enumerated(EnumType.STRING)
     private Estado estado;
+    private BigDecimal saldo;
 
     public PuntoVenta() {
         this.estado = Estado.ACTIVO;
     }
 
+    public BigDecimal getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(BigDecimal saldo) {
+        this.saldo = saldo;
+    }
+
+    
+    
     public Estado getEstado() {
         return estado;
     }
@@ -53,9 +63,6 @@ public class PuntoVenta implements Serializable {
     public void setEstado(Estado estado) {
         this.estado = estado;
     }
-    
-    
-    
 
     public Long getId() {
         return id;
@@ -97,20 +104,18 @@ public class PuntoVenta implements Serializable {
         this.metodoPagos = metodoPagos;
     }
 
-    
-    public void addMetodoPago(MetodoPago m){
-        if(metodoPagos == null){
+    public void addMetodoPago(MetodoPago m) {
+        if (metodoPagos == null) {
             metodoPagos = new ArrayList<>();
         }
-        
+
         metodoPagos.add(m);
     }
-    
-    public void removeMetodoPago(MetodoPago m){
+
+    public void removeMetodoPago(MetodoPago m) {
         metodoPagos.remove(m);
     }
-    
-    
+
     @Override
     public int hashCode() {
         int hash = 0;

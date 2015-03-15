@@ -7,11 +7,11 @@ package py.gestionpymes.prestamos.tesoreria.web;
 
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.Secuencia;
-import py.gestionpymes.prestamos.tesoreria.dao.SecuenciaDAO;
+import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.tesoreria.dao.TransaccionDAO;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
 
@@ -25,6 +25,8 @@ import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
 public class TransaccionBean extends BeanGenerico<Transaccion>{
 
     @EJB private TransaccionDAO ejb;
+    @Inject
+    private SesionTPVBean sesionTPVBean;
     
     
     @Override
@@ -37,5 +39,22 @@ public class TransaccionBean extends BeanGenerico<Transaccion>{
         return new Transaccion();
     }
 
+    @Override
+    public String create() {
+        
+        getActual().setSesionTPV(sesionTPVBean.getActual());
+        getActual().setPuntoVenta(sesionTPVBean.getActual().getPuntoVenta());
+        if (getEjb().create(getActual()) != null) {
+            JsfUtil.addSuccessMessage("Se creó exitosamente!");
+            setActual(null);
+            sesionTPVBean.actualizaTotalTransacciones();
+            return "terminalCaja.xhtml";
+        } else {
+            return  null;
+        }
+    }
+
+    
+    
     
 }

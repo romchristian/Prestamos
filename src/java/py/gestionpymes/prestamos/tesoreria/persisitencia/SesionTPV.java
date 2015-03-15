@@ -45,6 +45,7 @@ public class SesionTPV implements Serializable {
     private Date fechaCierre;
     private BigDecimal saldoInicial;
     private BigDecimal saldoCierre;
+    private BigDecimal diferencia;
     private BigDecimal totalTransacciones;
     @OneToMany(mappedBy = "sesionTPV", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ValorEfectivo> valorEfectivos;
@@ -95,6 +96,16 @@ public class SesionTPV implements Serializable {
         this.id = id;
     }
 
+    public BigDecimal getDiferencia() {
+        return diferencia;
+    }
+
+    public void setDiferencia(BigDecimal diferencia) {
+        this.diferencia = diferencia;
+    }
+
+    
+    
     public List<ValorEfectivo> getValorEfectivos() {
         return valorEfectivos;
     }
@@ -136,14 +147,14 @@ public class SesionTPV implements Serializable {
     }
 
     public BigDecimal getSaldoInicial() {
-        BigDecimal total = new BigDecimal(BigInteger.ZERO);
-        for (ValorEfectivo ve : getValorEfectivosInicial()) {
-            BigDecimal moneda = new BigDecimal(ve.getDenominacionMoneda());
-            BigDecimal cantidad = new BigDecimal(ve.getCantidad());
-
-            total = total.add(moneda.multiply(cantidad));
-        }
-        saldoInicial = total;
+//        BigDecimal total = new BigDecimal(BigInteger.ZERO);
+//        for (ValorEfectivo ve : getValorEfectivosInicial()) {
+//            BigDecimal moneda = new BigDecimal(ve.getDenominacionMoneda());
+//            BigDecimal cantidad = new BigDecimal(ve.getCantidad());
+//
+//            total = total.add(moneda.multiply(cantidad));
+//        }
+//        saldoInicial = total;
         return saldoInicial;
     }
 

@@ -32,7 +32,7 @@ public class TransaccionDesembolso extends Transaccion implements Serializable{
     }
 
     public TransaccionDesembolso(FacturaVenta facturaVenta, Prestamo prestamo, SesionTPV sesionTPV, String descripcion, BigDecimal monto, Moneda moneda) {
-        super(sesionTPV, TipoTransaccion.SALIDA, descripcion, monto, moneda);
+        super(sesionTPV, TipoTransaccion.SALIDA, descripcion, monto, moneda,sesionTPV.getPuntoVenta());
         this.facturaVenta = facturaVenta;
         this.prestamo = prestamo;
     }
