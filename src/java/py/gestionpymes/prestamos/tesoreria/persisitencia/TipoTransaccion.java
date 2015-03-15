@@ -9,6 +9,5 @@ package py.gestionpymes.prestamos.tesoreria.persisitencia;
  * @author Acer
  */
 public enum TipoTransaccion {
-
-    ENTRADA, SALIDA, VENTA
+    ENTRADA, SALIDA
 }

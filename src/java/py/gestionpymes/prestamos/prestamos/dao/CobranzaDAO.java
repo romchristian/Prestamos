@@ -83,7 +83,7 @@ public class CobranzaDAO {
 
         if (prestamo != null) {
             Transaccion tr = new TransaccionCobraCuota(f, prestamo, s,
-                    "Cobro de cuota del prestamo #" + prestamo.getId(), prestamo.getMontoPrestamo(),
+                    "Cobro de cuota del prestamo #" + prestamo.getId(), f.getTotal(),
                     f.getMoneda());
             em.persist(tr);
 

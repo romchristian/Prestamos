@@ -387,9 +387,14 @@ public class DetPrestamo implements Serializable {
         monto.setScale(0, RoundingMode.HALF_EVEN);
         BigDecimal mora = devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
 
+        System.out.println("SALDO CUOTA: " + saldoCuota);
+        System.out.println("MORA: " + mora);
+        System.out.println("DESCUENTO: " + descuento);
+        System.out.println("MONTO: " + monto);
+        BigDecimal suma =saldoCuota.add(mora).add(descuento).setScale(0, RoundingMode.HALF_EVEN);
         
-        
-        if ((saldoCuota.add(mora).add(descuento).compareTo(monto)) >= 0) {
+        System.out.println("SUMA: " + suma);
+        if (suma.compareTo(monto) >= 0) {
 
             montoPago = montoPago.add(monto);
             saldoCuota = saldoCuota.subtract(monto);

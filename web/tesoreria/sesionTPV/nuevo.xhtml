@@ -22,39 +22,16 @@
         <ui:define name="col1">
             <h:panelGrid columns="2" cellpadding="10">
                 <h:outputText value="Usuario"/>
+                <h:outputText value="#{request.userPrincipal.name}"/>
 
 
-
-                <h:outputText value="TPV"/>
+                <h:outputText value="Caja Operativa"/>
 
                 <p:selectOneMenu value="#{sesionTPVBean.actual.puntoVenta}" valueChangeListener="#{sesionTPVBean.siCamabiaTPV}">
                     <f:selectItems value="#{puntoVentaBean.itemsAvailableSelectOne}" />
-                    <p:ajax process="@this" update="pnlvalores" />
+                    
                 </p:selectOneMenu>
-
             </h:panelGrid>
-
-            <p:outputPanel id="pnlvalores" styleClass="valores">
-                <p:dataTable value="#{sesionTPVBean.actual.valorEfectivosInicial}" var="valor" id="valoresTable">
-                    <p:column headerText="Valor">
-                        <h:outputText value="#{valor.denominacionMoneda}"/>
-                    </p:column>
-                    <p:column headerText="Cantidad">
-                        <p:inputText value="#{valor.cantidad}" size="5">
-                            <p:ajax event="blur" update="@(.saldoIncial)" />  
-                        </p:inputText>
-                    </p:column>
-                </p:dataTable>
-            </p:outputPanel>
-
-            <p:panel id="saldoIncial" styleClass="saldoIncial">
-                <p:panelGrid columns="2">
-                    <h:outputText value="Saldo Inicial"/>
-                    <h:outputText value="#{sesionTPVBean.actual.saldoInicial}">
-                        <f:convertNumber currencySymbol="PYG"/> 
-                    </h:outputText>
-                </p:panelGrid>
-            </p:panel>
         </ui:define>
 
         <ui:define name="col2">
