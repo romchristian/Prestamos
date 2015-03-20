@@ -134,7 +134,7 @@ public class Cliente extends Persona {
     }
 
     public void setPrimerApellido(String primerApellido) {
-        this.primerApellido = primerApellido;
+        this.primerApellido = primerApellido.toUpperCase();
     }
 
     public String getPrimerNombre() {
@@ -142,7 +142,7 @@ public class Cliente extends Persona {
     }
 
     public void setPrimerNombre(String primerNombre) {
-        this.primerNombre = primerNombre;
+        this.primerNombre = primerNombre.toUpperCase();
     }
 
     public String getSegundoApellido() {
@@ -150,7 +150,7 @@ public class Cliente extends Persona {
     }
 
     public void setSegundoApellido(String segundoApellido) {
-        this.segundoApellido = segundoApellido;
+        this.segundoApellido = segundoApellido.toUpperCase();
     }
 
     public String getSegundoNombre() {
@@ -158,7 +158,7 @@ public class Cliente extends Persona {
     }
 
     public void setSegundoNombre(String segundoNombre) {
-        this.segundoNombre = segundoNombre;
+        this.segundoNombre = segundoNombre.toUpperCase();
     }
 
     public Date getFechaNac() {
@@ -202,7 +202,7 @@ public class Cliente extends Persona {
     }
 
     public void setNacionalidad(String nacionalidad) {
-        this.nacionalidad = nacionalidad;
+        this.nacionalidad = nacionalidad.toUpperCase();
     }
     
     public String devuelveTelefonoParticular(){
@@ -225,12 +225,23 @@ public class Cliente extends Persona {
         }
         return null;
     }
-
+    
+    
     public String devuelveCiudadParticular(){
     
         for (Direccion d : direcciones) {
             if(d.getTipo().PARTICULAR==TipoDireccion.PARTICULAR){
                 return d.getCiudad()+" - "+d.getPais();
+            }
+        }
+        return null;
+    }
+    
+    public String devuelveBarrioParticular(){
+    
+        for (Direccion d : direcciones) {
+            if(d.getTipo().PARTICULAR==TipoDireccion.PARTICULAR){
+                return d.getBarrio();
             }
         }
         return null;

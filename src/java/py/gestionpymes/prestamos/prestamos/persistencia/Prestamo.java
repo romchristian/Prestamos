@@ -211,6 +211,9 @@ public class Prestamo implements Serializable {
                 case FRANCES:
                     sistema = new InteresFrances(this);
                     break;
+                case INTERES_AMERICANO:
+                    sistema = new InteresAmericano(this);
+                    break;
             }
         }
         return sistema;
@@ -295,7 +298,7 @@ public class Prestamo implements Serializable {
 
                 @Override
                 public int compare(DetPrestamo o1, DetPrestamo o2) {
-                   return o1.getNroCuota() > o2.getNroCuota() ? 1:-1;
+                    return o1.getNroCuota() > o2.getNroCuota() ? 1 : -1;
                 }
             };
             Collections.sort(detalles, com);
@@ -480,6 +483,8 @@ public class Prestamo implements Serializable {
             montoCuota = getSistema().getCuota().add(ivaMesFijo);
         } else if (sistemaAmortizacion == SistemaAmortizacion.INTERES_SIMPLE) {
             montoCuota = getSistema().getCuota();
+        }else if (sistemaAmortizacion == SistemaAmortizacion.INTERES_AMERICANO) {
+            montoCuota = getSistema().getCuota().add(ivaMesFijo);
         }
 
         totalIntereses = BigDecimal.ZERO;

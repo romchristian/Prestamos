@@ -31,6 +31,7 @@
 	<field name="nroDocumento" class="java.lang.String"/>
 	<field name="direccion" class="java.lang.String"/>
 	<field name="ciudad" class="java.lang.String"/>
+	<field name="barrio" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -97,7 +98,7 @@
 				<textElement>
 					<font fontName="Times New Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA["DOMICILIO: " + $F{direccion}== null ? " ": $F{direccion} +" "+$F{ciudad}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["DOMICILIO: " + $F{direccion}== null ? " ": $F{direccion} +" "+$F{barrio}+" "+$F{ciudad}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="4" y="151" width="85" height="20" uuid="48efa458-dfae-40fd-aafe-d3ce989752f8"/>

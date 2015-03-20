@@ -19,6 +19,7 @@ public class RegistroFirma {
     private String segundoApellido;
     private String nroDocumento;
     private String direccion;
+    private String barrio;
     private String ciudad;
     
     
@@ -33,6 +34,7 @@ public class RegistroFirma {
         segundoApellido = this.cliente.getSegundoApellido();
         nroDocumento = this.cliente.getNroDocumento();
         direccion = this.cliente.devuelveDireccionParticular();
+        barrio = this.cliente.devuelveBarrioParticular();
         ciudad = this.cliente.devuelveCiudadParticular();
     }
 
@@ -42,6 +44,14 @@ public class RegistroFirma {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String getBarrio() {
+        return barrio;
+    }
+
+    public void setBarrio(String barrio) {
+        this.barrio = barrio;
     }
 
     public String getCiudad() {

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class InteresFrances extends Sistema {
         List<DetPrestamo> detalles = new ArrayList<>();
         Prestamo p = getPrestamo();
 
+        Date auxFecha = p.getFechaPrimerVencimiento();
         for (int i = 0; i < p.getPlazo(); i++) {
             int nroCuota = i;
             BigDecimal saldoCapital = getSaldoCapital(nroCuota).setScale(0, RoundingMode.HALF_EVEN);
@@ -36,6 +38,7 @@ public class InteresFrances extends Sistema {
             detalles.add(d);
         }
 
+        p.setFechaPrimerVencimiento(auxFecha);
         return detalles;
     }
 

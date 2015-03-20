@@ -15,7 +15,9 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import javax.persistence.*;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
+import org.joda.time.LocalDate;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVentaDetalle;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoDetPrestamo;
@@ -80,30 +82,55 @@ public class DetPrestamo implements Serializable {
 
         GregorianCalendar gc = new GregorianCalendar(new Locale("es", "py"));
         gc.setTime(prestamo.getFechaPrimerVencimiento());
+        
+        System.out.println("PRIMER VENCIMIENTO: " + prestamo.getFechaPrimerVencimiento());
         int dias = 0;
-
+        
         switch (prestamo.getPeriodoPago()) {
             case MENSUAL:
                 gc.add(Calendar.MONTH, nroCuota - 1);
+                this.fechaVencimiento = gc.getTime();
                 break;
             case QUINCENAL:
                 dias = 15;
                 dias *= (nroCuota - 1);
                 gc.add(Calendar.DAY_OF_MONTH, dias);
+                this.fechaVencimiento = gc.getTime();
                 break;
             case SEMANAL:
                 dias = 7;
                 dias *= (nroCuota - 1);
                 gc.add(Calendar.DAY_OF_MONTH, dias);
+                this.fechaVencimiento = gc.getTime();
                 break;
             case DIARIO:
-                dias = 1;
-                dias *= (nroCuota - 1);
+                
+                System.out.println("GET TIME: " + gc.getTime());
+                if(nroCuota == 1){
+                    dias = 0;
+                }else{
+                    dias = 1;
+                }
+                
+                //dias *= (nroCuota -1);
                 gc.add(Calendar.DAY_OF_MONTH, dias);
+
+                LocalDate fecha = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH)+1, gc.get(Calendar.DAY_OF_MONTH));
+
+                if (fecha.getDayOfWeek() == DateTimeConstants.SATURDAY) {
+                    fecha = fecha.plusDays(2);
+                    this.prestamo.setFechaPrimerVencimiento(fecha.toDate());
+                    this.fechaVencimiento = fecha.toDate();
+                }else {
+                    this.fechaVencimiento = gc.getTime();
+                    this.prestamo.setFechaPrimerVencimiento(gc.getTime());
+                }
+                
+                
                 break;
         }
 
-        this.fechaVencimiento = gc.getTime();
+        
         interesMoratorio = prestamo.getTasa().floatValue();
         interesPunitorio = prestamo.getTasa().floatValue() * 0.2f;
     }
@@ -358,13 +385,13 @@ public class DetPrestamo implements Serializable {
 
     public BigDecimal getSaldoCuota() {
         if (estado == EstadoDetPrestamo.PENDIENTE) {
-            if(tieneDescuento){
+            if (tieneDescuento) {
                 saldoCuota = calculaMontoPorDiasMoratorio().add(calculaMontoPorDiasPunitorio()).add(getMontoCuota()).subtract(getMontoPago()).setScale(8, RoundingMode.HALF_EVEN);
                 saldoCuota = saldoCuota.subtract(descuento);
-            }else{
+            } else {
                 saldoCuota = calculaMontoPorDiasMoratorio().add(calculaMontoPorDiasPunitorio()).add(getMontoCuota()).subtract(getMontoPago()).setScale(8, RoundingMode.HALF_EVEN);
             }
-            
+
         }
         return saldoCuota;
     }
@@ -391,34 +418,33 @@ public class DetPrestamo implements Serializable {
         System.out.println("MORA: " + mora);
         System.out.println("DESCUENTO: " + descuento);
         System.out.println("MONTO: " + monto);
-        BigDecimal suma =saldoCuota.add(mora).add(descuento).setScale(0, RoundingMode.HALF_EVEN);
-        
+        BigDecimal suma = saldoCuota.add(mora).add(descuento).setScale(0, RoundingMode.HALF_EVEN);
+
         System.out.println("SUMA: " + suma);
         if (suma.compareTo(monto) >= 0) {
 
             montoPago = montoPago.add(monto);
             saldoCuota = saldoCuota.subtract(monto);
-            
+
             if (refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0) {
                 moraMoratorio = moraMoratorio.add(monto);
-               
+
             } else if (refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_PUNITORIO) == 0) {
                 moraPunitorio = moraPunitorio.add(monto);
-                
+
             }
 
             ultimoPago = new Date();
 
             R = true;
 
-           
             if (saldoCuota.compareTo(new BigDecimal(0)) == 0) {
-                
+
                 estado = EstadoDetPrestamo.CANCELADO;
                 setDiasMora(Days.daysBetween(new DateTime(fechaVencimiento), new DateTime(new Date())).getDays());
 
                 if (prestamo.devuelveSaldoPrestamo().compareTo(new BigDecimal(BigInteger.ZERO)) == 0) {
-                // CANCELO EL PRESTAMO
+                    // CANCELO EL PRESTAMO
 
                     prestamo.setEstado(EstadoPrestamo.CANCELADO);
                 }

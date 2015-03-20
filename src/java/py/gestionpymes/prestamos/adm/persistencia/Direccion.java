@@ -30,6 +30,7 @@ public class Direccion implements Serializable {
     private TipoDireccion tipo;
     private String direccion;
     private String nrocasa;
+    private String barrio;
     private String ciudad;
     private String pais;
     private boolean principal;
@@ -42,6 +43,14 @@ public class Direccion implements Serializable {
         estado = Estado.ACTIVO;
     }
 
+    public String getBarrio() {
+        return barrio;
+    }
+
+    public void setBarrio(String barrio) {
+        this.barrio = barrio.toUpperCase();
+    }
+    
     public Cliente getCliente() {
         return cliente;
     }
@@ -55,7 +64,7 @@ public class Direccion implements Serializable {
     }
 
     public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
+        this.ciudad = ciudad.toUpperCase();
     }
 
     public String getPais() {
@@ -63,7 +72,7 @@ public class Direccion implements Serializable {
     }
 
     public void setPais(String pais) {
-        this.pais = pais;
+        this.pais = pais.toUpperCase();
     }
     
     public boolean isPrincipal() {
@@ -95,7 +104,7 @@ public class Direccion implements Serializable {
     }
 
     public void setDireccion(String direccion) {
-        this.direccion = direccion;
+        this.direccion = direccion.toUpperCase();
     }
 
     public TipoDireccion getTipo() {
@@ -111,7 +120,7 @@ public class Direccion implements Serializable {
     }
 
     public void setNrocasa(String nrocasa) {
-        this.nrocasa = nrocasa;
+        this.nrocasa = nrocasa.toUpperCase();
     }
     
     @Override

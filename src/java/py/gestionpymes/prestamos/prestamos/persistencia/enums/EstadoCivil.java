@@ -9,5 +9,5 @@ package py.gestionpymes.prestamos.prestamos.persistencia.enums;
  * @author christian
  */
 public enum EstadoCivil {
- CASADO, SOLTERO, VIUDO  
+ CASADO, SOLTERO, VIUDO, SEPARADO, DIVORCIADO
 }

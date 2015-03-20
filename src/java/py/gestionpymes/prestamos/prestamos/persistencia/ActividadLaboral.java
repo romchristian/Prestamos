@@ -86,7 +86,7 @@ public class ActividadLaboral implements Serializable {
     }
 
     public void setCargo(String cargo) {
-        this.cargo = cargo;
+        this.cargo = cargo.toUpperCase();
     }
 
     public CicloIngreso getCicloIngreso() {
@@ -118,7 +118,7 @@ public class ActividadLaboral implements Serializable {
     }
 
     public void setNombreEmpresa(String nombreEmpresa) {
-        this.nombreEmpresa = nombreEmpresa;
+        this.nombreEmpresa = nombreEmpresa.toUpperCase();
     }
 
     public TipoEmpresa getTipoEmpresa() {

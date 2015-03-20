@@ -9,5 +9,5 @@ package py.gestionpymes.prestamos.prestamos.persistencia.enums;
  * @author christian
  */
 public enum TipoEmpresa {
-    INFORMAL, ESTABLECIDO, PROFESIONAL, PYME
+    INFORMAL, ESTABLECIDO, PROFESIONAL, PYME, PUBLICA
 }

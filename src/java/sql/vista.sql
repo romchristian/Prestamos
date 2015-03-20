@@ -42,6 +42,9 @@ INSERT INTO categoria(calificacion) VALUES (3);
 INSERT INTO categoria(calificacion) VALUES (4);
 INSERT INTO categoria(calificacion) VALUES (5);
 
+INSERT INTO canal(empresa, nombre, estado) VALUES (1,'TELEMARKETING', 'ACTIVO');
+INSERT INTO canal(empresa, nombre, estado) VALUES (1,'FUERZA DE VENTAS', 'ACTIVO');
+INSERT INTO canal(empresa, nombre, estado) VALUES (1,'ASOCIACIONES', 'ACTIVO');
 
 INSERT INTO plangastos(creacion, estado, nombre, empresa_id) VALUES ( now(),0, 'PLAN NORMAL - CONSUMO',1);
 INSERT INTO plangastos(creacion, estado, nombre, empresa_id) VALUES ( now(),0, '"PLAN ASOCIACIONES - CUOTA 125.000 X MILLON"',1);

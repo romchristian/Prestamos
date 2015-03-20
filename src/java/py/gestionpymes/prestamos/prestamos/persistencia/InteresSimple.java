@@ -27,7 +27,7 @@ public class InteresSimple extends Sistema {
         for (int i = 0; i < p.getPlazo(); i++) {
             int nroCuota = i + 1;
             BigDecimal cuotaCapital = p.getCapital().divide(new BigDecimal(p.getPlazo()), 6, RoundingMode.HALF_EVEN); //(p.getCapital() ) / p.getPlazo();
-            BigDecimal cuotaInteres = calculaInteres(nroCuota, p);
+            BigDecimal cuotaInteres = calculaInteres(p);
             BigDecimal saldoCapital = p.getCapital().subtract(cuotaCapital.multiply(new BigDecimal(nroCuota - 1)));
 
             DetPrestamo d = new DetPrestamo(p, nroCuota, cuotaCapital, cuotaInteres, saldoCapital);
@@ -43,7 +43,7 @@ public class InteresSimple extends Sistema {
         return R;
     }
 
-    private BigDecimal calculaInteres(int nroCuota, Prestamo p) {
+    private BigDecimal calculaInteres(Prestamo p) {
         BigDecimal R;
         BigDecimal div1 = p.getTasa().divide(new BigDecimal(100), 6, RoundingMode.HALF_EVEN);//tasa interes anual
 

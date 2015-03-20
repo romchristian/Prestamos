@@ -10,5 +10,5 @@ package py.gestionpymes.prestamos.prestamos.persistencia;
  */
 public enum SistemaAmortizacion {
 
-    INTERES_SIMPLE, FRANCES;
+    INTERES_SIMPLE, FRANCES, INTERES_AMERICANO;
 }

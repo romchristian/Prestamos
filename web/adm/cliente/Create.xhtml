@@ -67,11 +67,11 @@
 
                                 <h:panelGrid columns="6" rendered="#{clienteController.selected != null}">
                                     <p:outputLabel value="Primer Nombre" for="primerNombre" id="lblprimerNombre"/>
-                                    <p:inputText value="#{clienteController.selected.primerNombre}" required="true" id="primerNombre">
+                                    <p:inputText value="#{clienteController.selected.primerNombre}" required="true" id="primerNombre" style="text-transform: uppercase">
                                         <p:ajax event="blur" update="primerNombre lblprimerNombre @(.mensajes)"/>
                                     </p:inputText>
                                     <p:outputLabel value="Segun Nombre" for="segundoNombre" id="lblsegundoNombre"/>
-                                    <p:inputText value="#{clienteController.selected.segundoNombre}"  id="segundoNombre">
+                                    <p:inputText value="#{clienteController.selected.segundoNombre}"  id="segundoNombre" style="text-transform: uppercase">
                                         <p:ajax event="blur" update="segundoNombre lblsegundoNombre @(.mensajes)"/>
                                     </p:inputText>
 
@@ -79,12 +79,12 @@
                                     <p:spacer/>
 
                                     <p:outputLabel value="Primer Apellido" for="primerApellido" id="lblprimerApellido"/>            
-                                    <p:inputText value="#{clienteController.selected.primerApellido}" required="true" id="primerApellido">
+                                    <p:inputText value="#{clienteController.selected.primerApellido}" required="true" id="primerApellido" style="text-transform: uppercase">
                                         <p:ajax event="blur" update="primerApellido lblprimerApellido @(.mensajes)"/>
                                     </p:inputText>
 
                                     <p:outputLabel value="Segundo Apellido" for="segundoApellido" id="lblsegundoApellido"/>
-                                    <p:inputText value="#{clienteController.selected.segundoApellido}"  id="segundoApellido">
+                                    <p:inputText value="#{clienteController.selected.segundoApellido}"  id="segundoApellido" style="text-transform: uppercase">
                                         <p:ajax event="blur" update="segundoApellido lblsegundoApellido @(.mensajes)"/>
                                     </p:inputText>
 
@@ -92,7 +92,7 @@
                                     <p:spacer/>
 
                                     <p:outputLabel value="Nacionalidad" for="nacionalidad"/>
-                                    <p:inputText value="#{clienteController.selected.nacionalidad}" id="nacionalidad"/>
+                                    <p:inputText value="#{clienteController.selected.nacionalidad}" id="nacionalidad" style="text-transform: uppercase"/>
 
                                     <p:outputLabel value="Fecha Nac" for="fechaNacimiento"/>
                                     <p:calendar value="#{clienteController.selected.fechaNac}" id="fechaNacimiento" required="true"
@@ -127,24 +127,24 @@
                                     <p:spacer/>
 
                                     <p:outputLabel value="#{bundle.CreateClienteLabel_categoria}" for="categoria" /> 
-                                    <p:selectOneMenu id="categoria" value="#{clienteController.selected.categoria}" >
+                                    <p:selectOneMenu id="categoria" value="#{clienteController.selected.categoria}" disabled="true">
                                         <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"
                                                        var="categoriaItem"
-                                                       itemValue="#{categoriaItem}"/>
+                                                       itemValue="#{categoriaItem}" />
                                     </p:selectOneMenu>
 
                                     <p:outputLabel value="Empresa" for="empresa" /> 
-                                    <p:selectOneMenu id="empresa" value="#{clienteController.selected.empresa}" >
+                                    <p:selectOneMenu id="empresa" value="#{clienteController.selected.empresa}" disabled="true">
                                         <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
                                     </p:selectOneMenu>
 
                                     <p:outputLabel value="#{bundle.CreateClienteLabel_sucursal}" for="sucursal" /> 
-                                    <p:selectOneMenu id="sucursal" value="#{clienteController.selected.sucursal}" >
+                                    <p:selectOneMenu id="sucursal" value="#{clienteController.selected.sucursal}" disabled="true">
                                         <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"/>
                                     </p:selectOneMenu>
 
                                     <p:outputLabel value="Linea de Crédito" for="lineadecredito"/>
-                                    <p:inputText value="#{clienteController.selected.lineaDeCredito}" id="lineadecredito"/>
+                                    <p:inputText value="#{clienteController.selected.lineaDeCredito}" id="lineadecredito" disabled="true"/>
 
                                 </h:panelGrid>
 
@@ -162,16 +162,19 @@
                                         </p:selectOneMenu>
 
                                         <p:outputLabel value="#{bundle.CreateDireccionLabel_direccion}" for="direccion" />
-                                        <p:inputText id="direccion" value="#{clienteController.direccionSeleccionada.direccion}" title="#{bundle.CreateDireccionTitle_direccion}" />
+                                        <p:inputText id="direccion" value="#{clienteController.direccionSeleccionada.direccion}" title="#{bundle.CreateDireccionTitle_direccion}" style="text-transform: uppercase" />
 
                                         <p:outputLabel value="#{bundle.CreateDireccionLabel_nrocasa}" for="nrocasa" />
-                                        <p:inputText id="nrocasa" value="#{clienteController.direccionSeleccionada.nrocasa}" title="#{bundle.CreateDireccionTitle_nrocasa}" />
+                                        <p:inputText id="nrocasa" value="#{clienteController.direccionSeleccionada.nrocasa}" title="#{bundle.CreateDireccionTitle_nrocasa}" style="text-transform: uppercase"/>
+                                        
+                                        <p:outputLabel value="#{bundle.CreateDireccionLabel_barrio}" for="barrio" />
+                                        <p:inputText id="barrio" value="#{clienteController.direccionSeleccionada.barrio}" title="#{bundle.CreateDireccionTitle_barrio}" style="text-transform: uppercase" />
 
                                         <p:outputLabel value="#{bundle.CreateDireccionLabel_ciudad}" for="ciudad" />
-                                        <p:inputText id="ciudad" value="#{clienteController.direccionSeleccionada.ciudad}" title="#{bundle.CreateDireccionTitle_ciudad}" />
+                                        <p:inputText id="ciudad" value="#{clienteController.direccionSeleccionada.ciudad}" title="#{bundle.CreateDireccionTitle_ciudad}" style="text-transform: uppercase" />
 
                                         <p:outputLabel value="#{bundle.CreateDireccionTitle_pais}" for="pais" />
-                                        <p:inputText id="pais" value="#{clienteController.direccionSeleccionada.pais}" title="#{bundle.CreateDireccionTitle_pais}" />
+                                        <p:inputText id="pais" value="#{clienteController.direccionSeleccionada.pais}" title="#{bundle.CreateDireccionTitle_pais}" style="text-transform: uppercase" />
 
                                         <p:commandButton value="Agregar" update="@(.panelDirecciones)" action="#{clienteController.agregaDireccion()}"/>
                                     </p:panelGrid>   
@@ -180,16 +183,19 @@
                                             #{d.tipo}
                                         </p:column>
                                         <p:column headerText="DIRECCION">
-                                            <p:inputText value="#{d.direccion}"/> 
+                                            <h:outputText value="#{d.direccion}"/> 
                                         </p:column>
                                         <p:column headerText="NRO">
-                                            <p:inputText value="#{d.nrocasa}"/> 
+                                            <h:outputText value="#{d.nrocasa}"/> 
+                                        </p:column>
+                                        <p:column headerText="BARRIO">
+                                            <h:outputText value="#{d.barrio}"/> 
                                         </p:column>
                                         <p:column headerText="CIUDAD">
-                                            <p:inputText value="#{d.ciudad}"/> 
+                                            <h:outputText value="#{d.ciudad}"/> 
                                         </p:column>
                                         <p:column headerText="PAÍS">
-                                            <p:inputText value="#{d.pais}"/> 
+                                            <h:outputText value="#{d.pais}"/> 
                                         </p:column>
                                         <p:column headerText="ACCION">
                                             <p:commandButton value="X" action="#{clienteController.removerDireccion(d)}" update="@(.panelDirecciones)"/>
@@ -251,7 +257,7 @@
                                         <p:inputText value="#{clienteController.actividadLaboralSelecccionada.nombreEmpresa}" id="nombreEmpresa"/>
 
                                         <p:outputLabel value="Cargo" for="cargo" />
-                                        <p:inputText value="#{clienteController.actividadLaboralSelecccionada.cargo}" id="cargo"/>
+                                        <p:inputText value="#{clienteController.actividadLaboralSelecccionada.cargo}" id="cargo" style="text-transform: uppercase"/>
 
                                         <p:outputLabel value="Ingreso" for="ingreso" />
                                         <p:inputText value="#{clienteController.actividadLaboralSelecccionada.ingreso}" id="ingreso"/>
@@ -316,7 +322,7 @@
                                         </p:selectOneMenu>
 
                                         <p:outputLabel value="Descripcion" for="descripcion" />
-                                        <p:inputText value="#{clienteController.referenciaClienteSeleccionada.descripcion}" id="descripcion" />
+                                        <p:inputText value="#{clienteController.referenciaClienteSeleccionada.descripcion}" id="descripcion" style="text-transform: uppercase"/>
 
                                         <p:outputLabel value="Numero" for="numeroRef" />
                                         <p:inputText value="#{clienteController.referenciaClienteSeleccionada.telefono}" id="numeroRef" />
