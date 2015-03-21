@@ -48,7 +48,7 @@ public class Inmueble implements Serializable {
     }
 
     public void setNrofinca(String nrofinca) {
-        this.nrofinca = nrofinca;
+        this.nrofinca = nrofinca.toUpperCase();
     }
 
     public String getDescripcion() {
@@ -56,7 +56,7 @@ public class Inmueble implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     public String getDireccion() {
@@ -64,7 +64,7 @@ public class Inmueble implements Serializable {
     }
 
     public void setDireccion(String direccion) {
-        this.direccion = direccion;
+        this.direccion = direccion.toUpperCase();
     }
 
     public String getDistrito() {
@@ -72,7 +72,7 @@ public class Inmueble implements Serializable {
     }
 
     public void setDistrito(String distrito) {
-        this.distrito = distrito;
+        this.distrito = distrito.toUpperCase();
     }
 
     public double getValor() {

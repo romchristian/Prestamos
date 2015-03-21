@@ -30,6 +30,16 @@ public class Gasto implements Serializable {
         this.id = id;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre.toUpperCase();
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 0;

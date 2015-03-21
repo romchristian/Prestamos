@@ -24,7 +24,7 @@
                                            itemValue="#{empresaItem}"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.EditCanalLabel_nombre}" for="nombre" />
-                        <p:inputText id="nombre" value="#{canalController.selected.nombre}" title="#{bundle.EditCanalTitle_nombre}" />
+                        <p:inputText id="nombre" value="#{canalController.selected.nombre}" title="#{bundle.EditCanalTitle_nombre}" style="text-transform: uppercase"/>
                         <p:outputLabel value="#{bundle.EditCanalLabel_estado}" for="estado" />
                         <p:selectOneMenu value="#{canalController.selected.estado}" id="estado">
                             <f:selectItems value="#{productorEnums.obtEstados()}"/>

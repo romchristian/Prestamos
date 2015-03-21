@@ -20,7 +20,7 @@
                                            itemValue="#{empresaItem}"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.CreateCanalLabel_nombre}" for="nombre" />
-                        <p:inputText id="nombre" value="#{canalController.selected.nombre}" title="#{bundle.CreateCanalTitle_nombre}" />
+                        <p:inputText id="nombre" value="#{canalController.selected.nombre}" title="#{bundle.CreateCanalTitle_nombre}" style="text-transform: uppercase"/>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{canalController.create}" value="#{bundle.Save}" update="display,:CanalListForm:datalist,:growl" oncomplete="handleSubmit(args,'CanalCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="CanalCreateDialog.hide()"/>

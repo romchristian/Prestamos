@@ -25,7 +25,7 @@
 
                     <p:panelGrid columns="2" rendered="#{planGastosController.selected != null}" style="width: 100%">
                         <p:outputLabel value="#{bundle.CreatePlanGastosLabel_nombre}" for="nombre" />
-                        <p:inputText id="nombre" value="#{planGastosController.selected.nombre}" title="#{bundle.CreatePlanGastosTitle_nombre}"  size="80"/>
+                        <p:inputText id="nombre" value="#{planGastosController.selected.nombre}" title="#{bundle.CreatePlanGastosTitle_nombre}"  size="80" style="text-transform: uppercase"/>
                         <p:outputLabel value="#{bundle.CreatePlanGastosLabel_empresa}" for="empresa" />
 
                         <p:selectOneMenu id="empresa" value="#{planGastosController.selected.empresa}" >

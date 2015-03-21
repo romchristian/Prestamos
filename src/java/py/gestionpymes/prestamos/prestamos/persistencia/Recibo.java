@@ -43,7 +43,7 @@ public abstract class Recibo implements Serializable {
     }
 
     public void setNro(String nro) {
-        this.nro = nro;
+        this.nro = nro.toUpperCase();
     }
 
     public String getConcepto() {
@@ -51,7 +51,7 @@ public abstract class Recibo implements Serializable {
     }
 
     public void setConcepto(String concepto) {
-        this.concepto = concepto;
+        this.concepto = concepto.toUpperCase();
     }
     
     

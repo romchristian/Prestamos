@@ -4,7 +4,6 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
-                template="/template.xhtml"
                 xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:decorate template="/plantillaListado.xhtml">
@@ -152,7 +151,7 @@
                                     <f:convertNumber locale="#{formato.locale}"/>
                                 </h:inputText>
 
-                                <h:outputText value="Plazo"/>
+                                <h:outputText value="Cantidad de cuotas"/>
                                 <h:inputText value="#{prestamoController.selected.plazo}" required="true"/>
 
                                 <h:outputText value="Periodicidad de Pago"/>

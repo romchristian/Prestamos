@@ -36,7 +36,7 @@ public class Diario implements Serializable {
     
 
     public Diario(String descripcion, TipoDiario tipo) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
         this.tipo = tipo;
     }
     
@@ -55,7 +55,7 @@ public class Diario implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     public Diario getPadre() {

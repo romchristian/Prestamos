@@ -343,7 +343,7 @@ public class Prestamo implements Serializable {
     }
 
     public BigDecimal getMontoCuota() {
-        return montoCuota;//.add(impuestoIVA).divide(new BigDecimal(plazo))
+        return montoCuota.setScale(0, RoundingMode.HALF_EVEN);//.add(impuestoIVA).divide(new BigDecimal(plazo))
     }
 
     public void setMontoCuota(BigDecimal montoCuota) {

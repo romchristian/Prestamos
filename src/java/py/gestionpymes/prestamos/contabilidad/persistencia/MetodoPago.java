@@ -67,7 +67,7 @@ public class MetodoPago implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     public boolean isControlEfectivo() {
