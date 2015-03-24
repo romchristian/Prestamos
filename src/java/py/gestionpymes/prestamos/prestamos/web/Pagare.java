@@ -57,6 +57,8 @@ public class Pagare {
 
     public Pagare(Prestamo prestamo) {
         this.prestamo = prestamo;
+        
+        
 
         monto = this.prestamo.getTotalOperacion().setScale(0, RoundingMode.HALF_EVEN);
         setMontoLetras(this.prestamo.getTotalOperacion().setScale(0, RoundingMode.HALF_EVEN));
@@ -65,7 +67,7 @@ public class Pagare {
         DateTime d = new DateTime(this.prestamo.getFechaInicioOperacion());
         setAnio(d.getYear());
         setMesNumero(d.getMonthOfYear());
-        setMesLetra(d.toString("MMMM", Locale.getDefault()));
+        setMesLetra(d.toString("MMMM", new Locale("es", "py")));
         setDia(d.getDayOfMonth());
 
         setEmpresaNombre(this.prestamo.getEmpresa() == null ? null : this.prestamo.getEmpresa().getRazonSocial());

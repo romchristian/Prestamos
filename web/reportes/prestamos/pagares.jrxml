@@ -232,13 +232,6 @@
 				</textElement>
 				<text><![CDATA[FIRMA:.............................................]]></text>
 			</staticText>
-			<textField pattern="#,##0">
-				<reportElement x="261" y="53" width="286" height="18" uuid="f89eb3ff-06d5-4dc9-a5bc-a2a43814903a"/>
-				<textElement>
-					<font fontName="Times New Roman" size="12" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{fechaEmisionTexto}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="70" y="542" width="324" height="20" uuid="d8703061-e0ae-4361-b9df-141eb137d911"/>
 				<textElement>
