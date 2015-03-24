@@ -82,10 +82,10 @@ public class DetPrestamo implements Serializable {
 
         GregorianCalendar gc = new GregorianCalendar(new Locale("es", "py"));
         gc.setTime(prestamo.getFechaPrimerVencimiento());
-        
+
         System.out.println("PRIMER VENCIMIENTO: " + prestamo.getFechaPrimerVencimiento());
         int dias = 0;
-        
+
         switch (prestamo.getPeriodoPago()) {
             case MENSUAL:
                 gc.add(Calendar.MONTH, nroCuota - 1);
@@ -104,33 +104,31 @@ public class DetPrestamo implements Serializable {
                 this.fechaVencimiento = gc.getTime();
                 break;
             case DIARIO:
-                
+
                 System.out.println("GET TIME: " + gc.getTime());
-                if(nroCuota == 1){
+                if (nroCuota == 1) {
                     dias = 0;
-                }else{
+                } else {
                     dias = 1;
                 }
-                
+
                 //dias *= (nroCuota -1);
                 gc.add(Calendar.DAY_OF_MONTH, dias);
 
-                LocalDate fecha = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH)+1, gc.get(Calendar.DAY_OF_MONTH));
+                LocalDate fecha = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.get(Calendar.DAY_OF_MONTH));
 
                 if (fecha.getDayOfWeek() == DateTimeConstants.SATURDAY) {
                     fecha = fecha.plusDays(2);
                     this.prestamo.setFechaPrimerVencimiento(fecha.toDate());
                     this.fechaVencimiento = fecha.toDate();
-                }else {
+                } else {
                     this.fechaVencimiento = gc.getTime();
                     this.prestamo.setFechaPrimerVencimiento(gc.getTime());
                 }
-                
-                
+
                 break;
         }
 
-        
         interesMoratorio = prestamo.getTasa().floatValue();
         interesPunitorio = prestamo.getTasa().floatValue() * 0.2f;
     }
@@ -410,8 +408,8 @@ public class DetPrestamo implements Serializable {
 
     public boolean afectaSaldoCuota(BigDecimal monto, String refMonto) {
         boolean R = false;
-        saldoCuota.setScale(0, RoundingMode.HALF_EVEN);
-        monto.setScale(0, RoundingMode.HALF_EVEN);
+        saldoCuota = saldoCuota.setScale(0, RoundingMode.HALF_EVEN);
+        monto =monto.setScale(0, RoundingMode.HALF_EVEN);
         BigDecimal mora = devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
 
         System.out.println("SALDO CUOTA: " + saldoCuota);

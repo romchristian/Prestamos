@@ -447,8 +447,11 @@ public class CobraCuotaBean implements Serializable {
         seleccionados.add(cuotaSeleccionada);
 
         if (cuotaSeleccionada.getMontoAPagar().compareTo(cuotaSeleccionada.getSaldoCuota()) == 0) {
-            TreeCuota siguiente = (TreeCuota) cuotaSeleccionada.getPadre().getChildren().get(cuotaSeleccionada.getNroCuota()).getData();
-            siguiente.setDisabledPagar(false);
+            if (cuotaSeleccionada.getPrestamo().getPlazo() > cuotaSeleccionada.getNroCuota()) {
+                TreeCuota siguiente = (TreeCuota) cuotaSeleccionada.getPadre().getChildren().get(cuotaSeleccionada.getNroCuota()).getData();
+                siguiente.setDisabledPagar(false);
+            }
+
         }
 
         montoActual = new BigDecimal(BigInteger.ZERO);

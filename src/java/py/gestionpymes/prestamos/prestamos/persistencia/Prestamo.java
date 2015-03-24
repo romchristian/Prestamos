@@ -120,7 +120,7 @@ public class Prestamo implements Serializable {
     public BigDecimal devuelveSaldoPrestamo() {
         BigDecimal R = new BigDecimal(BigInteger.ZERO);
         for (DetPrestamo d : getDetalles()) {
-            R = R.add(d.getSaldoCuota());
+            R = R.add(d.getSaldoCuota().setScale(0, RoundingMode.HALF_EVEN));
         }
 
         return R;
@@ -414,41 +414,41 @@ public class Prestamo implements Serializable {
         impuestoIVA = BigDecimal.ZERO;
         totalOperacion = BigDecimal.ZERO;
 
-        BigDecimal interesPorDia = new BigDecimal(getTasa().doubleValue() / 100d / 365d, MathContext.DECIMAL128);
+        BigDecimal interesPorDia = new BigDecimal(getTasa().doubleValue() / 100d / 365d, MathContext.DECIMAL128).setScale(8, RoundingMode.HALF_EVEN);
         int difPrimerVencimiento = Days.daysBetween(new DateTime(fechaInicioOperacion).plusMonths(1), new DateTime(fechaPrimerVencimiento)).getDays();
 
-        BigDecimal montoDif = interesPorDia.multiply(new BigDecimal(difPrimerVencimiento)).multiply(getCapital(), MathContext.DECIMAL128);
+        BigDecimal montoDif = interesPorDia.multiply(new BigDecimal(difPrimerVencimiento)).multiply(getCapital(), MathContext.DECIMAL128).setScale(8, RoundingMode.HALF_EVEN);
 
         for (DetPrestamo d : getDetalles()) {
 
             totalIntereses = totalIntereses.add(d.getCuotaInteres());
-            impuestoIVA = impuestoIVA.add(d.getCuotaInteres().multiply(new BigDecimal(0.1), MathContext.DECIMAL128));
+            impuestoIVA = impuestoIVA.add(d.getCuotaInteres().multiply(new BigDecimal(0.1), MathContext.DECIMAL128)).setScale(8, RoundingMode.HALF_EVEN);
         }
 
-        totalOperacion = getCapital().add(totalIntereses).add(impuestoIVA);
+        totalOperacion = getCapital().add(totalIntereses).add(impuestoIVA).setScale(8, RoundingMode.HALF_EVEN);
 
         System.out.println("TOTAL IVA: " + impuestoIVA.doubleValue());
         System.out.println("PLAZO: " + plazo);
-        BigDecimal ivaMesFijo = impuestoIVA.divide(new BigDecimal(plazo), MathContext.DECIMAL128);
+        BigDecimal ivaMesFijo = impuestoIVA.divide(new BigDecimal(plazo), MathContext.DECIMAL128).setScale(8, RoundingMode.HALF_EVEN);
 
         totalIntereses = BigDecimal.ZERO;
         impuestoIVA = BigDecimal.ZERO;
         totalOperacion = BigDecimal.ZERO;
 
         for (DetPrestamo d : getDetalles()) {
-            BigDecimal interesIvaIncluido = d.getCuotaInteres().add(ivaMesFijo);
+            BigDecimal interesIvaIncluido = d.getCuotaInteres().add(ivaMesFijo).setScale(8, RoundingMode.HALF_EVEN);
 
-            BigDecimal ivaInteres = interesIvaIncluido.divide(new BigDecimal(11), MathContext.DECIMAL128);
-            d.setCuotaInteres(interesIvaIncluido.subtract(ivaInteres));
-            d.setImpuestoIvaCuota(ivaInteres);
+            BigDecimal ivaInteres = interesIvaIncluido.divide(new BigDecimal(11), MathContext.DECIMAL128).setScale(8, RoundingMode.HALF_EVEN);
+            d.setCuotaInteres(interesIvaIncluido.subtract(ivaInteres).setScale(8, RoundingMode.HALF_EVEN));
+            d.setImpuestoIvaCuota(ivaInteres.setScale(8, RoundingMode.HALF_EVEN));
 
-            BigDecimal nuevomontoCuota = d.getCuotaInteres().add(d.getCuotaCapital()).add(d.getImpuestoIvaCuota());
+            BigDecimal nuevomontoCuota = d.getCuotaInteres().add(d.getCuotaCapital()).add(d.getImpuestoIvaCuota()).setScale(8, RoundingMode.HALF_EVEN);
 
-            d.setMontoCuota(nuevomontoCuota);
-            d.setSaldoCuota(nuevomontoCuota);
-            totalIntereses = totalIntereses.add(d.getCuotaInteres());
+            d.setMontoCuota(nuevomontoCuota.setScale(8, RoundingMode.HALF_EVEN));
+            d.setSaldoCuota(nuevomontoCuota.setScale(8, RoundingMode.HALF_EVEN));
+            totalIntereses = totalIntereses.add(d.getCuotaInteres().setScale(8, RoundingMode.HALF_EVEN));
 
-            impuestoIVA = impuestoIVA.add(d.getImpuestoIvaCuota());
+            impuestoIVA = impuestoIVA.add(d.getImpuestoIvaCuota().setScale(8, RoundingMode.HALF_EVEN));
         }
 
         if (difPrimerVencimiento > 0) {
@@ -459,28 +459,28 @@ public class Prestamo implements Serializable {
             for (DetPrestamo d : getDetalles()) {
                 if (d.getNroCuota() == 1 && difPrimerVencimiento > 0) {
                     d.setCuotaInteres(d.getCuotaInteres().add(montoDif));
-                    d.setImpuestoIvaCuota(d.getImpuestoIvaCuota().add(montoDif.multiply(new BigDecimal(0.1), MathContext.DECIMAL128)));
+                    d.setImpuestoIvaCuota(d.getImpuestoIvaCuota().add(montoDif.multiply(new BigDecimal(0.1), MathContext.DECIMAL128)).setScale(8, RoundingMode.HALF_EVEN));
 
-                    totalIntereses = totalIntereses.add(d.getCuotaInteres());
+                    totalIntereses = totalIntereses.add(d.getCuotaInteres().setScale(8, RoundingMode.HALF_EVEN));
 
-                    impuestoIVA = impuestoIVA.add(d.getImpuestoIvaCuota());
+                    impuestoIVA = impuestoIVA.add(d.getImpuestoIvaCuota().setScale(8, RoundingMode.HALF_EVEN));
 
-                    BigDecimal nuevomontoCuota = d.getCuotaInteres().add(d.getCuotaCapital()).add(d.getImpuestoIvaCuota());
-                    d.setMontoCuota(nuevomontoCuota);
-                    d.setSaldoCuota(nuevomontoCuota);
+                    BigDecimal nuevomontoCuota = d.getCuotaInteres().add(d.getCuotaCapital()).add(d.getImpuestoIvaCuota()).setScale(8, RoundingMode.HALF_EVEN);
+                    d.setMontoCuota(nuevomontoCuota.setScale(8, RoundingMode.HALF_EVEN));
+                    d.setSaldoCuota(nuevomontoCuota.setScale(8, RoundingMode.HALF_EVEN));
 
                 } else {
-                    totalIntereses = totalIntereses.add(d.getCuotaInteres());
-                    impuestoIVA = impuestoIVA.add(d.getImpuestoIvaCuota());
+                    totalIntereses = totalIntereses.add(d.getCuotaInteres().setScale(8, RoundingMode.HALF_EVEN));
+                    impuestoIVA = impuestoIVA.add(d.getImpuestoIvaCuota().setScale(8, RoundingMode.HALF_EVEN));
                 }
 
             }
         }
 
-        totalOperacion = getCapital().add(totalIntereses).add(impuestoIVA);
+        totalOperacion = getCapital().add(totalIntereses).add(impuestoIVA).setScale(8, RoundingMode.HALF_EVEN);
 
         if (sistemaAmortizacion == SistemaAmortizacion.FRANCES) {
-            montoCuota = getSistema().getCuota().add(ivaMesFijo);
+            montoCuota = getSistema().getCuota().add(ivaMesFijo).setScale(8, RoundingMode.HALF_EVEN);
         } else if (sistemaAmortizacion == SistemaAmortizacion.INTERES_SIMPLE) {
             montoCuota = getSistema().getCuota();
         }else if (sistemaAmortizacion == SistemaAmortizacion.INTERES_AMERICANO) {
@@ -490,12 +490,70 @@ public class Prestamo implements Serializable {
         totalIntereses = BigDecimal.ZERO;
         impuestoIVA = BigDecimal.ZERO;
         totalOperacion = BigDecimal.ZERO;
+        
 
+        BigDecimal totalCuotas = new BigDecimal(BigInteger.ZERO);
+        BigDecimal sumaCapital = new BigDecimal(BigInteger.ZERO);
+        DetPrestamo ultimoDetalle = null;
         for (DetPrestamo d : getDetalles()) {
             totalIntereses = totalIntereses.add(d.getCuotaInteres().setScale(0, RoundingMode.HALF_EVEN));
             impuestoIVA = impuestoIVA.add(d.getImpuestoIvaCuota().setScale(0, RoundingMode.HALF_EVEN));
+            
+            
+            //Ajuste cuotas en detalle
+            BigDecimal sumaCuota = d.getCuotaCapital().setScale(0, RoundingMode.HALF_EVEN)
+                    .add(d.getCuotaInteres().setScale(0, RoundingMode.HALF_EVEN))
+                    .add(d.getImpuestoIvaCuota().setScale(0, RoundingMode.HALF_EVEN));
+            
+            if(sumaCuota.compareTo(d.getMontoCuota()) != 0){
+                BigDecimal b2 = d.getMontoCuota().subtract(sumaCuota);
+                BigDecimal temp = d.getCuotaCapital().add(b2);
+                d.setCuotaCapital(temp); //Correccion
+            }
+            
+            sumaCapital = sumaCapital.add(d.getCuotaCapital()).setScale(0, RoundingMode.HALF_EVEN);
+            
+            totalCuotas = totalCuotas.add(d.getMontoCuota().setScale(0, RoundingMode.HALF_EVEN));
+            
+            ultimoDetalle = d;
+        }
+        
+        
+        if(getCapital().compareTo(sumaCapital)!= 0){
+            BigDecimal diffCapital = getCapital().subtract(sumaCapital).setScale(0, RoundingMode.HALF_EVEN);
+            if(ultimoDetalle != null){
+                ultimoDetalle.setCuotaCapital(ultimoDetalle.getCuotaCapital().add(diffCapital).setScale(0, RoundingMode.HALF_EVEN));
+                ultimoDetalle.setCuotaInteres(ultimoDetalle.getCuotaInteres().subtract(diffCapital).setScale(0, RoundingMode.HALF_EVEN));
+                
+                BigDecimal sumaDetalle = ultimoDetalle.getCuotaCapital().setScale(0, RoundingMode.HALF_EVEN)
+                        .add(ultimoDetalle.getCuotaInteres().setScale(0, RoundingMode.HALF_EVEN))
+                        .add(ultimoDetalle.getImpuestoIvaCuota().setScale(0, RoundingMode.HALF_EVEN));
+                
+                if(ultimoDetalle.getMontoCuota().compareTo(sumaDetalle)!=0){
+                    BigDecimal diffIva = ultimoDetalle.getMontoCuota().subtract(sumaDetalle.setScale(0, RoundingMode.HALF_EVEN)).setScale(0, RoundingMode.HALF_EVEN);
+                    ultimoDetalle.setImpuestoIvaCuota(ultimoDetalle.getImpuestoIvaCuota().setScale(0, RoundingMode.HALF_EVEN).add(diffIva));
+                }
+            }
+            
+        }
+        
+        
+        totalIntereses = BigDecimal.ZERO;
+        impuestoIVA = BigDecimal.ZERO;
+        totalOperacion = BigDecimal.ZERO;
+        BigDecimal amortizacionAcumulada = new BigDecimal(BigInteger.ZERO);
+        for (DetPrestamo d : getDetalles()) {
+            d.setSaldoCapital(getCapital().subtract(amortizacionAcumulada));
+            
+            amortizacionAcumulada = amortizacionAcumulada.add(d.getCuotaCapital().setScale(0, RoundingMode.HALF_EVEN));
+            
+            totalIntereses = totalIntereses.add(d.getCuotaInteres().setScale(0, RoundingMode.HALF_EVEN));
+            impuestoIVA = impuestoIVA.add(d.getImpuestoIvaCuota().setScale(0, RoundingMode.HALF_EVEN));
+            montoCuota = d.getMontoCuota();
         }
 
+        
+        
         totalOperacion = getCapital().add(totalIntereses).add(impuestoIVA);
 
         montoCuota.setScale(0, RoundingMode.HALF_EVEN);

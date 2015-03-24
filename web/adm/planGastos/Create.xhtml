@@ -43,7 +43,7 @@
                         </f:facet>
                         <p:column headerText="Tasa">
                             <h:inputText value="#{d.tasa}">
-                                <f:convertNumber locale="#{formato.locale}"/>
+                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="8"/>
                             </h:inputText>
                         </p:column>
                         <p:column headerText="Plazo en Dias">
