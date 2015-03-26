@@ -67,6 +67,7 @@ public class Autenticador implements Serializable {
             request.login(username, password);
             
             Usuario u = usuarioFacade.find(username);
+            System.out.println("Usuario en el login: " + u);
             credencial.setUsuario(u);
             
         } catch (ServletException ex) {

@@ -18,7 +18,7 @@
         </ui:define>
 
         <ui:define name="body">
-            <p:dataTable value="#{sesionTPVBean.findAll()}" var="m" styleClass="resultado">
+            <p:dataTable value="#{misSesiones}" var="m" styleClass="resultado">
                 <f:facet name="header">
                     <p:commandButton action="#{sesionTPVBean.preparaCreacion()}" 
                              value="Crear"

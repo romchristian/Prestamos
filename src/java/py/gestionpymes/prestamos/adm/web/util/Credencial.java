@@ -6,10 +6,12 @@ package py.gestionpymes.prestamos.adm.web.util;
 
 
 import java.io.Serializable;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.persistencia.Usuario;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
 
 
 

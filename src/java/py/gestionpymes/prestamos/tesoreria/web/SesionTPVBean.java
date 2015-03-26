@@ -22,6 +22,7 @@ import org.primefaces.event.FlowEvent;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.persistencia.Usuario;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
+import py.gestionpymes.prestamos.adm.web.util.Credencial;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.UsuarioLogueado;
 import py.gestionpymes.prestamos.contabilidad.persistencia.MetodoPago;
@@ -57,16 +58,15 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     private BigDecimal saldoCierre = new BigDecimal(BigInteger.ZERO);
     private BigDecimal diferencia = new BigDecimal(BigInteger.ZERO);
     @Inject
-    @UsuarioLogueado
-    private Usuario usuarioLoguedo;
+    private Credencial credencial;
     @EJB
     private PuntoVentaDAO puntoVentaDAO;
 
     @Override
     public SesionTPV getActual() {
         SesionTPV R = super.getActual();
-        R.setUsuario(usuarioLoguedo);
-        R.setPuntoVenta(puntoVentaDAO.find(usuarioLoguedo));
+        R.setUsuario(credencial.getUsuario());
+        R.setPuntoVenta(puntoVentaDAO.find(credencial.getUsuario()));
         return R; //To change body of generated methods, choose Tools | Templates.
     }
 

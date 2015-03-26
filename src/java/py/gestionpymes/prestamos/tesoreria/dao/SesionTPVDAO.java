@@ -9,11 +9,15 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
+import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.dao.QueryParameter;
 import py.gestionpymes.prestamos.adm.persistencia.Usuario;
+import py.gestionpymes.prestamos.adm.web.util.Credencial;
+import py.gestionpymes.prestamos.adm.web.util.MisSesiones;
 import py.gestionpymes.prestamos.adm.web.util.UsuarioLogueado;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
 
@@ -29,8 +33,7 @@ public class SesionTPVDAO extends AbstractDAO<SesionTPV> {
     @EJB(beanName = "ABMServiceBean")
     private ABMService abmService;
     @Inject
-    @UsuarioLogueado
-    private Usuario usuario;
+    private Credencial credencial;
     
 
     @Override
@@ -54,10 +57,14 @@ public class SesionTPVDAO extends AbstractDAO<SesionTPV> {
         return abmService.find(id, SesionTPV.class);
     }
 
+    @Produces
+    @Named(value="misSesiones")
+    @MisSesiones
     @Override
     public List<SesionTPV> findAll() {
+        System.out.println("Usuario loguedo: " + credencial.getUsuario());
         return abmService.getEM().createQuery("select obj from SesionTPV obj where obj.usuario = :u ")
-                .setParameter("u", usuario)
+                .setParameter("u", credencial.getUsuario())
                 .getResultList();
     }
 
@@ -65,4 +72,5 @@ public class SesionTPVDAO extends AbstractDAO<SesionTPV> {
     public List<SesionTPV> findAll(String query, QueryParameter params) {
         return abmService.findByQuery(query, params.parameters());
     }
+    
 }
