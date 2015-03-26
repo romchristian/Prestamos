@@ -9,9 +9,12 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.dao.QueryParameter;
+import py.gestionpymes.prestamos.adm.persistencia.Usuario;
+import py.gestionpymes.prestamos.adm.web.util.UsuarioLogueado;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
 
 
@@ -25,6 +28,9 @@ public class SesionTPVDAO extends AbstractDAO<SesionTPV> {
 
     @EJB(beanName = "ABMServiceBean")
     private ABMService abmService;
+    @Inject
+    @UsuarioLogueado
+    private Usuario usuario;
     
 
     @Override
@@ -50,7 +56,9 @@ public class SesionTPVDAO extends AbstractDAO<SesionTPV> {
 
     @Override
     public List<SesionTPV> findAll() {
-        return abmService.getEM().createQuery("select obj from SesionTPV obj").getResultList();
+        return abmService.getEM().createQuery("select obj from SesionTPV obj where obj.usuario = :u ")
+                .setParameter("u", usuario)
+                .getResultList();
     }
 
     @Override

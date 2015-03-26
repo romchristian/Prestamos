@@ -8,12 +8,16 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import py.gestionpymes.prestamos.adm.dao.UsuarioFacade;
+import py.gestionpymes.prestamos.adm.persistencia.Usuario;
 
 /**
  *
@@ -23,6 +27,11 @@ import javax.servlet.http.HttpServletRequest;
 @SessionScoped
 public class Autenticador implements Serializable {
 
+    @EJB
+    private UsuarioFacade usuarioFacade;
+    @Inject
+    private Credencial credencial;
+    
     private String username;
     private String password;
 
@@ -56,6 +65,10 @@ public class Autenticador implements Serializable {
 
         try {
             request.login(username, password);
+            
+            Usuario u = usuarioFacade.find(username);
+            credencial.setUsuario(u);
+            
         } catch (ServletException ex) {
             Logger.getLogger(Autenticador.class.getName()).log(Level.SEVERE, null, ex);
         }

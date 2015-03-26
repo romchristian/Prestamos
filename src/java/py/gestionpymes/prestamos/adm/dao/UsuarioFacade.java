@@ -17,6 +17,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Categoria;
  */
 @Stateless
 public class UsuarioFacade extends AbstractFacade<Usuario> {
+
     @PersistenceContext(unitName = "PrestamosPU")
     private EntityManager em;
 
@@ -28,5 +29,17 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     public UsuarioFacade() {
         super(Usuario.class);
     }
-    
+
+    public Usuario find(String login) {
+        Usuario R = null;
+        
+        try {
+            R = (Usuario) em.createQuery("SELECT u FROM Usuario u WHERE u.usuario = :login ")
+                    .setParameter("login", login).getSingleResult();
+        } catch (Exception e) {
+        }
+        
+        return R;
+    }
+
 }

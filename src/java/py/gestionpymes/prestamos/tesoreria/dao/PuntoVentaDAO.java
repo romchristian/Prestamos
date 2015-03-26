@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttributeType;
 import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.dao.QueryParameter;
+import py.gestionpymes.prestamos.adm.persistencia.Usuario;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.PuntoVenta;
 
 /**
@@ -53,5 +54,16 @@ public class PuntoVentaDAO extends AbstractDAO<PuntoVenta> {
     @Override
     public List<PuntoVenta> findAll(String query, QueryParameter params) {
         return abmService.findByQuery(query, params.parameters());
+    }
+    
+    public PuntoVenta find(Usuario u) {
+        PuntoVenta R = null;
+        try {
+            R = (PuntoVenta) abmService.getEM().createQuery("SELECT p FROM PuntoVenta p WHERE p.usuario = :u")
+                    .setParameter("u", u)
+                    .getSingleResult();
+        } catch (Exception e) {
+        }
+        return R;
     }
 }

@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import py.gestionpymes.prestamos.adm.persistencia.Estado;
+import py.gestionpymes.prestamos.adm.persistencia.Usuario;
 import py.gestionpymes.prestamos.contabilidad.persistencia.Diario;
 import py.gestionpymes.prestamos.contabilidad.persistencia.MetodoPago;
 
@@ -41,9 +42,19 @@ public class PuntoVenta implements Serializable {
     @Enumerated(EnumType.STRING)
     private Estado estado;
     private BigDecimal saldo;
+    @ManyToOne
+    private Usuario usuario;
 
     public PuntoVenta() {
         this.estado = Estado.ACTIVO;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public BigDecimal getSaldo() {

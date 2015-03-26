@@ -28,6 +28,10 @@
                         <f:param name="id" value="#{p.id}"/>
                     </h:link>
                 </p:column>
+                
+                <p:column headerText="Asignado a">
+                    <h:outputText value="#{p.usuario}"/>
+                </p:column>
                 <p:column headerText="Estado">
                     <h:outputText value="#{p.estado}"/>
                 </p:column>

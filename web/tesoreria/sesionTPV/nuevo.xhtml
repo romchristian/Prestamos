@@ -21,16 +21,15 @@
 
         <ui:define name="col1">
             <h:panelGrid columns="2" cellpadding="10">
-                <h:outputText value="Usuario"/>
-                <h:outputText value="#{request.userPrincipal.name}"/>
+                <h:outputText value="Usuario: "/>
+                <h:outputText value="#{sesionTPVBean.actual.usuario.toString()}"/>
 
 
-                <h:outputText value="Caja Operativa"/>
+                <h:outputText value="Caja Operativa: "/>
 
-                <p:selectOneMenu value="#{sesionTPVBean.actual.puntoVenta}" valueChangeListener="#{sesionTPVBean.siCamabiaTPV}">
-                    <f:selectItems value="#{puntoVentaBean.itemsAvailableSelectOne}" />
+                <h:outputText value="#{sesionTPVBean.actual.puntoVenta.nombre}"></h:outputText>
                     
-                </p:selectOneMenu>
+               
             </h:panelGrid>
         </ui:define>
 

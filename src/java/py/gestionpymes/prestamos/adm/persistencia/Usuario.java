@@ -114,6 +114,11 @@ public class Usuario extends Persona{
         this.roles = roles;
     }
 
+    @Override
+    public String toString() {
+        return nombre + " " + apellido;
+    }
+
     
     
 }

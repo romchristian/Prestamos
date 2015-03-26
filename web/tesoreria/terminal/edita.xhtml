@@ -30,6 +30,13 @@
             <br/>
             <h:panelGrid columns="2" cellpadding="10">
 
+                
+                <p:outputLabel value="Usuario" for="usuario"/>
+                <p:selectOneMenu value="#{puntoVentaBean.actual.usuario}" id="usuario" >
+                    <f:selectItems value="#{usuarioController.itemsAvailableSelectOne}"/>
+                </p:selectOneMenu>
+                
+                
                 <p:outputLabel value="Secuencia" for="secuencia"/>
                 <p:selectOneMenu value="#{puntoVentaBean.actual.secuencia}" id="secuencia" >
                     <f:selectItems value="#{secuenciaBean.itemsAvailableSelectOne}"/>

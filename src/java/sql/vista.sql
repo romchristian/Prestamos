@@ -47,7 +47,7 @@ INSERT INTO canal(empresa, nombre, estado) VALUES (1,'FUERZA DE VENTAS', 'ACTIVO
 INSERT INTO canal(empresa, nombre, estado) VALUES (1,'ASOCIACIONES', 'ACTIVO');
 
 INSERT INTO plangastos(creacion, estado, nombre, empresa_id) VALUES ( now(),0, 'PLAN NORMAL - CONSUMO',1);
-INSERT INTO plangastos(creacion, estado, nombre, empresa_id) VALUES ( now(),0, '"PLAN ASOCIACIONES - CUOTA 125.000 X MILLON"',1);
+INSERT INTO plangastos(creacion, estado, nombre, empresa_id) VALUES ( now(),0, 'PLAN ASOCIACIONES - CUOTA 125.000 X MILLON"',1);
 
 INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(50.000099,360,15,21.3507,1);
 INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(50,420,15,21.35085,1);
