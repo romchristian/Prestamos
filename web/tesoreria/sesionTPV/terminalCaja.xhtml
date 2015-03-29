@@ -35,6 +35,13 @@
 
     <ui:define name="body">
         <h3>CAJA</h3>
+
+        <h:outputText value="Fondo Disponible en su Caja:  " style="font-size: 20px"/> 
+        
+        <h:outputText value="#{sesionTPVBean.saldoTeorico}" style="font-size: 20px">
+            <f:convertNumber locale="#{formato.locale}"/>
+        </h:outputText>
+
     </ui:define>
 
 </ui:composition>

@@ -21,14 +21,17 @@
                 <h:form>
 
                     <h:panelGrid columns="4">
-                        <h:outputText value="Cédula de Cliente: "
+                        <h:outputText value="Cédula de Cliente"
                                       style="font-size: 10pt"/>
                         <p:inputText value="#{clienteController.filtro.nroDoc}"  id="ciCliente" size="50"/>
 
+                        <h:selectBooleanCheckbox value="#{clienteController.filtro.buscarPorDoc}"/>
+                        <h:outputFormat value="Destildar para Buscar por Apellido"/>
+
                         <p:spacer/>
                         <p:spacer/>
 
-                        <p:commandButton value="Buscar" action="#{clienteController.buscar()}" update="datalist"
+                        <p:commandButton value="Buscar" action="#{clienteController.buscarPorFiltro()}" update="datalist"
                                          rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion'))}">
                         </p:commandButton>
 
@@ -108,6 +111,7 @@
 
                             <p:button id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" outcome="Create" 
                                       rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion'))}"/>
+
                             <p:button id="viewButton"   icon="ui-icon-search" value="#{bundle.View}"  disabled="#{empty clienteController.selected}" outcome="View"
                                       rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_lectura'))}">
                                 <f:param name="id" value="#{clienteController.selected.id}"/>
@@ -120,6 +124,7 @@
                         </f:facet>
 
                     </p:dataTable>
+
 
                 </h:form>
 

@@ -26,20 +26,23 @@ public class ClienteFacade extends AbstractFacade<Cliente> {
     @EJB
     private CuentaClienteDAO cuentaClienteDAO;
 
-    public List<Cliente> findAll(ClienteFiltro filtro) {
-        System.out.println("nro: " + filtro.getNroDoc());
+    public List<Cliente> findAllFiltro(ClienteFiltro filtro) {
+
         if (filtro.isBuscarPorDoc()) {
-            System.out.println("busca por nro");
+
             return em.createQuery("SELECT c from Cliente c where c.nroDocumento = :cliente")
                     .setParameter("cliente", filtro.getNroDoc()).getResultList();
         } else {
-            System.out.println("busca por apellido");
+            System.out.println("Paramentro filtro.getnombre" + filtro.getNombre());
+
             return em.createQuery("SELECT c from Cliente c where UPPER(c.primerApellido) LIKE  CONCAT('%', :nombre, '%')")
                     .setParameter("nombre", filtro.getNombre().toUpperCase()).getResultList();
         }
 
     }
-
+    
+    
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;

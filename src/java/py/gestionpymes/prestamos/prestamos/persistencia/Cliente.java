@@ -215,6 +215,16 @@ public class Cliente extends Persona {
         }
         return null;
     }
+    
+    public String devuelveTelefonoLaboral(){
+    
+        for (ContactoTelefonico c : contactoTelefonicos) {
+            if(c.getTipo().TRABAJO==TipoContactoTelefonico.TRABAJO){
+                return c.getNumero();
+            }
+        }
+        return null;
+    }
 
     
     public String devuelveDireccionParticular(){
@@ -227,6 +237,15 @@ public class Cliente extends Persona {
         return null;
     }
     
+    public String devuelveDireccionLaboral(){
+    
+        for (Direccion d : direcciones) {
+            if(d.getTipo().LABORAL==TipoDireccion.LABORAL){
+                return d.getDireccion()+" "+d.getNrocasa();
+            }
+        }
+        return null;
+    }
     
     public String devuelveCiudadParticular(){
     
@@ -238,10 +257,30 @@ public class Cliente extends Persona {
         return null;
     }
     
+     public String devuelveCiudadLaboral(){
+    
+        for (Direccion d : direcciones) {
+            if(d.getTipo().LABORAL==TipoDireccion.LABORAL){
+                return d.getCiudad()+" - "+d.getPais();
+            }
+        }
+        return null;
+    }
+     
     public String devuelveBarrioParticular(){
     
         for (Direccion d : direcciones) {
             if(d.getTipo().PARTICULAR==TipoDireccion.PARTICULAR){
+                return d.getBarrio();
+            }
+        }
+        return null;
+    }
+    
+    public String devuelveBarrioLaboral(){
+    
+        for (Direccion d : direcciones) {
+            if(d.getTipo().LABORAL==TipoDireccion.LABORAL){
                 return d.getBarrio();
             }
         }

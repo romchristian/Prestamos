@@ -248,7 +248,9 @@ public class ClienteController implements Serializable {
     }
 
     public List<Cliente> getItems() {
-       
+        if (items == null) {
+            items = getFacade().findAll();
+        }
         return items;
     }
 
@@ -284,8 +286,17 @@ public class ClienteController implements Serializable {
     }
 
     public void buscar() {
-        items = ejbFacade.findAll(filtro);
-        
+
+        items = ejbFacade.findAll();
+    }
+
+    public void buscarPorFiltro() {
+        if (filtro != null) {
+
+            items = ejbFacade.findAllFiltro(filtro);
+
+        }
+//        
     }
 
     public Cliente getCliente(java.lang.Long id) {
