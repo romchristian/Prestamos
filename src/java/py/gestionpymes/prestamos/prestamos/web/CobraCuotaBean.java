@@ -36,6 +36,7 @@ import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVenta;
 import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVentaDetalle;
 import py.gestionpymes.prestamos.prestamos.dao.CobranzaDAO;
+import py.gestionpymes.prestamos.prestamos.dao.NumeroInvalidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PagoExcedidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
@@ -150,9 +151,10 @@ public class CobraCuotaBean implements Serializable {
         facturaVenta.setPuntoExpedicion(secuencia.getPuntoExpedicion());
         facturaVenta.setTimbrado(secuencia.getTimbrado());
         Long numeroactual = secuencia.obtSiguienteNumero();
+        System.out.println("Sgte Nro: " + numeroactual);
         facturaVenta.setNumero(secuencia.getNumeroFormateado(numeroactual));
-        secuencia.setUltimoNumero(numeroactual);
-
+        System.out.println("Sgte Nro 2: " + numeroactual);
+       
         facturaVenta.setCliente(cliente);
         facturaVenta.setEmpresa(cuotaSeleccionada.getEmpresa());
         facturaVenta.setSucursal(cuotaSeleccionada.getSucursal());
@@ -341,8 +343,9 @@ public class CobraCuotaBean implements Serializable {
             limpia();
             cargaPrestamos();
             sesionTPVBean.actualizaTotalTransacciones();
-        } catch (PagoExcedidoException ex) {
+        } catch (PagoExcedidoException | NumeroInvalidoException ex ) {
             Logger.getLogger(CobraCuotaBean.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
         return "endFlow";
     }

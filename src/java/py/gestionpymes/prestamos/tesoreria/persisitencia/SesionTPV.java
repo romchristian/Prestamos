@@ -6,7 +6,6 @@ package py.gestionpymes.prestamos.tesoreria.persisitencia;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +31,7 @@ public class SesionTPV implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     private Usuario usuario;
@@ -57,7 +56,7 @@ public class SesionTPV implements Serializable {
 
     public SesionTPV() {
         fechaApertura = new Date();
-        estado = "Creado";
+        estado = "CREADO";
     }
     
     

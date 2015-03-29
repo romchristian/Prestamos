@@ -5,6 +5,7 @@
 package py.gestionpymes.prestamos.prestamos.persistencia;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoCivil;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.Sexo;
 import java.util.ArrayList;
@@ -55,11 +56,11 @@ public class Cliente extends Persona {
     @OneToMany(mappedBy = "cliente")
     private List<Prestamo> prestamos;
     //datos requeridos para solicitud y analisis
-    private BigDecimal lineaDeCredito;
+    private BigDecimal lineaDeCredito=new BigDecimal(BigInteger.ZERO);
     @ManyToOne
     private Categoria categoria;
    
-    private String nacionalidad;
+    private String nacionalidad="PARAGUAYA";
     
     private boolean esTitular;
     

@@ -13,11 +13,27 @@
 
 
             <ui:define name="title">
-                <h:outputText value="#{bundle.ListClienteTitle}"></h:outputText>
+                <h:outputText value="#{bundle.ListClienteTitle}"/>
             </ui:define>
 
-            <ui:define name="body">
-                <h:form id="ClienteListForm">
+            <ui:define name="body">   
+
+                <h:form>
+
+                    <h:panelGrid columns="4">
+                        <h:outputText value="Cédula de Cliente: "
+                                      style="font-size: 10pt"/>
+                        <p:inputText value="#{clienteController.filtro.nroDoc}"  id="ciCliente" size="50"/>
+
+                        <p:spacer/>
+                        <p:spacer/>
+
+                        <p:commandButton value="Buscar" action="#{clienteController.buscar()}" update="datalist"
+                                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion'))}">
+                        </p:commandButton>
+
+                    </h:panelGrid>
+
 
                     <p:dataTable id="datalist" value="#{clienteController.items}" var="item"
                                  selectionMode="single" selection="#{clienteController.selected}"
@@ -89,6 +105,7 @@
                         </p:column>
 
                         <f:facet name="header">
+
                             <p:button id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" outcome="Create" 
                                       rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion'))}"/>
                             <p:button id="viewButton"   icon="ui-icon-search" value="#{bundle.View}"  disabled="#{empty clienteController.selected}" outcome="View"
@@ -106,8 +123,9 @@
 
                 </h:form>
 
-
             </ui:define>
+
+
         </ui:decorate>
     </ui:composition>
 

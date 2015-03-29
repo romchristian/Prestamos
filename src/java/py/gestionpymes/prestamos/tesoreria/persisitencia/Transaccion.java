@@ -40,7 +40,9 @@ public class Transaccion implements Serializable {
     private String descripcion;
     private BigDecimal monto;
     @ManyToOne
-    private Moneda moneda;
+    private Moneda moneda;    
+    @ManyToOne
+    private TipoTransaccionCaja tipoTransaccionCaja;
 
     
     
@@ -74,9 +76,17 @@ public class Transaccion implements Serializable {
     public void setPuntoVenta(PuntoVenta puntoVenta) {
         this.puntoVenta = puntoVenta;
     }
-    
-    
-    
+
+    public TipoTransaccionCaja getTipoTransaccionCaja() {
+        return tipoTransaccionCaja;
+    }
+
+    public void setTipoTransaccionCaja(TipoTransaccionCaja tipoTransaccionCaja) {
+        this.tipoTransaccionCaja = tipoTransaccionCaja;
+        if( this.tipoTransaccionCaja != null){
+            this.tipoTransaccion = tipoTransaccionCaja.getTipoTransaccion();
+        }
+    }
     
     public Long getId() {
         return id;

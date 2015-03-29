@@ -25,6 +25,7 @@ import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVenta;
 import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVentaDetalle;
 import py.gestionpymes.prestamos.prestamos.dao.CobranzaDAO;
+import py.gestionpymes.prestamos.prestamos.dao.NumeroInvalidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PagoExcedidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
@@ -173,7 +174,7 @@ public class DesembolsaBean implements Serializable {
         facturaVenta.setTimbrado(secuencia.getTimbrado());
         Long numeroactual = secuencia.obtSiguienteNumero();
         facturaVenta.setNumero(secuencia.getNumeroFormateado(numeroactual));
-        secuencia.setUltimoNumero(numeroactual);
+        
 
         Cliente c = selected.getCliente();
         facturaVenta.setCliente(c);
@@ -233,8 +234,14 @@ public class DesembolsaBean implements Serializable {
     }
 
     public void paga() {
-        prestamoDAO.desembolsa(selected,facturaVenta, sesionTPVBean.getActual());
-        sesionTPVBean.actualizaTotalTransacciones();
+
+        try {
+            prestamoDAO.desembolsa(selected, facturaVenta, sesionTPVBean.getActual());
+            sesionTPVBean.actualizaTotalTransacciones();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e.getMessage());
+        }
+
     }
 
     public void limpia() {

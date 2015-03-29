@@ -37,6 +37,8 @@ public class ClienteController implements Serializable {
     private py.gestionpymes.prestamos.adm.dao.ClienteFacade ejbFacade;
     private List<Cliente> items = null;
     private Cliente selected;
+    private ClienteFiltro filtro;
+    private boolean buscaPorCliente;
     private Direccion direccionSeleccionada;
     private ActividadLaboral actividadLaboralSelecccionada;
     private ContactoTelefonico contactoTelefonicoSeleccionado;
@@ -46,7 +48,7 @@ public class ClienteController implements Serializable {
     @Inject
     private ReporteController reporteController;
     private RegistroFirma registroFirma;
-    
+
     private long id;
 
     public long getId() {
@@ -56,20 +58,37 @@ public class ClienteController implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
-    
+
+    public boolean isBuscaPorCliente() {
+        return buscaPorCliente;
+    }
+
+    public void setBuscaPorCliente(boolean buscaPorCliente) {
+        this.buscaPorCliente = buscaPorCliente;
+    }
+
+    public ClienteFiltro getFiltro() {
+        if (filtro == null) {
+            filtro = new ClienteFiltro();
+        }
+        return filtro;
+    }
+
+    public void setFiltro(ClienteFiltro filtro) {
+        this.filtro = filtro;
+    }
+
     public void imprimeRegistroFirma() {
 
         registroFirma = new RegistroFirma(selected);
 
-       
-
         List<RegistroFirma> data = new ArrayList<>();
         data.add(registroFirma);
 
-        reporteController.generaPDF(new HashMap(), data, "reportes/clientes/registroDeFirmas.jasper","registro_firma_"+selected.getNroDocumento());
+        reporteController.generaPDF(new HashMap(), data, "reportes/clientes/registroDeFirmas.jasper", "registro_firma_" + selected.getNroDocumento());
     }
-    
-    public void cargaDatos(){
+
+    public void cargaDatos() {
         selected = getCliente(id);
     }
 
@@ -176,7 +195,7 @@ public class ClienteController implements Serializable {
     }
 
     public Cliente getSelected() {
-        
+
         return selected;
     }
 
@@ -204,7 +223,7 @@ public class ClienteController implements Serializable {
 
     public void prepareCreate() {
         selected = new Cliente();
-      
+
     }
 
     public String create() {
@@ -229,9 +248,7 @@ public class ClienteController implements Serializable {
     }
 
     public List<Cliente> getItems() {
-        if (items == null) {
-            items = getFacade().findAll();
-        }
+       
         return items;
     }
 
@@ -266,6 +283,11 @@ public class ClienteController implements Serializable {
         }
     }
 
+    public void buscar() {
+        items = ejbFacade.findAll(filtro);
+        
+    }
+
     public Cliente getCliente(java.lang.Long id) {
         return getFacade().find(id);
     }
@@ -298,7 +320,7 @@ public class ClienteController implements Serializable {
             } catch (Exception e) {
                 key = 0L;
             }
-            
+
             return key;
         }
 

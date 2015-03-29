@@ -34,42 +34,192 @@
     </ui:define>
 
     <ui:define name="body">
+
+        <style type="text/css">
+            .titulo{
+                font-size: 12pt;
+                font-weight: bold;
+
+            }
+
+            .monto{
+                font-size: 12pt;
+                font-weight: bold;
+
+            }
+            .rojo{
+                font-size: 12pt;
+                font-weight: bold;
+                color: red;
+
+            }
+
+            .fila{
+                display: table-row;
+            }
+            .celda{
+                display: table-cell; width: 50%;
+                padding: 3px;    
+            }
+            .derecha{
+                text-align: right;
+            }
+        </style>
         <h:form>
-            <p:commandButton value="Cargar" action="#{sesionTPVBean.cargaValoresFinales()}" update="@(.valores)"/>
-            
-            <p:outputPanel id="pnlvalores" styleClass="valores">
-                <p:dataTable value="#{sesionTPVBean.actual.valorEfectivos}" var="valor" id="valoresTable">
-                    <p:column headerText="Valor">
-                        <h:outputText value="#{valor.denominacionMoneda}"/>
+
+
+
+            <div style="display: table">
+                <div style="display: table-cell;width: 30%" >
+                    <p:fieldset legend="Inventario de Valores" style="margin-bottom:20px">
+                        <p:outputPanel id="pnlvalores" styleClass="valores">
+                            <p:dataTable value="#{sesionTPVBean.actual.valorEfectivos}" var="valor" id="valoresTable">
+                                <p:column headerText="Valor">
+                                    <h:outputText value="#{valor.denominacionMoneda}"/>
+                                </p:column>
+                                <p:column headerText="Cantidad" style="text-align: right">
+                                    <p:inputText value="#{valor.cantidad}" size="5" style="text-align: right">
+                                        <p:ajax event="blur" update="@(.saldos)" />  
+                                    </p:inputText>
+                                </p:column>
+                            </p:dataTable>
+                        </p:outputPanel>
+                    </p:fieldset>
+
+                </div>
+                <div style="display: table-cell;width: 70%" >
+                    <p:fieldset legend="Arqueo y Saldos" style="margin-bottom:20px">
+                        <p:panel id="saldoIncial" styleClass="saldos">
+
+                            <div style="display: table;width: 100%">
+                                <div class="fila">
+                                    <div class="celda">
+                                        <h:outputText value="Saldo Inicial" styleClass="titulo"/>
+                                    </div>
+                                    <div class="celda derecha">
+                                        <h:outputText value="#{sesionTPVBean.actual.saldoInicial}" styleClass="monto">
+                                            <f:convertNumber currencySymbol="PYG"/> 
+                                        </h:outputText>
+                                    </div>                                
+                                </div>
+
+                                <div style="display: table-row">
+                                    <div class="celda">
+                                        <h:outputText value="Total Transacciones" styleClass="titulo"/>
+                                    </div>
+                                    <div class="celda derecha">
+                                        <h:outputText value="#{sesionTPVBean.totalTransacciones}" styleClass="monto">
+                                            <f:convertNumber currencySymbol="PYG"/> 
+                                        </h:outputText>
+                                    </div>                                
+                                </div>
+
+                                <div style="display: table-row">
+                                    <div class="celda">
+
+                                    </div>
+                                    <div class="celda derecha">
+
+                                        <p:separator/>   
+
+                                    </div>         
+
+                                </div>
+                                <div style="display: table-row">
+                                    <div class="celda">
+                                        <h:outputText value="Saldo Teorico" styleClass="titulo"/>
+                                    </div>
+                                    <div class="celda derecha">
+                                        <h:outputText value="#{sesionTPVBean.saldoTeorico}" styleClass="monto">
+                                            <f:convertNumber currencySymbol="PYG"/> 
+                                        </h:outputText>
+                                    </div>                                
+                                </div>
+
+
+                                <div style="display: table-row">
+                                    <div class="celda">
+                                        <h:outputText value="Saldo Cierre" styleClass="titulo"/>
+                                    </div>
+                                    <div class="celda derecha">
+                                        <h:outputText value="#{sesionTPVBean.saldoCierre}" styleClass="monto">
+                                            <f:convertNumber currencySymbol="PYG"/> 
+                                        </h:outputText>
+                                    </div>                                
+                                </div>
+
+
+                                <div style="display: table-row">
+                                    <div class="celda">
+                                        <h:outputText value="Diferencia" styleClass="#{(sesionTPVBean.diferencia != 0 ? 'rojo':'titulo')}"/>
+                                    </div>
+                                    <div class="celda derecha">
+                                        <h:outputText value="#{sesionTPVBean.diferencia}" styleClass="#{(sesionTPVBean.diferencia != 0 ? 'rojo':'moonto')}">
+                                            <f:convertNumber currencySymbol="PYG"/> 
+                                        </h:outputText>
+                                    </div>                                
+                                </div>
+                            </div>
+
+
+                        </p:panel>
+                    </p:fieldset>
+                    <p:fieldset legend="Resumen de Transacciones" style="margin-bottom:20px">
+                        <p:dataTable value="#{sesionTPVBean.resumenTransacciones}" var="t">
+                            <p:column headerText="Operación">
+                                <h:outputText value="#{t.operacion}"/>                                    
+                            </p:column>
+                            <p:column headerText="Tipo">
+                                <h:outputText value="#{t.tipo}"/>
+                            </p:column>
+                            <p:column headerText="Cantidad">
+                                <h:outputText value="#{t.cantidadTransaccion}">
+                                    <f:convertNumber locale="#{formato.locale}"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Monto">
+                                <h:outputText value="#{t.monto}">
+                                    <f:convertNumber locale="#{formato.locale}"/>
+                                </h:outputText>
+                            </p:column>
+                            
+                        </p:dataTable>
+                    </p:fieldset>
+
+                </div>
+            </div>
+
+            <br/>
+            <p:fieldset legend="Detalle de Transacciones ( Cant.:  #{sesionTPVBean.transacciones.size()})" style="margin-bottom:20px"
+                        collapsed="true" toggleable="true">
+                <p:dataTable value="#{sesionTPVBean.transacciones}" var="t">
+                    <p:column headerText="Fecha">
+                        <h:outputText value="#{t.fecha}">
+                            <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFechaHora}" timeZone="America/Asuncion"/>
+                        </h:outputText>
                     </p:column>
-                    <p:column headerText="Cantidad">
-                        <p:inputText value="#{valor.cantidad}" size="5">
-                            <p:ajax event="blur" update="@(.saldos)" />  
-                        </p:inputText>
+                    <p:column headerText="Operación">
+                        <h:outputText value="#{t.tipoTransaccionCaja.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="Descripción">
+                        <h:outputText value="#{t.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="Ingreso">
+                        <h:outputText value="#{(t.tipoTransaccion == 'ENTRADA' ? t.monto : 0)}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Egreso">
+                        <h:outputText value="#{(t.tipoTransaccion == 'SALIDA' ? t.monto : 0)}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
                     </p:column>
                 </p:dataTable>
-            </p:outputPanel>
+            </p:fieldset>
 
-            <p:panel id="saldoIncial" styleClass="saldos">
-                <p:panelGrid columns="2">
-                    <h:outputText value="Saldo Inicial"/>
-                    <h:outputText value="#{sesionTPVBean.actual.saldoInicial}">
-                        <f:convertNumber currencySymbol="PYG"/> 
-                    </h:outputText>
-                    <h:outputText value="Saldo Teorico"/>
-                    <h:outputText value="#{sesionTPVBean.saldoTeorico}">
-                        <f:convertNumber currencySymbol="PYG"/> 
-                    </h:outputText>
-                    <h:outputText value="Saldo Cierre"/>
-                    <h:outputText value="#{sesionTPVBean.saldoCierre}">
-                        <f:convertNumber currencySymbol="PYG"/> 
-                    </h:outputText>
-                    <h:outputText value="Diferencia"/>
-                    <h:outputText value="#{sesionTPVBean.diferencia}">
-                        <f:convertNumber currencySymbol="PYG"/> 
-                    </h:outputText>
-                </p:panelGrid>
-            </p:panel>
+
+
+
 
 
             <p:commandButton value="Guardar" action="#{sesionTPVBean.cierraSesion()}"/>

@@ -30,6 +30,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.PrestamoHistorico;
 import py.gestionpymes.prestamos.prestamos.web.TreeCuota;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.Secuencia;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccionCaja;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.TransaccionCobraCuota;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.TransaccionDesembolso;
@@ -53,7 +54,7 @@ public class CobranzaDAO {
         em.persist(f);
     }
 
-    public FacturaVenta create(FacturaVenta f, SesionTPV s) throws PagoExcedidoException {
+    public FacturaVenta create(FacturaVenta f, SesionTPV s) throws PagoExcedidoException, NumeroInvalidoException {
         // Creo el medio de pago Efectivo por defecto
         Efectivo efe = new Efectivo();
         efe.setFecha(new Date());
@@ -64,8 +65,21 @@ public class CobranzaDAO {
         f.getPagos().add(efe);
 
         em.persist(f);
-        Secuencia secuencia = s.getPuntoVenta().getSecuencia();
-        em.merge(secuencia);
+
+        Long numeroFactura = null;
+
+        try {
+            numeroFactura = Long.parseLong(f.getNumero());
+        } catch (Exception e) {
+            throw new NumeroInvalidoException("El numero de la factura es invalido");
+        }
+        
+        if (numeroFactura != null) {
+            Secuencia secuencia = s.getPuntoVenta().getSecuencia();
+            secuencia.setUltimoNumero(numeroFactura);
+            System.out.println("Ultimo Nro en Cobranza: " + secuencia.getUltimoNumero());
+            em.merge(secuencia);
+        }
 
         CuentaCliente cc = (CuentaCliente) em.createQuery("select c from CuentaCliente c where c.cliente = :cliente")
                 .setParameter("cliente", f.getCliente()).getSingleResult();
@@ -85,6 +99,18 @@ public class CobranzaDAO {
             Transaccion tr = new TransaccionCobraCuota(f, prestamo, s,
                     "Cobro de cuota del prestamo #" + prestamo.getId(), f.getTotal(),
                     f.getMoneda());
+
+            TipoTransaccionCaja ttc = null;
+            try {
+                ttc = (TipoTransaccionCaja) em.createQuery("select t from TipoTransaccionCaja t where t.descripcion= ?1")
+                        .setParameter(1, "COBRO DE CUOTA").getSingleResult();
+            } catch (Exception e) {
+            }
+
+            if (ttc != null) {
+                tr.setTipoTransaccionCaja(ttc);
+            }
+
             em.persist(tr);
 
         }

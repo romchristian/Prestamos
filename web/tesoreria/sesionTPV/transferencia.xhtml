@@ -37,17 +37,17 @@
         <h:form>
             <p:panelGrid columns="2">
                 <h:outputText value="Tipo Transaccion"/>
-                <h:selectOneMenu value="#{transaccionBean.actual.tipoTransaccion}">
-                    <f:selectItems value="#{productorEnums.obtTiposTransaccion()}"/>
+                <h:selectOneMenu value="#{transaccionBean.actual.tipoTransaccionCaja}" required="true">
+                    <f:selectItems value="#{tipoTransaccionCajaBean.itemsAvailableSelectOne}"/>
                 </h:selectOneMenu>
                 <h:outputText value="Descripción"/>
-                <p:inputText value="#{transaccionBean.actual.descripcion}"/>
+                <p:inputText value="#{transaccionBean.actual.descripcion}" required="true"/>
                 <h:outputText value="Moneda"/>
                 <h:selectOneMenu value="#{transaccionBean.actual.moneda}">
                     <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
                 </h:selectOneMenu>
                 <h:outputText value="Monto"/>
-                <p:inputText value="#{transaccionBean.actual.monto}">
+                <p:inputText value="#{transaccionBean.actual.monto}" required="true">
                     <f:convertNumber locale="#{formato.locale}"/>
                 </p:inputText>
             </p:panelGrid>

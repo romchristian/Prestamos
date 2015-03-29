@@ -75,4 +75,6 @@ INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, p
 INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(51,540,15,24.2592,1);
 INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(32,360,15,10.0153,2);
 
-
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion) VALUES('COBRO DE CUOTA','ACTIVO','ENTRADA');
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion) VALUES('DESEMBOLSO PRESTAMO','ACTIVO','SALIDA');
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion) VALUES('INGRESO DE EFECTIVO','ACTIVO','ENTRADA');

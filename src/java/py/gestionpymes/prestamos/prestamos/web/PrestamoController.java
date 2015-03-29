@@ -163,8 +163,10 @@ public class PrestamoController implements Serializable {
     
     @PostConstruct
     public void init() {
-        inicioFiltro = new Date();
-        finFiltro = new Date();
+        DateTime dt = DateTime.now();
+        dt.dayOfMonth().getMaximumValue();
+        this.inicioFiltro = new DateTime(dt.getYear(), dt.getMonthOfYear(), 1, 0,0).toDate();
+        this.finFiltro = new DateTime(dt.getYear(), dt.getMonthOfYear(), dt.dayOfMonth().getMaximumValue(), 0,0).toDate();
     }
     
     public void ajustar() {

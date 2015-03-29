@@ -32,7 +32,7 @@ public class Direccion implements Serializable {
     private String nrocasa;
     private String barrio;
     private String ciudad;
-    private String pais;
+    private String pais="PARAGUAY";
     private boolean principal;
     @Enumerated(EnumType.STRING)
     private Estado estado;

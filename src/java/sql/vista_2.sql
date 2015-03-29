@@ -19,3 +19,17 @@ insert into version_app ( ultimavista,version) values('vista_2','1.0.1');
  ALTER TABLE puntoventa ADD CONSTRAINT fk_puntoventa_usuario_id FOREIGN KEY (usuario_id)
       REFERENCES persona (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+CREATE TABLE tipotransaccioncaja
+(
+  id serial NOT NULL,
+  descripcion character varying(255),
+  estado character varying(255),
+  tipotransaccion character varying(255),
+  CONSTRAINT tipotransaccioncaja_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE tipotransaccioncaja
+  OWNER TO postgres;

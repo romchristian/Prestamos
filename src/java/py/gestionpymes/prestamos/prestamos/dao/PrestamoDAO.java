@@ -23,6 +23,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.Secuencia;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccion;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccionCaja;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.TransaccionDesembolso;
 
@@ -120,7 +121,7 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
         return prestamo;
     }
 
-    public Prestamo desembolsa(Prestamo prestamo, FacturaVenta f, SesionTPV s) {
+    public Prestamo desembolsa(Prestamo prestamo, FacturaVenta f, SesionTPV s) throws NumeroInvalidoException {
 
         OperacionDesembolsoPrestamo op = new OperacionDesembolsoPrestamo(prestamo);
 
@@ -143,13 +144,34 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
         edit(prestamo);
 
         em.persist(f);
+        
+        Long numeroFactura = null;
+        try {
+            numeroFactura = Long.parseLong(f.getNumero());
+        } catch (Exception e) {
+            throw new NumeroInvalidoException("El numero de la factura es invalido");
+        }
+        
+        
         Secuencia secuencia = s.getPuntoVenta().getSecuencia();
+        secuencia.setUltimoNumero(numeroFactura);        
         em.merge(secuencia);
+        
+        TipoTransaccionCaja ttc = null;
+        try {
+            ttc = (TipoTransaccionCaja) em.createQuery("select t from TipoTransaccionCaja t where t.descripcion= ?1")
+                    .setParameter(1, "DESEMBOLSO PRESTAMO").getSingleResult();
+        } catch (Exception e) {
+        }
 
         Transaccion t = new TransaccionDesembolso(f, prestamo, s,
                 "Desembolso de  prestamo: Prestamo #" + prestamo.getId(), prestamo.getMontoPrestamo(),
                 f.getMoneda());
-        
+
+        if (ttc != null) {
+            t.setTipoTransaccionCaja(ttc);
+        }
+
         em.persist(t);
 
         return prestamo;

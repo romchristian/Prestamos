@@ -39,6 +39,16 @@
                         <f:convertDateTime  pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion"/>
                     </h:outputText>
                 </p:column>
+                <p:column headerText="Saldo Inicial">
+                    <h:outputText value="#{m.saldoInicial}">
+                        <f:convertNumber locale="#{formato.locale}"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Saldo Cierre">
+                    <h:outputText value="#{m.saldoCierre}">
+                        <f:convertNumber locale="#{formato.locale}"/>
+                    </h:outputText>
+                </p:column>
 
                 <p:column headerText="Acciones">
                     <h:commandButton action="#{sesionTPVBean.preparaEdicion(m)}" value="Editar" rendered="#{autorizador.hayPermisoAccion('EditaOrdenCompra')}"/>

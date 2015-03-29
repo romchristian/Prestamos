@@ -28,6 +28,7 @@ import py.gestionpymes.prestamos.adm.web.util.UsuarioLogueado;
 import py.gestionpymes.prestamos.contabilidad.persistencia.MetodoPago;
 import py.gestionpymes.prestamos.contabilidad.servicio.MetodoPagoDAO;
 import py.gestionpymes.prestamos.tesoreria.dao.PuntoVentaDAO;
+import py.gestionpymes.prestamos.tesoreria.dao.ResumenTransaccion;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.PuntoVenta;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoMetodoPago;
@@ -37,6 +38,7 @@ import py.gestionpymes.prestamos.tesoreria.persisitencia.ValorMoneda;
 
 import py.gestionpymes.prestamos.tesoreria.dao.SesionTPVDAO;
 import py.gestionpymes.prestamos.tesoreria.dao.TransaccionDAO;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
 
 /**
  *
@@ -61,12 +63,34 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     private Credencial credencial;
     @EJB
     private PuntoVentaDAO puntoVentaDAO;
+    private List<Transaccion> transacciones;
+    private List<ResumenTransaccion> resumenTransacciones;
 
+    public List<Transaccion> getTransacciones() {
+        return transacciones;
+    }
+
+    public void setTransacciones(List<Transaccion> transacciones) {
+        this.transacciones = transacciones;
+    }
+
+    public List<ResumenTransaccion> getResumenTransacciones() {
+        return resumenTransacciones;
+    }
+
+    public void setResumenTransacciones(List<ResumenTransaccion> resumenTransacciones) {
+        this.resumenTransacciones = resumenTransacciones;
+    }
+
+        
+    
     @Override
     public SesionTPV getActual() {
         SesionTPV R = super.getActual();
         R.setUsuario(credencial.getUsuario());
-        R.setPuntoVenta(puntoVentaDAO.find(credencial.getUsuario()));
+        PuntoVenta p = puntoVentaDAO.find(credencial.getUsuario());
+        R.setPuntoVenta(p);
+        R.setSaldoInicial(p.getSaldo());
         return R; //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -164,12 +188,8 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
 
     public String inciaSesion(SesionTPV s) {
         setActual(s);
-        if (s.getEstado().compareToIgnoreCase("CREADO") == 0) {
-            getActual().setSaldoInicial(s.getPuntoVenta().getSaldo());
-        }
         getActual().setEstado("ABIERTA");
         ejb.edit(getActual());
-
         return "terminalCaja.xhtml";
     }
 
@@ -181,8 +201,14 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     }
 
     public String preparaCierre() {
+        
+        transacciones = transaccionDAO.findAllSesionTPV(getActual());
+        
         actualizaTotalTransacciones();
         cargaValoresFinales();
+        
+        resumenTransacciones = ejb.resumenTransaccion(getActual());
+        
         return "/tesoreria/sesionTPV/cierre.xhtml";
     }
 
@@ -198,7 +224,7 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         getActual().setSaldoCierre(saldoCierre.setScale(0, RoundingMode.HALF_EVEN));
         getActual().setFechaCierre(new Date());
         getActual().setEstado("CERRADA");
-        ejb.edit(getActual());
+        ejb.cierre(getActual());
         return "listado.xhtml";
 
     }
@@ -208,25 +234,22 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
 
             getActual().setValorEfectivos(new ArrayList<ValorEfectivo>());
 
-            System.out.print("HOLA1");
-
-            System.out.print("HOLA2");
-
+            
             List<MetodoPago> metodos = getActual().getPuntoVenta().getMetodoPagos();
 
             if (metodos == null || metodos.isEmpty()) {
-                System.out.print("HOLA2.1");
+               
                 metodos = ejbMetodoPago.findAll();
 
             }
 
             for (MetodoPago m : metodos) {
-                System.out.print("HOLA3");
+                
 
                 if (m.getTipoMetodoPago() == TipoMetodoPago.EFECTIVO) {
-                    System.out.print("HOLA4");
+                    
                     for (ValorMoneda vm : m.getValoresMonedas()) {
-                        System.out.print("Valor: " + vm.getDenominacion());
+                        
                         ValorEfectivo ve = new ValorEfectivo();
                         ve.setDenominacionMoneda(vm.getDenominacion());
                         ve.setCantidad(0);
@@ -249,25 +272,23 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
                 getActual().setValorEfectivos(new ArrayList<ValorEfectivo>());
             }
 
-            System.out.print("HOLA1");
-
-            System.out.print("HOLA2");
+            
 
             List<MetodoPago> metodos = pv.getMetodoPagos();
 
             if (metodos == null || metodos.isEmpty()) {
-                System.out.print("HOLA2.1");
+                
                 metodos = ejbMetodoPago.findAll();
 
             }
 
             for (MetodoPago m : metodos) {
-                System.out.print("HOLA3");
+                
 
                 if (m.getTipoMetodoPago() == TipoMetodoPago.EFECTIVO) {
-                    System.out.print("HOLA4");
+                    
                     for (ValorMoneda vm : m.getValoresMonedas()) {
-                        System.out.print("Valor: " + vm.getDenominacion());
+                        
                         ValorEfectivo ve = new ValorEfectivo();
                         ve.setDenominacionMoneda(vm.getDenominacion());
                         ve.setCantidad(0);

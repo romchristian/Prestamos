@@ -62,10 +62,7 @@ public class Secuencia implements Serializable {
             valor = "00" + valor;
         } else if (tamaño == 6) {
             valor = "0" + valor;
-        } else {
-            valor = valor;
         }
-
         return valor;
     }
 
