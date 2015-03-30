@@ -82,8 +82,6 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         this.resumenTransacciones = resumenTransacciones;
     }
 
-        
-    
     @Override
     public SesionTPV getActual() {
         SesionTPV R = super.getActual();
@@ -99,6 +97,9 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     }
 
     public BigDecimal getTotalTransacciones() {
+        if(totalTransacciones == null){
+            actualizaTotalTransacciones();
+        }
         return totalTransacciones;
     }
 
@@ -107,13 +108,17 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     }
 
     public BigDecimal getSaldoTeorico() {
+
+        BigDecimal saldoInicial = null;
         if (getActual().getSaldoInicial() == null) {
-            getActual().setSaldoInicial(getActual().getPuntoVenta().getSaldo());
+            saldoInicial = new BigDecimal(BigInteger.ZERO);
+        }else{
+            saldoInicial = getActual().getSaldoInicial();
         }
-        if (getActual().getSaldoInicial() == null) {
-            getActual().setSaldoInicial(new BigDecimal(BigInteger.ZERO));
-        }
-        saldoTeorico = getActual().getSaldoInicial().add(totalTransacciones);
+        System.out.println("Actual: "  + getActual());
+        System.out.println("Saldo Inicial: "  + getActual().getSaldoInicial());
+        System.out.println("Saldo Inicial 2: "  + saldoInicial);
+        saldoTeorico = saldoInicial.add(getTotalTransacciones());
         return saldoTeorico;
     }
 
@@ -201,14 +206,14 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     }
 
     public String preparaCierre() {
-        
+
         transacciones = transaccionDAO.findAllSesionTPV(getActual());
-        
+
         actualizaTotalTransacciones();
         cargaValoresFinales();
-        
+
         resumenTransacciones = ejb.resumenTransaccion(getActual());
-        
+
         return "/tesoreria/sesionTPV/cierre.xhtml";
     }
 
@@ -234,22 +239,20 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
 
             getActual().setValorEfectivos(new ArrayList<ValorEfectivo>());
 
-            
             List<MetodoPago> metodos = getActual().getPuntoVenta().getMetodoPagos();
 
             if (metodos == null || metodos.isEmpty()) {
-               
+
                 metodos = ejbMetodoPago.findAll();
 
             }
 
             for (MetodoPago m : metodos) {
-                
 
                 if (m.getTipoMetodoPago() == TipoMetodoPago.EFECTIVO) {
-                    
+
                     for (ValorMoneda vm : m.getValoresMonedas()) {
-                        
+
                         ValorEfectivo ve = new ValorEfectivo();
                         ve.setDenominacionMoneda(vm.getDenominacion());
                         ve.setCantidad(0);
@@ -272,23 +275,20 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
                 getActual().setValorEfectivos(new ArrayList<ValorEfectivo>());
             }
 
-            
-
             List<MetodoPago> metodos = pv.getMetodoPagos();
 
             if (metodos == null || metodos.isEmpty()) {
-                
+
                 metodos = ejbMetodoPago.findAll();
 
             }
 
             for (MetodoPago m : metodos) {
-                
 
                 if (m.getTipoMetodoPago() == TipoMetodoPago.EFECTIVO) {
-                    
+
                     for (ValorMoneda vm : m.getValoresMonedas()) {
-                        
+
                         ValorEfectivo ve = new ValorEfectivo();
                         ve.setDenominacionMoneda(vm.getDenominacion());
                         ve.setCantidad(0);

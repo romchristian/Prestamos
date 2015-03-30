@@ -231,16 +231,16 @@ public class PrestamoListadoBean implements Serializable {
     @PostConstruct
     public void init() {
         DateTime dt = new DateTime(new Date(),DateTimeZone.getDefault());
-        dt.withTime(LocalTime.fromCalendarFields(new GregorianCalendar(new Locale("es", "py"))));
-        
-        inicio = (new DateTime(dt.getYear(), dt.getMonthOfYear(),dt.dayOfMonth().getMinimumValue(),
-                dt.hourOfDay().getMinimumValue(),dt.minuteOfHour().getMinimumValue()))
-                .withTime(LocalTime.fromCalendarFields(new GregorianCalendar(new Locale("es", "py"))))
-                .toDate();
-        fin = (new DateTime(dt.getYear(), dt.getMonthOfYear(),dt.dayOfMonth().getMaximumValue(),
-                dt.hourOfDay().getMaximumValue(),dt.minuteOfHour().getMaximumValue()))
-                .withTime(LocalTime.fromCalendarFields(new GregorianCalendar(new Locale("es", "py"))))
-                .toDate();
+//        dt.withTime(LocalTime.fromCalendarFields(new GregorianCalendar(new Locale("es", "py"))));
+//        
+//        inicio = (new DateTime(dt.getYear(), dt.getMonthOfYear(),dt.dayOfMonth().getMinimumValue(),
+//                dt.hourOfDay().getMinimumValue(),dt.minuteOfHour().getMinimumValue()))
+//                .withTime(LocalTime.fromCalendarFields(new GregorianCalendar(new Locale("es", "py"))))
+//                .toDate();
+//        fin = (new DateTime(dt.getYear(), dt.getMonthOfYear(),dt.dayOfMonth().getMaximumValue(),
+//                dt.hourOfDay().getMaximumValue(),dt.minuteOfHour().getMaximumValue()))
+//                .withTime(LocalTime.fromCalendarFields(new GregorianCalendar(new Locale("es", "py"))))
+//                .toDate();
         
         
         

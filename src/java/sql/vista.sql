@@ -77,4 +77,21 @@ INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, p
 
 INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion) VALUES('COBRO DE CUOTA','ACTIVO','ENTRADA');
 INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion) VALUES('DESEMBOLSO PRESTAMO','ACTIVO','SALIDA');
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion) VALUES('PAGO A PROVEEDOR','ACTIVO','SALIDA');
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion) VALUES('ADELANTO','ACTIVO','SALIDA');
 INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion) VALUES('INGRESO DE EFECTIVO','ACTIVO','ENTRADA');
+
+DROP TABLE IF  EXISTS version_app;
+
+CREATE TABLE version_app
+(
+  id serial NOT NULL,
+  ultimavista text,
+  version text,
+  CONSTRAINT version_app_pk PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+
+insert into version_app ( ultimavista,version) values('vista_2','1.0.1');
