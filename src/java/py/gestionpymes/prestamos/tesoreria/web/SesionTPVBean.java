@@ -100,6 +100,9 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         if(totalTransacciones == null){
             actualizaTotalTransacciones();
         }
+        if(totalTransacciones == null){
+            totalTransacciones = new BigDecimal(BigInteger.ZERO);
+        }
         return totalTransacciones;
     }
 
@@ -118,6 +121,8 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         System.out.println("Actual: "  + getActual());
         System.out.println("Saldo Inicial: "  + getActual().getSaldoInicial());
         System.out.println("Saldo Inicial 2: "  + saldoInicial);
+        
+        
         saldoTeorico = saldoInicial.add(getTotalTransacciones());
         return saldoTeorico;
     }

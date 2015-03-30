@@ -37,8 +37,7 @@ public class Prestamo implements Serializable {
 
     public static final String TODOS = "py.gestionpymes.jpa.prestamos.Prestamo.TODOS";
     public static final String POR_CLIENTE = "py.gestionpymes.jpa.prestamos.Prestamo.POR_CLIENTE";
-    @OneToMany(mappedBy = "prestamo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<DetPrestamo> detalles;
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -92,6 +91,9 @@ public class Prestamo implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaPrimerVencimiento;
 
+    @OneToMany(mappedBy = "prestamo", cascade = CascadeType.ALL, fetch = FetchType.EAGER,orphanRemoval = true)
+    private List<DetPrestamo> detalles;
+    
     @ManyToOne
     private PlanGastos planGastos;
 
