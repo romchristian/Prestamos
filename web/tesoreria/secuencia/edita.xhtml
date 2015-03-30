@@ -12,30 +12,33 @@
         <f:viewAction action="#{secuenciaBean.cargaDatos()}"/>
     </f:metadata>
 
-       <ui:decorate template="/plantillaListado.xhtml">
+        <ui:decorate template="/plantillaABM.xhtml">
         <ui:param name="modulo" value="tesoreria"/>
+        <ui:param name="titulo" value="Crear Secuencia"/>
+        <ui:param name="listado" value="Secuencias"/>
 
-
-        <ui:define name="title">
-            Nueva Secuencia
+        <ui:define name="acciones">
+            <p:commandButton value="Guardar" action="#{secuenciaBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
+            <p:button value="Cancelar" outcome="listado"/>
         </ui:define>
 
-        <ui:define name="body">
-            <h:form>
+
+        <ui:define name="col1">
 
                 <p:outputPanel styleClass="panelControles">
                     <p:inputText id="nombre" value="#{secuenciaBean.actual.nombre}" styleClass="descripcionPrincipal" required="true"/>
                     <p:watermark for="nombre" value="Nombre" id="watermark"/>
                     <br/>
-                    <p:panelGrid columns="2">
+                    <br/>
+                    <h:panelGrid columns="2">
                         <p:outputLabel value="Tipo" for="tipo"/>
                         <h:selectOneMenu value="#{secuenciaBean.actual.tipoSecuencia}" id="tipo">
                             <p:ajax update="@(.panelControles)"/>
                             <f:selectItems value="#{productorEnums.obtTiposSecuencias()}"/>
                         </h:selectOneMenu>
-                    </p:panelGrid>
+                    </h:panelGrid>
 
-                    <p:panelGrid columns="2">
+                    <h:panelGrid columns="2">
                         <p:outputLabel value="Timbrado" for="timbrado" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
                         <p:inputText value="#{secuenciaBean.actual.timbrado}" id="timbrado" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
                         <p:outputLabel value="Establecimiento" for="est" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
@@ -51,12 +54,9 @@
                         <p:inputText value="#{secuenciaBean.actual.valorInicial}" id="inicio"/>
                         <p:outputLabel value="Valor Máximo" for="maximo" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
                         <p:inputText value="#{secuenciaBean.actual.valorFinal}" id="maximo" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
-                    </p:panelGrid>
+                    </h:panelGrid>
                 </p:outputPanel>
-                <p:commandButton value="Guardar" action="#{secuenciaBean.edit}"  styleClass="botonRojo flotaIzquierda" ajax="false"/>
-                <p:button value="#{bundle.Cancel}" outcome="listado"/>
-
-            </h:form>
+            
         </ui:define>
 
 

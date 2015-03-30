@@ -22,49 +22,88 @@
 
             <style type="text/css">
                 .raised {
-                    -webkit-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-                    -moz-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-                    box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+                    -webkit-box-shadow: 0px 7px 30px 0px rgba(50, 50, 50, 0.75);
+                    -moz-box-shadow:    0px 7px 30px 0px rgba(50, 50, 50, 0.75);
+                    box-shadow:         0px 7px 30px 0px rgba(50, 50, 50, 0.75);
                     background-color: white;
                 }
+
+
                 .descripcionPrincipal{
-                    width: 100%!important; height: 50px;background-color: #A9D0F5;font-size: 18pt;
+                    width: 70%!important;
+                    height: 35px;
+                    background-color: #A9D0F5!important;
+                    font-size: 16pt!important;
+                    font-weight: bold!important;
+                }
+                .fondoEspecial{
+                    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6+ */
+                    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */
+                    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10+,Safari5.1+ */
+                    background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Opera 11.10+ */
+                    background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* IE10+ */
+                    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* W3C */
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 );
+                    -webkit-box-shadow: 1px 1px 15px 0px rgba(50, 50, 50, 0.75);
+                    -moz-box-shadow:    1px 1px 15px 0px rgba(50, 50, 50, 0.75);
+                    box-shadow:         1px 1px 15px 0px rgba(50, 50, 50, 0.75);
                 }
             </style>
             <h:form enctype="#{enctype}" id="formABM">
                 <p:growl id="mensajes"/>
-                <div style="height: 50px;width: 100%; background-color: #eee;padding-left: 10px" class="raised">
-                    <ui:insert name="acciones"/>
-                </div>
+                <div style="height: 50px;width: 100%;" class="fondoEspecial">
+                    <div style="display: table;width: 100%">
+                        <div style="display: table-cell;width: 33%;text-align: left;" class="title">
+                            <div style="padding-left: 20px">
+                                <ui:insert name="title"/>
+                            </div>
 
-                <div class="raised">
+                        </div>
+                        <div style="display: table-cell;width: 33%;text-align: center">
+                            <ui:insert name="otrasAcciones"/>
+                        </div>
+                        <div style="display: table-cell;width: 33%;text-align: right;">
+                            <div style="padding-right: 20px;">
+                                <ui:insert name="acciones"/>
+                            </div>
 
-                    <p:panel id="panelControles" styleClass="panelControles" style="margin: 0; padding: 0; background: none; border: none">
-                        <table width="100%" cellspacing="20">
-                            <tr>
-                                <td width="50%" valign="top">
-                                    <div>
-                                        <ui:insert name="col1"/>
-                                    </div>
-                                </td>
-                                <td width="50%" valign="top">
-                                    <div>
-                                        <ui:insert name="col2"/>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" valign="top">
-                                    <div>
-                                        <ui:insert name="detalles"/>
-                                    </div>
-                                </td>
-                            </tr>
+                        </div>
+                    </div>
 
-                        </table>
-                    </p:panel>
 
                 </div>
+
+                <div style="padding: 20px">
+                    <div class="raised">
+
+                        <p:panel id="panelControles" styleClass="panelControles" style="margin: 0; padding: 0; background: none; border: none">
+                            <table width="100%" cellspacing="20">
+                                <tr>
+                                    <td width="50%" valign="top">
+                                        <div>
+                                            <ui:insert name="col1"/>
+                                        </div>
+                                    </td>
+                                    <td width="50%" valign="top">
+                                        <div>
+                                            <ui:insert name="col2"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" valign="top">
+                                        <div>
+                                            <ui:insert name="detalles"/>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </p:panel>
+
+                    </div>
+                </div>
+
             </h:form>
         </ui:define>
     </ui:decorate>

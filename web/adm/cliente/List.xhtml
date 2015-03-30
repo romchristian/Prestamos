@@ -20,22 +20,25 @@
 
                 <h:form>
 
-                    <h:panelGrid columns="4">
-                        <h:outputText value="Cédula de Cliente"
-                                      style="font-size: 10pt"/>
-                        <p:inputText value="#{clienteController.filtro.nroDoc}"  id="ciCliente" size="50"/>
+                    <p:fieldset legend="Busqueda Avanzada" collapsed="true" toggleable="true">
+                        <h:panelGrid columns="4">
+                            <h:outputText value="Cédula de Cliente"
+                                          style="font-size: 10pt"/>
+                            <p:inputText value="#{clienteController.filtro.nroDoc}"  id="ciCliente" size="50"/>
 
-                        <h:selectBooleanCheckbox value="#{clienteController.filtro.buscarPorDoc}"/>
-                        <h:outputFormat value="Destildar para Buscar por Apellido"/>
+                            <h:selectBooleanCheckbox value="#{clienteController.filtro.buscarPorDoc}"/>
+                            <h:outputFormat value="Destildar para Buscar por Apellido"/>
 
-                        <p:spacer/>
-                        <p:spacer/>
+                            <p:spacer/>
+                            <p:spacer/>
 
-                        <p:commandButton value="Buscar" action="#{clienteController.buscarPorFiltro()}" update="datalist"
-                                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion'))}">
-                        </p:commandButton>
+                            <p:commandButton value="Buscar" action="#{clienteController.buscarPorFiltro()}" update="datalist"
+                                             rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion'))}">
+                            </p:commandButton>
 
-                    </h:panelGrid>
+                        </h:panelGrid>
+                    </p:fieldset>
+
 
 
                     <p:dataTable id="datalist" value="#{clienteController.items}" var="item"
