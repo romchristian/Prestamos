@@ -14,7 +14,7 @@
         <ui:param name="listado" value="Secuencias"/>
 
         <ui:define name="acciones">
-            <p:commandButton value="Guardar" action="#{secuenciaBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
+            <p:commandLink value="Guardar" action="#{secuenciaBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
             <p:button value="Cancelar" outcome="listado"/>
         </ui:define>
 

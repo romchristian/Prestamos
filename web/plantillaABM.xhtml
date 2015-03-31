@@ -48,10 +48,84 @@
                     -moz-box-shadow:    1px 1px 15px 0px rgba(50, 50, 50, 0.75);
                     box-shadow:         1px 1px 15px 0px rgba(50, 50, 50, 0.75);
                 }
+
+                .botonRojo{
+                    margin: 5px;
+                    color: rgb(255, 255, 255)!important;
+                    text-decoration: none!important;
+                    font-size: 15px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    padding-top: 7px;
+                    padding-bottom: 7px;
+                    text-shadow: 0px -1px 0px rgba(30, 30, 30, 0.8);
+                    -webkit-border-radius: 5.27027027027027px;
+                    -moz-border-radius: 5.27027027027027px;
+                    border-radius: 5.27027027027027px;
+                    background: rgb(210, 20, 20);
+                    background: -moz-linear-gradient(90deg, rgb(210, 20, 20) 30%, rgb(250, 20, 20) 70%);
+                    background: -webkit-linear-gradient(90deg, rgb(210, 20, 20) 30%, rgb(250, 20, 20) 70%);
+                    background: -o-linear-gradient(90deg, rgb(210, 20, 20) 30%, rgb(250, 20, 20) 70%);
+                    background: -ms-linear-gradient(90deg, rgb(210, 20, 20) 30%, rgb(250, 20, 20) 70%);
+                    background: linear-gradient(0deg, rgb(210, 20, 20) 30%, rgb(250, 20, 20) 70%);
+                    -webkit-box-shadow: 0px 2px 1px rgba(50, 50, 50, 0.75);
+                    -moz-box-shadow:    0px 2px 1px rgba(50, 50, 50, 0.75);
+                    box-shadow:         0px 2px 1px rgba(50, 50, 50, 0.75);
+                }
+                .botonRojo:hover{
+                    margin: 5px;
+                    color: rgb(255, 255, 255)!important;
+                    text-decoration: none!important;
+                    font-size: 15px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    padding-top: 7px;
+                    padding-bottom: 7px;
+                    text-shadow: 0px -1px 0px rgba(40, 30, 30, 0.8);
+                    -webkit-border-radius: 5.27027027027027px;
+                    -moz-border-radius: 5.27027027027027px;
+                    border-radius: 5.27027027027027px;
+                    background: rgb(255, 56, 0);
+                    background: -moz-linear-gradient(90deg, rgb(255, 56, 0) 35%, rgb(255, 123, 0) 70%);
+                    background: -webkit-linear-gradient(90deg, rgb(255, 56, 0) 35%, rgb(255, 123, 0) 70%);
+                    background: -o-linear-gradient(90deg, rgb(255, 56, 0) 35%, rgb(255, 123, 0) 70%);
+                    background: -ms-linear-gradient(90deg, rgb(255, 56, 0) 35%, rgb(255, 123, 0) 70%);
+                    background: linear-gradient(0deg, rgb(255, 56, 0) 35%, rgb(255, 123, 0) 70%);
+                    -webkit-box-shadow: 0px 2px 1px rgba(50, 50, 50, 0.75);
+                    -moz-box-shadow:    0px 2px 1px rgba(50, 50, 50, 0.75);
+                    box-shadow:         0px 2px 1px rgba(50, 50, 50, 0.75);
+                }
+
+                .botonRojo:active{
+                    margin: 5px;
+                    color: rgb(255, 255, 255)!important;
+                    text-decoration: none!important;
+                    font-size: 15px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    padding-top: 7px;
+                    padding-bottom: 7px;
+                    text-shadow: 0px -1px 0px rgba(40, 30, 30, 0.8);
+                    -webkit-border-radius: 5.27027027027027px;
+                    -moz-border-radius: 5.27027027027027px;
+                    border-radius: 5.27027027027027px;
+                    background: rgb(255, 56, 0);
+                    background: -moz-linear-gradient(90deg, rgb(255, 56, 0) 35%, rgb(255, 123, 0) 70%);
+                    background: -webkit-linear-gradient(90deg, rgb(255, 56, 0) 35%, rgb(255, 123, 0) 70%);
+                    background: -o-linear-gradient(90deg, rgb(255, 56, 0) 35%, rgb(255, 123, 0) 70%);
+                    background: -ms-linear-gradient(90deg, rgb(255, 56, 0) 35%, rgb(255, 123, 0) 70%);
+                    background: linear-gradient(0deg, rgb(255, 56, 0) 35%, rgb(255, 123, 0) 70%);
+                    -webkit-box-shadow: 0px 2px 1px rgba(50, 50, 50, 0.75);
+                    -moz-box-shadow:    0px 2px 1px rgba(50, 50, 50, 0.75);
+                    box-shadow:         0px 2px 1px rgba(50, 50, 50, 0.75);
+                }
+
+               
+
             </style>
             <h:form enctype="#{enctype}" id="formABM">
                 <p:growl id="mensajes"/>
-                <div style="height: 50px;width: 100%;" class="fondoEspecial">
+                <div style="height: 50px;width: 100%" class="fondoEspecial">
                     <div style="display: table;width: 100%">
                         <div style="display: table-cell;width: 33%;text-align: left;" class="title">
                             <div style="padding-left: 20px">
@@ -73,32 +147,29 @@
 
                 </div>
 
-                <div style="padding: 20px">
+                <div style="padding: 20px;">
                     <div class="raised">
 
                         <p:panel id="panelControles" styleClass="panelControles" style="margin: 0; padding: 0; background: none; border: none">
-                            <table width="100%" cellspacing="20">
-                                <tr>
-                                    <td width="50%" valign="top">
-                                        <div>
-                                            <ui:insert name="col1"/>
-                                        </div>
-                                    </td>
-                                    <td width="50%" valign="top">
-                                        <div>
-                                            <ui:insert name="col2"/>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" valign="top">
-                                        <div>
-                                            <ui:insert name="detalles"/>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                            </table>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-12"><ui:insert name="cabecera"/></div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6"><ui:insert name="col1"/></div>
+                                    <div class="ui-grid-col-6"> <ui:insert name="col2"/></div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6"><ui:insert name="col3"/></div>
+                                    <div class="ui-grid-col-6"> <ui:insert name="col4"/></div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-12"> <ui:insert name="detalles"/></div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-12"> <ui:insert name="pie"/></div>
+                                </div>
+                            </div>
                         </p:panel>
 
                     </div>
