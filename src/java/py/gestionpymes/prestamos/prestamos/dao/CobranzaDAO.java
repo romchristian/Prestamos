@@ -28,6 +28,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.Pago;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.PrestamoHistorico;
 import py.gestionpymes.prestamos.prestamos.web.TreeCuota;
+import py.gestionpymes.prestamos.tesoreria.dao.TransaccionDAO;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.Secuencia;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccionCaja;
@@ -49,6 +50,8 @@ public class CobranzaDAO {
     private DetCuentaClienteDAO detCuentaClienteDAO;
     @EJB
     private PagoDAO pagoDAO;
+    @EJB
+    private TransaccionDAO transaccionDAO;
 
     public void creaFactura(FacturaVenta f) {
         em.persist(f);
@@ -97,7 +100,7 @@ public class CobranzaDAO {
 
         if (prestamo != null) {
             Transaccion tr = new TransaccionCobraCuota(f, prestamo, s,
-                    "Cobro de cuota del prestamo #" + prestamo.getId(), f.getTotal(),
+                    "Cobro de cuota del prestamo #" + prestamo.getId()+" - "+prestamo.getCliente().devuelveNombreCompleto(), f.getTotal(),
                     f.getMoneda());
 
             TipoTransaccionCaja ttc = null;
@@ -111,7 +114,8 @@ public class CobranzaDAO {
                 tr.setTipoTransaccionCaja(ttc);
             }
 
-            em.persist(tr);
+            transaccionDAO.create(tr);
+            //em.persist(tr);
 
         }
 

@@ -43,8 +43,18 @@ public class Transaccion implements Serializable {
     private Moneda moneda;    
     @ManyToOne
     private TipoTransaccionCaja tipoTransaccionCaja;
-
+    private String usuarioLogeado;
     
+    
+
+    public String getUsuarioLogeado() {
+        return usuarioLogeado;
+    }
+
+    public void setUsuarioLogeado(String usuarioLogeado) {
+        this.usuarioLogeado = usuarioLogeado;
+    }
+
     
     public Transaccion() {
         fecha = new Date();

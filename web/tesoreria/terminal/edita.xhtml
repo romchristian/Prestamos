@@ -18,30 +18,42 @@
         <ui:param name="listado" value="Puntos de Ventas"/>
 
         <ui:define name="acciones">
-            <p:commandButton value="Guardar" action="#{puntoVentaBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
-                        <p:button value="Cancelar" outcome="listado"/>
+            <p:commandLink value="Guardar" action="#{puntoVentaBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           ajax="false"/>
+            <p:button value="Cancelar" outcome="listado"/>
         </ui:define>
 
 
-        <ui:define name="col1">
+        <ui:define name="cabecera">
             <p:inputText id="nombre" value="#{puntoVentaBean.actual.nombre}" styleClass="descripcionPrincipal"/>
             <p:watermark for="nombre" value="Nombre" id="watermark"/>
             <br/>
             <br/>
+        </ui:define>
+
+        <ui:define name="col1">
+
             <h:panelGrid columns="2" cellpadding="10">
 
-                
+
                 <p:outputLabel value="Usuario" for="usuario"/>
                 <p:selectOneMenu value="#{puntoVentaBean.actual.usuario}" id="usuario" >
                     <f:selectItems value="#{usuarioController.itemsAvailableSelectOne}"/>
                 </p:selectOneMenu>
-                
-                
+
+
                 <p:outputLabel value="Secuencia" for="secuencia"/>
                 <p:selectOneMenu value="#{puntoVentaBean.actual.secuencia}" id="secuencia" >
                     <f:selectItems value="#{secuenciaBean.itemsAvailableSelectOne}"/>
                 </p:selectOneMenu>
 
+            </h:panelGrid>
+        </ui:define>
+
+        <ui:define name="col2">
+            <h:panelGrid columns="2" cellpadding="10">
+                <p:outputLabel value="Ajustar Saldo" for="saldo"/>
+                <p:inputText value="#{puntoVentaBean.saldoAjustado}" id="saldo"/>
             </h:panelGrid>
         </ui:define>
 

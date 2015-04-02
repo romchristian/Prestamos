@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteTesoreria" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="381bdd1c-9759-431a-81d2-a98bbf843c12">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Acer\\Documents\\NetBeansProjects\\Prestamos\\web\\reportes\\tesoreria\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idSesionTPV" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select t.fecha, tt.descripcion as operacion,
+ t.descripcion as descripcion,
+ t.tipotransaccion as tipo,
+ case when t.tipotransaccion = 'ENTRADA' then t.monto else 0 end as ingreso,
+ case when t.tipotransaccion = 'SALIDA' then t.monto else 0 end as egreso
+ from transaccion t
+join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontpv_id = $P{idSesionTPV}]]>
+	</queryString>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="operacion" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="ingreso" class="java.math.BigDecimal"/>
+	<field name="egreso" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="52" splitType="Stretch"/>
+	</title>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="2" width="100" height="20" uuid="eababb16-918a-49ba-b74b-6b2ed125ca54"/>
+				<text><![CDATA[fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="2" width="242" height="20" uuid="7324948c-ba27-40f9-bcba-49d841ee910d"/>
+				<text><![CDATA[descripcion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="2" width="100" height="20" uuid="fe9a1175-3266-4a06-891d-4fd652866688"/>
+				<text><![CDATA[ingreso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="2" width="100" height="20" uuid="f762c864-fc22-4742-a09d-3cffce9fc779"/>
+				<text><![CDATA[egreso]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="c021842f-3515-4075-8a04-aee108d59c3c"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="242" height="20" uuid="9415e753-7c7d-4092-8f2e-321669a617ba"/>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="352" y="0" width="100" height="20" uuid="c1fa6db9-9749-483e-880f-aad8e6bf6187"/>
+				<textFieldExpression><![CDATA[$F{ingreso}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="0" width="100" height="20" uuid="d8b94433-0a71-4aa3-8e67-09222532e4b3"/>
+				<textFieldExpression><![CDATA[$F{egreso}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="144" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="144" uuid="3962bd1a-bf51-484a-b662-ab92a634a4f7"/>
+				<subreportParameter name="idSesionTPV">
+					<subreportParameterExpression><![CDATA[$P{idSesionTPV}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReporteTesoreria_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

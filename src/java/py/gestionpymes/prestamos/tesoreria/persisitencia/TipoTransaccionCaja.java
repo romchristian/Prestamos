@@ -29,6 +29,7 @@ public class TipoTransaccionCaja implements Serializable {
     private String descripcion;
     @Enumerated(EnumType.STRING)
     private Estado estado;
+    private boolean oculto;
 
     public Long getId() {
         return id;
@@ -60,6 +61,14 @@ public class TipoTransaccionCaja implements Serializable {
 
     public void setEstado(Estado estado) {
         this.estado = estado;
+    }
+
+    public boolean isOculto() {
+        return oculto;
+    }
+
+    public void setOculto(boolean oculto) {
+        this.oculto = oculto;
     }
     
     

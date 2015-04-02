@@ -28,4 +28,10 @@ public class MonedaFacade extends AbstractFacade<Moneda> {
         super(Moneda.class);
     }
     
+    
+    public Moneda findNombre(String nombre){
+        return (Moneda) em.createQuery("SELECT m FROM Moneda m WHERE UPPER(TRIM(m.nombre)) = ?1")
+                .setParameter(1, nombre.trim().toUpperCase())
+                .getSingleResult();
+    }
 }

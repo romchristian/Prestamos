@@ -1,72 +1,72 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="/template.xhtml"
+               
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:gp="http://java.sun.com/jsf/composite/gpymes">
 
-    <ui:define name="menuModulos">
-        <div style="display: table">
-            <div style="display: table-cell;width: 80%;font-size: 12pt; color: white">
-                Usuario: #{request.userPrincipal} - #{sesionTPVBean.actual.puntoVenta.nombre}
-            </div>
-            <div style="display: table-cell;">
-                <p:clock/>
-            </div>
+    <ui:decorate template="/plantillaABMTPV.xhtml">
 
-        </div>
-    </ui:define>
+        <ui:param name="titulo" value="Cierre Diario"/>
 
-    <ui:define name="logout">
-        <h:form style="width: 100%">
-            <p:commandButton action="#{sesionTPVBean.suspendeSesion()}" value="Pausar" style="float: right;margin-right: 10px;"/>
-        </h:form>
-    </ui:define>
 
-    <ui:define name="menuLateral">        
-        <ui:include src="/menus/terminalCaja.xhtml"/>
-    </ui:define>
+        <ui:define name="acciones">
+            <p:outputPanel  styleClass="panelDatos" style="width: 100%;border: none!important;margin: 0!important;padding: 0!important;background: transparent!important;">
+               
 
-    <ui:define name="title">
-        Cierre Diario
-    </ui:define>
+                <p:commandLink value="Confirmar" action="#{sesionTPVBean.cierraSesion()}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                               />
+                <p:commandButton value="Cancelar" action="terminalCaja"/>
+            </p:outputPanel>
 
-    <ui:define name="body">
+        </ui:define>
+        
+         <ui:define name="otrasAcciones">
+            
+               
+             <p:splitButton value="Imprimir Reporte Resumido" action="#{sesionTPVBean.imprimeReporteCajaCierre()}" icon="ui-icon-print" ajax="false">
+                 <p:menuitem value="Imprimir Reporte Detallado"/>
+             </p:splitButton>
+             <!--<p:commandButton value="Imprimir Reporte" action="{sesionTPVBean.cierraSesion()}"/>-->
+                
+            
 
-        <style type="text/css">
-            .titulo{
-                font-size: 12pt;
-                font-weight: bold;
+        </ui:define>
 
-            }
+        <ui:define name="cabecera">
 
-            .monto{
-                font-size: 12pt;
-                font-weight: bold;
+            <style type="text/css">
+                .titulo{
+                    font-size: 12pt;
+                    font-weight: bold;
 
-            }
-            .rojo{
-                font-size: 12pt;
-                font-weight: bold;
-                color: red;
+                }
 
-            }
+                .monto{
+                    font-size: 12pt;
+                    font-weight: bold;
 
-            .fila{
-                display: table-row;
-            }
-            .celda{
-                display: table-cell; width: 50%;
-                padding: 3px;    
-            }
-            .derecha{
-                text-align: right;
-            }
-        </style>
-        <h:form>
+                }
+                .rojo{
+                    font-size: 12pt;
+                    font-weight: bold;
+                    color: red;
 
+                }
+
+                .fila{
+                    display: table-row;
+                }
+                .celda{
+                    display: table-cell; width: 50%;
+                    padding: 3px;    
+                }
+                .derecha{
+                    text-align: right;
+                }
+            </style>    
 
 
             <div style="display: table">
@@ -182,7 +182,7 @@
                                     <f:convertNumber locale="#{formato.locale}"/>
                                 </h:outputText>
                             </p:column>
-                            
+
                         </p:dataTable>
                     </p:fieldset>
 
@@ -222,9 +222,9 @@
 
 
 
-            <p:commandButton value="Guardar" action="#{sesionTPVBean.cierraSesion()}"/>
-            <p:commandButton value="Cancelar" action="terminalCaja"/>
-        </h:form>
-    </ui:define>
+
+
+        </ui:define>
+    </ui:decorate>
 
 </ui:composition>

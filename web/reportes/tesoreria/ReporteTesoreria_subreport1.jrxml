@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteTesoreria_subreport1" pageWidth="555" pageHeight="802" whenNoDataType="BlankPage" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="42f1982d-4e3f-4246-99a7-d15c1f4d8a39">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idSesionTPV" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select operacion,tipo,
+case when tipo = 'SALIDA' then sum(egreso)*-1 else sum(ingreso) end as monto,
+count(*) as cantidaTransaccion
+from
+(select t.fecha, tt.descripcion as operacion,
+ t.descripcion as descripcion,
+ t.tipotransaccion as tipo,
+ case when t.tipotransaccion = 'ENTRADA' then t.monto else 0 end as ingreso,
+ case when t.tipotransaccion = 'SALIDA' then t.monto else 0 end as egreso
+ from transaccion t
+join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontpv_id = $P{idSesionTPV}) v
+group by operacion,tipo]]>
+	</queryString>
+	<field name="operacion" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="cantidatransaccion" class="java.lang.Long"/>
+	<field name="monto" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="98" y="2" width="261" height="20" uuid="2e9d09d9-8728-4bfe-a3f7-9036564557c8"/>
+				<text><![CDATA[operacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="2" width="87" height="20" uuid="26c0d6fd-3ed6-475f-9090-e997a1228f5c"/>
+				<text><![CDATA[tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="2" width="61" height="20" uuid="e7208bdc-18d9-436e-b1bc-9eb26d6dd334"/>
+				<text><![CDATA[cantidatransaccion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="437" y="2" width="100" height="20" uuid="fc170367-5348-47e9-b94b-51bf658d2847"/>
+				<text><![CDATA[monto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="98" y="0" width="261" height="20" uuid="f0fe4a92-d377-49fc-87d3-6635f1e7d739"/>
+				<textFieldExpression><![CDATA[$F{operacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="0" width="87" height="20" uuid="d535dcab-7f8c-409f-9f85-33a72a7fa15a"/>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="369" y="0" width="61" height="20" uuid="c909ad94-140f-4670-819c-f5ad0f94c4d5"/>
+				<textFieldExpression><![CDATA[$F{cantidatransaccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="437" y="0" width="100" height="20" uuid="8d6bbe98-a63e-4dd8-80d0-2d3a2f42e312"/>
+				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

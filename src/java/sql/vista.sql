@@ -75,11 +75,11 @@ INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, p
 INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(51,540,15,24.2592,1);
 INSERT INTO detplangastos(tasa, plazo, porcentanjegastos, porcentanjecomision, plangastos_id) VALUES(32,360,15,10.0153,2);
 
-INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion) VALUES('COBRO DE CUOTA','ACTIVO','ENTRADA');
-INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion) VALUES('DESEMBOLSO PRESTAMO','ACTIVO','SALIDA');
-INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion) VALUES('PAGO A PROVEEDOR','ACTIVO','SALIDA');
-INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion) VALUES('ADELANTO','ACTIVO','SALIDA');
-INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion) VALUES('INGRESO DE EFECTIVO','ACTIVO','ENTRADA');
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('COBRO DE CUOTA','ACTIVO','ENTRADA',true);
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('DESEMBOLSO PRESTAMO','ACTIVO','SALIDA',true);
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('PAGO A PROVEEDOR','ACTIVO','SALIDA',false);
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('ADELANTO','ACTIVO','SALIDA',false);
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('INGRESO DE EFECTIVO','ACTIVO','ENTRADA',false);
 
 DROP TABLE IF  EXISTS version_app;
 
@@ -95,3 +95,11 @@ WITH (
 );
 
 insert into version_app ( ultimavista,version) values('vista_2','1.0.1');
+
+
+--NUEVO 02/04/2015
+alter table tipotransaccioncaja add column oculto boolean;
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('AJUSTE DE SALDO POSITIVO','ACTIVO','ENTRADA',true);
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('AJUSTE DE SALDO NEGATIVO','ACTIVO','SALIDA',true);
+
+ALTER TABLE transaccion ADD COLUMN usuariologeado character varying(255);

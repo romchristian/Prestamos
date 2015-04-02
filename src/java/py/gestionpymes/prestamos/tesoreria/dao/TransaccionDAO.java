@@ -10,31 +10,37 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.dao.QueryParameter;
+import py.gestionpymes.prestamos.adm.web.util.Credencial;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.PuntoVenta;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
+
 
 /**
  *
  * @author christian
  */
 @Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class TransaccionDAO extends AbstractDAO<Transaccion> {
 
     @EJB(beanName = "ABMServiceBean")
     private ABMService abmService;
+    @Inject
+    private Credencial credencial;
 
     @Override
     public Transaccion create(Transaccion entity) {
+        entity.setUsuarioLogeado(credencial.getUsuario().getNombre()+" "+credencial.getUsuario().getApellido());
         return abmService.create(entity);
     }
 
     @Override
     public Transaccion edit(Transaccion entity) {
+        entity.setUsuarioLogeado(credencial.getUsuario().getNombre()+" "+credencial.getUsuario().getApellido());
         return abmService.update(entity);
     }
 

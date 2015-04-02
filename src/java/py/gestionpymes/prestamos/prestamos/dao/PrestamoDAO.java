@@ -20,6 +20,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.CuentaCliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.OperacionDesembolsoPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
+import py.gestionpymes.prestamos.tesoreria.dao.TransaccionDAO;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.Secuencia;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccion;
@@ -39,6 +40,8 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
     private EntityManager em;
     @EJB
     private DetCuentaClienteDAO detCuentaClienteDAO;
+    @EJB
+    private TransaccionDAO transaccionDAO;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -165,14 +168,15 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
         }
 
         Transaccion t = new TransaccionDesembolso(f, prestamo, s,
-                "Desembolso de  prestamo: Prestamo #" + prestamo.getId(), prestamo.getMontoPrestamo(),
+                "Desembolso de  prestamo: Prestamo #" + prestamo.getId()+" - "+prestamo.getCliente().devuelveNombreCompleto(), prestamo.getMontoPrestamo(),
                 f.getMoneda());
 
         if (ttc != null) {
             t.setTipoTransaccionCaja(ttc);
         }
 
-        em.persist(t);
+        transaccionDAO.create(t);
+        //em.persist(t);
 
         return prestamo;
     }

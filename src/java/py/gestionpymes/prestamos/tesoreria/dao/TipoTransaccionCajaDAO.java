@@ -47,7 +47,7 @@ public class TipoTransaccionCajaDAO extends AbstractDAO<TipoTransaccionCaja> {
 
     @Override
     public List<TipoTransaccionCaja> findAll() {
-        return abmService.getEM().createQuery("select obj from TipoTransaccionCaja obj").getResultList();
+        return abmService.getEM().createQuery("select obj from TipoTransaccionCaja obj WHERE OBJ.oculto = false").getResultList();
     }
 
    

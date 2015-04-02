@@ -10,7 +10,9 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -27,6 +29,7 @@ import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.UsuarioLogueado;
 import py.gestionpymes.prestamos.contabilidad.persistencia.MetodoPago;
 import py.gestionpymes.prestamos.contabilidad.servicio.MetodoPagoDAO;
+import py.gestionpymes.prestamos.reportes.jasper.ReporteController;
 import py.gestionpymes.prestamos.tesoreria.dao.PuntoVentaDAO;
 import py.gestionpymes.prestamos.tesoreria.dao.ResumenTransaccion;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.PuntoVenta;
@@ -65,6 +68,8 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     private PuntoVentaDAO puntoVentaDAO;
     private List<Transaccion> transacciones;
     private List<ResumenTransaccion> resumenTransacciones;
+    @Inject
+    private ReporteController reporteController;
 
     public List<Transaccion> getTransacciones() {
         return transacciones;
@@ -197,6 +202,7 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     }
 
     public String inciaSesion(SesionTPV s) {
+        
         setActual(s);
         getActual().setEstado("ABIERTA");
         ejb.edit(getActual());
@@ -270,6 +276,18 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
             }
 
         }
+    }
+    
+    public void imprimeReporteCajaCierre() {
+        
+        
+        
+               
+        Map<String, Long> params = new HashMap<String, Long>();
+        params.put("idSesionTPV", getActual().getId());//nf.format(selected.getId())
+       
+        
+        reporteController.generaPDF(params, "reportes/tesoreria/ReporteTesoreria.jasper", "cierre_caja" + getActual().getPuntoVenta().getNombre());
     }
 
     public void siCamabiaTPV(ValueChangeEvent event) {

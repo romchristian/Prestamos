@@ -7,6 +7,9 @@ package py.gestionpymes.prestamos.reportes.jasper;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.ServletOutputStream;
@@ -57,6 +59,48 @@ public class ReporteController implements Serializable {
 
     }
 
+    private void init(Map parametros, String nombre, FacesContext context) throws JRException {
+
+        String reportpath = context
+                .getExternalContext()
+                .getRealPath(nombre);
+
+        Connection conn = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/prestamos", "postgres", "postgres");
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        System.out.println("con: "+conn);
+        jasperPrint = JasperFillManager.fillReport(reportpath, parametros, conn);
+
+    }
+
+    public void generaPDF(Map parametros, String archivoPath, String nombre) {
+        try {
+
+            
+            System.out.println("Entre a generaPDF");
+            FacesContext context = FacesContext.getCurrentInstance();
+            init(parametros, archivoPath, context);
+
+            HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+            response.setHeader("Content-Disposition", "attachment;filename=" + nombre + ".pdf");
+            ServletOutputStream outputStream = response.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+            context.responseComplete();
+
+        } catch (JRException ex) {
+            throw new RuntimeException(ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ReporteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void generaPDF(Map parametros, Collection<?> detalles, String archivoPath, String nombre) {
         try {
 
@@ -75,8 +119,7 @@ public class ReporteController implements Serializable {
             Logger.getLogger(ReporteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     public void generaExcel(Map parametros, Collection<?> detalles, String archivoPath, String nombre) {
         try {
 
