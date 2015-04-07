@@ -33,3 +33,9 @@ WITH (
 );
 ALTER TABLE tipotransaccioncaja
   OWNER TO postgres;
+
+alter table tipotransaccioncaja add column oculto boolean;
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('AJUSTE DE SALDO POSITIVO','ACTIVO','ENTRADA',true);
+INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('AJUSTE DE SALDO NEGATIVO','ACTIVO','SALIDA',true);
+
+ALTER TABLE transaccion ADD COLUMN usuariologeado character varying(255);

@@ -27,23 +27,49 @@ group by operacion,tipo]]>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
+	<pageHeader>
+		<band height="34">
+			<staticText>
+				<reportElement x="6" y="8" width="157" height="17" uuid="235b034e-55f5-4da7-a6e9-3e57a32177fb"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RESUMEN DE TRANSACCIONES]]></text>
+			</staticText>
+			<line>
+				<reportElement x="6" y="25" width="184" height="1" uuid="fa425513-60a6-4809-96f5-89a583239e2a"/>
+			</line>
+		</band>
+	</pageHeader>
 	<columnHeader>
 		<band height="25" splitType="Stretch">
 			<staticText>
 				<reportElement x="98" y="2" width="261" height="20" uuid="2e9d09d9-8728-4bfe-a3f7-9036564557c8"/>
-				<text><![CDATA[operacion]]></text>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OPERACIÓN]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="6" y="2" width="87" height="20" uuid="26c0d6fd-3ed6-475f-9090-e997a1228f5c"/>
-				<text><![CDATA[tipo]]></text>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="372" y="2" width="61" height="20" uuid="e7208bdc-18d9-436e-b1bc-9eb26d6dd334"/>
-				<text><![CDATA[cantidatransaccion]]></text>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[# TRANSAC]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="437" y="2" width="100" height="20" uuid="fc170367-5348-47e9-b94b-51bf658d2847"/>
-				<text><![CDATA[monto]]></text>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -57,12 +83,14 @@ group by operacion,tipo]]>
 				<reportElement x="5" y="0" width="87" height="20" uuid="d535dcab-7f8c-409f-9f85-33a72a7fa15a"/>
 				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="369" y="0" width="61" height="20" uuid="c909ad94-140f-4670-819c-f5ad0f94c4d5"/>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="371" y="0" width="61" height="20" uuid="c909ad94-140f-4670-819c-f5ad0f94c4d5"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{cantidatransaccion}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="¤ #,##0">
 				<reportElement x="437" y="0" width="100" height="20" uuid="8d6bbe98-a63e-4dd8-80d0-2d3a2f42e312"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
 			</textField>
 		</band>

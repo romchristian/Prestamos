@@ -32,8 +32,8 @@ INSERT INTO moneda(abreviacion, decimales, estado, monedalocal, nombre, version)
 INSERT INTO empresa(razonsocial, ruc, dv,estado,version) VALUES ('CREDI PYMES S.A.', '80065663-6', '2', 'ACTIVO', 1);
 INSERT INTO sucursal( estado, nombre, version, empresa_id) VALUES ('ACTIVO', 'MATRIZ',1,1);
 
--- INSERT INTO persona(dtype, estado, empresa_id,sucursal_id, apellidos, nombres) VALUES ('Vendedor','ACTIVO',1,1,'De Prueba','Vendedor');
--- INSERT INTO persona(dtype, estado, empresa_id,sucursal_id, apellidos, nombres) VALUES ('Cobrador','ACTIVO',1,1,'De Prueba','Cobrador');
+INSERT INTO persona(dtype, estado, empresa_id,sucursal_id, apellidos, nombres) VALUES ('Vendedor','ACTIVO',1,1,'De Prueba','Vendedor');
+INSERT INTO persona(dtype, estado, empresa_id,sucursal_id, apellidos, nombres) VALUES ('Cobrador','ACTIVO',1,1,'De Prueba','Cobrador');
 
 INSERT INTO categoria(calificacion) VALUES (0);
 INSERT INTO categoria(calificacion) VALUES (1);
@@ -42,9 +42,9 @@ INSERT INTO categoria(calificacion) VALUES (3);
 INSERT INTO categoria(calificacion) VALUES (4);
 INSERT INTO categoria(calificacion) VALUES (5);
 
-INSERT INTO canal(empresa, nombre, estado) VALUES (1,'TELEMARKETING', 'ACTIVO');
-INSERT INTO canal(empresa, nombre, estado) VALUES (1,'FUERZA DE VENTAS', 'ACTIVO');
-INSERT INTO canal(empresa, nombre, estado) VALUES (1,'ASOCIACIONES', 'ACTIVO');
+INSERT INTO canal(empresa_id, nombre, estado) VALUES (1,'TELEMARKETING', 'ACTIVO');
+INSERT INTO canal(empresa_id, nombre, estado) VALUES (1,'FUERZA DE VENTAS', 'ACTIVO');
+INSERT INTO canal(empresa_id, nombre, estado) VALUES (1,'ASOCIACIONES', 'ACTIVO');
 
 INSERT INTO plangastos(creacion, estado, nombre, empresa_id) VALUES ( now(),0, 'PLAN NORMAL - CONSUMO',1);
 INSERT INTO plangastos(creacion, estado, nombre, empresa_id) VALUES ( now(),0, 'PLAN ASOCIACIONES - CUOTA 125.000 X MILLON"',1);
@@ -80,26 +80,21 @@ INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUE
 INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('PAGO A PROVEEDOR','ACTIVO','SALIDA',false);
 INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('ADELANTO','ACTIVO','SALIDA',false);
 INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('INGRESO DE EFECTIVO','ACTIVO','ENTRADA',false);
-
-DROP TABLE IF  EXISTS version_app;
-
-CREATE TABLE version_app
-(
-  id serial NOT NULL,
-  ultimavista text,
-  version text,
-  CONSTRAINT version_app_pk PRIMARY KEY (id)
-)
-WITH (
-  OIDS=FALSE
-);
-
-insert into version_app ( ultimavista,version) values('vista_2','1.0.1');
-
-
---NUEVO 02/04/2015
-alter table tipotransaccioncaja add column oculto boolean;
 INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('AJUSTE DE SALDO POSITIVO','ACTIVO','ENTRADA',true);
 INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUES('AJUSTE DE SALDO NEGATIVO','ACTIVO','SALIDA',true);
 
-ALTER TABLE transaccion ADD COLUMN usuariologeado character varying(255);
+
+-- DROP TABLE IF  EXISTS version_app;
+
+-- CREATE TABLE version_app
+-- (
+--   id serial NOT NULL,
+--   ultimavista text,
+--   version text,
+--   CONSTRAINT version_app_pk PRIMARY KEY (id)
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- 
+-- insert into version_app ( ultimavista,version) values('vista_2','1.0.1');

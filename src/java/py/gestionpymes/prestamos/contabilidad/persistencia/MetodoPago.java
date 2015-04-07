@@ -5,6 +5,7 @@
 package py.gestionpymes.prestamos.contabilidad.persistencia;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -93,8 +94,10 @@ public class MetodoPago implements Serializable {
     public void setTipoMetodoPago(TipoMetodoPago tipoMetodoPago) {
         this.tipoMetodoPago = tipoMetodoPago;
     }
+    
 
     public List<ValorMoneda> getValoresMonedas() {
+         
         return valoresMonedas;
     }
 

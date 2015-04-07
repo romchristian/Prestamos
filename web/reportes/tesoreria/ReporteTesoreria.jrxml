@@ -9,6 +9,7 @@
 	<parameter name="idSesionTPV" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="cajero" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select t.fecha, tt.descripcion as operacion,
  t.descripcion as descripcion,
@@ -24,34 +25,97 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 	<field name="tipo" class="java.lang.String"/>
 	<field name="ingreso" class="java.math.BigDecimal"/>
 	<field name="egreso" class="java.math.BigDecimal"/>
+	<variable name="fecha" class="java.util.Date">
+		<variableExpression><![CDATA[new Date()]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="52" splitType="Stretch"/>
+		<band height="81" splitType="Stretch">
+			<staticText>
+				<reportElement x="123" y="6" width="229" height="27" uuid="f3a7bcee-9573-430d-a1cc-145912870fc9"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="16" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de cierre de caja]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="2" y="39" width="350" height="19" uuid="321f559d-e816-4144-acfd-8af68a32c603"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true" isItalic="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ID de Sesión: "+$P{idSesionTPV}+" - Cajero: "+$P{cajero}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="63" width="555" height="1" uuid="33ae63e3-59cd-4ab2-a208-d6cb650a77b4"/>
+			</line>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="384" y="39" width="167" height="20" uuid="ecae97ee-3312-4d08-9966-113e2c4a7d81"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{fecha}]]></textFieldExpression>
+			</textField>
+		</band>
 	</title>
+	<pageHeader>
+		<band height="149">
+			<subreport>
+				<reportElement x="1" y="0" width="555" height="144" uuid="3962bd1a-bf51-484a-b662-ab92a634a4f7"/>
+				<subreportParameter name="idSesionTPV">
+					<subreportParameterExpression><![CDATA[$P{idSesionTPV}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReporteTesoreria_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageHeader>
 	<columnHeader>
-		<band height="24" splitType="Stretch">
+		<band height="50" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="2" width="100" height="20" uuid="eababb16-918a-49ba-b74b-6b2ed125ca54"/>
-				<text><![CDATA[fecha]]></text>
+				<reportElement mode="Transparent" x="0" y="27" width="100" height="20" uuid="eababb16-918a-49ba-b74b-6b2ed125ca54"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="2" width="242" height="20" uuid="7324948c-ba27-40f9-bcba-49d841ee910d"/>
-				<text><![CDATA[descripcion]]></text>
+				<reportElement x="100" y="27" width="242" height="20" uuid="7324948c-ba27-40f9-bcba-49d841ee910d"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="352" y="2" width="100" height="20" uuid="fe9a1175-3266-4a06-891d-4fd652866688"/>
-				<text><![CDATA[ingreso]]></text>
+				<reportElement x="352" y="27" width="100" height="20" uuid="fe9a1175-3266-4a06-891d-4fd652866688"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[INGRESO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="455" y="2" width="100" height="20" uuid="f762c864-fc22-4742-a09d-3cffce9fc779"/>
-				<text><![CDATA[egreso]]></text>
+				<reportElement x="455" y="27" width="100" height="20" uuid="f762c864-fc22-4742-a09d-3cffce9fc779"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[EGRESO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="48" width="555" height="1" uuid="e0e76033-0084-48ec-a77b-68ce6338b50d"/>
+			</line>
+			<line>
+				<reportElement x="4" y="24" width="184" height="1" uuid="0635196b-f0c0-49c5-9eda-46a1a392f576"/>
+			</line>
+			<staticText>
+				<reportElement x="4" y="7" width="184" height="17" uuid="5a823168-fd87-4b5b-afcc-7215b6569f4e"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DETALLES DE TRANSACCIONES]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="27" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="100" height="20" uuid="c021842f-3515-4075-8a04-aee108d59c3c"/>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
@@ -60,26 +124,39 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 				<reportElement x="100" y="0" width="242" height="20" uuid="9415e753-7c7d-4092-8f2e-321669a617ba"/>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="¤ #,##0">
 				<reportElement x="352" y="0" width="100" height="20" uuid="c1fa6db9-9749-483e-880f-aad8e6bf6187"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{ingreso}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="¤ #,##0">
 				<reportElement x="455" y="0" width="100" height="20" uuid="d8b94433-0a71-4aa3-8e67-09222532e4b3"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{egreso}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
+	<pageFooter>
+		<band height="29">
+			<textField>
+				<reportElement x="452" y="5" width="100" height="20" uuid="5f7dd897-da4c-4c43-85ba-8083fa111306"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
 	<summary>
-		<band height="144" splitType="Stretch">
-			<subreport>
-				<reportElement x="0" y="0" width="555" height="144" uuid="3962bd1a-bf51-484a-b662-ab92a634a4f7"/>
-				<subreportParameter name="idSesionTPV">
-					<subreportParameterExpression><![CDATA[$P{idSesionTPV}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReporteTesoreria_subreport1.jasper"]]></subreportExpression>
-			</subreport>
+		<band height="65" splitType="Stretch">
+			<frame>
+				<reportElement x="2" y="0" width="553" height="62" uuid="2059d890-7570-4369-a143-289fe0af090c"/>
+				<staticText>
+					<reportElement x="5" y="38" width="274" height="20" uuid="f2cb4bae-6a52-493a-aeb4-9599b72b43ab"/>
+					<text><![CDATA[FIRMA CAJERO:...................................................................]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="290" y="38" width="260" height="20" uuid="a8bc7f5a-c3ab-4ab5-b1a3-f9ab845c5e67"/>
+					<text><![CDATA[FIRMA TESORERO:........................................................]]></text>
+				</staticText>
+			</frame>
 		</band>
 	</summary>
 </jasperReport>

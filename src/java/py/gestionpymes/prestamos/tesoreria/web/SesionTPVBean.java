@@ -238,6 +238,7 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         }
         getActual().getPuntoVenta().setSaldo(saldoCierre.setScale(0, RoundingMode.HALF_EVEN));
         getActual().setSaldoCierre(saldoCierre.setScale(0, RoundingMode.HALF_EVEN));
+        getActual().setTotalTransacciones(totalTransacciones.setScale(0, RoundingMode.HALF_EVEN));
         getActual().setFechaCierre(new Date());
         getActual().setEstado("CERRADA");
         ejb.cierre(getActual());
@@ -283,8 +284,9 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         
         
                
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("idSesionTPV", getActual().getId());//nf.format(selected.getId())
+        params.put("cajero",credencial.getUsuario().getNombre() + " " +credencial.getUsuario().getApellido());
        
         
         reporteController.generaPDF(params, "reportes/tesoreria/ReporteTesoreria.jasper", "cierre_caja" + getActual().getPuntoVenta().getNombre());

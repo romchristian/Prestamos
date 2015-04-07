@@ -7,6 +7,8 @@ package py.gestionpymes.prestamos.tesoreria.persisitencia;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -19,8 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import py.gestionpymes.prestamos.adm.persistencia.Usuario;
-
-
 
 /**
  *
@@ -52,14 +52,11 @@ public class SesionTPV implements Serializable {
     private List<ValorEfectivo> valorEfectivosInicial;
     @Transient
     private List<ValorEfectivo> valorEfectivosFinal;
-  
 
     public SesionTPV() {
         fechaApertura = new Date();
         estado = "CREADO";
     }
-    
-    
 
     public List<ValorEfectivo> getValorEfectivosInicial() {
         valorEfectivosInicial = new ArrayList<ValorEfectivo>();
@@ -103,9 +100,17 @@ public class SesionTPV implements Serializable {
         this.diferencia = diferencia;
     }
 
-    
-    
     public List<ValorEfectivo> getValorEfectivos() {
+        Comparator<ValorEfectivo> comp = new Comparator<ValorEfectivo>() {
+
+            @Override
+            public int compare(ValorEfectivo o1, ValorEfectivo o2) {
+                return o1.getDenominacionMoneda() > o2.getDenominacionMoneda() ? 1 : -1;
+            }
+        };
+
+        Collections.sort(valorEfectivos, comp);
+
         return valorEfectivos;
     }
 

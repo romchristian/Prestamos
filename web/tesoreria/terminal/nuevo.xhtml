@@ -14,7 +14,7 @@
         <ui:param name="listado" value="Puntos de Ventas"/>
 
         <ui:define name="acciones">
-            <p:commandLink value="Guardar" action="#{puntoVentaBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+            <p:commandLink value="Guardar" action="#{puntoVentaBean.create()}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
                            ajax="false"/>
             <p:button value="Cancelar" outcome="listado"/>
         </ui:define>
