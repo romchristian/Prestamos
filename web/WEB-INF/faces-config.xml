@@ -41,6 +41,7 @@
             <method>#{desembolsaBean.paga()}</method>
         </method-call>
         
+        
         <flow-return id="endFlow">
             <from-outcome>/tesoreria/sesionTPV/terminalCaja</from-outcome>
         </flow-return>
@@ -55,7 +56,12 @@
             <method>#{cobraCuotaBean.limpia()}</method>
         </method-call>
         
-        <flow-return id="endFlow">
+        <method-call id="pagaCuota"> 
+            <default-outcome>endFlow</default-outcome>
+            <method>#{cobraCuotaBean.paga()}</method>
+        </method-call>
+        
+        <flow-return id="endFlowCuota">
             <from-outcome>/tesoreria/sesionTPV/terminalCaja</from-outcome>
         </flow-return>
         

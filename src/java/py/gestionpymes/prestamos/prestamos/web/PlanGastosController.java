@@ -83,15 +83,18 @@ public class PlanGastosController implements Serializable {
     public void remueveDetalle(DetPlanGastos d){
         selected.getDetalles().remove(d);
     }
-    public void create() {
+    public String create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("PlanGastosCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
+        
+        return "List";
     }
 
-    public void update() {
+    public String update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("PlanGastosUpdated"));
+        return "List";
     }
 
     public void destroy() {

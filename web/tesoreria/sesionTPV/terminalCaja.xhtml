@@ -1,47 +1,100 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="/template.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:gp="http://java.sun.com/jsf/composite/gpymes">
 
-    <ui:define name="menuModulos">
-        <div style="display: table">
-            <div style="display: table-cell;width: 80%;font-size: 12pt; color: white">
-                Usuario: #{request.userPrincipal} - #{sesionTPVBean.actual.puntoVenta.nombre}
+    <ui:decorate template="/plantillaABMTPV.xhtml">
+
+        <ui:param name="titulo" value="Home"/>
+
+
+        <ui:define name="otrasAcciones">
+
+        </ui:define>
+
+        <ui:define name="acciones">
+            <p:outputPanel  styleClass="panelDatos" style="width: 100%;border: none!important;margin: 0!important;padding: 0!important;background: transparent!important;">
+                <p:commandLink value="Pausar Sesión" action="#{sesionTPVBean.suspendeSesion()}" 
+                               styleClass="botonRojo flotaIzquierda" 
+                               update="mensajes, panelControles"/>
+            </p:outputPanel>
+        </ui:define>
+
+        <ui:define name="cabecera">
+
+            <style type="text/css">
+                .icono{
+                    border: 1px solid #ddd;
+                }
+                .icono:hover { 
+                    border: 1px solid #ddd;
+                    /*opacity: .8;*/
+                    background: rgb(255,255,136); /* Old browsers */
+                    background: -moz-linear-gradient(top,  rgba(255,255,136,1) 0%, rgba(255,255,136,1) 100%); /* FF3.6+ */
+                    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,136,1)), color-stop(100%,rgba(255,255,136,1))); /* Chrome,Safari4+ */
+                    background: -webkit-linear-gradient(top,  rgba(255,255,136,1) 0%,rgba(255,255,136,1) 100%); /* Chrome10+,Safari5.1+ */
+                    background: -o-linear-gradient(top,  rgba(255,255,136,1) 0%,rgba(255,255,136,1) 100%); /* Opera 11.10+ */
+                    background: -ms-linear-gradient(top,  rgba(255,255,136,1) 0%,rgba(255,255,136,1) 100%); /* IE10+ */
+                    background: linear-gradient(to bottom,  rgba(255,255,136,1) 0%,rgba(255,255,136,1) 100%); /* W3C */
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff88', endColorstr='#ffff88',GradientType=0 ); /* IE6-9 */
+
+
+                }
+            </style>
+
+            <h3>CAJA</h3>
+            <h:outputText value="Fondo Disponible en su Caja:  " style="font-size: 20px"/> 
+            <h:outputText value="#{sesionTPVBean.saldoTeorico}" style="font-size: 20px">
+                <f:convertNumber locale="#{formato.locale}"/>
+            </h:outputText>
+
+            <br/>
+            <br/>
+
+            <div class="ui-grid ui-grid-responsive" style="width: 50%; margin: 0 auto 0 auto">
+
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-6" style="text-align: center"> 
+                        <h3>Desembolsos</h3>
+                        <h:commandLink  action="desembolsa"
+                                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}">
+                            <p:graphicImage library="img" name="desembolso.PNG" width="128" height="128" styleClass="icono"/>
+                        </h:commandLink>
+                    </div>
+                    <div class="ui-grid-col-6" style="text-align: center"> 
+                        <h3>Cobro de Cuotas</h3>
+                        <h:commandLink  action="cobraCuota"
+                                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cobro_cuota'))}">
+                            <p:graphicImage library="img" name="cobros.png" width="128" height="128" styleClass="icono"/>
+                        </h:commandLink>
+                    </div>
+                </div>
+                <div class="ui-grid-row" style="text-align: center">
+                    <div class="ui-grid-col-6">
+                        <br/>
+                        <br/>
+                        <h3>Transferencias</h3>
+                        <h:commandLink   action="/tesoreria/sesionTPV/transferencia" 
+                                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}">
+                            <p:graphicImage library="img" name="transferencias.png" width="128" height="128" styleClass="icono"/>
+                        </h:commandLink>
+                    </div>
+                    <div class="ui-grid-col-6" style="text-align: center">
+                        <br/>
+                        <br/>
+                        <h3>Cierre del día</h3>
+                        <h:commandLink   action="#{sesionTPVBean.preparaCierre()}" 
+                                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}">
+                            <p:graphicImage library="img" name="cierre.png" width="128" height="128" styleClass="icono" />
+                        </h:commandLink>
+                    </div>
+                </div>
+
             </div>
-            <div style="display: table-cell;">
-                <p:clock/>
-            </div>
 
-        </div>
-    </ui:define>
-
-    <ui:define name="logout">
-        <h:form style="width: 100%">
-            <p:commandButton action="#{sesionTPVBean.suspendeSesion()}" value="Pausar" style="float: right;margin-right: 10px;"/>
-        </h:form>
-    </ui:define>
-
-    <ui:define name="menuLateral">        
-        <ui:include src="/menus/terminalCaja.xhtml"/>
-    </ui:define>
-
-    <ui:define name="title">
-        Bienvenido a su Sesión: 
-    </ui:define>
-
-    <ui:define name="body">
-        <h3>CAJA</h3>
-
-        <h:outputText value="Fondo Disponible en su Caja:  " style="font-size: 20px"/> 
-        
-        <h:outputText value="#{sesionTPVBean.saldoTeorico}" style="font-size: 20px">
-            <f:convertNumber locale="#{formato.locale}"/>
-        </h:outputText>
-
-    </ui:define>
-
+        </ui:define>
+    </ui:decorate>
 </ui:composition>

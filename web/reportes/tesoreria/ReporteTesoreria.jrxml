@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteTesoreria" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="381bdd1c-9759-431a-81d2-a98bbf843c12">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\Users\\Acer\\Documents\\NetBeansProjects\\Prestamos\\web\\reportes\\tesoreria\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<parameter name="idSesionTPV" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="cajero" class="java.lang.String"/>
+	<parameter name="saldoInicial" class="java.math.BigDecimal"/>
+	<parameter name="totalTransacciones" class="java.math.BigDecimal"/>
+	<parameter name="saldoCierre" class="java.math.BigDecimal"/>
+	<parameter name="diferencia" class="java.math.BigDecimal"/>
 	<queryString>
 		<![CDATA[select t.fecha, tt.descripcion as operacion,
  t.descripcion as descripcion,
@@ -32,9 +36,9 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="81" splitType="Stretch">
+		<band height="186" splitType="Stretch">
 			<staticText>
-				<reportElement x="123" y="6" width="229" height="27" uuid="f3a7bcee-9573-430d-a1cc-145912870fc9"/>
+				<reportElement x="4" y="6" width="547" height="27" uuid="f3a7bcee-9573-430d-a1cc-145912870fc9"/>
 				<textElement textAlignment="Center">
 					<font fontName="Times New Roman" size="16" isBold="true" isUnderline="true"/>
 				</textElement>
@@ -43,24 +47,66 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 			<textField>
 				<reportElement x="2" y="39" width="350" height="19" uuid="321f559d-e816-4144-acfd-8af68a32c603"/>
 				<textElement>
-					<font fontName="Times New Roman" size="12" isBold="true" isItalic="true" isUnderline="false"/>
+					<font fontName="Times New Roman" size="10" isBold="false" isItalic="false" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["ID de Sesión: "+$P{idSesionTPV}+" - Cajero: "+$P{cajero}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="63" width="555" height="1" uuid="33ae63e3-59cd-4ab2-a208-d6cb650a77b4"/>
+				<reportElement x="0" y="184" width="555" height="1" uuid="33ae63e3-59cd-4ab2-a208-d6cb650a77b4"/>
 			</line>
-			<textField pattern="EEEEE dd MMMMM yyyy">
+			<textField evaluationTime="Auto" pattern="EEEEE dd MMMMM yyyy">
 				<reportElement x="384" y="39" width="167" height="20" uuid="ecae97ee-3312-4d08-9966-113e2c4a7d81"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{fecha}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
+			<textField pattern="¤ #,##0">
+				<reportElement x="79" y="98" width="146" height="20" uuid="3b8cb960-2488-4afe-bfb7-679cb254aea7"/>
+				<textFieldExpression><![CDATA[$P{saldoInicial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="98" width="70" height="20" uuid="73d603df-baca-433c-8f4b-2bebdd958422"/>
+				<text><![CDATA[Saldo Inicial:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0">
+				<reportElement x="79" y="118" width="146" height="20" uuid="ec827671-f0f3-47d7-91dd-bb1661ad3ef2"/>
+				<textFieldExpression><![CDATA[$P{totalTransacciones}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="118" width="70" height="20" uuid="ab8d19df-a613-4c3e-bfb7-144cb8cfd842"/>
+				<text><![CDATA[Transacciones:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0">
+				<reportElement x="79" y="138" width="146" height="20" uuid="70ae139b-0443-45a2-af74-bbda4dabd637"/>
+				<textFieldExpression><![CDATA[$P{saldoCierre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0">
+				<reportElement x="79" y="158" width="146" height="20" uuid="5bd6c821-63c2-40a5-a90d-4446e81c67be"/>
+				<textFieldExpression><![CDATA[$P{diferencia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="138" width="70" height="20" uuid="2818c97a-e412-470d-953a-dda067c81424"/>
+				<text><![CDATA[Saldo Cierre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="158" width="70" height="20" uuid="1b6aad24-58e8-4f57-86c4-a876e6fe75af"/>
+				<text><![CDATA[Diferencia:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="73" width="70" height="20" uuid="136c6975-c755-4048-b61a-5c4a13e365aa"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Saldos del día:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="60" width="555" height="1" uuid="98514b50-db23-4b1b-ba5f-e373212818e9"/>
+			</line>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="149">
 			<subreport>
-				<reportElement x="1" y="0" width="555" height="144" uuid="3962bd1a-bf51-484a-b662-ab92a634a4f7"/>
+				<reportElement x="4" y="3" width="548" height="142" uuid="3962bd1a-bf51-484a-b662-ab92a634a4f7"/>
 				<subreportParameter name="idSesionTPV">
 					<subreportParameterExpression><![CDATA[$P{idSesionTPV}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -149,7 +195,7 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 			<frame>
 				<reportElement x="2" y="0" width="553" height="62" uuid="2059d890-7570-4369-a143-289fe0af090c"/>
 				<staticText>
-					<reportElement x="5" y="38" width="274" height="20" uuid="f2cb4bae-6a52-493a-aeb4-9599b72b43ab"/>
+					<reportElement x="5" y="38" width="265" height="20" uuid="f2cb4bae-6a52-493a-aeb4-9599b72b43ab"/>
 					<text><![CDATA[FIRMA CAJERO:...................................................................]]></text>
 				</staticText>
 				<staticText>

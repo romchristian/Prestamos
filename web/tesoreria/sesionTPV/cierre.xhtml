@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-               
+
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
@@ -14,24 +14,25 @@
 
         <ui:define name="acciones">
             <p:outputPanel  styleClass="panelDatos" style="width: 100%;border: none!important;margin: 0!important;padding: 0!important;background: transparent!important;">
-               
 
-                <p:commandLink value="Confirmar" action="#{sesionTPVBean.cierraSesion()}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+
+                <p:commandLink value="Confirmar" action="#{sesionTPVBean.cierraSesion()}" 
+                               styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
                                />
                 <p:commandButton value="Cancelar" action="terminalCaja"/>
             </p:outputPanel>
 
         </ui:define>
-        
-         <ui:define name="otrasAcciones">
-            
-               
-             <p:splitButton value="Imprimir Reporte Resumido" action="#{sesionTPVBean.imprimeReporteCajaCierre()}" icon="ui-icon-print" ajax="false">
-                 <p:menuitem value="Imprimir Reporte Detallado"/>
-             </p:splitButton>
-             <!--<p:commandButton value="Imprimir Reporte" action="{sesionTPVBean.cierraSesion()}"/>-->
-                
-            
+
+        <ui:define name="otrasAcciones">
+
+
+            <p:splitButton value="Imprimir Reporte Resumido" action="#{sesionTPVBean.imprimeReporteCajaCierre()}" icon="ui-icon-print" ajax="false">
+                <p:menuitem value="Imprimir Reporte Detallado"/>
+            </p:splitButton>
+            <!--<p:commandButton value="Imprimir Reporte" action="{sesionTPVBean.cierraSesion()}"/>-->
+
+
 
         </ui:define>
 

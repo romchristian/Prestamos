@@ -347,7 +347,7 @@ public class CobraCuotaBean implements Serializable {
             Logger.getLogger(CobraCuotaBean.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-        return "endFlow";
+        return "endFlowCuota";
     }
 
     public BigDecimal getTotalAPagar() {

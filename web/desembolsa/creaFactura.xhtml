@@ -6,35 +6,23 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
+    <ui:decorate template="/plantillaABMTPV.xhtml">
 
-        <ui:define name="menuModulos">
-            <div style="display: table">
-                <div style="display: table-cell;width: 80%;font-size: 12pt; color: white">
-                    Usuario: #{request.userPrincipal} - #{sesionTPVBean.actual.puntoVenta.nombre}
-                </div>
-                <div style="display: table-cell;">
-                    <p:clock/>
-                </div>
+        <ui:param name="titulo" value="Resumen"/>
 
-            </div>
+
+        <ui:define name="acciones">
+            <p:outputPanel  styleClass="panelDatos" style="width: 100%;border: none!important;margin: 0!important;padding: 0!important;background: transparent!important;">
+                <p:commandLink value="Confirmar" action="paga" 
+                                styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
+                <p:commandButton value="Cancelar" action="limpia"/>
+            </p:outputPanel>
+
         </ui:define>
 
-        <ui:define name="logout">
-            <h:form style="width: 100%">
-                <p:commandButton action="#{sesionTPVBean.suspendeSesion()}" value="Pausar" style="float: right;margin-right: 10px;"/>
-            </h:form>
-        </ui:define>
 
-        <ui:define name="menuLateral">        
-            <ui:include src="/menus/terminalCaja.xhtml"/>
-        </ui:define>
+        <ui:define name="cabecera">
 
-        <ui:define name="title">
-            <h:outputText value="Creación de Factura Venta"></h:outputText>
-        </ui:define>
-
-        <ui:define name="body">
             <style type="text/css">
                 .col1{
                     width: 10%
@@ -66,223 +54,208 @@
                     text-align: left;
                 }
             </style>
-            <h:form id="FacturaVentaForm">
-
-
-                <div class="ui-grid ui-grid-responsive">
-                    <div class="ui-grid-row" style="width: 100%;">
-                        <div class="ui-grid-col-8">
-                            <div style="background-color: #ddd;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
-                                 -moz-border-radius: 5px;
-                                 border-radius: 5px;
-                                 margin-bottom: 5px">
-                                <p:outputPanel styleClass="escuchaSeleccionCuota">
-                                    <h:panelGrid columns="4" style="width: 100%" columnClasses="col1,col2,col1,col2">
-                                        <h:outputText value="Emisión: "/>
-                                        <p:calendar value="#{desembolsaBean.facturaVenta.fechaEmision}" locale="es" pattern="#{formato.patronFecha}"/>
-
-                                        <h:outputText value="Condicion de Venta: "/>
-
-                                        <p:selectOneMenu value="#{desembolsaBean.facturaVenta.condicionVenta}">
-                                            <f:selectItems value="#{productorEnums.obtCondicionesVenta()}"/>
-                                        </p:selectOneMenu>
-
-                                        <h:outputText value="Cobrador: "/>
-
-                                        <p:autoComplete value="#{desembolsaBean.facturaVenta.cobrador}"  id="autoCompleteCobrador" size="50"
-                                                        completeMethod="#{autoCompleteCobrador.completar}"
-                                                        forceSelection="true" converter="cobradorConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.toString()}"
-                                                        >
-
-                                        </p:autoComplete>
-
-
-                                        <h:outputText value="Cant. Cuotas: "/>
-                                        <h:inputText value="#{desembolsaBean.facturaVenta.cantidadCuota}"
-                                                     size="3" style="max-width: 30px" maxlength="3" disabled="true"/>
 
 
 
-                                        <h:outputText value="Razon Social: "/>
-                                        <h:inputText value="#{desembolsaBean.facturaVenta.razonSocial}"  style="width: 95%"/>
-                                        <h:outputText value="RUC: "/>
-                                        <h:inputText value="#{desembolsaBean.facturaVenta.ruc}"/>
-                                        <h:outputText value="Direccion: "/>
-                                        <h:inputText value="#{desembolsaBean.facturaVenta.direccion}"  style="width: 95%"/>
+            <div class="ui-grid ui-grid-responsive">
+                <div class="ui-grid-row" style="width: 100%;">
+                    <div class="ui-grid-col-8">
+                        <div style="background-color: #ddd;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
+                             -moz-border-radius: 5px;
+                             border-radius: 5px;
+                             margin-bottom: 5px">
+                            <p:outputPanel styleClass="escuchaSeleccionCuota">
+                                <h:panelGrid columns="4" style="width: 100%" columnClasses="col1,col2,col1,col2">
+                                    <h:outputText value="Emisión: "/>
+                                    <p:calendar value="#{desembolsaBean.facturaVenta.fechaEmision}" locale="es" pattern="#{formato.patronFecha}"/>
+
+                                    <h:outputText value="Condicion de Venta: "/>
+
+                                    <p:selectOneMenu value="#{desembolsaBean.facturaVenta.condicionVenta}">
+                                        <f:selectItems value="#{productorEnums.obtCondicionesVenta()}"/>
+                                    </p:selectOneMenu>
+
+                                    <h:outputText value="Cobrador: "/>
+
+                                    <p:autoComplete value="#{desembolsaBean.facturaVenta.cobrador}"  id="autoCompleteCobrador" size="50"
+                                                    completeMethod="#{autoCompleteCobrador.completar}"
+                                                    forceSelection="true" converter="cobradorConverter" var="c" itemValue="#{c}" itemLabel="#{c.nroDocumento}  #{c.toString()}"
+                                                    >
+
+                                    </p:autoComplete>
 
 
-                                    </h:panelGrid>
-                                </p:outputPanel>
-                            </div>
-
-                        </div>  
+                                    <h:outputText value="Cant. Cuotas: "/>
+                                    <h:inputText value="#{desembolsaBean.facturaVenta.cantidadCuota}"
+                                                 size="3" style="max-width: 30px" maxlength="3" disabled="true"/>
 
 
-                        <div class="ui-grid-col-4">
-                            <div style="background-color: #ddd;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
-                                 -moz-border-radius: 5px;
-                                 border-radius: 5px;
-                                 margin-bottom: 5px;
-                                 margin-left: 20px;
-                                 text-align: center">
 
-                                <h:panelGrid columns="1" style="width: 50%;margin: 0 auto 0 auto">
-                                    <h:outputText value="#{desembolsaBean.facturaVenta.empresa.razonSocial}" style="font-size: 14pt; font-weight: bold;"/>
-                                    <h:panelGrid columns="2">
-                                        <h:outputText value="Timbrado:" style="font-size: 10pt; font-weight: bold;"/>
-                                        <h:inputText value="#{desembolsaBean.facturaVenta.timbrado}" style="font-size: 10pt; font-weight: bold;" 
-                                                     binding="#{timbrado}" 
-                                                     required="true"
-                                                     id="timbrado"/>
-                                    </h:panelGrid>
+                                    <h:outputText value="Razon Social: "/>
+                                    <h:inputText value="#{desembolsaBean.facturaVenta.razonSocial}"  style="width: 95%"/>
+                                    <h:outputText value="RUC: "/>
+                                    <h:inputText value="#{desembolsaBean.facturaVenta.ruc}"/>
+                                    <h:outputText value="Direccion: "/>
+                                    <h:inputText value="#{desembolsaBean.facturaVenta.direccion}"  style="width: 95%"/>
 
-                                    <h:outputText value="RUC: #{desembolsaBean.facturaVenta.empresa.ruc}" style="font-size: 12pt; font-weight: bold;"/>
-                                    <h:panelGrid columns="6">
-                                        <h:outputText value="Nro.:" style="font-size: 12pt; font-weight: bold;"/>
-                                        <h:inputText value="#{desembolsaBean.facturaVenta.codEstablecimiento}" size="3" style="font-size: 12pt; font-weight: bold; max-width: 30px" maxlength="3" 
-                                                     binding="#{codEstablecimiento}"
-                                                     id="codEstablecimiento"
-                                                     required="true"/>
-                                        <h:outputText value=" - " style="font-size: 12pt; font-weight: bold;"/>
-                                        <h:inputText value="#{desembolsaBean.facturaVenta.puntoExpedicion}" size="3" style="font-size: 12pt; font-weight: bold;max-width: 30px" maxlength="3" 
-                                                     binding="#{puntoExpedicion}"
-                                                     id="puntoExpedicion"
-                                                     required="true"/>
-                                        <h:outputText value=" - " style="font-size: 12pt; font-weight: bold;"/>
-                                        <h:inputText value="#{desembolsaBean.facturaVenta.numero}" size="7" style="font-size: 12pt; font-weight: bold;" maxlength="7"
-                                                     id="numero"
-                                                     required="true">
 
-                                            <p:ajax event="blur" update="timbrado,codEstablecimiento,puntoExpedicion,numero" process="timbrado,codEstablecimiento,puntoExpedicion,numero"/>
+                                </h:panelGrid>
+                            </p:outputPanel>
+                        </div>
 
-                                            <f:validator validatorId="validadorNroFactura"/>
-                                            <f:attribute name="timbrado" value="#{timbrado}" />
-                                            <f:attribute name="codEstablecimiento" value="#{codEstablecimiento}" />
-                                            <f:attribute name="puntoExpedicion" value="#{puntoExpedicion}" />
-                                        </h:inputText>
-                                    </h:panelGrid>
+                    </div>  
+
+
+                    <div class="ui-grid-col-4">
+                        <div style="background-color: #ddd;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
+                             -moz-border-radius: 5px;
+                             border-radius: 5px;
+                             margin-bottom: 5px;
+                             margin-left: 20px;
+                             text-align: center">
+
+                            <h:panelGrid columns="1" style="width: 50%;margin: 0 auto 0 auto">
+                                <h:outputText value="#{desembolsaBean.facturaVenta.empresa.razonSocial}" style="font-size: 14pt; font-weight: bold;"/>
+                                <h:panelGrid columns="2">
+                                    <h:outputText value="Timbrado:" style="font-size: 10pt; font-weight: bold;"/>
+                                    <h:inputText value="#{desembolsaBean.facturaVenta.timbrado}" style="font-size: 10pt; font-weight: bold;" 
+                                                 binding="#{timbrado}" 
+                                                 required="true"
+                                                 id="timbrado"/>
                                 </h:panelGrid>
 
+                                <h:outputText value="RUC: #{desembolsaBean.facturaVenta.empresa.ruc}" style="font-size: 12pt; font-weight: bold;"/>
+                                <h:panelGrid columns="6">
+                                    <h:outputText value="Nro.:" style="font-size: 12pt; font-weight: bold;"/>
+                                    <h:inputText value="#{desembolsaBean.facturaVenta.codEstablecimiento}" size="3" style="font-size: 12pt; font-weight: bold; max-width: 30px" maxlength="3" 
+                                                 binding="#{codEstablecimiento}"
+                                                 id="codEstablecimiento"
+                                                 required="true"/>
+                                    <h:outputText value=" - " style="font-size: 12pt; font-weight: bold;"/>
+                                    <h:inputText value="#{desembolsaBean.facturaVenta.puntoExpedicion}" size="3" style="font-size: 12pt; font-weight: bold;max-width: 30px" maxlength="3" 
+                                                 binding="#{puntoExpedicion}"
+                                                 id="puntoExpedicion"
+                                                 required="true"/>
+                                    <h:outputText value=" - " style="font-size: 12pt; font-weight: bold;"/>
+                                    <h:inputText value="#{desembolsaBean.facturaVenta.numero}" size="7" style="font-size: 12pt; font-weight: bold;" maxlength="7"
+                                                 id="numero"
+                                                 required="true">
+
+                                        <p:ajax event="blur" update="timbrado,codEstablecimiento,puntoExpedicion,numero" process="timbrado,codEstablecimiento,puntoExpedicion,numero"/>
+
+                                        <f:validator validatorId="validadorNroFactura"/>
+                                        <f:attribute name="timbrado" value="#{timbrado}" />
+                                        <f:attribute name="codEstablecimiento" value="#{codEstablecimiento}" />
+                                        <f:attribute name="puntoExpedicion" value="#{puntoExpedicion}" />
+                                    </h:inputText>
+                                </h:panelGrid>
+                            </h:panelGrid>
 
 
-                            </div>
-                        </div>  
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-12" style="width: 100%;">
-                            <div style="background-color: #ddd;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
-                                 -moz-border-radius: 5px;
-                                 border-radius: 5px;
-                                 margin-bottom: 5px">
 
-                                <p:dataTable value="#{desembolsaBean.facturaVenta.detalles}" var="d">
-                                    <p:column headerText="Cant." style="width: 30px">
-                                        #{d.cantidad}
-                                    </p:column>
-                                    <p:column headerText="Descripción" style="width: 55%;text-align: left">
-                                        #{d.descripcion}
+                        </div>
+                    </div>  
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-12" style="width: 100%;">
+                        <div style="background-color: #ddd;border: 1px solid black;padding: 10px;min-height: 100px;-webkit-border-radius: 10px;
+                             -moz-border-radius: 5px;
+                             border-radius: 5px;
+                             margin-bottom: 5px">
 
-                                        <f:facet name="footer" class="izquierda">
-                                            <h:outputText value="SUBTOTALES" style="font-size: 10pt; font-weight: bold"/>
-                                        </f:facet>
+                            <p:dataTable value="#{desembolsaBean.facturaVenta.detalles}" var="d">
+                                <p:column headerText="Cant." style="width: 30px">
+                                    #{d.cantidad}
+                                </p:column>
+                                <p:column headerText="Descripción" style="width: 55%;text-align: left">
+                                    #{d.descripcion}
 
-                                    </p:column>
-                                    <p:column headerText="Precio Unitario" style="text-align: right">
-                                        <h:outputText value="#{d.precioUnitario}">
-                                            <f:convertNumber locale="#{formato.locale}"/>
-                                        </h:outputText>
-                                    </p:column>
-                                    <p:column headerText="Exenta" style="text-align: right">
-                                        <h:outputText value="#{d.exenta}">
-                                            <f:convertNumber locale="#{formato.locale}"/>
-                                        </h:outputText>
-                                        <f:facet name="footer" class="derecha">
-                                            <h:outputText value="#{desembolsaBean.facturaVenta.totalExento}" style="font-size: 10pt; font-weight: bold">
-                                                <f:convertNumber locale="#{formato.locale}"/>
-                                            </h:outputText>
-                                        </f:facet>
-                                    </p:column>
-                                    <p:column headerText="Gravada 05" style="text-align: right">
-                                        <h:outputText value="#{d.gravada05}">
-                                            <f:convertNumber locale="#{formato.locale}"/>
-                                        </h:outputText>
-                                        <f:facet name="footer" class="derecha">
-                                            <h:outputText value="#{desembolsaBean.facturaVenta.totalGravada05}" style="font-size: 10pt; font-weight: bold">
-                                                <f:convertNumber locale="#{formato.locale}"/>
-                                            </h:outputText>
-                                        </f:facet>
-                                    </p:column>
-                                    <p:column headerText="Gravada 10" style="text-align: right">
-                                        <h:outputText value="#{d.gravada10}">
-                                            <f:convertNumber locale="#{formato.locale}"/>
-                                        </h:outputText>
-
-                                        <f:facet name="footer" class="derecha">
-                                            <h:outputText value="#{desembolsaBean.facturaVenta.totalGravada10}" style="font-size: 10pt; font-weight: bold">
-                                                <f:convertNumber locale="#{formato.locale}"/>
-                                            </h:outputText>
-                                        </f:facet>
-                                    </p:column>
-
-                                    <f:facet name="footer">
-
-                                        <table width="100%" border="0" style="margin: 0; padding: 0;border: none;">
-                                            <tr>
-                                                <td width="80%" align="right" style="margin: 0; padding: 0;border: none;">
-                                                    <h:outputText value="TOTAL:" style="font-size: 14pt; font-weight: bold;margin-left: 50px"/>
-                                                </td>
-                                                <td width="20%" align="right" style="margin: 0; padding: 0;border: none;">
-                                                    <h:outputText value="#{desembolsaBean.facturaVenta.total}" style="font-size: 14pt; font-weight: bold">
-                                                        <f:convertNumber locale="#{formato.locale}"/>
-                                                    </h:outputText>    
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="margin: 0; padding: 0;border: none;margin-top: 10px" align="right">
-                                                    <h:outputText value="IVA 05:" style="font-size: 10pt; font-weight: bold;margin-left: 50px;margin-top: 15px"/>
-                                                    <h:outputText value="#{desembolsaBean.facturaVenta.iva05}" style="font-size: 10pt; font-weight: bold;margin-left: 30px;margin-top: 15px">
-                                                        <f:convertNumber locale="#{formato.locale}"/>
-                                                    </h:outputText>    
-                                                    <h:outputText value="IVA 10:" style="font-size: 10pt; font-weight: bold;margin-left: 50px;margin-top: 15px"/>
-                                                    <h:outputText value="#{desembolsaBean.facturaVenta.iva10}" style="font-size: 10pt; font-weight: bold;margin-left: 30px;margin-top: 15px">
-                                                        <f:convertNumber locale="#{formato.locale}"/>
-                                                    </h:outputText>    
-                                                    <h:outputText value="TOTAL IVA:" style="font-size: 10pt; font-weight: bold;margin-left: 50px;margin-top: 15px"/>
-
-                                                </td>
-                                                <td  style="margin: 0; padding: 0;border: none;margin-top: 10px" align="right">
-                                                    <h:outputText value="#{desembolsaBean.facturaVenta.totalIva}" style="font-size: 10pt; font-weight: bold;margin-left: 50px;margin-top: 15px">
-                                                        <f:convertNumber locale="#{formato.locale}"/>
-                                                    </h:outputText>    
-                                                </td>
-                                            </tr>
-                                        </table>
-
-
+                                    <f:facet name="footer" class="izquierda">
+                                        <h:outputText value="SUBTOTALES" style="font-size: 10pt; font-weight: bold"/>
                                     </f:facet>
-                                </p:dataTable>
-                            </div>
 
-                        </div>
-                    </div>
+                                </p:column>
+                                <p:column headerText="Precio Unitario" style="text-align: right">
+                                    <h:outputText value="#{d.precioUnitario}">
+                                        <f:convertNumber locale="#{formato.locale}"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Exenta" style="text-align: right">
+                                    <h:outputText value="#{d.exenta}">
+                                        <f:convertNumber locale="#{formato.locale}"/>
+                                    </h:outputText>
+                                    <f:facet name="footer" class="derecha">
+                                        <h:outputText value="#{desembolsaBean.facturaVenta.totalExento}" style="font-size: 10pt; font-weight: bold">
+                                            <f:convertNumber locale="#{formato.locale}"/>
+                                        </h:outputText>
+                                    </f:facet>
+                                </p:column>
+                                <p:column headerText="Gravada 05" style="text-align: right">
+                                    <h:outputText value="#{d.gravada05}">
+                                        <f:convertNumber locale="#{formato.locale}"/>
+                                    </h:outputText>
+                                    <f:facet name="footer" class="derecha">
+                                        <h:outputText value="#{desembolsaBean.facturaVenta.totalGravada05}" style="font-size: 10pt; font-weight: bold">
+                                            <f:convertNumber locale="#{formato.locale}"/>
+                                        </h:outputText>
+                                    </f:facet>
+                                </p:column>
+                                <p:column headerText="Gravada 10" style="text-align: right">
+                                    <h:outputText value="#{d.gravada10}">
+                                        <f:convertNumber locale="#{formato.locale}"/>
+                                    </h:outputText>
 
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-12" style="width: 100%;">
-                            <div style="background-color: #ddd;border: 1px solid black;padding: 10px;min-height: 50px;-webkit-border-radius: 10px;
-                                 -moz-border-radius: 5px;
-                                 border-radius: 5px;
-                                 margin-bottom: 5px;">
-                                <p:commandButton value="Cancelar" action="limpia" style="float: left"/>
-                                <p:commandButton value="Confirmar" action="paga" style="float: right"/>
-                            </div>
+                                    <f:facet name="footer" class="derecha">
+                                        <h:outputText value="#{desembolsaBean.facturaVenta.totalGravada10}" style="font-size: 10pt; font-weight: bold">
+                                            <f:convertNumber locale="#{formato.locale}"/>
+                                        </h:outputText>
+                                    </f:facet>
+                                </p:column>
+
+                                <f:facet name="footer">
+
+                                    <table width="100%" border="0" style="margin: 0; padding: 0;border: none;">
+                                        <tr>
+                                            <td width="80%" align="right" style="margin: 0; padding: 0;border: none;">
+                                                <h:outputText value="TOTAL:" style="font-size: 14pt; font-weight: bold;margin-left: 50px"/>
+                                            </td>
+                                            <td width="20%" align="right" style="margin: 0; padding: 0;border: none;">
+                                                <h:outputText value="#{desembolsaBean.facturaVenta.total}" style="font-size: 14pt; font-weight: bold">
+                                                    <f:convertNumber locale="#{formato.locale}"/>
+                                                </h:outputText>    
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="margin: 0; padding: 0;border: none;margin-top: 10px" align="right">
+                                                <h:outputText value="IVA 05:" style="font-size: 10pt; font-weight: bold;margin-left: 50px;margin-top: 15px"/>
+                                                <h:outputText value="#{desembolsaBean.facturaVenta.iva05}" style="font-size: 10pt; font-weight: bold;margin-left: 30px;margin-top: 15px">
+                                                    <f:convertNumber locale="#{formato.locale}"/>
+                                                </h:outputText>    
+                                                <h:outputText value="IVA 10:" style="font-size: 10pt; font-weight: bold;margin-left: 50px;margin-top: 15px"/>
+                                                <h:outputText value="#{desembolsaBean.facturaVenta.iva10}" style="font-size: 10pt; font-weight: bold;margin-left: 30px;margin-top: 15px">
+                                                    <f:convertNumber locale="#{formato.locale}"/>
+                                                </h:outputText>    
+                                                <h:outputText value="TOTAL IVA:" style="font-size: 10pt; font-weight: bold;margin-left: 50px;margin-top: 15px"/>
+
+                                            </td>
+                                            <td  style="margin: 0; padding: 0;border: none;margin-top: 10px" align="right">
+                                                <h:outputText value="#{desembolsaBean.facturaVenta.totalIva}" style="font-size: 10pt; font-weight: bold;margin-left: 50px;margin-top: 15px">
+                                                    <f:convertNumber locale="#{formato.locale}"/>
+                                                </h:outputText>    
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </f:facet>
+                            </p:dataTable>
                         </div>
+
                     </div>
                 </div>
 
-            </h:form>
-
-
+            </div>
         </ui:define>
-    </ui:composition>
+    </ui:decorate>
 
 </html>

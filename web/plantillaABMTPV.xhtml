@@ -14,22 +14,14 @@
                 <div style="display: table-cell;width: 80%;font-size: 12pt; color: white">
                     Usuario: #{request.userPrincipal} - #{sesionTPVBean.actual.puntoVenta.nombre}
                 </div>
-                <div style="display: table-cell;">
-                    <p:clock/>
-                </div>
-
+                
             </div>
         </ui:define>
 
         <ui:define name="logout">
-            <h:form style="width: 100%">
-                <p:commandButton action="#{sesionTPVBean.suspendeSesion()}" value="Pausar" style="float: right;margin-right: 10px;"/>
-            </h:form>
+            <p:clock/>
         </ui:define>
 
-        <ui:define name="menuLateral">
-            <ui:include src="/menus/terminalCaja.xhtml"/>
-        </ui:define>
 
         <ui:define name="title">
             #{titulo}
@@ -136,7 +128,9 @@
                     box-shadow:         0px 2px 1px rgba(50, 50, 50, 0.75);
                 }
 
-
+                .ui-button {
+                    margin-top: 0px !important; 
+                }
 
             </style>
             <h:form enctype="#{enctype}" id="formABM">
@@ -153,7 +147,7 @@
                             <ui:insert name="otrasAcciones"/>
                         </div>
                         <div style="display: table-cell;width: 33%;text-align: right;">
-                            <div style="padding-right: 20px;">
+                            <div style="padding-right: 20px;padding-top: 15px">
                                 <ui:insert name="acciones"/>
                             </div>
 

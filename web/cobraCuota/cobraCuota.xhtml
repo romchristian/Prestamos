@@ -3,39 +3,23 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                template="/template.xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:gpymes="http://java.sun.com/jsf/composite/gpymes">
 
+    <ui:decorate template="/plantillaABMTPV.xhtml">
 
-    <ui:define name="menuModulos">
-        <div style="display: table">
-            <div style="display: table-cell;width: 80%;font-size: 12pt; color: white">
-                Usuario: #{request.userPrincipal} - #{sesionTPVBean.actual.puntoVenta.nombre}
-            </div>
-            <div style="display: table-cell;">
-                <p:clock/>
-            </div>
+        <ui:param name="titulo" value="Cobro de Cuotas"/>
 
-        </div>
-    </ui:define>
 
-    <ui:define name="logout">
-        <h:form style="width: 100%">
-            <p:commandButton action="#{sesionTPVBean.suspendeSesion()}" value="Pausar" style="float: right;margin-right: 10px;"/>
-        </h:form>
-    </ui:define>
+        <ui:define name="acciones">
+            <p:outputPanel  styleClass="panelDatos" style="width: 100%;border: none!important;margin: 0!important;padding: 0!important;background: transparent!important;">
+                <p:commandButton value="Cancelar" action="endFlowCuota"/>
+            </p:outputPanel>
 
-    <ui:define name="menuLateral">        
-        <ui:include src="/menus/terminalCaja.xhtml"/>
-    </ui:define>
+        </ui:define>
 
-    <ui:define name="title">
-        Cobro de cuotas
-    </ui:define>
-    <ui:define name="body">
 
-        <h:form id="formCobroCuota">
+        <ui:define name="cabecera">
 
 
             <h:panelGroup>
@@ -204,7 +188,7 @@
 
                                     <h:panelGroup style="text-align: center" rendered="#{not c.esPrestamo}">
                                         <p:graphicImage library="img" name="check.png" rendered="#{c.detPrestamo.estado == 'CANCELADO'}"/>
-                                        <p:commandLink update=":formCobroCuota:cuotaPanel" oncomplete="PF('cuotaDialog').show()" value="Pagar" rendered="#{(c.detPrestamo.estado == 'PENDIENTE')}" disabled="#{c.disabledPagar}">
+                                        <p:commandLink update=":formABM:cuotaPanel" oncomplete="PF('cuotaDialog').show()" value="Pagar" rendered="#{(c.detPrestamo.estado == 'PENDIENTE')}" disabled="#{c.disabledPagar}">
                                             <f:setPropertyActionListener value="#{c}" target="#{cobraCuotaBean.cuotaSeleccionada}" />
                                         </p:commandLink>
                                     </h:panelGroup>
@@ -275,8 +259,8 @@
 
             </h:panelGroup>
 
-        </h:form>
 
-    </ui:define>
+        </ui:define>
 
+    </ui:decorate>
 </ui:composition>

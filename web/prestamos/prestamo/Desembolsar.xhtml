@@ -77,6 +77,7 @@
                                         <p:spacer/>
                                         <p:spacer/>
                                         <p:commandButton value="Buscar" action="#{prestamoController.buscarADesembolsar()}" update="datalist"/>
+                                        
 
                                     </h:panelGrid>
 
@@ -103,6 +104,7 @@
                                         <p:commandButton id="desembolsarButton" action="#{prestamoController.desembolsa()}" value="Desembolsa" update="datalist"
                                                          disabled="#{prestamoController.selected.estado == 'EN_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
                                                          rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_desembolsa'))}"/>
+                                       
                                     </f:facet>
 
                                     <p:column style="font-size: 12px">

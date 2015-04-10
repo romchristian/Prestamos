@@ -68,7 +68,7 @@ public class ReporteController implements Serializable {
         Connection conn = null;
         try {
             Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/prestamos", "postgres", "postgres");
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost/prestamos", "postgres", "postgres");
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         } catch (ClassNotFoundException ex) {
