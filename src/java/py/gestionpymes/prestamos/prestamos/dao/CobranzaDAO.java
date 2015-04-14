@@ -145,13 +145,13 @@ public class CobranzaDAO {
                 if ((df.getRefMonto().compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0)) {
                     OperacionCobroCuotaFactura occ = new OperacionCobroCuotaFactura(df, new BigDecimal(BigInteger.ZERO), diffDescuento.multiply(new BigDecimal(0.8)));
                     occ.setCuentaCliente(cc);
-                    occ.setFecha(new Date());
+                    occ.setFecha(df.getFacturaVenta().getFechaEmision());
                     detCuentaClienteDAO.create(occ);
                     System.out.println("estoy en IF moratorio: " + df.getRefMonto());
                 } else {
                     OperacionCobroCuotaFactura occ = new OperacionCobroCuotaFactura(df, new BigDecimal(BigInteger.ZERO), diffDescuento.multiply(new BigDecimal(0.2)));
                     occ.setCuentaCliente(cc);
-                    occ.setFecha(new Date());
+                    occ.setFecha(df.getFacturaVenta().getFechaEmision());
                     detCuentaClienteDAO.create(occ);
                     System.out.println("deberia ser el ELSE de punitorio: " + df.getRefMonto());
                 }
@@ -161,13 +161,13 @@ public class CobranzaDAO {
 
                 OperacionCobroCuotaFactura occ = new OperacionCobroCuotaFactura(df, new BigDecimal(BigInteger.ZERO), monto.multiply(new BigDecimal(-1)));
                 occ.setCuentaCliente(cc);
-                occ.setFecha(new Date());
+                occ.setFecha(df.getFacturaVenta().getFechaEmision());
                 detCuentaClienteDAO.create(occ);
                 System.out.println("Hay descuento el monto es: " + df.getRefMonto());
             } else {
                 OperacionCobroCuotaFactura occ = new OperacionCobroCuotaFactura(df);
                 occ.setCuentaCliente(cc);
-                occ.setFecha(new Date());
+                occ.setFecha(df.getFacturaVenta().getFechaEmision());
                 detCuentaClienteDAO.create(occ);
                 System.out.println("Caso por default: " + df.getRefMonto());
             }
@@ -177,7 +177,7 @@ public class CobranzaDAO {
 
                 OperacionCobroCuotaFactura occ2 = new OperacionCobroCuotaFactura(df, true);
                 occ2.setCuentaCliente(cc);
-                occ2.setFecha(new Date());
+                occ2.setFecha(df.getFacturaVenta().getFechaEmision());
                 detCuentaClienteDAO.create(occ2);
             }
 

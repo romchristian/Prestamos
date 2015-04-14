@@ -39,6 +39,7 @@ public class OperacionCobroCuotaFactura extends DetCuentaCliente<FacturaVentaDet
         setSucursal(prestamo.getSucursal());
         setMontoCredito(new BigDecimal(BigInteger.ZERO));
         setMoneda(d.getFacturaVenta().getMoneda());
+        setFecha(d.getFacturaVenta().getFechaEmision());
         BigDecimal monto = (d.getGravada10() == null ? new BigDecimal(BigInteger.ZERO) : d.getGravada10()).add(d.getGravada05() == null ? new BigDecimal(BigInteger.ZERO) : d.getGravada05())
                 .add(d.getExenta() == null ? new BigDecimal(BigInteger.ZERO) : d.getExenta());
 

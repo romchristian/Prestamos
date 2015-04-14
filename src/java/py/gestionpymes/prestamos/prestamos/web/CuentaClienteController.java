@@ -30,13 +30,13 @@ public class CuentaClienteController implements Serializable {
     private List<DetCuentaCliente> detalles;
 
     public void busca() {
-        System.out.println("HOLA 1");
+        //System.out.println("HOLA 1");
         if (clienteSeleccionado != null) {
-            System.out.println("HOLA 2");
-            System.out.println("Cliente: " + clienteSeleccionado.devuelveNombreCompleto());
+//            System.out.println("HOLA 2");
+//            System.out.println("Cliente: " + clienteSeleccionado.devuelveNombreCompleto());
             cuentaClienteSeleccionada = ejb.findPorCliente(clienteSeleccionado);
-            System.out.println("Cuenta:" + cuentaClienteSeleccionada);
-            System.out.println("Detalles: " + cuentaClienteSeleccionada.getDetalles());
+//            System.out.println("Cuenta:" + cuentaClienteSeleccionada);
+//            System.out.println("Detalles: " + cuentaClienteSeleccionada.getDetalles());
             if (cuentaClienteSeleccionada != null) {
                 detalles = ejb.findDetalles(cuentaClienteSeleccionada);
                 cuentaClienteSeleccionada.setDetalles(detalles);

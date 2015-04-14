@@ -13,10 +13,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.flow.FlowScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.joda.time.DateTime;
 import py.gestionpymes.prestamos.adm.dao.MonedaFacade;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Estado;
@@ -61,6 +63,15 @@ public class DesembolsaBean implements Serializable {
     private EstadoPrestamo estadoPrestamoFiltro;
     private Cliente clienteFiltro;
     private List<Prestamo> items = null;
+    
+    
+    @PostConstruct
+    public void inint(){
+     DateTime dt = DateTime.now();
+        dt.dayOfMonth().getMaximumValue();
+        this.inicioFiltro = new DateTime(dt.getYear(), dt.getMonthOfYear(), 1, 0,0).toDate();
+        this.finFiltro = new DateTime(dt.getYear(), dt.getMonthOfYear(), dt.dayOfMonth().getMaximumValue(), 0,0).toDate();
+    }
 
     public boolean haySeleccion() {
         return getSelected().getId() != null;

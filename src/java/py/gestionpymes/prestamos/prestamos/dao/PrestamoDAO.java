@@ -113,8 +113,8 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
         }
 
         op.setCuentaCliente(cc);
-        //HACER: La fecha del desembolso debe ser igual a la fecha del prestamo
-        op.setFecha(prestamo.getFecha());
+        //HACER: La fecha del desembolso debe ser igual a la fechade inicio del prestamo
+        op.setFecha(prestamo.getFechaInicioOperacion());
 
         detCuentaClienteDAO.create(op);
 
@@ -139,7 +139,7 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
 
         op.setCuentaCliente(cc);
         //HACER: La fecha del desembolso debe ser igual a la fecha del prestamo
-        op.setFecha(prestamo.getFecha());
+        op.setFecha(prestamo.getFechaInicioOperacion());
 
         detCuentaClienteDAO.create(op);
 

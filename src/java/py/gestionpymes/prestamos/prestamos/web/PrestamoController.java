@@ -447,8 +447,10 @@ public class PrestamoController implements Serializable {
         return "List.xhtml?faces-redirect=true";
     }
     
-    public void update() {
+    public String update() {
         persist(PersistAction.UPDATE, "El prestamo se actualizo se creo EXITOSAMENTE!");
+        
+        return "List.xhtml?faces-redirect=true";
     }
     
     public void destroy() {

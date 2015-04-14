@@ -36,6 +36,7 @@ public class TreeCuota {
     private String cliente;
     private String nroDocumento;
     private Date fechaVencimiento;
+    private Date ultimoPago;
     private int nroCuota;
     private BigDecimal montoCuota;
     private Integer diasMora;
@@ -80,6 +81,7 @@ public class TreeCuota {
         this.detPrestamo = detPrestamo;
         this.descDetPrestamo = "Cuota # " + detPrestamo.getNroCuota();
         this.fechaVencimiento = detPrestamo.getFechaVencimiento();
+        this.ultimoPago = detPrestamo.getUltimoPago();
         this.nroCuota = detPrestamo.getNroCuota();
         this.montoCuota = detPrestamo.getMontoCuota().setScale(0, RoundingMode.HALF_EVEN);
         this.diasMora = detPrestamo.getDiasMora();
@@ -299,6 +301,14 @@ public class TreeCuota {
 
     public void setFechaVencimiento(Date fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public Date getUltimoPago() {
+        return ultimoPago;
+    }
+
+    public void setUltimoPago(Date ultimoPago) {
+        this.ultimoPago = ultimoPago;
     }
 
     public BigDecimal getMontoCuota() {

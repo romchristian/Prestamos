@@ -33,7 +33,7 @@ public abstract class DetCuentaCliente<T> implements Serializable {
     @ManyToOne
     private CuentaCliente cuentaCliente;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date fecha = new Date();
+    private Date fecha;
     @Enumerated(EnumType.STRING)
     private TipoOperacion tipoOperacion;
     private String descripcion;

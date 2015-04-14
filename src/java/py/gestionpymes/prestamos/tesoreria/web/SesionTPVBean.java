@@ -7,6 +7,7 @@ package py.gestionpymes.prestamos.tesoreria.web;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
@@ -102,10 +103,10 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     }
 
     public BigDecimal getTotalTransacciones() {
-        if(totalTransacciones == null){
+        if (totalTransacciones == null) {
             actualizaTotalTransacciones();
         }
-        if(totalTransacciones == null){
+        if (totalTransacciones == null) {
             totalTransacciones = new BigDecimal(BigInteger.ZERO);
         }
         return totalTransacciones;
@@ -120,14 +121,13 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         BigDecimal saldoInicial = null;
         if (getActual().getSaldoInicial() == null) {
             saldoInicial = new BigDecimal(BigInteger.ZERO);
-        }else{
+        } else {
             saldoInicial = getActual().getSaldoInicial();
         }
-        System.out.println("Actual: "  + getActual());
-        System.out.println("Saldo Inicial: "  + getActual().getSaldoInicial());
-        System.out.println("Saldo Inicial 2: "  + saldoInicial);
-        
-        
+        System.out.println("Actual: " + getActual());
+        System.out.println("Saldo Inicial: " + getActual().getSaldoInicial());
+        System.out.println("Saldo Inicial 2: " + saldoInicial);
+
         saldoTeorico = saldoInicial.add(getTotalTransacciones());
         return saldoTeorico;
     }
@@ -202,7 +202,7 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     }
 
     public String inciaSesion(SesionTPV s) {
-        
+
         setActual(s);
         getActual().setEstado("ABIERTA");
         ejb.edit(getActual());
@@ -242,9 +242,10 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         getActual().setDiferencia(diferencia.setScale(0, RoundingMode.HALF_EVEN));
         getActual().setFechaCierre(new Date());
         getActual().setEstado("CERRADA");
-        ejb.cierre(getActual());
         
-        imprimeReporteCajaCierre();
+        //imprimeReporteCajaCierre();
+        
+        ejb.cierre(getActual());
         
         return "listado.xhtml";
 
@@ -282,17 +283,20 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
 
         }
     }
-    
-    public void imprimeReporteCajaCierre() {
+
+    public void imprimeReporteCajaCierre(SesionTPV s) {
         
+        setActual(s);
         
-        
-               
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("idSesionTPV", getActual().getId());//nf.format(selected.getId())
-        params.put("cajero",credencial.getUsuario().getNombre() + " " +credencial.getUsuario().getApellido());
-       
-        
+        params.put("cajero", credencial.getUsuario().getNombre() + " " + credencial.getUsuario().getApellido());
+        params.put("saldoInicial",(getActual().getSaldoInicial()==null?new BigDecimal(BigInteger.ZERO):getActual().getSaldoInicial().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("totalTransacciones",(getActual().getTotalTransacciones()==null?new BigDecimal(BigInteger.ZERO):getActual().getTotalTransacciones().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("saldoCierre",(getActual().getSaldoCierre()==null?new BigDecimal(BigInteger.ZERO):getActual().getSaldoCierre().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("diferencia",(getActual().getDiferencia()==null?new BigDecimal(BigInteger.ZERO):getActual().getDiferencia().setScale(0, RoundingMode.HALF_EVEN)));
+
+
         reporteController.generaPDF(params, "reportes/tesoreria/ReporteTesoreria.jasper", "cierre_caja" + getActual().getPuntoVenta().getNombre());
     }
 

@@ -119,8 +119,8 @@ public class PrestamoHistoricoDAO extends AbstractFacade<py.gestionpymes.prestam
         op.setFecha(prestamo.getFecha());
 
         detCuentaClienteDAO.create(op);
-
-        prestamo.setEstado(EstadoPrestamo.VIGENTE);
+        //Los prestamosHistoricos se supone deben crearse como canccelados.
+        prestamo.setEstado(EstadoPrestamo.CANCELADO);
         edit(prestamo);
 
         return prestamo;

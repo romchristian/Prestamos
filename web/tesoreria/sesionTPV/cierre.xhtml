@@ -16,7 +16,7 @@
             <p:outputPanel  styleClass="panelDatos" style="width: 100%;border: none!important;margin: 0!important;padding: 0!important;background: transparent!important;">
 
 
-                <p:commandLink value="Confirmar" action="#{sesionTPVBean.cierraSesion()}" 
+                <p:commandLink value="Confirmar" action="#{sesionTPVBean.cierraSesion()}" ajax="false"
                                styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
                                />
                 <p:commandButton value="Cancelar" action="terminalCaja"/>

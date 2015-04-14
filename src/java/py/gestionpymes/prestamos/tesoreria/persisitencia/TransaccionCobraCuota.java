@@ -30,7 +30,7 @@ public class TransaccionCobraCuota extends Transaccion implements Serializable{
 
     public TransaccionCobraCuota() {
     }
-
+    //Aqui debo afectar la fecha de pago
     public TransaccionCobraCuota(FacturaVenta facturaVenta, Prestamo prestamo, SesionTPV sesionTPV, String descripcion, BigDecimal monto, Moneda moneda) {
         super(sesionTPV, TipoTransaccion.ENTRADA, descripcion, monto, moneda,sesionTPV.getPuntoVenta());
         this.facturaVenta = facturaVenta;

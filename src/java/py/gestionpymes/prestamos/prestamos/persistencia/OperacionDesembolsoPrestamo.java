@@ -31,6 +31,7 @@ public class OperacionDesembolsoPrestamo extends DetCuentaCliente<Prestamo> {
         setMontoCredito(prestamo.getTotalOperacion());
         setMontoDebito(new BigDecimal(BigInteger.ZERO));
         setDescripcion("Desembolso prestamo nro " + prestamo.getId());
+        setFecha(prestamo.getFechaInicioOperacion());
         
     }
     
@@ -43,6 +44,7 @@ public class OperacionDesembolsoPrestamo extends DetCuentaCliente<Prestamo> {
         setMontoCredito(prestamo.getTotalOperacion());
         setMontoDebito(new BigDecimal(BigInteger.ZERO));
         setDescripcion("Desembolso prestamo nro " + prestamo.getId());
+        setFecha(prestamo.getFechaInicioOperacion());
         
     }
 
