@@ -52,12 +52,23 @@ public class SesionTPV implements Serializable {
     private List<ValorEfectivo> valorEfectivosInicial;
     @Transient
     private List<ValorEfectivo> valorEfectivosFinal;
+    private boolean cerrarConDiferencia;
 
     public SesionTPV() {
         fechaApertura = new Date();
         estado = "CREADO";
     }
 
+    public boolean isCerrarConDiferencia() {
+        return cerrarConDiferencia;
+    }
+
+    public void setCerrarConDiferencia(boolean cerrarConDiferencia) {
+        this.cerrarConDiferencia = cerrarConDiferencia;
+    }
+
+    
+    
     public List<ValorEfectivo> getValorEfectivosInicial() {
         valorEfectivosInicial = new ArrayList<ValorEfectivo>();
         if (valorEfectivos == null) {

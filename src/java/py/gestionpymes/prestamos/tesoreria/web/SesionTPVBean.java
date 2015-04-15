@@ -23,10 +23,13 @@ import javax.inject.Named;
 import org.primefaces.event.FlowEvent;
 
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
+import py.gestionpymes.prestamos.adm.dao.QueryParameter;
+import py.gestionpymes.prestamos.adm.persistencia.Estado;
 import py.gestionpymes.prestamos.adm.persistencia.Usuario;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
 import py.gestionpymes.prestamos.adm.web.util.Credencial;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
+import py.gestionpymes.prestamos.adm.web.util.MesEnTexto;
 import py.gestionpymes.prestamos.adm.web.util.UsuarioLogueado;
 import py.gestionpymes.prestamos.contabilidad.persistencia.MetodoPago;
 import py.gestionpymes.prestamos.contabilidad.servicio.MetodoPagoDAO;
@@ -71,7 +74,79 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     private List<ResumenTransaccion> resumenTransacciones;
     @Inject
     private ReporteController reporteController;
+    private List<SesionTPV> items;
+    private PuntoVenta puntoVentaFiltro;
+    private String estadoFiltro;
+    private Date inicioFiltro;
+    private Date finFiltro;
 
+    public PuntoVenta getPuntoVentaFiltro() {
+        return puntoVentaFiltro;
+    }
+
+    public void setPuntoVentaFiltro(PuntoVenta puntoVentaFiltro) {
+        this.puntoVentaFiltro = puntoVentaFiltro;
+    }
+
+    public String getEstadoFiltro() {
+        return estadoFiltro;
+    }
+
+    public void setEstadoFiltro(String estadoFiltro) {
+        this.estadoFiltro = estadoFiltro;
+    }
+
+   
+
+    public Date getInicioFiltro() {
+        return inicioFiltro;
+    }
+
+    public void setInicioFiltro(Date inicioFiltro) {
+        this.inicioFiltro = inicioFiltro;
+    }
+
+    public Date getFinFiltro() {
+        return finFiltro;
+    }
+
+    public void setFinFiltro(Date finFiltro) {
+        this.finFiltro = finFiltro;
+    }
+    
+    
+    public void buscar(){
+        StringBuilder consulta;
+        consulta = new StringBuilder("select s from SesionTPV s where 1=1 ");
+        Map<String,Object> params = new HashMap<>();
+        
+        if(puntoVentaFiltro != null){
+            consulta.append(" and s.puntoVenta = :puntoVenta");
+            params.put("puntoVenta", puntoVentaFiltro);
+        }
+        
+        if(inicioFiltro != null && finFiltro != null){
+            consulta.append(" and s.fechaApertura between :inicio and :fin");
+            params.put("inicio", inicioFiltro);
+            params.put("fin", finFiltro);
+        }
+       
+        if(estadoFiltro != null && estadoFiltro.length() > 0){
+            consulta.append(" and s.estado = :estado ");
+            params.put("estado", estadoFiltro);
+        }
+        
+        items = ejb.findAll(consulta.toString(),params);
+    }
+
+    public List<SesionTPV> getItems() {
+        return items;
+    }
+
+    public void setItems(List<SesionTPV> items) {
+        this.items = items;
+    }
+   
     public List<Transaccion> getTransacciones() {
         return transacciones;
     }

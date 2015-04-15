@@ -21,6 +21,8 @@
     <br/>   
 
     <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 30px;font-size: 9pt">
+        <h:commandLink  value="Control Sesiones" action="/tesoreria/sesionTPV/control" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}"/>
         <h:commandLink  value="Secuencia" action="/tesoreria/secuencia/listado" 
                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}"/>
         <h:commandLink  value="Métodos de Pago" action="/tesoreria/metodopago/listado" 

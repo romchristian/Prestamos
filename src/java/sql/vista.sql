@@ -98,3 +98,8 @@ INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUE
 -- );
 -- 
 -- insert into version_app ( ultimavista,version) values('vista_2','1.0.1');
+
+
+-- 14/04/2015 
+
+ALTER TABLE sesiontpv add column cerrarConDiferencia boolean;

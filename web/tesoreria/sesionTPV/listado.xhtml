@@ -18,47 +18,51 @@
         </ui:define>
 
         <ui:define name="body">
-            <p:dataTable value="#{misSesiones}" var="m" styleClass="resultado" style="font-size: 9pt">
-                <f:facet name="header">
-                    <p:commandButton action="#{sesionTPVBean.preparaCreacion()}" 
-                             value="Crear"
-                             icon="ui-icon-plus"
-                             styleClass="botonVerde flotaIzquierda"/>
-                    <p:spacer/>
-                    
-                </f:facet>                                
-                <p:column headerText="Nombre" style="font-size: 9pt">
-                    <h:outputText value="#{m.puntoVenta.nombre}/#{m.usuario.nombre}/ #{m.id}"/>
-                </p:column>
-                <p:column headerText="Fecha Arpertura" style="font-size: 9pt">
-                    <h:outputText value="#{m.fechaApertura}">
-                        <f:convertDateTime  pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion"/>
-                    </h:outputText>
-                </p:column>
-                <p:column headerText="Fecha Cierre" style="font-size: 9pt">
-                    <h:outputText value="#{m.fechaCierre}">
-                        <f:convertDateTime  pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion"/>
-                    </h:outputText>
-                </p:column>
-                <p:column headerText="Saldo Inicial" style="font-size: 9pt">
-                    <h:outputText value="#{m.saldoInicial}">
-                        <f:convertNumber locale="#{formato.locale}"/>
-                    </h:outputText>
-                </p:column>               
-                <p:column headerText="Saldo Cierre" style="font-size: 9pt">
-                    <h:outputText value="#{m.saldoCierre}">
-                        <f:convertNumber locale="#{formato.locale}"/>
-                    </h:outputText>
-                </p:column>
-                
-                
-                <p:column headerText="Acciones" style="font-size: 9pt">
-<!--                    <h:commandButton action="{sesionTPVBean.preparaEdicion(m)}" value="Editar" rendered="{autorizador.hayPermisoAccion('EditaOrdenCompra')}"/>-->
-                    <p:commandButton action="#{sesionTPVBean.inciaSesion(m)}" value="Comenzar" rendered="#{(m.estado != 'CERRADA')}"/>
-<!--                    <p:commandButton action="{sesionTPVBean.imprimeReporteCajaCierre(m)}" value="Imprimir Reporte" rendered="{(m.estado == 'CERRADA')}"/>-->
-                    
-                </p:column>
-            </p:dataTable>
+            <h:form>
+
+
+                <p:dataTable value="#{misSesiones}" var="m" styleClass="resultado" style="font-size: 9pt">
+                    <f:facet name="header">
+                        <p:commandButton action="#{sesionTPVBean.preparaCreacion()}" 
+                                         value="Crear"
+                                         icon="ui-icon-plus"
+                                         styleClass="botonVerde flotaIzquierda"/>
+                        <p:spacer/>
+
+                    </f:facet>                                
+                    <p:column headerText="Nombre" style="font-size: 9pt">
+                        <h:outputText value="#{m.puntoVenta.nombre}/#{m.usuario.nombre}/ #{m.id}"/>
+                    </p:column>
+                    <p:column headerText="Fecha Arpertura" style="font-size: 9pt">
+                        <h:outputText value="#{m.fechaApertura}">
+                            <f:convertDateTime  pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Fecha Cierre" style="font-size: 9pt">
+                        <h:outputText value="#{m.fechaCierre}">
+                            <f:convertDateTime  pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Saldo Inicial" style="font-size: 9pt">
+                        <h:outputText value="#{m.saldoInicial}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>               
+                    <p:column headerText="Saldo Cierre" style="font-size: 9pt">
+                        <h:outputText value="#{m.saldoCierre}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>
+
+
+                    <p:column headerText="Acciones" style="font-size: 9pt">
+                        <!--                    <h:commandButton action="{sesionTPVBean.preparaEdicion(m)}" value="Editar" rendered="{autorizador.hayPermisoAccion('EditaOrdenCompra')}"/>-->
+                        <p:commandButton action="#{sesionTPVBean.inciaSesion(m)}" value="Comenzar" rendered="#{(m.estado != 'CERRADA')}"/>
+                        <p:commandButton action="#{sesionTPVBean.imprimeReporteCajaCierre(m)}" value="Imprimir Reporte" rendered="#{(m.estado == 'CERRADA')}" ajax="false"/>
+
+                    </p:column>
+                </p:dataTable>
+            </h:form>
         </ui:define>
     </ui:decorate>
 </ui:composition>

@@ -187,7 +187,8 @@ public class CobranzaDAO {
                 throw new PagoExcedidoException("El monto no puede ser mayor al saldo de la cuota");
             } else {
                 Prestamo p = dp.getPrestamo();
-                p.setUltimoPago(dp.getUltimoPago());
+                dp.setUltimoPago(f.getFechaEmision());
+                p.setUltimoPago(f.getFechaEmision());
                 em.merge(dp);
                 em.merge(p);
             }

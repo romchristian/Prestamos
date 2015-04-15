@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:decorate template="/plantillaListado.xhtml">
+        <ui:param name="modulo" value="tesoreria"/>
+        <ui:param name="titulo" value="Sesiones"/>
+
+        <ui:define name="title">
+            Sesiones de Caja
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form>
+
+                <p:fieldset legend="Filtros">
+
+                    <h:panelGrid columns="4">
+                        <h:outputText value="Caja Operativa: "
+                                      style="font-size: 10pt"/>
+
+                        <h:selectOneMenu value="#{sesionTPVBean.puntoVentaFiltro}">
+                            <f:selectItems value="#{puntoVentaBean.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+
+
+
+                        <p:spacer/>
+                        <p:spacer/>
+
+
+                        <h:outputText value="Incio: "
+                                      style="font-size: 10pt"/>
+                        <p:calendar value="#{sesionTPVBean.inicioFiltro}" locale="es"
+                                    pattern="#{formato.patronFecha}"/>
+
+                        <h:outputText value="Fin: "
+                                      style="font-size: 10pt"/>
+                        <p:calendar value="#{sesionTPVBean.finFiltro}" locale="es"
+                                    pattern="#{formato.patronFecha}"/> 
+
+                        <h:outputText value="Estado: "
+                                      style="font-size: 10pt"/>
+
+                        <p:selectOneMenu value="#{sesionTPVBean.estadoFiltro}">
+                            <f:selectItem  itemLabel="--" itemValue=""/>
+                            <f:selectItem  itemLabel="ABIERTA" itemValue="ABIERTA"/>
+                            <f:selectItem  itemLabel="CERRADA" itemValue="CERRADA"/>
+                            <f:selectItem  itemLabel="SUSPENDIDA" itemValue="SUSPENDIDA"/>
+                        </p:selectOneMenu>
+
+                        <p:spacer/>
+                        <p:commandButton value="Buscar" action="#{sesionTPVBean.buscar()}" update="datalist"/> 
+
+                    </h:panelGrid>
+                </p:fieldset>
+
+                <p:dataTable value="#{sesionTPVBean.items}" var="m" styleClass="resultado" style="font-size: 9pt" id="datalist">
+
+                    <f:facet name="header">
+                        
+                        <p:splitButton value="Imprimir" icon="icono_impresora" ajax="false">
+                            <p:menuitem value="Imprimir Reporte Detallado" icon="ui-icon-print"/>
+                        </p:splitButton>
+                    </f:facet>
+
+                    <p:column headerText="Nombre" style="font-size: 9pt">
+                        <h:outputText value="#{m.puntoVenta.nombre}/#{m.usuario.nombre}/ #{m.id}"/>
+                    </p:column>
+                    <p:column headerText="Estado" style="font-size: 9pt">
+                        <h:outputText value="#{m.estado}"/>
+                    </p:column>
+                    <p:column headerText="Fecha Arpertura" style="font-size: 9pt">
+                        <h:outputText value="#{m.fechaApertura}">
+                            <f:convertDateTime  pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Fecha Cierre" style="font-size: 9pt">
+                        <h:outputText value="#{m.fechaCierre}">
+                            <f:convertDateTime  pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Saldo Inicial" style="font-size: 9pt">
+                        <h:outputText value="#{m.saldoInicial}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>               
+                    <p:column headerText="Saldo Cierre" style="font-size: 9pt">
+                        <h:outputText value="#{m.saldoCierre}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:decorate>
+</ui:composition>

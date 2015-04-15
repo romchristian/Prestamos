@@ -321,6 +321,15 @@ h1 span{
     -ms-animation: moveFromBottom 500ms ease;
 }
 
+.icono_impresora {
+    background: none!important;
+    background-image: url("#{resource['img/printer.png']}")!important;
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    height:16px;
+    width:16px;
+}
+
 @-webkit-keyframes moveFromBottom {
     from {
     -webkit-transform: translateY(200%) scale(0.5);

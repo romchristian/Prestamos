@@ -6,6 +6,7 @@ package py.gestionpymes.prestamos.tesoreria.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -103,5 +104,10 @@ public class SesionTPVDAO extends AbstractDAO<SesionTPV> {
     public List<SesionTPV> findAll(String query, QueryParameter params) {
         return abmService.findByQuery(query, params.parameters());
     }
-
+    
+    
+    public List<SesionTPV> findAll(String query, Map params) {
+        return abmService.findByQuery(query, params);
+    }
+    
 }
