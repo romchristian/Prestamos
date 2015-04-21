@@ -36,7 +36,7 @@ import org.primefaces.model.TreeNode;
 import py.gestionpymes.prestamos.adm.dao.MonedaFacade;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
-import py.gestionpymes.prestamos.prestamos.dao.CobranzaDAO;
+import py.gestionpymes.prestamos.contabilidad.servicio.CobranzaDAO;
 import py.gestionpymes.prestamos.prestamos.dao.PagoExcedidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;

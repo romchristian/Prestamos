@@ -358,6 +358,21 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
 
         }
     }
+    
+    public void imprimeReporteCajaCierre() {
+        
+       
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("idSesionTPV", getActual().getId());//nf.format(selected.getId())
+        params.put("cajero", credencial.getUsuario().getNombre() + " " + credencial.getUsuario().getApellido());
+        params.put("saldoInicial",(getActual().getSaldoInicial()==null?new BigDecimal(BigInteger.ZERO):getActual().getSaldoInicial().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("totalTransacciones",(getActual().getTotalTransacciones()==null?new BigDecimal(BigInteger.ZERO):getActual().getTotalTransacciones().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("saldoCierre",(getActual().getSaldoCierre()==null?new BigDecimal(BigInteger.ZERO):getActual().getSaldoCierre().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("diferencia",(getActual().getDiferencia()==null?new BigDecimal(BigInteger.ZERO):getActual().getDiferencia().setScale(0, RoundingMode.HALF_EVEN)));
+
+
+        reporteController.generaPDF(params, "reportes/tesoreria/ReporteTesoreria.jasper", "cierre_caja" + getActual().getPuntoVenta().getNombre());
+    }
 
     public void imprimeReporteCajaCierre(SesionTPV s) {
         

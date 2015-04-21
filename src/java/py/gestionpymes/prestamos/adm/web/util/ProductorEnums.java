@@ -12,6 +12,7 @@ import py.gestionpymes.prestamos.adm.persistencia.Estado;
 import py.gestionpymes.prestamos.adm.persistencia.TipoPersona;
 import py.gestionpymes.prestamos.contabilidad.persistencia.CondicionVenta;
 import py.gestionpymes.prestamos.contabilidad.persistencia.TipoDiario;
+import py.gestionpymes.prestamos.contabilidad.persistencia.TipoPago;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.PeriodoPago;
 import py.gestionpymes.prestamos.prestamos.persistencia.SistemaAmortizacion;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.Calificacion;
@@ -57,11 +58,21 @@ public class ProductorEnums implements Serializable {
         return R;
     }
     
-     public SelectItem[] obtTiposTransaccion() {
+    public SelectItem[] obtTiposTransaccion() {
         SelectItem[] R = new SelectItem[TipoTransaccion.values().length];
         TipoTransaccion[] lista = TipoTransaccion.values();
         for (int i = 0; i < lista.length; i++) {
             TipoTransaccion tp = lista[i];
+            R[i] = new SelectItem(tp, tp.toString());
+        }
+        return R;
+    }
+    
+     public SelectItem[] obtTipoPago() {
+        SelectItem[] R = new SelectItem[TipoPago.values().length];
+        TipoPago[] lista = TipoPago.values();
+        for (int i = 0; i < lista.length; i++) {
+            TipoPago tp = lista[i];
             R[i] = new SelectItem(tp, tp.toString());
         }
         return R;

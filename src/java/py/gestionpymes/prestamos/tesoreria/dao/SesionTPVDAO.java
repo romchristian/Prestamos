@@ -95,7 +95,7 @@ public class SesionTPVDAO extends AbstractDAO<SesionTPV> {
     @Override
     public List<SesionTPV> findAll() {
         System.out.println("Usuario loguedo: " + credencial.getUsuario());
-        return abmService.getEM().createQuery("select obj from SesionTPV obj where obj.usuario = :u ")
+        return abmService.getEM().createQuery("select obj from SesionTPV obj where obj.usuario = :u order by obj.fechaApertura DESC")
                 .setParameter("u", credencial.getUsuario())
                 .getResultList();
     }

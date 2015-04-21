@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-04-15T09:16:36 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteTesoreria" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="381bdd1c-9759-431a-81d2-a98bbf843c12">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
@@ -54,12 +57,12 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 			<line>
 				<reportElement x="0" y="184" width="555" height="1" uuid="33ae63e3-59cd-4ab2-a208-d6cb650a77b4"/>
 			</line>
-			<textField evaluationTime="Auto" pattern="EEEEE dd MMMMM yyyy">
+			<textField evaluationTime="Auto" pattern="MMMM d, yyyy">
 				<reportElement x="384" y="39" width="167" height="20" uuid="ecae97ee-3312-4d08-9966-113e2c4a7d81"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0">
+			<textField pattern="¤#,##0.##;¤-#,##0.##">
 				<reportElement x="79" y="98" width="146" height="20" uuid="3b8cb960-2488-4afe-bfb7-679cb254aea7"/>
 				<textFieldExpression><![CDATA[$P{saldoInicial}]]></textFieldExpression>
 			</textField>
@@ -75,11 +78,11 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 				<reportElement x="7" y="118" width="70" height="20" uuid="ab8d19df-a613-4c3e-bfb7-144cb8cfd842"/>
 				<text><![CDATA[Transacciones:]]></text>
 			</staticText>
-			<textField pattern="¤ #,##0">
+			<textField pattern="¤#,##0.##;¤-#,##0.##">
 				<reportElement x="79" y="138" width="146" height="20" uuid="70ae139b-0443-45a2-af74-bbda4dabd637"/>
 				<textFieldExpression><![CDATA[$P{saldoCierre}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0">
+			<textField pattern="¤#,##0.##;¤-#,##0.##">
 				<reportElement x="79" y="158" width="146" height="20" uuid="5bd6c821-63c2-40a5-a90d-4446e81c67be"/>
 				<textFieldExpression><![CDATA[$P{diferencia}]]></textFieldExpression>
 			</textField>
@@ -170,12 +173,12 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 				<reportElement x="100" y="0" width="242" height="20" uuid="9415e753-7c7d-4092-8f2e-321669a617ba"/>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0">
+			<textField pattern="¤#,##0.##;¤-#,##0.##">
 				<reportElement x="352" y="0" width="100" height="20" uuid="c1fa6db9-9749-483e-880f-aad8e6bf6187"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{ingreso}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0">
+			<textField pattern="¤#,##0.##;¤-#,##0.##">
 				<reportElement x="455" y="0" width="100" height="20" uuid="d8b94433-0a71-4aa3-8e67-09222532e4b3"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{egreso}]]></textFieldExpression>
@@ -193,14 +196,14 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 	<summary>
 		<band height="65" splitType="Stretch">
 			<frame>
-				<reportElement x="2" y="0" width="553" height="62" uuid="2059d890-7570-4369-a143-289fe0af090c"/>
+				<reportElement x="2" y="0" width="530" height="55" uuid="2059d890-7570-4369-a143-289fe0af090c"/>
 				<staticText>
-					<reportElement x="5" y="38" width="265" height="20" uuid="f2cb4bae-6a52-493a-aeb4-9599b72b43ab"/>
-					<text><![CDATA[FIRMA CAJERO:...................................................................]]></text>
+					<reportElement x="5" y="35" width="245" height="20" uuid="f2cb4bae-6a52-493a-aeb4-9599b72b43ab"/>
+					<text><![CDATA[FIRMA CAJERO:.....................................................]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="290" y="38" width="260" height="20" uuid="a8bc7f5a-c3ab-4ab5-b1a3-f9ab845c5e67"/>
-					<text><![CDATA[FIRMA TESORERO:........................................................]]></text>
+					<reportElement x="290" y="35" width="240" height="20" uuid="a8bc7f5a-c3ab-4ab5-b1a3-f9ab845c5e67"/>
+					<text><![CDATA[FIRMA TESORERO:...............................................]]></text>
 				</staticText>
 			</frame>
 		</band>

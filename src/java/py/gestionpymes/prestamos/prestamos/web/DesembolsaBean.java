@@ -26,7 +26,7 @@ import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVenta;
 import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVentaDetalle;
-import py.gestionpymes.prestamos.prestamos.dao.CobranzaDAO;
+import py.gestionpymes.prestamos.contabilidad.servicio.CobranzaDAO;
 import py.gestionpymes.prestamos.prestamos.dao.NumeroInvalidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PagoExcedidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;

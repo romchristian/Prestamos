@@ -2,13 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.gestionpymes.prestamos.prestamos.dao;
+package py.gestionpymes.prestamos.contabilidad.servicio;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import py.gestionpymes.prestamos.adm.dao.AbstractFacade;
-import py.gestionpymes.prestamos.prestamos.persistencia.Pago;
+import py.gestionpymes.prestamos.contabilidad.persistencia.Pago;
 
 /**
  *

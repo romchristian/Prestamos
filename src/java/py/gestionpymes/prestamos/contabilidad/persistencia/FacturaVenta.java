@@ -25,7 +25,6 @@ import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
 import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
-import py.gestionpymes.prestamos.prestamos.persistencia.Pago;
 
 /**
  *
@@ -80,6 +79,7 @@ public class FacturaVenta implements Serializable {
     private BigDecimal iva05;
     private BigDecimal iva10;
     private BigDecimal totalIva;
+    private BigDecimal totalPagado;
     @ManyToOne
     private Moneda moneda;
     @ManyToOne
@@ -89,7 +89,14 @@ public class FacturaVenta implements Serializable {
     private List<FacturaVentaDetalle> detalles;
     @OneToMany(mappedBy = "facturaVenta",cascade = CascadeType.PERSIST)
     private List<Pago> pagos;
-   
+
+    public BigDecimal getTotalPagado() {
+        return totalPagado;
+    }
+
+    public void setTotalPagado(BigDecimal totalPagado) {
+        this.totalPagado = totalPagado;
+    }
     
     public List<FacturaVentaDetalle> getDetalles() {
         return detalles;

@@ -18,7 +18,7 @@ import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
-import py.gestionpymes.prestamos.prestamos.dao.CobranzaDAO;
+import py.gestionpymes.prestamos.contabilidad.servicio.CobranzaDAO;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
 
 /**

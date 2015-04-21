@@ -4,6 +4,7 @@
  */
 package py.gestionpymes.prestamos.prestamos.persistencia;
 
+import py.gestionpymes.prestamos.contabilidad.persistencia.Recibo;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.gestionpymes.prestamos.prestamos.dao;
+package py.gestionpymes.prestamos.contabilidad.servicio;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -21,10 +21,13 @@ import py.gestionpymes.prestamos.prestamos.persistencia.CuentaCliente;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetCobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamoHistorico;
-import py.gestionpymes.prestamos.prestamos.persistencia.Efectivo;
+import py.gestionpymes.prestamos.contabilidad.persistencia.Efectivo;
 import py.gestionpymes.prestamos.prestamos.persistencia.OperacionCobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.OperacionCobroCuotaFactura;
-import py.gestionpymes.prestamos.prestamos.persistencia.Pago;
+import py.gestionpymes.prestamos.contabilidad.persistencia.Pago;
+import py.gestionpymes.prestamos.prestamos.dao.DetCuentaClienteDAO;
+import py.gestionpymes.prestamos.prestamos.dao.NumeroInvalidoException;
+import py.gestionpymes.prestamos.prestamos.dao.PagoExcedidoException;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.PrestamoHistorico;
 import py.gestionpymes.prestamos.prestamos.web.TreeCuota;
@@ -59,13 +62,13 @@ public class CobranzaDAO {
 
     public FacturaVenta create(FacturaVenta f, SesionTPV s) throws PagoExcedidoException, NumeroInvalidoException {
         // Creo el medio de pago Efectivo por defecto
-        Efectivo efe = new Efectivo();
-        efe.setFecha(new Date());
-        efe.setMoneda(f.getMoneda());
-        efe.setMonto(f.getTotal());
-        efe.setFacturaVenta(f);
-        f.setPagos(new ArrayList<Pago>());
-        f.getPagos().add(efe);
+//        Efectivo efe = new Efectivo();
+//        efe.setFecha(new Date());
+//        efe.setMoneda(f.getMoneda());
+//        efe.setMonto(f.getTotal());
+//        efe.setFacturaVenta(f);
+//        f.setPagos(new ArrayList<Pago>());
+//        f.getPagos().add(efe);
 
         em.persist(f);
 

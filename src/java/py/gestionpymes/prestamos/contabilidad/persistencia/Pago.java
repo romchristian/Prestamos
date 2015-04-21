@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.gestionpymes.prestamos.prestamos.persistencia;
+package py.gestionpymes.prestamos.contabilidad.persistencia;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -24,6 +24,8 @@ public abstract class Pago implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    private String descripcion;
+    
     private BigDecimal monto = new BigDecimal(BigInteger.ZERO);
     @ManyToOne
     private Moneda moneda;
@@ -35,6 +37,15 @@ public abstract class Pago implements Serializable {
     @ManyToOne
     private FacturaVenta facturaVenta;
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    
     public FacturaVenta getFacturaVenta() {
         return facturaVenta;
     }

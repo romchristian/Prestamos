@@ -4,6 +4,7 @@
  */
 package py.gestionpymes.prestamos.prestamos.persistencia;
 
+import py.gestionpymes.prestamos.contabilidad.persistencia.Pago;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;

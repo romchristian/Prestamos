@@ -102,4 +102,4 @@ INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUE
 
 -- 14/04/2015 
 
-ALTER TABLE sesiontpv add column cerrarConDiferencia boolean;
+--ALTER TABLE sesiontpv add column cerrarConDiferencia boolean;
