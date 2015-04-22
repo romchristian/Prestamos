@@ -15,7 +15,7 @@ public class ResumenTransaccion {
     
    
     private String operacion;
-     private String tipo;
+    private String tipo;
     private BigDecimal monto;
     private Integer cantidadTransaccion;
     

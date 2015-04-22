@@ -14,8 +14,8 @@
         <ui:define name="acciones">
             <p:outputPanel  styleClass="panelDatos" style="width: 100%;border: none!important;margin: 0!important;padding: 0!important;background: transparent!important;">
                 <p:commandLink value="Confirmar" action="pagaCuota" 
-                                styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
-                <p:commandButton value="Cancelar" action="endFlow"/>
+                               styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
+                <p:commandButton value="Cancelar" action="endFlowCuota" immediate="true"/>
             </p:outputPanel>
 
         </ui:define>
@@ -23,43 +23,61 @@
 
         <ui:define name="cabecera">
 
-            <p:panel id="panelPagos">
+            
+              
+              
+            <p:panel id="panelPagos" style="text-align: center">
 
-                <div style="text-align: center; width: 100%;height: 100%;background-color: #ddd">
+                <div style="text-align: center; width: 100%;height: 70%;">
+                     
                     <br/>
                     <br/>
                     <br/>
                     <div style="font-size: 28pt; font-weight: bold">
-                        <h:outputText value="#{cobraCuotaBean.facturaVenta.totalPagado}">
+                        
+                        <h:outputText value="TOTAL: "/>
+                        <h:outputText value="#{cobraCuotaBean.facturaVenta.total}">
                             <f:convertNumber locale="#{formato.locale}"/>
                         </h:outputText>
                     </div>
                     <br/>
-                    <p:panelGrid>
-                        <h:outputText value="Elija un metodo de pago"/>
-                        <p:selectOneMenu value="#{cobraCuotaBean.tipoPago}" >
-                            <p:ajax listener="#{cobraCuotaBean.seleccionaTipoPago()}"/>
-                            <f:selectItem itemValue="" itemLabel="--"/>
-                            <f:selectItems value="#{productorEnums.obtTipoPago()}"/>
-                        </p:selectOneMenu>
-                    </p:panelGrid>
+                    <br/>
+                    <br/>
 
 
+                    <p:hotkey bind="ctrl+1" update=":dialogEfectivoForm:cuotaPanelEfectivo" 
+                              actionListener="#{cobraCuotaBean.seleccionaEfectivo()}"
+                              oncomplete="PF('dialogEfectivo').show()"/>
+                    
+                    <p:hotkey bind="ctrl+2" update=":dialogChequeForm:cuotaPanelCheque" 
+                              actionListener="#{cobraCuotaBean.seleccionaCheque()}"
+                              oncomplete="PF('dialogCheque').show()"/>
+                   
+
+                    <br/>
+                    <br/>
                     <table style="width: 350px; margin: 0 auto 0 auto; ">
                         <tr>
                             <td style="width: 350px;" colspan="2">
-                                <p:dataGrid value="#{cobraCuotaBean.facturaVenta.pagos}" var="p" style="background-color: #ddd;padding: 0;margin: 0;border:none;background: none;"
-                                            columns="1">
-                                    <div style="width: 350px;text-align: left;background-color: #ddd;padding: 0;margin: 0;">
+
+                                <p:dataTable value="#{cobraCuotaBean.facturaVenta.pagos}" var="p">
+                                    <p:column headerText="METODO PAGO">
                                         <h:outputText value="#{p.descripcion}"/>
-                                        <h:outputText value="#{p.monto}" style="width: 350px"/>
-                                    </div>
-                                </p:dataGrid>
+                                    </p:column>
+                                    <p:column headerText="MONTO" style="text-align: right">
+                                        <h:outputText value="#{p.monto}" style="font-weight: bold">
+                                            <f:convertNumber locale="#{formato.locale}"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                </p:dataTable>
+                                <br/>
+                                <br/>
                             </td>
                         </tr>
                         <tr>
                             <td align="left">
-                                <h:outputText value="Pagado: "/>
+                                <h:outputText value="Total Pagado: "/>
                             </td>
                             <td align="right">
                                 <h:outputText value="50.000 G"/>
@@ -82,53 +100,96 @@
                             </td>
                         </tr>
                     </table>   
+                    
+                    
+                   
                 </div>
+               
+               
+                    
+                
+                
+                 <h:outputText value="CTRL+1 = EFECTIVO , CTRL+2 = CHEQUE" style="font-size: 16pt; font-weight: bold;float: bottom;"/>
             </p:panel>
+        </ui:define>
 
+        <ui:define name="dialogos">
 
+            <p:dialog id="dlgEfectivo" header="Pago Efectivo" showEffect="fade" widgetVar="dialogEfectivo"  resizable="false" position="center">
 
-            <p:dialog id="dialogEfectivo" header="Pago Efectivo" showEffect="fade" widgetVar="dialogEfectivo"  resizable="false" position="center">
-                <p:outputPanel id="cuotaPanelEfectivo">
-                    <p:panelGrid  columns="2" columnClasses="label,value">
-                        <h:outputLabel for="montoEfectivo" value="Monto: " />
-                        <h:inputText id="montoEfectivo" value="#{cobraCuotaBean.efectivo.monto}" style="font-weight:bold" />
+                <h:form id="dialogEfectivoForm" styleClass="dialogEfectivoForm">
+                    
+                    
+                    
+                    <p:outputPanel id="cuotaPanelEfectivo" styleClass="cuotaPanelEfectivo">
+                        <p:defaultCommand target="btnAgregaEfectivo"/>
+                        
+                  
+                        
+                        <p:panelGrid  columns="2" columnClasses="label,value">
+                            <h:outputLabel for="monto" value="Monto A Pagar: " />
+                            <h:outputText id="monto" value="#{cobraCuotaBean.efectivo.monto}" style="font-weight:bold">
+                                <f:convertNumber locale="#{formato.locale}"/>
+                            </h:outputText>
 
+                            <h:outputLabel for="montoPagado" value="Monto Pagado: " />
+                            <h:inputText id="montoPagado" value="#{cobraCuotaBean.efectivo.montoPagado}" style="font-weight:bold">
+                                <p:ajax event="blur" update="@(.cuotaPanelEfectivo)" process="@(.cuotaPanelEfectivo)"/>
+                            </h:inputText>    
 
-                    </p:panelGrid>
+                            <h:outputLabel for="cambio" value="Cambio: " />
+                            <h:outputText id="cambio" value="#{cobraCuotaBean.efectivo.cambio}" style="font-weight:bold">
+                                <f:convertNumber locale="#{formato.locale}"/>
+                            </h:outputText>
 
-                    <p:commandButton actionListener="#{cobraCuotaBean.agregaEfectivo()}" value="#{bundle.Save}" update="panelPagos" oncomplete="handleSubmit(args,'dialogEfectivo');" />
-                    <p:commandButton value="#{bundle.Cancel}" onclick="dialogEfectivo.hide()"/>
-                </p:outputPanel>
-            </p:dialog>
-            
-             <p:dialog id="dialogCheque" header="Pago Cheque" showEffect="fade" widgetVar="dialogCheque"  resizable="false" position="center">
-                <p:outputPanel id="cuotaPanelCheque">
-                    <p:panelGrid  columns="2" columnClasses="label,value">
-                        <h:outputLabel for="montoCheque" value="Monto: " />
-                        <h:inputText id="montoCheque" value="#{cobraCuotaBean.chequeRecibido.monto}" style="font-weight:bold" />
-                        <h:outputLabel for="montoCheque" value="Monto: " />
-                        <p:selectOneMenu id="banco" value="#{cobraCuotaBean.chequeRecibido.banco}" >
-                            <f:selectItems value="#{bancoBean.itemsAvailableSelectOne}"
-                                           var="bancoItem"
-                                           itemValue="#{bancoItem}"/>
-                        </p:selectOneMenu>
-                        <h:outputLabel for="nroCheque" value="Nro. Cheque: " />
-                        <h:inputText id="nroCheque" value="#{cobraCuotaBean.chequeRecibido.numero}" style="font-weight:bold" />
-                        <h:outputLabel for="librador" value="Librador: " />
-                        <h:inputText id="librador" value="#{cobraCuotaBean.chequeRecibido.librador}" style="font-weight:bold" />
-                        <h:outputLabel for="vencimiento" value="vencimiento: " />                        
-                        <p:calendar value="#{cobraCuotaBean.chequeRecibido.vencimiento}" id="vecimiento" required="true" style="font-weight:bold"
-                                                pattern="#{formato.patronFecha}" locale="es"/>                        
-                        <h:outputLabel for="descripcion" value="Descripción: " />
-                        <h:outputText id="descripcion" value="#{cobraCuotaBean.chequeRecibido.banco +" - "+cobraCuotaBean.chequeRecibido.numero+" - "+cobraCuotaBean.chequeRecibido.librador}" style="font-weight:bold" />
+                        </p:panelGrid>
 
-                    </p:panelGrid>
+                        <p:commandButton id="btnAgregaEfectivo" action="#{cobraCuotaBean.agregaEfectivo()}" value="#{bundle.Save}" update="@form :formABM:panelPagos" oncomplete="PF('dialogEfectivo').hide()" />
+                        <p:commandButton value="#{bundle.Cancel}" onclick="PF('dialogEfectivo').hide()"/>
+                    </p:outputPanel>
+                </h:form>
 
-                    <p:commandButton actionListener="#{cobraCuotaBean.agregaEfectivo()}" value="#{bundle.Save}" update="panelPagos" oncomplete="handleSubmit(args,'dialogCheque');" />
-                    <p:commandButton value="#{bundle.Cancel}" onclick="dialogCheque.hide()"/>
-                </p:outputPanel>
             </p:dialog>
 
+            <p:dialog id="dlgCheque" header="Pago Cheque" showEffect="fade" widgetVar="dialogCheque"  resizable="false" position="center">
+
+                <h:form id="dialogChequeForm">
+                    <p:outputPanel id="cuotaPanelCheque" styleClass="cuotaPanelCheque">
+                        <p:defaultCommand target="btnAgregaCheque"/>
+                        
+                        
+                        
+                        <p:panelGrid  columns="2" columnClasses="label,value">
+                            <h:outputLabel for="montoCheque" value="Monto: " />
+                            <h:inputText id="montoCheque" value="#{cobraCuotaBean.chequeRecibido.monto}" style="font-weight:bold" />
+
+                            <h:outputLabel for="montoCheque" value="Banco: " />
+                            <p:selectOneMenu id="banco" value="#{cobraCuotaBean.chequeRecibido.banco}">
+                                <f:selectItems value="#{bancoBean.itemsAvailableSelectOne}"
+                                               var="b"
+                                               itemLabel="#{b.nombre}"
+                                               itemValue="#{b}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputLabel for="nroCheque" value="Nro. Cheque: " />
+                            <h:inputText id="nroCheque" value="#{cobraCuotaBean.chequeRecibido.numero}" style="font-weight:bold" />
+                            <h:outputLabel for="librador" value="Librador: " />
+                            <h:inputText id="librador" value="#{cobraCuotaBean.chequeRecibido.librador}" style="font-weight:bold" />
+                            <h:outputLabel for="vencimiento" value="vencimiento: " />                        
+                            <p:calendar value="#{cobraCuotaBean.chequeRecibido.vencimiento}" id="vencimiento"  
+                                        style="font-weight:bold"
+                                        pattern="#{formato.patronFecha}" locale="es"/>                        
+                            <h:outputLabel for="descripcion" value="Descripción: " />
+                            <h:outputText id="descripcion" value="#{cobraCuotaBean.chequeRecibido.banco} - #{cobraCuotaBean.chequeRecibido.numero} -  #{cobraCuotaBean.chequeRecibido.librador}" style="font-weight:bold" />
+
+                        </p:panelGrid>
+
+                        <p:commandButton id="btnAgregaCheque" action="#{cobraCuotaBean.agregaChequeRecibido()}" value="#{bundle.Save}" update="@form :formABM:panelPagos" oncomplete="PF('dialogCheque').hide();" />
+                        <p:commandButton value="#{bundle.Cancel}" onclick="PF('dialogCheque').hide();"/>
+                    </p:outputPanel>
+                </h:form>
+
+            </p:dialog>
 
         </ui:define>
     </ui:decorate>

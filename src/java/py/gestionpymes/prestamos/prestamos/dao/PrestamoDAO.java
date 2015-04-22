@@ -5,12 +5,14 @@
 package py.gestionpymes.prestamos.prestamos.dao;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractFacade;
 import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
@@ -42,6 +44,7 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
     private DetCuentaClienteDAO detCuentaClienteDAO;
     @EJB
     private TransaccionDAO transaccionDAO;
+    private ABMService abmService;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -97,6 +100,29 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
         return em.createQuery("SELECT p from Prestamo p where  p.estado = :estado")
                 .setParameter("estado", estado)
                 .getResultList();
+    }
+    
+    public List<ListadoMora> listadoMora() {
+
+        String consuta = "select c.nrodocumento, c.primernombre, "
+                + "c.segundonombre, c.primerapellido, c.segundoapellido,"
+                + " p.id as operacionnro, dp.nrocuota, p.fechainiciooperacion, "
+                + "dp.fechavencimiento, dp.diasmora, dp.montomora, dp.montocuota, "
+                + "(dp.moramoratorio + dp.morapunitorio) as moracuota, "
+                + "(dp.montocuota + dp.moramoratorio + dp.morapunitorio) as cuotaconmora "
+                + "from persona as c, prestamo as p, detprestamo as dp "
+                + "where p.id = dp.prestamo_id and p.cliente_id = c.id and "
+                + "diasmora > 0 order by c.id, p.id, dp.nrocuota";
+                
+
+        List<Object[]> lista = abmService.getEM().createNativeQuery(consuta).getResultList();
+
+        List<ListadoMora> R = new ArrayList<>();
+        for (int i = 0; i < lista.size(); i++) {
+
+            R.add(new ListadoMora(lista.get(i)));
+        }
+        return R;
     }
 
     public Prestamo desembolsa(Prestamo prestamo) {

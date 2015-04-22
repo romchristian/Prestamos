@@ -103,3 +103,6 @@ INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUE
 -- 14/04/2015 
 
 --ALTER TABLE sesiontpv add column cerrarConDiferencia boolean;
+--alter table pago add column descripcion character varying(255);
+--ALTER TABLE  pago add column montopagado numeric(38,0);
+--ALTER TABLE  pago add column cambio numeric(38,0);

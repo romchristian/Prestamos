@@ -26,6 +26,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.OperacionCobroCuota;
 import py.gestionpymes.prestamos.prestamos.persistencia.OperacionCobroCuotaFactura;
 import py.gestionpymes.prestamos.contabilidad.persistencia.Pago;
 import py.gestionpymes.prestamos.prestamos.dao.DetCuentaClienteDAO;
+import py.gestionpymes.prestamos.prestamos.dao.MontoCancelacionIncorrectoException;
 import py.gestionpymes.prestamos.prestamos.dao.NumeroInvalidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PagoExcedidoException;
 import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
@@ -60,7 +61,7 @@ public class CobranzaDAO {
         em.persist(f);
     }
 
-    public FacturaVenta create(FacturaVenta f, SesionTPV s) throws PagoExcedidoException, NumeroInvalidoException {
+    public FacturaVenta create(FacturaVenta f, SesionTPV s) throws PagoExcedidoException, NumeroInvalidoException, MontoCancelacionIncorrectoException {
         // Creo el medio de pago Efectivo por defecto
 //        Efectivo efe = new Efectivo();
 //        efe.setFecha(new Date());
@@ -69,7 +70,18 @@ public class CobranzaDAO {
 //        efe.setFacturaVenta(f);
 //        f.setPagos(new ArrayList<Pago>());
 //        f.getPagos().add(efe);
+        
+        BigDecimal totalPagado = new BigDecimal(BigInteger.ZERO);
+        for(Pago p: f.getPagos()){
+            totalPagado = totalPagado.add(p.getMonto());
+        }
 
+        if(f.getTotal().compareTo(totalPagado)== 0){
+            f.setTotalPagado(totalPagado);
+        }else{
+            throw new MontoCancelacionIncorrectoException("El monto de cancelación no cubre la factura");
+        }
+        
         em.persist(f);
 
         Long numeroFactura = null;

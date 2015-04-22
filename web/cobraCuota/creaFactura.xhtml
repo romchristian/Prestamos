@@ -15,7 +15,7 @@
             <p:outputPanel  styleClass="panelDatos" style="width: 100%;border: none!important;margin: 0!important;padding: 0!important;background: transparent!important;">
                 <p:commandLink value="Siguiente" action="formaCancelacion" ajax="false"
                                 styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
-                <p:commandButton value="Cancelar" action="limpia"/>
+               <p:commandButton value="Cancelar" action="endFlowCuota" immediate="true"/>
             </p:outputPanel>
 
         </ui:define>

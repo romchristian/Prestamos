@@ -60,6 +60,7 @@ public class DetPrestamo implements Serializable {
     private Date ultimoPago;
     @ManyToOne
     private Moneda moneda;
+    //@Enumerated(EnumType.STRING)
     private EstadoDetPrestamo estado;
     private float interesMoratorio;//Es la misma tasa del prestamo
     private float interesPunitorio;//Interes punitorio es el 20% del interes moratorio
