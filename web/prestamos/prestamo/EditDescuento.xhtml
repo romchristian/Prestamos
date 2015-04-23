@@ -206,11 +206,11 @@
                 <p:dataTable value="#{prestamoController.selected.detalles}" var="d" id="tablaDetalles" styleClass="tablaDetalles">
 
                     <p:column headerText="#" style="width: 30px">
-                        <h:outputText value="#{d.nroCuota}"/>
+                        <h:outputText value="#{d.nroCuota}" />
                     </p:column>
 
                     <p:column headerText="Monto cuota" style="width: 15%">
-                        <h:outputText value="#{d.montoCuota}">
+                        <h:outputText value="#{d.montoCuota}" >
                             <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                         </h:outputText>
                     </p:column>
@@ -252,7 +252,7 @@
 
                     <p:column headerText="Monto Descuento">
 
-                        <h:inputText value="#{d.descuento}" disabled="#{not d.tieneDescuento}">
+                        <h:inputText value="#{d.descuento}" disabled="#{not d.tieneDescuento} and #{d.estado == 0}">
                             <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                         </h:inputText>
                     </p:column>

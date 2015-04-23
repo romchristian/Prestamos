@@ -12,6 +12,8 @@ import javax.persistence.*;
 import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVenta;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.TransaccionCobraCuota;
 
 /**
  *
@@ -36,7 +38,18 @@ public abstract class Pago implements Serializable {
     
     @ManyToOne
     private FacturaVenta facturaVenta;
+    
+    @ManyToOne
+    private TransaccionCobraCuota transaccionCobraCuota;
 
+    public TransaccionCobraCuota getTransaccionCobraCuota() {
+        return transaccionCobraCuota;
+    }
+
+    public void setTransaccionCobraCuota(TransaccionCobraCuota transaccionCobraCuota) {
+        this.transaccionCobraCuota = transaccionCobraCuota;
+    }
+ 
     public String getDescripcion() {
         return descripcion;
     }

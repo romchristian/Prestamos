@@ -62,7 +62,7 @@ public class Banco implements Serializable {
 
     @Override
     public String toString() {
-        return "py.gestionpymes.prestamos.tesoreria.persisitencia.Banco[ id=" + id + " ]";
+        return this.nombre;
     }
     
 }

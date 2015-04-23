@@ -338,7 +338,7 @@ public class DetPrestamo implements Serializable {
             double interesDiario = getInteresMoratorio() / 100d / 365d;
             double interesMora = interesDiario * getDiasMora();
 
-            R = new BigDecimal(interesMora).multiply(saldoCapital).setScale(8, RoundingMode.HALF_DOWN);
+            R = new BigDecimal(interesMora).multiply(cuotaCapital).setScale(8, RoundingMode.HALF_DOWN);
             setIvaMoraMoratorio(R.multiply(new BigDecimal(0.1)).setScale(8, RoundingMode.HALF_EVEN));
             R = R.add(getIvaMoraMoratorio());
         }
@@ -350,7 +350,7 @@ public class DetPrestamo implements Serializable {
         if (getDiasMora() > 0) {
             double interesDiario = getInteresPunitorio() / 100d / 365d;
             double interesMora = interesDiario * getDiasMora();
-            R = new BigDecimal(interesMora).multiply(saldoCapital).setScale(8, RoundingMode.HALF_DOWN);
+            R = new BigDecimal(interesMora).multiply(cuotaCapital).setScale(8, RoundingMode.HALF_DOWN);
             setIvaMoraPunitorio(R.multiply(new BigDecimal(0.1)).setScale(8, RoundingMode.HALF_EVEN));
             R = R.add(getIvaMoraPunitorio());
         }

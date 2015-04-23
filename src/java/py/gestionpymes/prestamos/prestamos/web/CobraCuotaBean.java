@@ -109,10 +109,36 @@ public class CobraCuotaBean implements Serializable {
         return chequeRecibido;
     }
 
+    public void removerPago(Pago p) {
+
+        int indice = 0;
+        String descripcion2 = p.getDescripcion();
+        BigDecimal monto2 = p.getMonto();
+
+        for (Pago pa : facturaVenta.getPagos()) {
+            String descripcion1 = pa.getDescripcion();
+            BigDecimal monto1 = pa.getMonto();
+
+            if (descripcion1.compareToIgnoreCase(descripcion2) == 0 && monto1.compareTo(monto2) == 0) {
+                break;
+            }
+
+            indice++;
+        }
+
+        facturaVenta.getPagos().remove(indice);
+    }
+
     public void agregaEfectivo() {
         if (facturaVenta.getPagos() == null) {
             facturaVenta.setPagos(new ArrayList<Pago>());
         }
+        if (efectivo.getMontoPagado().compareTo(obtRestante()) < 0) {
+            efectivo.setMonto(efectivo.getMontoPagado());
+            efectivo.setCambio(new BigDecimal(BigInteger.ZERO));
+        }
+        
+        efectivo.setMonto(obtRestante());
         efectivo.setFecha(facturaVenta.getFechaEmision());
         efectivo.setMoneda(facturaVenta.getMoneda());
         efectivo.setFacturaVenta(facturaVenta);
@@ -208,6 +234,52 @@ public class CobraCuotaBean implements Serializable {
     public void seleccionaCheque() {
         tipoPago = TipoPago.CHEQUE_RECIBIDO;
         seleccionaTipoPago();
+    }
+
+    public BigDecimal obtTotalPagado() {
+        BigDecimal totalPagado = new BigDecimal(BigInteger.ZERO);
+        if (facturaVenta.getPagos() != null) {
+            for (Pago p : facturaVenta.getPagos()) {
+                if (p instanceof Efectivo) {
+                    Efectivo e = (Efectivo) p;
+                    totalPagado = totalPagado.add(e.getMontoPagado());
+                } else {
+                    totalPagado = totalPagado.add(p.getMonto());
+                }
+
+            }
+        }
+
+        return totalPagado;
+    }
+
+    public BigDecimal obtCambio() {
+        if (totalAPagar == null) {
+            return new BigDecimal(BigInteger.ZERO);
+        }
+        BigDecimal totalPagado = obtTotalPagado();
+
+        BigDecimal R = totalPagado.subtract(totalAPagar);
+
+        if (R.compareTo(new BigDecimal(BigInteger.ZERO)) < 0) {
+            return new BigDecimal(BigInteger.ZERO);
+        } else {
+            return R;
+        }
+
+    }
+
+    public BigDecimal obtRestante() {
+        if (totalAPagar == null) {
+            return new BigDecimal(BigInteger.ZERO);
+        }
+        
+        BigDecimal R = totalAPagar.subtract(obtTotalPagado());
+        if (R.compareTo(new BigDecimal(BigInteger.ZERO)) < 0) {
+            return new BigDecimal(BigInteger.ZERO);
+        } else {
+            return R;
+        }
     }
 
     public void seleccionaTipoPago() {

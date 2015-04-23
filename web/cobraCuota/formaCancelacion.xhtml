@@ -23,18 +23,15 @@
 
         <ui:define name="cabecera">
 
-            
-              
-              
             <p:panel id="panelPagos" style="text-align: center">
 
                 <div style="text-align: center; width: 100%;height: 70%;">
-                     
+
                     <br/>
                     <br/>
                     <br/>
                     <div style="font-size: 28pt; font-weight: bold">
-                        
+
                         <h:outputText value="TOTAL: "/>
                         <h:outputText value="#{cobraCuotaBean.facturaVenta.total}">
                             <f:convertNumber locale="#{formato.locale}"/>
@@ -44,15 +41,13 @@
                     <br/>
                     <br/>
 
-
                     <p:hotkey bind="ctrl+1" update=":dialogEfectivoForm:cuotaPanelEfectivo" 
                               actionListener="#{cobraCuotaBean.seleccionaEfectivo()}"
                               oncomplete="PF('dialogEfectivo').show()"/>
-                    
+
                     <p:hotkey bind="ctrl+2" update=":dialogChequeForm:cuotaPanelCheque" 
                               actionListener="#{cobraCuotaBean.seleccionaCheque()}"
                               oncomplete="PF('dialogCheque').show()"/>
-                   
 
                     <br/>
                     <br/>
@@ -70,6 +65,10 @@
                                         </h:outputText>
                                     </p:column>
 
+                                    <p:column headerText="REMOVER" style="text-align: right">
+                                        <p:commandLink value="X" actionListener="#{cobraCuotaBean.removerPago(p)}" update=":formABM:panelPagos"/>
+                                    </p:column>
+
                                 </p:dataTable>
                                 <br/>
                                 <br/>
@@ -80,7 +79,9 @@
                                 <h:outputText value="Total Pagado: "/>
                             </td>
                             <td align="right">
-                                <h:outputText value="50.000 G"/>
+                                <h:outputText value="#{cobraCuotaBean.obtTotalPagado()}">
+                                    <f:convertNumber locale="#{formato.locale}"/>
+                                </h:outputText>
                             </td>
                         </tr>
                         <tr>
@@ -88,7 +89,9 @@
                                 <h:outputText value="Restante: "/>
                             </td>
                             <td align="right">
-                                <h:outputText value="10.000 G"/>
+                                <h:outputText value="#{cobraCuotaBean.obtRestante()}">
+                                    <f:convertNumber locale="#{formato.locale}"/>
+                                </h:outputText>
                             </td>
                         </tr>
                         <tr>
@@ -96,20 +99,22 @@
                                 <h:outputText value="Cambio: "/>
                             </td>
                             <td align="right">
-                                <h:outputText value="10.000 G"/>
+                                <h:outputText value="#{cobraCuotaBean.obtCambio()}">
+                                    <f:convertNumber locale="#{formato.locale}"/>
+                                </h:outputText>
                             </td>
                         </tr>
                     </table>   
-                    
-                    
-                   
+
+
+
                 </div>
-               
-               
-                    
-                
-                
-                 <h:outputText value="CTRL+1 = EFECTIVO , CTRL+2 = CHEQUE" style="font-size: 16pt; font-weight: bold;float: bottom;"/>
+
+
+
+
+
+                <h:outputText value="CTRL+1 = EFECTIVO , CTRL+2 = CHEQUE" style="font-size: 16pt; font-weight: bold;float: bottom;"/>
             </p:panel>
         </ui:define>
 
@@ -118,14 +123,14 @@
             <p:dialog id="dlgEfectivo" header="Pago Efectivo" showEffect="fade" widgetVar="dialogEfectivo"  resizable="false" position="center">
 
                 <h:form id="dialogEfectivoForm" styleClass="dialogEfectivoForm">
-                    
-                    
-                    
+
+
+
                     <p:outputPanel id="cuotaPanelEfectivo" styleClass="cuotaPanelEfectivo">
                         <p:defaultCommand target="btnAgregaEfectivo"/>
-                        
-                  
-                        
+
+
+
                         <p:panelGrid  columns="2" columnClasses="label,value">
                             <h:outputLabel for="monto" value="Monto A Pagar: " />
                             <h:outputText id="monto" value="#{cobraCuotaBean.efectivo.monto}" style="font-weight:bold">
@@ -156,9 +161,9 @@
                 <h:form id="dialogChequeForm">
                     <p:outputPanel id="cuotaPanelCheque" styleClass="cuotaPanelCheque">
                         <p:defaultCommand target="btnAgregaCheque"/>
-                        
-                        
-                        
+
+
+
                         <p:panelGrid  columns="2" columnClasses="label,value">
                             <h:outputLabel for="montoCheque" value="Monto: " />
                             <h:inputText id="montoCheque" value="#{cobraCuotaBean.chequeRecibido.monto}" style="font-weight:bold" />

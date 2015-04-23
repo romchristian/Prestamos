@@ -7,6 +7,7 @@ package py.gestionpymes.prestamos.tesoreria.persisitencia;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,8 +15,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
+import py.gestionpymes.prestamos.contabilidad.persistencia.Pago;
 
 
 
@@ -44,7 +47,7 @@ public class Transaccion implements Serializable {
     @ManyToOne
     private TipoTransaccionCaja tipoTransaccionCaja;
     private String usuarioLogeado;
-    
+     
     
 
     public String getUsuarioLogeado() {

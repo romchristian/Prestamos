@@ -26,7 +26,7 @@ public class MetodoPagoBean extends BeanGenerico<MetodoPago> implements Serializ
     @EJB
     private MetodoPagoDAO ejb;
     private ValorMoneda valorMoneda;
-
+ 
     @Override
     public AbstractDAO<MetodoPago> getEjb() {
         return ejb;
