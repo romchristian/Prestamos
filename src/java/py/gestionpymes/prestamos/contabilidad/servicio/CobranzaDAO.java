@@ -130,8 +130,7 @@ public class CobranzaDAO {
             }
 
             transaccionDAO.create(tr);
-            //em.persist(tr);
-            
+            //em.persist(tr);     
 
         }
 
