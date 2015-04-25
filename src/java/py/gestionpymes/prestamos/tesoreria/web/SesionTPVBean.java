@@ -7,7 +7,6 @@ package py.gestionpymes.prestamos.tesoreria.web;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,22 +14,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.event.FlowEvent;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
-import py.gestionpymes.prestamos.adm.dao.QueryParameter;
-import py.gestionpymes.prestamos.adm.persistencia.Estado;
-import py.gestionpymes.prestamos.adm.persistencia.Usuario;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
 import py.gestionpymes.prestamos.adm.web.util.Credencial;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
-import py.gestionpymes.prestamos.adm.web.util.MesEnTexto;
-import py.gestionpymes.prestamos.adm.web.util.UsuarioLogueado;
 import py.gestionpymes.prestamos.contabilidad.persistencia.MetodoPago;
 import py.gestionpymes.prestamos.contabilidad.servicio.MetodoPagoDAO;
 import py.gestionpymes.prestamos.reportes.jasper.ReporteController;
@@ -45,6 +39,7 @@ import py.gestionpymes.prestamos.tesoreria.persisitencia.ValorMoneda;
 
 import py.gestionpymes.prestamos.tesoreria.dao.SesionTPVDAO;
 import py.gestionpymes.prestamos.tesoreria.dao.TransaccionDAO;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccion;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
 
 /**
@@ -80,6 +75,28 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     private Date inicioFiltro;
     private Date finFiltro;
 
+    private TreeNode root = new DefaultTreeNode("resumenCierre", null);
+    private List<TreeCierre> listaResumen = new ArrayList<>();
+
+    public List<TreeCierre> getListaResumen() {
+        return listaResumen;
+    }
+
+    public void setListaResumen(List<TreeCierre> listaResumen) {
+        this.listaResumen = listaResumen;
+    }
+
+    public TreeNode getRoot() {
+        if (root != null) {
+            cargaTreeCierre();
+        }
+        return root;
+    }
+
+    public void setRoot(TreeNode root) {
+        this.root = root;
+    }
+
     public PuntoVenta getPuntoVentaFiltro() {
         return puntoVentaFiltro;
     }
@@ -96,8 +113,6 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         this.estadoFiltro = estadoFiltro;
     }
 
-   
-
     public Date getInicioFiltro() {
         return inicioFiltro;
     }
@@ -113,30 +128,29 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     public void setFinFiltro(Date finFiltro) {
         this.finFiltro = finFiltro;
     }
-    
-    
-    public void buscar(){
+
+    public void buscar() {
         StringBuilder consulta;
         consulta = new StringBuilder("select s from SesionTPV s where 1=1 ");
-        Map<String,Object> params = new HashMap<>();
-        
-        if(puntoVentaFiltro != null){
+        Map<String, Object> params = new HashMap<>();
+
+        if (puntoVentaFiltro != null) {
             consulta.append(" and s.puntoVenta = :puntoVenta");
             params.put("puntoVenta", puntoVentaFiltro);
         }
-        
-        if(inicioFiltro != null && finFiltro != null){
+
+        if (inicioFiltro != null && finFiltro != null) {
             consulta.append(" and s.fechaApertura between :inicio and :fin");
             params.put("inicio", inicioFiltro);
             params.put("fin", finFiltro);
         }
-       
-        if(estadoFiltro != null && estadoFiltro.length() > 0){
+
+        if (estadoFiltro != null && estadoFiltro.length() > 0) {
             consulta.append(" and s.estado = :estado ");
             params.put("estado", estadoFiltro);
         }
-        
-        items = ejb.findAll(consulta.toString(),params);
+
+        items = ejb.findAll(consulta.toString(), params);
     }
 
     public List<SesionTPV> getItems() {
@@ -146,7 +160,7 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     public void setItems(List<SesionTPV> items) {
         this.items = items;
     }
-   
+
     public List<Transaccion> getTransacciones() {
         return transacciones;
     }
@@ -299,6 +313,7 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         cargaValoresFinales();
 
         resumenTransacciones = ejb.resumenTransaccion(getActual());
+        limpiaTotales();
 
         return "/tesoreria/sesionTPV/cierre.xhtml";
     }
@@ -317,11 +332,10 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         getActual().setDiferencia(diferencia.setScale(0, RoundingMode.HALF_EVEN));
         getActual().setFechaCierre(new Date());
         getActual().setEstado("CERRADA");
-        
+
         //imprimeReporteCajaCierre();
-        
         ejb.cierre(getActual());
-        
+
         return "listado.xhtml";
 
     }
@@ -358,34 +372,31 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
 
         }
     }
-    
+
     public void imprimeReporteCajaCierre() {
-        
-       
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("idSesionTPV", getActual().getId());//nf.format(selected.getId())
         params.put("cajero", credencial.getUsuario().getNombre() + " " + credencial.getUsuario().getApellido());
-        params.put("saldoInicial",(getActual().getSaldoInicial()==null?new BigDecimal(BigInteger.ZERO):getActual().getSaldoInicial().setScale(0, RoundingMode.HALF_EVEN)));
-        params.put("totalTransacciones",(getActual().getTotalTransacciones()==null?new BigDecimal(BigInteger.ZERO):getActual().getTotalTransacciones().setScale(0, RoundingMode.HALF_EVEN)));
-        params.put("saldoCierre",(getActual().getSaldoCierre()==null?new BigDecimal(BigInteger.ZERO):getActual().getSaldoCierre().setScale(0, RoundingMode.HALF_EVEN)));
-        params.put("diferencia",(getActual().getDiferencia()==null?new BigDecimal(BigInteger.ZERO):getActual().getDiferencia().setScale(0, RoundingMode.HALF_EVEN)));
-
+        params.put("saldoInicial", (getActual().getSaldoInicial() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getSaldoInicial().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("totalTransacciones", (getActual().getTotalTransacciones() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getTotalTransacciones().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("saldoCierre", (getActual().getSaldoCierre() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getSaldoCierre().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("diferencia", (getActual().getDiferencia() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getDiferencia().setScale(0, RoundingMode.HALF_EVEN)));
 
         reporteController.generaPDF(params, "reportes/tesoreria/ReporteTesoreria.jasper", "cierre_caja" + getActual().getPuntoVenta().getNombre());
     }
 
     public void imprimeReporteCajaCierre(SesionTPV s) {
-        
+
         setActual(s);
-        
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("idSesionTPV", s.getId());//nf.format(selected.getId())
         params.put("cajero", credencial.getUsuario().getNombre() + " " + credencial.getUsuario().getApellido());
-        params.put("saldoInicial",(s.getSaldoInicial()==null?new BigDecimal(BigInteger.ZERO):getActual().getSaldoInicial().setScale(0, RoundingMode.HALF_EVEN)));
-        params.put("totalTransacciones",(s.getTotalTransacciones()==null?new BigDecimal(BigInteger.ZERO):getActual().getTotalTransacciones().setScale(0, RoundingMode.HALF_EVEN)));
-        params.put("saldoCierre",(s.getSaldoCierre()==null?new BigDecimal(BigInteger.ZERO):getActual().getSaldoCierre().setScale(0, RoundingMode.HALF_EVEN)));
-        params.put("diferencia",(s.getDiferencia()==null?new BigDecimal(BigInteger.ZERO):getActual().getDiferencia().setScale(0, RoundingMode.HALF_EVEN)));
-
+        params.put("saldoInicial", (s.getSaldoInicial() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getSaldoInicial().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("totalTransacciones", (s.getTotalTransacciones() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getTotalTransacciones().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("saldoCierre", (s.getSaldoCierre() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getSaldoCierre().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("diferencia", (s.getDiferencia() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getDiferencia().setScale(0, RoundingMode.HALF_EVEN)));
 
         reporteController.generaPDF(params, "reportes/tesoreria/ReporteTesoreria.jasper", "cierre_caja" + s.getPuntoVenta().getNombre());
     }
@@ -432,4 +443,156 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         }
         return event.getNewStep();
     }
+
+    public void cargaTreeCierre() {
+        root = new DefaultTreeNode("resumenCierre", null);
+        TreeNode saldoInicialNode = new DefaultTreeNode(new TreeCierre("Saldo Inicio", null, getActual().getSaldoInicial() == null?new BigDecimal(BigInteger.ZERO):getActual().getSaldoInicial(), 0, root,"nodoTotal"), root);
+        TreeNode cobrosCuotasNode = new DefaultTreeNode(new TreeCierre("Cobros Cuotas (+)", TipoTransaccion.ENTRADA, getTotalCobroCuotas(), 0, root,"nodoTotal"), root);
+        TreeNode cobrosCuotasEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (+)", TipoTransaccion.ENTRADA, getTotalCobrosCuotasEfe(), 0, cobrosCuotasNode,"nodoSubTotal"), cobrosCuotasNode);
+        TreeNode cobrosCuotasChNode = new DefaultTreeNode(new TreeCierre("Cheques (+)", TipoTransaccion.ENTRADA, getTotalCobrosCuotasCh(), 0, cobrosCuotasNode,"nodoSubTotal"), cobrosCuotasNode);
+        
+        List<Object[]> lista = transaccionDAO.findSumPorBanco(getActual(),"TransaccionCobraCuota","ENTRADA","ChequeRecibido");
+        
+        for(Object[] obj:lista){
+            TreeNode cobrosCuotasChBancoNode = new DefaultTreeNode(new TreeCierre((String)obj[0]+" (+)", TipoTransaccion.ENTRADA,
+                    (BigDecimal) obj[1], 0, cobrosCuotasChNode,"nodoSubTotal"), cobrosCuotasChNode);
+        }
+        
+        TreeNode entradasVariasNode = new DefaultTreeNode(new TreeCierre("Entradas Varias (+)", TipoTransaccion.ENTRADA, getTotalEntradasVarias(), 0, root,"nodoTotal"), root);
+        TreeNode entradasVariasEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (+)", TipoTransaccion.ENTRADA, getTotalEntradasVariasEfe(), 0, entradasVariasNode,"nodoSubTotal"), entradasVariasNode);
+        TreeNode desembolsosNode = new DefaultTreeNode(new TreeCierre("Desembolsos (-)", TipoTransaccion.SALIDA, getTotalDesembolsos(), 0, root,"nodoTotal"), root);
+        TreeNode desembolsosEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (-)", TipoTransaccion.SALIDA, getTotalDesembolsosEfe(), 0, desembolsosNode,"nodoSubTotal"), desembolsosNode);
+        TreeNode salidasVariasNode = new DefaultTreeNode(new TreeCierre("Salidas Varias (-)", TipoTransaccion.SALIDA, getTotalSalidasVarias(), 0, root,"nodoTotal"), root);
+        TreeNode salidasVariasEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (-)", TipoTransaccion.SALIDA, getTotalSalidasVariasEfe(), 0, salidasVariasNode,"nodoSubTotal"), salidasVariasNode);
+
+    }
+
+    private void limpiaTotales() {
+        totalCobroCuotas = null;
+        totalCobrosCuotasEfe = null;
+        totalCobrosCuotasCh = null;
+        totalEntradasVarias = null;
+        totalEntradasVariasEfe = null;
+        totalSalidasVarias = null;
+        totalSalidasVariasEfe = null;
+        totalDesembolsos = null;
+        totalDesembolsosEfe = null;
+    }
+    private BigDecimal totalCobroCuotas;
+    private BigDecimal totalCobrosCuotasEfe;
+    private BigDecimal totalCobrosCuotasCh;
+    private BigDecimal totalEntradasVarias;
+    private BigDecimal totalEntradasVariasEfe;
+    private BigDecimal totalSalidasVarias;
+    private BigDecimal totalSalidasVariasEfe;
+    private BigDecimal totalDesembolsos;
+    private BigDecimal totalDesembolsosEfe;
+
+    public BigDecimal getTotalCobroCuotas() {
+        if (totalCobroCuotas == null) {
+            totalCobroCuotas = obtTotalTransaccion("TransaccionCobraCuota", "ENTRADA");
+        }
+        return totalCobroCuotas;
+    }
+
+    public void setTotalCobroCuotas(BigDecimal totalCobroCuotas) {
+        this.totalCobroCuotas = totalCobroCuotas;
+    }
+
+    public BigDecimal getTotalCobrosCuotasEfe() {
+        if (totalCobrosCuotasEfe == null) {
+            totalCobrosCuotasEfe = obtTotalPago("TransaccionCobraCuota", "ENTRADA", "Efectivo");
+        }
+        return totalCobrosCuotasEfe;
+    }
+
+    public void setTotalCobrosCuotasEfe(BigDecimal totalCobrosCuotasEfe) {
+        this.totalCobrosCuotasEfe = totalCobrosCuotasEfe;
+    }
+
+    public BigDecimal getTotalCobrosCuotasCh() {
+        if (totalCobrosCuotasCh == null) {
+            totalCobrosCuotasCh = obtTotalPago("TransaccionCobraCuota", "ENTRADA", "ChequeRecibido");
+        }
+        return totalCobrosCuotasCh;
+    }
+
+    public void setTotalCobrosCuotasCh(BigDecimal totalCobrosCuotasCh) {
+        this.totalCobrosCuotasCh = totalCobrosCuotasCh;
+    }
+
+    public BigDecimal getTotalEntradasVarias() {
+        if (totalEntradasVarias == null) {
+            totalEntradasVarias = obtTotalTransaccion("Transaccion", "ENTRADA");
+        }
+        return totalEntradasVarias;
+    }
+
+    public void setTotalEntradasVarias(BigDecimal totalEntradasVarias) {
+        this.totalEntradasVarias = totalEntradasVarias;
+    }
+
+    public BigDecimal getTotalEntradasVariasEfe() {
+        if (totalEntradasVariasEfe == null) {
+            totalEntradasVariasEfe = obtTotalPago("Transaccion", "ENTRADA", "Efectivo");
+        }
+        return totalEntradasVariasEfe;
+    }
+
+    public void setTotalEntradasVariasEfe(BigDecimal totalEntradasVariasEfe) {
+        this.totalEntradasVariasEfe = totalEntradasVariasEfe;
+    }
+
+    public BigDecimal getTotalSalidasVarias() {
+        if (totalSalidasVarias == null) {
+            totalSalidasVarias = obtTotalTransaccion("Transaccion", "SALIDA");
+        }
+        return totalSalidasVarias;
+    }
+
+    public void setTotalSalidasVarias(BigDecimal totalSalidasVarias) {
+        this.totalSalidasVarias = totalSalidasVarias;
+    }
+
+    public BigDecimal getTotalSalidasVariasEfe() {
+        if (totalSalidasVariasEfe == null) {
+            totalSalidasVariasEfe = obtTotalPago("Transaccion", "SALIDA", "Efectivo");
+        }
+        return totalSalidasVariasEfe;
+    }
+
+    public void setTotalSalidasVariasEfe(BigDecimal totalSalidasVariasEfe) {
+        this.totalSalidasVariasEfe = totalSalidasVariasEfe;
+    }
+
+    public BigDecimal getTotalDesembolsos() {
+        if (totalDesembolsos == null) {
+            totalDesembolsos = obtTotalTransaccion("TransaccionDesembolso", "SALIDA");
+        }
+        return totalDesembolsos;
+    }
+
+    public void setTotalDesembolsos(BigDecimal totalDesembolsos) {
+        this.totalDesembolsos = totalDesembolsos;
+    }
+
+    public BigDecimal getTotalDesembolsosEfe() {
+        if (totalDesembolsosEfe == null) {
+            totalDesembolsosEfe = obtTotalPago("TransaccionDesembolso", "SALIDA", "Efectivo");
+        }
+        return totalDesembolsosEfe;
+    }
+
+    public void setTotalDesembolsosEfe(BigDecimal totalDesembolsosEfe) {
+        this.totalDesembolsosEfe = totalDesembolsosEfe;
+    }
+
+    public BigDecimal obtTotalTransaccion(String dtype, String tipo) {
+        return transaccionDAO.findSumTransaccion(getActual(), dtype, tipo);
+    }
+
+    public BigDecimal obtTotalPago(String dtype, String tipo, String pagoDtype) {
+        return transaccionDAO.findSumPago(getActual(), dtype, tipo, pagoDtype);
+    }
+
 }

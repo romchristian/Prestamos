@@ -103,6 +103,23 @@ INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUE
 -- 14/04/2015 
 
 --ALTER TABLE sesiontpv add column cerrarConDiferencia boolean;
+
+-- 17/04/2015 
 --alter table pago add column descripcion character varying(255);
 --ALTER TABLE  pago add column montopagado numeric(38,0);
 --ALTER TABLE  pago add column cambio numeric(38,0);
+
+-- 24/04/2015 
+
+-- ALTER TABLE pago ADD COLUMN transaccion_id bigint;
+-- 
+-- ALTER TABLE pago
+--   ADD CONSTRAINT fk_pago_transaccion_id FOREIGN KEY (transaccion_id)
+--       REFERENCES transaccion (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+-- ALTER TABLE facturaventadetalle ADD COLUMN prestamo_id bigint;
+-- ALTER TABLE facturaventadetalle
+--   ADD CONSTRAINT fk_facturaventadetalle_prestamo_id FOREIGN KEY (prestamo_id)
+--       REFERENCES prestamo (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION;

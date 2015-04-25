@@ -210,6 +210,7 @@ public class DesembolsaBean implements Serializable {
         d1.setPrecioUnitario(selected.getGastos());
         d1.setGravada10(d1.getCantidad().multiply(d1.getPrecioUnitario()));
         d1.setRefMonto(FacturaVentaDetalle.MONTO_GASTOS);
+        d1.setPrestamo(selected);
 
         facturaVenta.getDetalles().add(d1);
 
@@ -222,6 +223,7 @@ public class DesembolsaBean implements Serializable {
         d2.setPrecioUnitario(selected.getComisiones());
         d2.setGravada10(d2.getCantidad().multiply(d2.getPrecioUnitario()));
         d2.setRefMonto(FacturaVentaDetalle.MONTO_COMISIONES);
+        d2.setPrestamo(selected);
 
         facturaVenta.getDetalles().add(d2);
 

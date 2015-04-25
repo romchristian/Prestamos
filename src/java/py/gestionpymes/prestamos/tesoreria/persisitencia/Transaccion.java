@@ -47,9 +47,19 @@ public class Transaccion implements Serializable {
     @ManyToOne
     private TipoTransaccionCaja tipoTransaccionCaja;
     private String usuarioLogeado;
-     
+    @OneToMany(mappedBy = "transaccion")
+    private List<Pago> pagos; 
+
+    public List<Pago> getPagos() {
+        return pagos;
+    }
+
+    public void setPagos(List<Pago> pagos) {
+        this.pagos = pagos;
+    }
     
 
+    
     public String getUsuarioLogeado() {
         return usuarioLogeado;
     }

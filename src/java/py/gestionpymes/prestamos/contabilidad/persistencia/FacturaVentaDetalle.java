@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
+import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
 
 /**
  *
@@ -27,7 +28,7 @@ public class FacturaVentaDetalle implements Serializable {
     public final static String MONTO_DESCUENTO = "monto_descuento";
     public final static String MONTO_GASTOS = "monto_gastos";
     public final static String MONTO_COMISIONES = "monto_comisiones";
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,8 +46,20 @@ public class FacturaVentaDetalle implements Serializable {
     private BigDecimal gravada10;
     @ManyToOne
     private DetPrestamo detPrestamo;
+    @ManyToOne
+    private Prestamo prestamo;
     private String refMonto;
 
+    public Prestamo getPrestamo() {
+        return prestamo;
+    }
+
+    public void setPrestamo(Prestamo prestamo) {
+        this.prestamo = prestamo;
+    }
+
+    
+    
     public DetPrestamo getDetPrestamo() {
         return detPrestamo;
     }
@@ -62,10 +75,7 @@ public class FacturaVentaDetalle implements Serializable {
     public void setRefMonto(String refMonto) {
         this.refMonto = refMonto;
     }
-    
 
-    
-    
     public FacturaVenta getFacturaVenta() {
         return facturaVenta;
     }

@@ -136,9 +136,11 @@ public class CobraCuotaBean implements Serializable {
         if (efectivo.getMontoPagado().compareTo(obtRestante()) < 0) {
             efectivo.setMonto(efectivo.getMontoPagado());
             efectivo.setCambio(new BigDecimal(BigInteger.ZERO));
+        }else{
+            efectivo.setMonto(obtRestante());
         }
         
-        efectivo.setMonto(obtRestante());
+        
         efectivo.setFecha(facturaVenta.getFechaEmision());
         efectivo.setMoneda(facturaVenta.getMoneda());
         efectivo.setFacturaVenta(facturaVenta);
@@ -392,6 +394,7 @@ public class CobraCuotaBean implements Serializable {
             d.setNrolinea(nrolinea);
             d.setCantidad(new BigDecimal(BigInteger.ONE));
             d.setDetPrestamo(t.getDetPrestamo());
+            d.setPrestamo(t.getPrestamo());
             d.setRefMonto(FacturaVentaDetalle.MONTO_CUOTA);
 
             d.setDescripcion("Pago de " + t.getDescDetPrestamo() + ", Prestamo #" + t.getPrestamo().getId());

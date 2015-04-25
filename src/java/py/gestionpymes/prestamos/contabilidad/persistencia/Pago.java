@@ -40,16 +40,17 @@ public abstract class Pago implements Serializable {
     private FacturaVenta facturaVenta;
     
     @ManyToOne
-    private TransaccionCobraCuota transaccionCobraCuota;
+    private Transaccion transaccion;
 
-    public TransaccionCobraCuota getTransaccionCobraCuota() {
-        return transaccionCobraCuota;
+    public Transaccion getTransaccion() {
+        return transaccion;
     }
 
-    public void setTransaccionCobraCuota(TransaccionCobraCuota transaccionCobraCuota) {
-        this.transaccionCobraCuota = transaccionCobraCuota;
+    public void setTransaccion(Transaccion transaccion) {
+        this.transaccion = transaccion;
     }
- 
+
+  
     public String getDescripcion() {
         return descripcion;
     }

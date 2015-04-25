@@ -28,7 +28,7 @@
 
 
             <p:splitButton value="Imprimir Reporte de Cierre" action="#{sesionTPVBean.imprimeReporteCajaCierre()}" icon="ui-icon-print" ajax="false">
-<!--                <p:menuitem value="Imprimir Reporte Detallado"/>-->
+                <!--                <p:menuitem value="Imprimir Reporte Detallado"/>-->
             </p:splitButton>
             <!--<p:commandButton value="Imprimir Reporte" action="{sesionTPVBean.cierraSesion()}"/>-->
 
@@ -64,8 +64,37 @@
                     display: table-cell; width: 50%;
                     padding: 3px;    
                 }
+                .celda2{
+                    display: table-cell; width: 100%;
+                    font-size: 16pt;
+                    font-weight: bold;
+                    padding: 3px;    
+                }
+                .nodoTotal{
+                    width: 100%;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 3px;    
+                }
+                
+                .nodoSubTotal{
+                    width: 100%;
+                    font-size: 10pt;
+                    padding: 3px;    
+                }
+
                 .derecha{
                     text-align: right;
+                }
+
+                .ui-tree .ui-tree-parent span,
+                .ui-tree .ui-tree-item span {
+                    float: left;
+                    width: 100%!important;
+                }
+
+                .ui-tree{
+                    width: 100%
                 }
             </style>    
 
@@ -90,31 +119,25 @@
                 </div>
                 <div style="display: table-cell;width: 70%" >
                     <p:fieldset legend="Arqueo y Saldos" style="margin-bottom:20px">
-                        <p:panel id="saldoIncial" styleClass="saldos">
 
-                            <div style="display: table;width: 100%">
-                                <div class="fila">
-                                    <div class="celda">
-                                        <h:outputText value="Saldo Inicial" styleClass="titulo"/>
+                        <p:panel id="saldoIncial" styleClass="saldos" style="border: none;">
+
+                            <p:tree value="#{sesionTPVBean.root}" var="node" style="width: 100%;border: none;">
+                                <p:treeNode styleClass="#{node.styleClass}" >
+                                    <div style="display: table">
+                                        <div class="celda">
+                                            <h:commandLink value="#{node.descripcion}" hreflang="#"/>
+                                        </div>
+                                        <div class="celda derecha" style="position: absolute; left: 49%">
+                                            <h:outputText value="#{node.monto}">
+                                                <f:convertNumber locale="#{formato.locale}"/>
+                                            </h:outputText>
+                                        </div>
                                     </div>
-                                    <div class="celda derecha">
-                                        <h:outputText value="#{sesionTPVBean.actual.saldoInicial}" styleClass="monto">
-                                            <f:convertNumber currencySymbol="PYG"/> 
-                                        </h:outputText>
-                                    </div>                                
-                                </div>
 
-                                <div style="display: table-row">
-                                    <div class="celda">
-                                        <h:outputText value="Total Transacciones" styleClass="titulo"/>
-                                    </div>
-                                    <div class="celda derecha">
-                                        <h:outputText value="#{sesionTPVBean.totalTransacciones}" styleClass="monto">
-                                            <f:convertNumber currencySymbol="PYG"/> 
-                                        </h:outputText>
-                                    </div>                                
-                                </div>
-
+                                </p:treeNode>
+                            </p:tree>
+                            <div style="display: table; width: 100%">
                                 <div style="display: table-row">
                                     <div class="celda">
 
@@ -127,7 +150,7 @@
 
                                 </div>
                                 <div style="display: table-row">
-                                    <div class="celda">
+                                    <div class="celda" style="padding-left: 25px">
                                         <h:outputText value="Saldo Teorico" styleClass="titulo"/>
                                     </div>
                                     <div class="celda derecha">
@@ -139,7 +162,7 @@
 
 
                                 <div style="display: table-row">
-                                    <div class="celda">
+                                    <div class="celda" style="padding-left: 25px">
                                         <h:outputText value="Saldo Cierre" styleClass="titulo"/>
                                     </div>
                                     <div class="celda derecha">
@@ -151,7 +174,7 @@
 
 
                                 <div style="display: table-row">
-                                    <div class="celda">
+                                    <div class="celda" style="padding-left: 25px">
                                         <h:outputText value="Diferencia" styleClass="#{(sesionTPVBean.diferencia != 0 ? 'rojo':'titulo')}"/>
                                     </div>
                                     <div class="celda derecha">
@@ -162,30 +185,61 @@
                                 </div>
                             </div>
 
-
                         </p:panel>
                     </p:fieldset>
-                    <p:fieldset legend="Resumen de Transacciones" style="margin-bottom:20px">
-                        <p:dataTable value="#{sesionTPVBean.resumenTransacciones}" var="t">
-                            <p:column headerText="Operación">
-                                <h:outputText value="#{t.operacion}"/>                                    
-                            </p:column>
-                            <p:column headerText="Tipo">
-                                <h:outputText value="#{t.tipo}"/>
-                            </p:column>
-                            <p:column headerText="Cantidad">
-                                <h:outputText value="#{t.cantidadTransaccion}">
-                                    <f:convertNumber locale="#{formato.locale}"/>
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Monto">
-                                <h:outputText value="#{t.monto}">
-                                    <f:convertNumber locale="#{formato.locale}"/>
-                                </h:outputText>
-                            </p:column>
 
-                        </p:dataTable>
-                    </p:fieldset>
+
+
+
+                    <!--                    <p:treeTable value="{sesionTPVBean.root}" var="c" id="treeDataList">
+                                            <p:column style="width:200px;font-size: 12px;">
+                                                <f:facet name="header">
+                                                    Descripción
+                                                </f:facet>
+                                                <h:outputText value="{c.descripcion}" />
+                                            </p:column>
+                                            <p:column style="width:50px;font-size: 12px;">
+                                                <f:facet name="header">
+                                                    Tipo
+                                                </f:facet>
+                                                <h:outputText value="{c.tipoTransaccion}" />
+                                            </p:column>
+                                            <p:column style="width:50px;font-size: 12px;">
+                                                <f:facet name="header">
+                                                    Monto
+                                                </f:facet>
+                                                <h:outputText value="{c.monto}" />
+                                            </p:column>
+                                            <p:column style="width:50px;font-size: 12px;">
+                                                <f:facet name="header">
+                                                    Cant.
+                                                </f:facet>
+                                                <h:outputText value="{c.cantidad}" />
+                                            </p:column>
+                                        </p:treeTable>-->
+
+
+                    <!--                    <p:fieldset legend="Resumen de Transacciones" style="margin-bottom:20px">
+                                            <p:dataTable value="{sesionTPVBean.resumenTransacciones}" var="t">
+                                                <p:column headerText="Operación">
+                                                    <h:outputText value="{t.operacion}"/>                                    
+                                                </p:column>
+                                                <p:column headerText="Tipo">
+                                                    <h:outputText value="{t.tipo}"/>
+                                                </p:column>
+                                                <p:column headerText="Cantidad">
+                                                    <h:outputText value="{t.cantidadTransaccion}">
+                                                        <f:convertNumber locale="{formato.locale}"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Monto">
+                                                    <h:outputText value="{t.monto}">
+                                                        <f:convertNumber locale="{formato.locale}"/>
+                                                    </h:outputText>
+                                                </p:column>
+                    
+                                            </p:dataTable>
+                                        </p:fieldset>-->
 
                 </div>
             </div>

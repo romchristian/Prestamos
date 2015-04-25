@@ -129,8 +129,13 @@ public class CobranzaDAO {
                 tr.setTipoTransaccionCaja(ttc);
             }
 
-            transaccionDAO.create(tr);
-            //em.persist(tr);     
+            Transaccion ta = transaccionDAO.create(tr);
+            
+            for(Pago p: f.getPagos()){
+                p.setTransaccion(ta);
+                em.merge(p);
+            }
+                 
 
         }
 
@@ -204,6 +209,7 @@ public class CobranzaDAO {
                 Prestamo p = dp.getPrestamo();
                 dp.setUltimoPago(f.getFechaEmision());
                 p.setUltimoPago(f.getFechaEmision());
+                
                 em.merge(dp);
                 em.merge(p);
             }
