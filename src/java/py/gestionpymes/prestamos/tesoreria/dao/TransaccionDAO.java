@@ -16,7 +16,9 @@ import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.dao.QueryParameter;
 import py.gestionpymes.prestamos.adm.web.util.Credencial;
+import py.gestionpymes.prestamos.contabilidad.persistencia.ChequeRecibido;
 import py.gestionpymes.prestamos.contabilidad.persistencia.Pago;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.Banco;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.PuntoVenta;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
@@ -88,22 +90,84 @@ public class TransaccionDAO extends AbstractDAO<Transaccion> {
 
     public List<Object[]> findSumPorBanco(SesionTPV s, String dtype, String tipoTransaccion, String PagoDtype) {
         List<Object[]> lista = abmService.getEM().createNativeQuery(
-                " select b.nombre,sum(p.monto) from pago p \n"
+                " select b.id, b.nombre,sum(p.monto) from pago p \n"
                 + " join transaccion t on p.transaccion_id = t.id \n"
                 + " join banco b on b.id = p.banco_id "
                 + " where t.sesiontpv_id = " + s.getId()
                 + " and t.dtype = '" + dtype + "'"
                 + " and p.dtype = '" + PagoDtype + "'"
                 + " and t.tipotransaccion = '" + tipoTransaccion + "'"
-                + " group by b.nombre ").getResultList();
+                + " group by b.id , b.nombre ").getResultList();
 
         return lista;
     }
 
+    /**
+     * findPagosDetalle
+     * @param s sesión actual
+     * @param b banco seleccionado
+     * @param tipoConsulta identificador del tipo de la consulta a devolver
+     * @return lista de pagos 
+     */
+    public List<Pago> findPagosDetalle(SesionTPV s,TreeCierre t) {
+        
+        List<Pago> R = new ArrayList<>();
+        switch (t.getTipoConsulta()) {
+            case TreeCierre.TCC:
+                R = findTCC(s);
+                break;
+            case TreeCierre.TCC_EFE:
+                R = findTccEfe(s);
+                break;
+            case TreeCierre.TCC_CH:
+                R = findTccCh(s);
+                break;
+            case TreeCierre.TCC_BANCO:
+                R = findTccBanco(s, t.getBancoId());
+                break;
+            case TreeCierre.EV:
+                break;
+            case TreeCierre.EV_EFE:
+                break;
+            case TreeCierre.DE:
+                break;
+            case TreeCierre.DE_EFE:
+                break;
+            case TreeCierre.SV:
+                break;
+            case TreeCierre.SV_EFE:
+                break;
+        }
+
+        return R;
+    }
+
     
-    public List<Pago> findChequesRecibidosTCC(SesionTPV s) {
-        return abmService.getEM().createQuery("select c from ChequeRecibido c where c.transaccion.id  in (select tcc.id from TransaccionCobraCuota)\n"
-                + "and c.transaccion.sesionTPV = ?1").setParameter(1, s).getResultList();
+    public List<Pago> findTCC(SesionTPV s) {
+        return abmService
+                .getEM()
+                .createQuery("select p from Pago p where p.transaccion.id  in (select tcc.id from TransaccionCobraCuota tcc) "
+                + " and p.transaccion.sesionTPV = ?1").setParameter(1, s).getResultList();
+    }
+    
+     public List<Pago> findTccEfe(SesionTPV s) {
+        return abmService
+                .getEM()
+                .createQuery("select e from Efectivo e where e.transaccion.id  in (select tcc.id from TransaccionCobraCuota tcc) "
+                + " and e.transaccion.sesionTPV = ?1").setParameter(1, s).getResultList();
+    }
+    
+    public List<Pago> findTccCh(SesionTPV s) {
+        return abmService.getEM().createQuery("select c from ChequeRecibido c where c.transaccion.id  in (select tcc.id from TransaccionCobraCuota tcc) "
+                + " and c.transaccion.sesionTPV = ?1").setParameter(1, s).getResultList();
+    }
+
+    public List<Pago> findTccBanco(SesionTPV s, Long bancoId) {
+        return abmService.getEM().createQuery("select c from ChequeRecibido c where c.transaccion.id  in (select tcc.id from TransaccionCobraCuota tcc) "
+                + " and c.transaccion.sesionTPV = ?1"
+                + " and c.banco.id = ?2")
+                .setParameter(1, s)
+                .setParameter(2, bancoId).getResultList();
     }
 
     public List<Transaccion> findAllSesionTPV(SesionTPV s) {

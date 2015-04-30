@@ -41,7 +41,7 @@ public abstract class Pago implements Serializable {
     
     @ManyToOne
     private Transaccion transaccion;
-
+    
     public Transaccion getTransaccion() {
         return transaccion;
     }

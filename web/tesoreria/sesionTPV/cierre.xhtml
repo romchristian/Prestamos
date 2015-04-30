@@ -76,7 +76,7 @@
                     font-weight: bold;
                     padding: 3px;    
                 }
-                
+
                 .nodoSubTotal{
                     width: 100%;
                     font-size: 10pt;
@@ -96,8 +96,33 @@
                 .ui-tree{
                     width: 100%
                 }
+
+
+                .ui-blockui-content {
+                    border: none!important;
+                    background:none!important;
+                }
+
+/*                .ui-shadow .ui-blockui-content {
+                      -moz-box-shadow: 0px 0px 0px rgba(0,0,0,0);
+                    -webkit-box-shadow: 0px 0px 0px rgba(0,0,0,0);
+                    box-shadow: 0px 0px 0px rgba(0,0,0,0.8);
+                }*/
+                
+                .ui-shadow{
+                    
+                    -moz-box-shadow: 0px 0px 0px rgba(0,0,0,0);
+                    -webkit-box-shadow: 0px 0px 0px rgba(0,0,0,0);
+                    box-shadow: 0px 0px 0px rgba(0,0,0,0.8);
+                }
             </style>    
 
+
+
+
+            <p:blockUI id="blockUI" widgetVar="blockBody" block=":paginaEntera" trigger="@(.linkDetalles)">
+                <p:graphicImage library="img" name="load.gif" width="256" style="background: transparent"/>
+            </p:blockUI>
 
             <div style="display: table">
                 <div style="display: table-cell;width: 30%" >
@@ -118,15 +143,18 @@
 
                 </div>
                 <div style="display: table-cell;width: 70%" >
-                    <p:fieldset legend="Arqueo y Saldos" style="margin-bottom:20px">
+                    <p:fieldset legend="Arqueo y Saldos" style="margin-bottom:20px" >
 
                         <p:panel id="saldoIncial" styleClass="saldos" style="border: none;">
 
                             <p:tree value="#{sesionTPVBean.root}" var="node" style="width: 100%;border: none;">
-                                <p:treeNode styleClass="#{node.styleClass}" >
+                                <p:treeNode styleClass="#{node.styleClass} treeResumen" id="treeResumen">
                                     <div style="display: table">
                                         <div class="celda">
-                                            <h:commandLink value="#{node.descripcion}" hreflang="#"/>
+                                            <p:commandLink value="#{node.descripcion}" actionListener="#{sesionTPVBean.abreDetalleTransaccion(node)}"
+                                                           update=":dialogPagosForm"  oncomplete=" PF('dialogPagos').show();" 
+
+                                                           styleClass="linkDetalles"/>
                                         </div>
                                         <div class="celda derecha" style="position: absolute; left: 49%">
                                             <h:outputText value="#{node.monto}">
@@ -189,95 +217,55 @@
                     </p:fieldset>
 
 
-
-
-                    <!--                    <p:treeTable value="{sesionTPVBean.root}" var="c" id="treeDataList">
-                                            <p:column style="width:200px;font-size: 12px;">
-                                                <f:facet name="header">
-                                                    Descripción
-                                                </f:facet>
-                                                <h:outputText value="{c.descripcion}" />
-                                            </p:column>
-                                            <p:column style="width:50px;font-size: 12px;">
-                                                <f:facet name="header">
-                                                    Tipo
-                                                </f:facet>
-                                                <h:outputText value="{c.tipoTransaccion}" />
-                                            </p:column>
-                                            <p:column style="width:50px;font-size: 12px;">
-                                                <f:facet name="header">
-                                                    Monto
-                                                </f:facet>
-                                                <h:outputText value="{c.monto}" />
-                                            </p:column>
-                                            <p:column style="width:50px;font-size: 12px;">
-                                                <f:facet name="header">
-                                                    Cant.
-                                                </f:facet>
-                                                <h:outputText value="{c.cantidad}" />
-                                            </p:column>
-                                        </p:treeTable>-->
-
-
-                    <!--                    <p:fieldset legend="Resumen de Transacciones" style="margin-bottom:20px">
-                                            <p:dataTable value="{sesionTPVBean.resumenTransacciones}" var="t">
-                                                <p:column headerText="Operación">
-                                                    <h:outputText value="{t.operacion}"/>                                    
-                                                </p:column>
-                                                <p:column headerText="Tipo">
-                                                    <h:outputText value="{t.tipo}"/>
-                                                </p:column>
-                                                <p:column headerText="Cantidad">
-                                                    <h:outputText value="{t.cantidadTransaccion}">
-                                                        <f:convertNumber locale="{formato.locale}"/>
-                                                    </h:outputText>
-                                                </p:column>
-                                                <p:column headerText="Monto">
-                                                    <h:outputText value="{t.monto}">
-                                                        <f:convertNumber locale="{formato.locale}"/>
-                                                    </h:outputText>
-                                                </p:column>
-                    
-                                            </p:dataTable>
-                                        </p:fieldset>-->
-
                 </div>
             </div>
 
-            <br/>
-            <p:fieldset legend="Detalle de Transacciones ( Cant.:  #{sesionTPVBean.transacciones.size()})" style="margin-bottom:20px"
-                        collapsed="true" toggleable="true">
-                <p:dataTable value="#{sesionTPVBean.transacciones}" var="t">
-                    <p:column headerText="Fecha">
-                        <h:outputText value="#{t.fecha}">
-                            <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFechaHora}" timeZone="America/Asuncion"/>
-                        </h:outputText>
-                    </p:column>
-                    <p:column headerText="Operación">
-                        <h:outputText value="#{t.tipoTransaccionCaja.descripcion}"/>
-                    </p:column>
-                    <p:column headerText="Descripción">
-                        <h:outputText value="#{t.descripcion}"/>
-                    </p:column>
-                    <p:column headerText="Ingreso">
-                        <h:outputText value="#{(t.tipoTransaccion == 'ENTRADA' ? t.monto : 0)}">
-                            <f:convertNumber locale="#{formato.locale}"/>
-                        </h:outputText>
-                    </p:column>
-                    <p:column headerText="Egreso">
-                        <h:outputText value="#{(t.tipoTransaccion == 'SALIDA' ? t.monto : 0)}">
-                            <f:convertNumber locale="#{formato.locale}"/>
-                        </h:outputText>
-                    </p:column>
-                </p:dataTable>
-            </p:fieldset>
 
 
 
 
 
+        </ui:define>
 
+        <ui:define name="dialogos">
 
+            <p:dialog id="dlgPagos" header="Transacciones" showEffect="fade" widgetVar="dialogPagos"  resizable="false" position="center">
+
+                <h:form id="dialogPagosForm" styleClass="dialogPagosForm">
+
+                    <p:outputPanel id="panelPagos" styleClass="panelPagos">
+
+                        <p:dataTable value="#{sesionTPVBean.detalleTrasacciones}" var="p">
+                            <p:column headerText="Fecha">
+                                <h:outputText value="#{p.transaccion.fecha}">
+                                    <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFechaHora}" timeZone="America/Asuncion"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Operación">
+                                <h:outputText value="#{p.transaccion.tipoTransaccionCaja.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Forma Pago">
+                                <h:outputText value="#{p.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Descripción">
+                                <h:outputText value="#{p.transaccion.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Ingreso">
+                                <h:outputText value="#{(p.transaccion.tipoTransaccion == 'ENTRADA' ? p.monto : 0)}">
+                                    <f:convertNumber locale="#{formato.locale}"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Egreso">
+                                <h:outputText value="#{(p.transaccion.tipoTransaccion == 'SALIDA' ? p.monto : 0)}">
+                                    <f:convertNumber locale="#{formato.locale}"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton value="Cerrar" onclick="PF('dialogPagos').hide()"/>
+                    </p:outputPanel>
+                </h:form>
+
+            </p:dialog>
 
         </ui:define>
     </ui:decorate>

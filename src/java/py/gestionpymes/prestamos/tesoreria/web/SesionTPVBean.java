@@ -25,7 +25,9 @@ import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
 import py.gestionpymes.prestamos.adm.web.util.Credencial;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
+import py.gestionpymes.prestamos.contabilidad.persistencia.ChequeRecibido;
 import py.gestionpymes.prestamos.contabilidad.persistencia.MetodoPago;
+import py.gestionpymes.prestamos.contabilidad.persistencia.Pago;
 import py.gestionpymes.prestamos.contabilidad.servicio.MetodoPagoDAO;
 import py.gestionpymes.prestamos.reportes.jasper.ReporteController;
 import py.gestionpymes.prestamos.tesoreria.dao.PuntoVentaDAO;
@@ -78,6 +80,33 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     private TreeNode root = new DefaultTreeNode("resumenCierre", null);
     private List<TreeCierre> listaResumen = new ArrayList<>();
 
+    private List<ChequeRecibido> listaChequesRecibidosTCC=new ArrayList<>();
+    
+    private List<Pago> detalleTrasacciones;
+
+    public List<Pago> getDetalleTrasacciones() {
+        return detalleTrasacciones;
+    }
+
+    public void setDetalleTrasacciones(List<Pago> detalleTrasacciones) {
+        this.detalleTrasacciones = detalleTrasacciones;
+    }
+
+
+    public List<ChequeRecibido> getListaChequesRecibidosTCC() {
+        return listaChequesRecibidosTCC;
+    }
+
+    public void setListaChequesRecibidosTCC(List<ChequeRecibido> listaChequesRecibidosTCC) {
+        this.listaChequesRecibidosTCC = listaChequesRecibidosTCC;
+    }
+    
+
+    public void cargaListaChequesRecibidosTCC() {
+
+        //listaChequesRecibidosTCC = transaccionDAO.findTccCh(getActual());
+        
+    }
     public List<TreeCierre> getListaResumen() {
         return listaResumen;
     }
@@ -311,6 +340,7 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
 
         actualizaTotalTransacciones();
         cargaValoresFinales();
+        cargaListaChequesRecibidosTCC();                
 
         resumenTransacciones = ejb.resumenTransaccion(getActual());
         limpiaTotales();
@@ -443,27 +473,33 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         }
         return event.getNewStep();
     }
+    
+    
+    public void abreDetalleTransaccion(TreeCierre t){
+       detalleTrasacciones = transaccionDAO.findPagosDetalle(getActual(), t);
+        
+    }
 
     public void cargaTreeCierre() {
         root = new DefaultTreeNode("resumenCierre", null);
-        TreeNode saldoInicialNode = new DefaultTreeNode(new TreeCierre("Saldo Inicio", null, getActual().getSaldoInicial() == null?new BigDecimal(BigInteger.ZERO):getActual().getSaldoInicial(), 0, root,"nodoTotal"), root);
-        TreeNode cobrosCuotasNode = new DefaultTreeNode(new TreeCierre("Cobros Cuotas (+)", TipoTransaccion.ENTRADA, getTotalCobroCuotas(), 0, root,"nodoTotal"), root);
-        TreeNode cobrosCuotasEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (+)", TipoTransaccion.ENTRADA, getTotalCobrosCuotasEfe(), 0, cobrosCuotasNode,"nodoSubTotal"), cobrosCuotasNode);
-        TreeNode cobrosCuotasChNode = new DefaultTreeNode(new TreeCierre("Cheques (+)", TipoTransaccion.ENTRADA, getTotalCobrosCuotasCh(), 0, cobrosCuotasNode,"nodoSubTotal"), cobrosCuotasNode);
-        
-        List<Object[]> lista = transaccionDAO.findSumPorBanco(getActual(),"TransaccionCobraCuota","ENTRADA","ChequeRecibido");
-        
-        for(Object[] obj:lista){
-            TreeNode cobrosCuotasChBancoNode = new DefaultTreeNode(new TreeCierre((String)obj[0]+" (+)", TipoTransaccion.ENTRADA,
-                    (BigDecimal) obj[1], 0, cobrosCuotasChNode,"nodoSubTotal"), cobrosCuotasChNode);
+        TreeNode saldoInicialNode = new DefaultTreeNode(new TreeCierre("Saldo Inicio", null, getActual().getSaldoInicial() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getSaldoInicial(), 0, root, "nodoTotal"), root);
+        TreeNode cobrosCuotasNode = new DefaultTreeNode(new TreeCierre("Cobros Cuotas (+)", TipoTransaccion.ENTRADA, getTotalCobroCuotas(), 0, root, "nodoTotal",TreeCierre.TCC), root);
+        TreeNode cobrosCuotasEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (+)", TipoTransaccion.ENTRADA, getTotalCobrosCuotasEfe(), 0, cobrosCuotasNode, "nodoSubTotal",TreeCierre.TCC_EFE), cobrosCuotasNode);
+        TreeNode cobrosCuotasChNode = new DefaultTreeNode(new TreeCierre("Cheques (+)", TipoTransaccion.ENTRADA, getTotalCobrosCuotasCh(), 0, cobrosCuotasNode, "nodoSubTotal",TreeCierre.TCC_CH), cobrosCuotasNode);
+
+        List<Object[]> lista = transaccionDAO.findSumPorBanco(getActual(), "TransaccionCobraCuota", "ENTRADA", "ChequeRecibido");
+
+        for (Object[] obj : lista) {
+            TreeNode cobrosCuotasChBancoNode = new DefaultTreeNode(new TreeCierre((String) obj[1] + " (+)", TipoTransaccion.ENTRADA,
+                    (BigDecimal) obj[2], 0, cobrosCuotasChNode, "nodoSubTotal",TreeCierre.TCC_BANCO,((Integer)obj[0]).longValue()), cobrosCuotasChNode);
         }
-        
-        TreeNode entradasVariasNode = new DefaultTreeNode(new TreeCierre("Entradas Varias (+)", TipoTransaccion.ENTRADA, getTotalEntradasVarias(), 0, root,"nodoTotal"), root);
-        TreeNode entradasVariasEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (+)", TipoTransaccion.ENTRADA, getTotalEntradasVariasEfe(), 0, entradasVariasNode,"nodoSubTotal"), entradasVariasNode);
-        TreeNode desembolsosNode = new DefaultTreeNode(new TreeCierre("Desembolsos (-)", TipoTransaccion.SALIDA, getTotalDesembolsos(), 0, root,"nodoTotal"), root);
-        TreeNode desembolsosEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (-)", TipoTransaccion.SALIDA, getTotalDesembolsosEfe(), 0, desembolsosNode,"nodoSubTotal"), desembolsosNode);
-        TreeNode salidasVariasNode = new DefaultTreeNode(new TreeCierre("Salidas Varias (-)", TipoTransaccion.SALIDA, getTotalSalidasVarias(), 0, root,"nodoTotal"), root);
-        TreeNode salidasVariasEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (-)", TipoTransaccion.SALIDA, getTotalSalidasVariasEfe(), 0, salidasVariasNode,"nodoSubTotal"), salidasVariasNode);
+
+        TreeNode entradasVariasNode = new DefaultTreeNode(new TreeCierre("Entradas Varias (+)", TipoTransaccion.ENTRADA, getTotalEntradasVarias(), 0, root, "nodoTotal"), root);
+        TreeNode entradasVariasEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (+)", TipoTransaccion.ENTRADA, getTotalEntradasVariasEfe(), 0, entradasVariasNode, "nodoSubTotal"), entradasVariasNode);
+        TreeNode desembolsosNode = new DefaultTreeNode(new TreeCierre("Desembolsos (-)", TipoTransaccion.SALIDA, getTotalDesembolsos(), 0, root, "nodoTotal"), root);
+        TreeNode desembolsosEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (-)", TipoTransaccion.SALIDA, getTotalDesembolsosEfe(), 0, desembolsosNode, "nodoSubTotal"), desembolsosNode);
+        TreeNode salidasVariasNode = new DefaultTreeNode(new TreeCierre("Salidas Varias (-)", TipoTransaccion.SALIDA, getTotalSalidasVarias(), 0, root, "nodoTotal"), root);
+        TreeNode salidasVariasEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (-)", TipoTransaccion.SALIDA, getTotalSalidasVariasEfe(), 0, salidasVariasNode, "nodoSubTotal"), salidasVariasNode);
 
     }
 
