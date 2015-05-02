@@ -6,6 +6,7 @@ package py.gestionpymes.prestamos.tesoreria.dao;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -144,30 +145,52 @@ public class TransaccionDAO extends AbstractDAO<Transaccion> {
 
     
     public List<Pago> findTCC(SesionTPV s) {
-        return abmService
+        System.out.println("Empieza_1: " + new Date());
+        List<Pago> R = abmService
                 .getEM()
-                .createQuery("select p from Pago p where p.transaccion.id  in (select tcc.id from TransaccionCobraCuota tcc) "
-                + " and p.transaccion.sesionTPV = ?1").setParameter(1, s).getResultList();
+                .createNativeQuery("select * from pago p "
+                + " join transaccion t on p.transaccion_id = t.id "
+                + " where t.sesiontpv_id = " + s.getId()
+                + " and t.dtype = 'TransaccionCobraCuota' "
+                //+ " and p.dtype = '" + PagoDtype + "'"
+                ,Pago.class).getResultList();
+        
+         System.out.println("Termina_1: " + new Date());
+        return R;
     }
     
      public List<Pago> findTccEfe(SesionTPV s) {
         return abmService
                 .getEM()
-                .createQuery("select e from Efectivo e where e.transaccion.id  in (select tcc.id from TransaccionCobraCuota tcc) "
-                + " and e.transaccion.sesionTPV = ?1").setParameter(1, s).getResultList();
+                .createNativeQuery("select * from pago p "
+                + " join transaccion t on p.transaccion_id = t.id "
+                + " where t.sesiontpv_id = " + s.getId()
+                + " and t.dtype = 'TransaccionCobraCuota' "
+                + " and p.dtype = 'Efectivo' "
+                ,Pago.class).getResultList();
     }
     
     public List<Pago> findTccCh(SesionTPV s) {
-        return abmService.getEM().createQuery("select c from ChequeRecibido c where c.transaccion.id  in (select tcc.id from TransaccionCobraCuota tcc) "
-                + " and c.transaccion.sesionTPV = ?1").setParameter(1, s).getResultList();
+        return abmService
+                .getEM()
+                .createNativeQuery("select * from pago p "
+                + " join transaccion t on p.transaccion_id = t.id "
+                + " where t.sesiontpv_id = " + s.getId()
+                + " and t.dtype = 'TransaccionCobraCuota' "
+                + " and p.dtype = 'ChequeRecibido' "
+                ,Pago.class).getResultList();
     }
 
     public List<Pago> findTccBanco(SesionTPV s, Long bancoId) {
-        return abmService.getEM().createQuery("select c from ChequeRecibido c where c.transaccion.id  in (select tcc.id from TransaccionCobraCuota tcc) "
-                + " and c.transaccion.sesionTPV = ?1"
-                + " and c.banco.id = ?2")
-                .setParameter(1, s)
-                .setParameter(2, bancoId).getResultList();
+        return abmService
+                 .getEM()
+                .createNativeQuery("select * from pago p "
+                + " join transaccion t on p.transaccion_id = t.id "
+                + " where t.sesiontpv_id = " + s.getId()
+                + " and t.dtype = 'TransaccionCobraCuota' "
+                + " and p.dtype = 'ChequeRecibido' "
+                + " and p.banco_id = " + bancoId     
+                ,Pago.class).getResultList();
     }
 
     public List<Transaccion> findAllSesionTPV(SesionTPV s) {

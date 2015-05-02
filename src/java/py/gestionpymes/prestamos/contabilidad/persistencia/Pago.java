@@ -19,6 +19,8 @@ import py.gestionpymes.prestamos.tesoreria.persisitencia.TransaccionCobraCuota;
  *
  * @author christian
  */
+
+
 @Entity
 public abstract class Pago implements Serializable {
     private static final long serialVersionUID = 1L;

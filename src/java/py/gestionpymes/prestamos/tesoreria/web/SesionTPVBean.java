@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -80,8 +81,8 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     private TreeNode root = new DefaultTreeNode("resumenCierre", null);
     private List<TreeCierre> listaResumen = new ArrayList<>();
 
-    private List<ChequeRecibido> listaChequesRecibidosTCC=new ArrayList<>();
-    
+    private List<ChequeRecibido> listaChequesRecibidosTCC = new ArrayList<>();
+
     private List<Pago> detalleTrasacciones;
 
     public List<Pago> getDetalleTrasacciones() {
@@ -92,7 +93,6 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         this.detalleTrasacciones = detalleTrasacciones;
     }
 
-
     public List<ChequeRecibido> getListaChequesRecibidosTCC() {
         return listaChequesRecibidosTCC;
     }
@@ -100,13 +100,12 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
     public void setListaChequesRecibidosTCC(List<ChequeRecibido> listaChequesRecibidosTCC) {
         this.listaChequesRecibidosTCC = listaChequesRecibidosTCC;
     }
-    
 
     public void cargaListaChequesRecibidosTCC() {
 
         //listaChequesRecibidosTCC = transaccionDAO.findTccCh(getActual());
-        
     }
+
     public List<TreeCierre> getListaResumen() {
         return listaResumen;
     }
@@ -340,7 +339,7 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
 
         actualizaTotalTransacciones();
         cargaValoresFinales();
-        cargaListaChequesRecibidosTCC();                
+        cargaListaChequesRecibidosTCC();
 
         resumenTransacciones = ejb.resumenTransaccion(getActual());
         limpiaTotales();
@@ -473,25 +472,27 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         }
         return event.getNewStep();
     }
-    
-    
-    public void abreDetalleTransaccion(TreeCierre t){
-       detalleTrasacciones = transaccionDAO.findPagosDetalle(getActual(), t);
-        
+
+    public void abreDetalleTransaccion(TreeCierre t) {
+        System.out.println("Empieza_2: " + new Date());
+        detalleTrasacciones = transaccionDAO.findPagosDetalle(getActual(), t);
+        System.out.println("Empieza_2: " + new Date());
+      
+
     }
 
     public void cargaTreeCierre() {
         root = new DefaultTreeNode("resumenCierre", null);
         TreeNode saldoInicialNode = new DefaultTreeNode(new TreeCierre("Saldo Inicio", null, getActual().getSaldoInicial() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getSaldoInicial(), 0, root, "nodoTotal"), root);
-        TreeNode cobrosCuotasNode = new DefaultTreeNode(new TreeCierre("Cobros Cuotas (+)", TipoTransaccion.ENTRADA, getTotalCobroCuotas(), 0, root, "nodoTotal",TreeCierre.TCC), root);
-        TreeNode cobrosCuotasEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (+)", TipoTransaccion.ENTRADA, getTotalCobrosCuotasEfe(), 0, cobrosCuotasNode, "nodoSubTotal",TreeCierre.TCC_EFE), cobrosCuotasNode);
-        TreeNode cobrosCuotasChNode = new DefaultTreeNode(new TreeCierre("Cheques (+)", TipoTransaccion.ENTRADA, getTotalCobrosCuotasCh(), 0, cobrosCuotasNode, "nodoSubTotal",TreeCierre.TCC_CH), cobrosCuotasNode);
+        TreeNode cobrosCuotasNode = new DefaultTreeNode(new TreeCierre("Cobros Cuotas (+)", TipoTransaccion.ENTRADA, getTotalCobroCuotas(), 0, root, "nodoTotal", TreeCierre.TCC), root);
+        TreeNode cobrosCuotasEfeNode = new DefaultTreeNode(new TreeCierre("Efectivo (+)", TipoTransaccion.ENTRADA, getTotalCobrosCuotasEfe(), 0, cobrosCuotasNode, "nodoSubTotal", TreeCierre.TCC_EFE), cobrosCuotasNode);
+        TreeNode cobrosCuotasChNode = new DefaultTreeNode(new TreeCierre("Cheques (+)", TipoTransaccion.ENTRADA, getTotalCobrosCuotasCh(), 0, cobrosCuotasNode, "nodoSubTotal", TreeCierre.TCC_CH), cobrosCuotasNode);
 
         List<Object[]> lista = transaccionDAO.findSumPorBanco(getActual(), "TransaccionCobraCuota", "ENTRADA", "ChequeRecibido");
 
         for (Object[] obj : lista) {
             TreeNode cobrosCuotasChBancoNode = new DefaultTreeNode(new TreeCierre((String) obj[1] + " (+)", TipoTransaccion.ENTRADA,
-                    (BigDecimal) obj[2], 0, cobrosCuotasChNode, "nodoSubTotal",TreeCierre.TCC_BANCO,((Integer)obj[0]).longValue()), cobrosCuotasChNode);
+                    (BigDecimal) obj[2], 0, cobrosCuotasChNode, "nodoSubTotal", TreeCierre.TCC_BANCO, ((Integer) obj[0]).longValue()), cobrosCuotasChNode);
         }
 
         TreeNode entradasVariasNode = new DefaultTreeNode(new TreeCierre("Entradas Varias (+)", TipoTransaccion.ENTRADA, getTotalEntradasVarias(), 0, root, "nodoTotal"), root);
@@ -526,7 +527,9 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
 
     public BigDecimal getTotalCobroCuotas() {
         if (totalCobroCuotas == null) {
+            System.out.println("Empieza: " + new Date());
             totalCobroCuotas = obtTotalTransaccion("TransaccionCobraCuota", "ENTRADA");
+            System.out.println("Termina: " + new Date());
         }
         return totalCobroCuotas;
     }

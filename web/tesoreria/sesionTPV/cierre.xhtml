@@ -103,14 +103,14 @@
                     background:none!important;
                 }
 
-/*                .ui-shadow .ui-blockui-content {
-                      -moz-box-shadow: 0px 0px 0px rgba(0,0,0,0);
-                    -webkit-box-shadow: 0px 0px 0px rgba(0,0,0,0);
-                    box-shadow: 0px 0px 0px rgba(0,0,0,0.8);
-                }*/
-                
+                /*                .ui-shadow .ui-blockui-content {
+                                      -moz-box-shadow: 0px 0px 0px rgba(0,0,0,0);
+                                    -webkit-box-shadow: 0px 0px 0px rgba(0,0,0,0);
+                                    box-shadow: 0px 0px 0px rgba(0,0,0,0.8);
+                                }*/
+
                 .ui-shadow{
-                    
+
                     -moz-box-shadow: 0px 0px 0px rgba(0,0,0,0);
                     -webkit-box-shadow: 0px 0px 0px rgba(0,0,0,0);
                     box-shadow: 0px 0px 0px rgba(0,0,0,0.8);
@@ -121,7 +121,7 @@
 
 
             <p:blockUI id="blockUI" widgetVar="blockBody" block=":paginaEntera" trigger="@(.linkDetalles)">
-                <p:graphicImage library="img" name="load.gif" width="256" style="background: transparent"/>
+                <p:graphicImage library="img" name="loading_bar.gif" width="256" style="background: transparent"/>
             </p:blockUI>
 
             <div style="display: table">
@@ -151,15 +151,22 @@
                                 <p:treeNode styleClass="#{node.styleClass} treeResumen" id="treeResumen">
                                     <div style="display: table">
                                         <div class="celda">
-                                            <p:commandLink value="#{node.descripcion}" actionListener="#{sesionTPVBean.abreDetalleTransaccion(node)}"
-                                                           update=":dialogPagosForm"  oncomplete=" PF('dialogPagos').show();" 
+                                            <p:commandLink value="#{node.descripcion}"
+                                                           update=":dialogPagosForm"
+                                                           oncomplete="PF('dialogPagos').show()"
+                                                           action="#{sesionTPVBean.abreDetalleTransaccion(node)}"
+                                                           styleClass="linkDetalles">
+                                                
 
-                                                           styleClass="linkDetalles"/>
+                                            </p:commandLink>
+                                           
+
                                         </div>
                                         <div class="celda derecha" style="position: absolute; left: 49%">
                                             <h:outputText value="#{node.monto}">
                                                 <f:convertNumber locale="#{formato.locale}"/>
                                             </h:outputText>
+
                                         </div>
                                     </div>
 
@@ -229,40 +236,40 @@
 
         <ui:define name="dialogos">
 
-            <p:dialog id="dlgPagos" header="Transacciones" showEffect="fade" widgetVar="dialogPagos"  resizable="false" position="center">
+            <p:dialog id="dlgPagos" header="Transacciones" widgetVar="dialogPagos"  resizable="false" modal="true">
 
                 <h:form id="dialogPagosForm" styleClass="dialogPagosForm">
 
-                    <p:outputPanel id="panelPagos" styleClass="panelPagos">
 
-                        <p:dataTable value="#{sesionTPVBean.detalleTrasacciones}" var="p">
-                            <p:column headerText="Fecha">
-                                <h:outputText value="#{p.transaccion.fecha}">
-                                    <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFechaHora}" timeZone="America/Asuncion"/>
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Operación">
-                                <h:outputText value="#{p.transaccion.tipoTransaccionCaja.descripcion}"/>
-                            </p:column>
-                            <p:column headerText="Forma Pago">
-                                <h:outputText value="#{p.descripcion}"/>
-                            </p:column>
-                            <p:column headerText="Descripción">
-                                <h:outputText value="#{p.transaccion.descripcion}"/>
-                            </p:column>
-                            <p:column headerText="Ingreso">
-                                <h:outputText value="#{(p.transaccion.tipoTransaccion == 'ENTRADA' ? p.monto : 0)}">
-                                    <f:convertNumber locale="#{formato.locale}"/>
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Egreso">
-                                <h:outputText value="#{(p.transaccion.tipoTransaccion == 'SALIDA' ? p.monto : 0)}">
-                                    <f:convertNumber locale="#{formato.locale}"/>
-                                </h:outputText>
-                            </p:column>
-                        </p:dataTable>
-                        <p:commandButton value="Cerrar" onclick="PF('dialogPagos').hide()"/>
-                    </p:outputPanel>
+
+                    <p:dataTable value="#{sesionTPVBean.detalleTrasacciones}" var="p">
+                        <p:column headerText="Fecha">
+                            <h:outputText value="#{p.transaccion.fecha}">
+                                <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFechaHora}" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Operación">
+                            <h:outputText value="#{p.transaccion.tipoTransaccionCaja.descripcion}"/>
+                        </p:column>
+                        <p:column headerText="Forma Pago">
+                            <h:outputText value="#{p.descripcion}"/>
+                        </p:column>
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{p.transaccion.descripcion}"/>
+                        </p:column>
+                        <p:column headerText="Ingreso">
+                            <h:outputText value="#{(p.transaccion.tipoTransaccion == 'ENTRADA' ? p.monto : 0)}">
+                                <f:convertNumber locale="#{formato.locale}"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Egreso">
+                            <h:outputText value="#{(p.transaccion.tipoTransaccion == 'SALIDA' ? p.monto : 0)}">
+                                <f:convertNumber locale="#{formato.locale}"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="Cerrar" onclick="PF('dialogPagos').hide()"/>
+
                 </h:form>
 
             </p:dialog>
