@@ -4,7 +4,8 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:o="http://omnifaces.org/ui">
 
     <ui:decorate template="/plantillaListado.xhtml">
         <ui:param name="modulo" value="prestamo"/>
@@ -139,6 +140,8 @@
 
                 <p:panel id="panelDatos">
 
+                    <o:importConstants type="py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoDetPrestamo" />
+                    
                     <h:panelGrid columns="4">
 
 
@@ -244,7 +247,8 @@
                     </p:column>
 
                     <p:column headerText="Desc.?" style="width: 40px;text-align: center">
-                        <p:selectBooleanCheckbox value="#{d.tieneDescuento}">
+                         <p:graphicImage library="img" name="check.png" rendered="#{d.estado == EstadoDetPrestamo.CANCELADO}"/>
+                         <p:selectBooleanCheckbox value="#{d.tieneDescuento}" rendered="#{d.estado ==  EstadoDetPrestamo.PENDIENTE}">
                             <p:ajax update="@(.tablaDetalles)" process="@this , @(.tablaDetalles)" listener="#{prestamoController.cargarDescuento(d)}"/>
 
                         </p:selectBooleanCheckbox>
@@ -252,7 +256,8 @@
 
                     <p:column headerText="Monto Descuento">
 
-                        <h:inputText value="#{d.descuento}" disabled="#{not d.tieneDescuento} and #{d.estado == 0}">
+                        <h:inputText value="#{d.descuento}" disabled="#{not(d.tieneDescuento and d.estado ==  EstadoDetPrestamo.PENDIENTE)}"
+                                     rendered="#{d.estado ==  EstadoDetPrestamo.PENDIENTE}">
                             <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                         </h:inputText>
                     </p:column>

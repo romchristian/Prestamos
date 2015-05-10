@@ -57,7 +57,7 @@
 
                     <p:column headerText="Acciones" style="font-size: 9pt">
                         <!--                    <h:commandButton action="{sesionTPVBean.preparaEdicion(m)}" value="Editar" rendered="{autorizador.hayPermisoAccion('EditaOrdenCompra')}"/>-->
-                        <p:commandButton action="#{sesionTPVBean.inciaSesion(m)}" value="Comenzar" rendered="#{(m.estado != 'CERRADA')}"/>
+                        <p:commandButton action="#{sesionTPVBean.iniciaSesion(m)}" value="Comenzar" rendered="#{(m.estado != 'CERRADA')}"/>
                         <p:commandButton action="#{sesionTPVBean.imprimeReporteCajaCierre(m)}" value="Imprimir Reporte" rendered="#{(m.estado == 'CERRADA')}" ajax="false"/>
 
                     </p:column>

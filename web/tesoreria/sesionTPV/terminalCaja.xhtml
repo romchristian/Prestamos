@@ -8,6 +8,8 @@
 
     <ui:decorate template="/plantillaABMTPV.xhtml">
 
+        
+
         <ui:param name="titulo" value="Home"/>
 
 
@@ -86,10 +88,10 @@
                         <br/>
                         <br/>
                         <h3>Cierre del día</h3>
-                        <h:commandLink   action="#{sesionTPVBean.preparaCierre()}" 
-                                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}">
+                        <p:link outcome="cierre" 
+                                rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}">
                             <p:graphicImage library="img" name="cierre.png" width="128" height="128" styleClass="icono" />
-                        </h:commandLink>
+                        </p:link>
                     </div>
                 </div>
 

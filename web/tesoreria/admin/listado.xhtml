@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:decorate template="/plantillaListado.xhtml">
+        <ui:param name="modulo" value="tesoreria"/>
+        <ui:param name="titulo" value="Sesiones"/>
+
+
+
+        <ui:define name="title">
+            Sesiones de Caja
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form>
+
+
+
+                <h:outputScript library="js" name="highcharts.js"/>
+                <h:outputScript library="js" name="exporting.js"/>
+
+                <script type="text/javascript">
+
+                    var formatNumber = {
+                        separador: ".", // separador para los miles
+                        sepDecimal: ',', // separador para los decimales
+                        formatear: function (num) {
+                            num += '';
+                            var splitStr = num.split('.');
+                            var splitLeft = splitStr[0];
+                            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                            var regx = /(\d+)(\d{3})/;
+                            while (regx.test(splitLeft)) {
+                                splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                            }
+                            return this.simbol + splitLeft + splitRight;
+                        },
+                        new : function (num, simbol) {
+                            this.simbol = simbol || '';
+                            return this.formatear(num);
+                        }
+                    }
+
+                    var $ = jQuery;
+
+
+                    Highcharts.numberFormat(this.value, 0, '.', ',');
+
+                    $(function () {
+                        $('#container').highcharts({
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: 'CREDI PYMES S.A.'
+                            },
+                            subtitle: {
+                                text: 'Disponibilidad a la fecha'
+                            },
+                            xAxis: {
+                                categories: [
+                                    'Del Dia'
+                                ],
+                                crosshair: true,
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    text: 'Monto (guaranies)'
+                                }
+                                
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:10px">{point.key}</span><table width="250px">',
+                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                        '<td style="padding:0"><b>{point.y} Gs</b></td></tr>',
+                                footerFormat: '</table>',
+                                shared: true,
+                                useHTML: true,
+                               
+                            },
+                            plotOptions: {
+                                column: {
+                                    pointPadding: 0.2,
+                                    borderWidth: 0
+                                }
+                            },
+                            series: [{
+                                    name: 'Saldo',
+                                    data: [#{controlTesoreriaBean.vistaGrafico.saldo}],
+                                    dataLabels: {
+                                        enabled: true,
+                                        style: {
+                                            fontSize: '10pt'
+                                        }
+                                    }
+
+                                }, {
+                                    name: 'Entradas',
+                                    data: [#{controlTesoreriaBean.vistaGrafico.entradas}],
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '{y:,.0f}',
+                                        style: {
+                                            fontSize: '10pt'
+                                        }
+                                    }
+
+                                }, {
+                                    name: 'Salidas',
+                                    data: [#{controlTesoreriaBean.vistaGrafico.salidas}],
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: formatNumber.new('{y:.0f}'),
+                                        style: {
+                                            fontSize: '10pt'
+                                        }
+                                    }
+
+                                }, {
+                                    name: 'Disponible',
+                                    data: [#{controlTesoreriaBean.vistaGrafico.disponible}],
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '{y:,.0f}',
+                                        style: {
+                                            fontSize: '10pt'
+                                        }
+                                    }
+
+                                }]
+                        });
+                    });
+                </script>
+
+
+
+                <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                <!--                <p:chart type="bar" model="{controlTesoreriaBean.barModel}" style="height:300px" responsive="true"/>-->
+
+                <p:dataTable value="#{misSesiones}" var="m" styleClass="resultado" style="font-size: 9pt">
+                    <f:facet name="header">
+                        <p:commandButton action="#{sesionTPVBean.preparaCreacion()}" 
+                                         value="Crear"
+                                         icon="ui-icon-plus"
+                                         styleClass="botonVerde flotaIzquierda"/>
+                        <p:spacer/>
+
+                    </f:facet>                                
+                    <p:column headerText="Nombre" style="font-size: 9pt">
+                        <h:outputText value="#{m.puntoVenta.nombre}/#{m.usuario.nombre}/ #{m.id}"/>
+                    </p:column>
+                    <p:column headerText="Fecha Arpertura" style="font-size: 9pt">
+                        <h:outputText value="#{m.fechaApertura}">
+                            <f:convertDateTime  pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Fecha Cierre" style="font-size: 9pt">
+                        <h:outputText value="#{m.fechaCierre}">
+                            <f:convertDateTime  pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Saldo Inicial" style="font-size: 9pt">
+                        <h:outputText value="#{m.saldoInicial}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>               
+                    <p:column headerText="Saldo Cierre" style="font-size: 9pt">
+                        <h:outputText value="#{m.saldoCierre}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>
+
+
+                    <p:column headerText="Acciones" style="font-size: 9pt">
+                        <!--                    <h:commandButton action="{sesionTPVBean.preparaEdicion(m)}" value="Editar" rendered="{autorizador.hayPermisoAccion('EditaOrdenCompra')}"/>-->
+                        <p:commandButton action="#{sesionTPVBean.iniciaSesion(m)}" value="Comenzar" rendered="#{(m.estado != 'CERRADA')}"/>
+                        <p:commandButton action="#{sesionTPVBean.imprimeReporteCajaCierre(m)}" value="Imprimir Reporte" rendered="#{(m.estado == 'CERRADA')}" ajax="false"/>
+
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+
+
+
+
+        </ui:define>
+    </ui:decorate>
+</ui:composition>

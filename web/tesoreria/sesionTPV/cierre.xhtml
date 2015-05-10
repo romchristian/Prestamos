@@ -9,6 +9,10 @@
 
     <ui:decorate template="/plantillaABMTPV.xhtml">
 
+        <f:metadata>
+            <f:viewAction action="#{cierreBean.cargaDatos()}"/>
+        </f:metadata>
+
         <ui:param name="titulo" value="Cierre Diario"/>
 
 
@@ -16,7 +20,7 @@
             <p:outputPanel  styleClass="panelDatos" style="width: 100%;border: none!important;margin: 0!important;padding: 0!important;background: transparent!important;">
 
 
-                <p:commandLink value="Confirmar" action="#{sesionTPVBean.cierraSesion()}" ajax="false"
+                <p:commandLink value="Confirmar" action="#{cierreBean.cierraSesion()}" ajax="false"
                                styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
                                />
                 <p:commandButton value="Cancelar" action="terminalCaja"/>
@@ -27,10 +31,10 @@
         <ui:define name="otrasAcciones">
 
 
-            <p:splitButton value="Imprimir Reporte de Cierre" action="#{sesionTPVBean.imprimeReporteCajaCierre()}" icon="ui-icon-print" ajax="false">
+            <p:splitButton value="Imprimir Reporte de Cierre" action="#{cierreBean.imprimeReporteCajaCierre()}" icon="ui-icon-print" ajax="false">
                 <!--                <p:menuitem value="Imprimir Reporte Detallado"/>-->
             </p:splitButton>
-            <!--<p:commandButton value="Imprimir Reporte" action="{sesionTPVBean.cierraSesion()}"/>-->
+            <!--<p:commandButton value="Imprimir Reporte" action="{cierreBean.cierraSesion()}"/>-->
 
 
 
@@ -125,41 +129,79 @@
             </p:blockUI>
 
             <div style="display: table">
-                <div style="display: table-cell;width: 30%" >
+                 <div style="display: table-cell;width: 60%" >
                     <p:fieldset legend="Inventario de Valores" style="margin-bottom:20px">
                         <p:outputPanel id="pnlvalores" styleClass="valores">
-                            <p:dataTable value="#{sesionTPVBean.actual.valorEfectivos}" var="valor" id="valoresTable">
-                                <p:column headerText="Valor">
-                                    <h:outputText value="#{valor.denominacionMoneda}"/>
-                                </p:column>
-                                <p:column headerText="Cantidad" style="text-align: right">
-                                    <p:inputText value="#{valor.cantidad}" size="5" style="text-align: right">
-                                        <p:ajax event="blur" update="@(.saldos)" />  
-                                    </p:inputText>
-                                </p:column>
-                            </p:dataTable>
+                            <div style="display: table; width: 100%">
+                                <div style="display: table-cell; width: 50%">
+                                    <p:dataTable value="#{cierreBean.actual.valorEfectivos}" var="valor" id="valoresTable">
+                                        <p:column headerText="Valor">
+                                            <h:outputText value="#{valor.denominacionMoneda}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="X"/>
+                                        </p:column>
+                                        <p:column headerText="Cant." style="text-align: right">
+                                            <p:inputText value="#{valor.cantidad}" size="5" style="text-align: right">
+                                                <p:ajax event="blur" update="@(.saldos) subtotal" process="@this"/>  
+                                            </p:inputText>
+                                        </p:column>
+                                        <p:column headerText="Sub Total">
+                                            <h:outputText value="#{(valor.denominacionMoneda * valor.cantidad)}" id="subtotal">
+                                                <f:convertNumber locale="#{formato.locale}"/>
+                                            </h:outputText>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                                <div style="display: table-cell; width: 60%">
+                                    <p:dataTable value="#{cierreBean.valoresBanco}" var="valor" id="valoresBanco">
+                                        <p:column headerText="Banco" style="width: 40%">
+                                            <h:outputText value="#{valor.descripcion}"/>
+                                        </p:column>
+                                        
+                                        <p:column headerText="Cant." style="text-align: right;width: 50px">
+                                            <h:outputText value="#{valor.cantidad}" style="text-align: right"/>
+                                               
+                                           
+                                        </p:column>
+                                        <p:column headerText="Sub Total" style="text-align: right">
+                                            <h:outputText value="#{valor.monto}" id="subtotal">
+                                                <f:convertNumber locale="#{formato.locale}"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column style="width: 25px;text-align: center">
+                                            <p:selectBooleanCheckbox value="#{valor.confirmado}">
+                                                 <p:ajax event="change" update="@(.saldos)" process="@this"/>  
+                                            </p:selectBooleanCheckbox>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+
                         </p:outputPanel>
                     </p:fieldset>
 
                 </div>
-                <div style="display: table-cell;width: 70%" >
+
+
+                <div style="display: table-cell;width: 40%" >
                     <p:fieldset legend="Arqueo y Saldos" style="margin-bottom:20px" >
 
                         <p:panel id="saldoIncial" styleClass="saldos" style="border: none;">
 
-                            <p:tree value="#{sesionTPVBean.root}" var="node" style="width: 100%;border: none;">
+                            <p:tree value="#{cierreBean.root}" var="node" style="width: 100%;border: none;">
                                 <p:treeNode styleClass="#{node.styleClass} treeResumen" id="treeResumen">
                                     <div style="display: table">
                                         <div class="celda">
                                             <p:commandLink value="#{node.descripcion}"
                                                            update=":dialogPagosForm"
                                                            oncomplete="PF('dialogPagos').show()"
-                                                           action="#{sesionTPVBean.abreDetalleTransaccion(node)}"
+                                                           action="#{cierreBean.abreDetalleTransaccion(node)}"
                                                            styleClass="linkDetalles">
-                                                
+
 
                                             </p:commandLink>
-                                           
+
 
                                         </div>
                                         <div class="celda derecha" style="position: absolute; left: 49%">
@@ -186,10 +228,20 @@
                                 </div>
                                 <div style="display: table-row">
                                     <div class="celda" style="padding-left: 25px">
-                                        <h:outputText value="Saldo Teorico" styleClass="titulo"/>
+                                        <h:outputText value="ST Efectivo" styleClass="titulo"/>
                                     </div>
                                     <div class="celda derecha">
-                                        <h:outputText value="#{sesionTPVBean.saldoTeorico}" styleClass="monto">
+                                        <h:outputText value="#{cierreBean.obtSaldoTeoricoEfe()}" styleClass="monto">
+                                            <f:convertNumber currencySymbol="PYG"/> 
+                                        </h:outputText>
+                                    </div>                                
+                                </div>
+                                <div style="display: table-row">
+                                    <div class="celda" style="padding-left: 25px">
+                                        <h:outputText value="ST Cheque" styleClass="titulo"/>
+                                    </div>
+                                    <div class="celda derecha">
+                                        <h:outputText value="#{cierreBean.obtSaldoTeoricoCh()}" styleClass="monto">
                                             <f:convertNumber currencySymbol="PYG"/> 
                                         </h:outputText>
                                     </div>                                
@@ -198,10 +250,21 @@
 
                                 <div style="display: table-row">
                                     <div class="celda" style="padding-left: 25px">
-                                        <h:outputText value="Saldo Cierre" styleClass="titulo"/>
+                                        <h:outputText value="SC Efectivo" styleClass="titulo"/>
                                     </div>
                                     <div class="celda derecha">
-                                        <h:outputText value="#{sesionTPVBean.saldoCierre}" styleClass="monto">
+                                        <h:outputText value="#{cierreBean.obtSaldoCierreEfe()}" styleClass="monto">
+                                            <f:convertNumber currencySymbol="PYG"/> 
+                                        </h:outputText>
+                                    </div>                                
+                                </div>
+                                
+                                <div style="display: table-row">
+                                    <div class="celda" style="padding-left: 25px">
+                                        <h:outputText value="SC Cheque" styleClass="titulo"/>
+                                    </div>
+                                    <div class="celda derecha">
+                                        <h:outputText value="#{cierreBean.obtSaldoCierreCh()}" styleClass="monto">
                                             <f:convertNumber currencySymbol="PYG"/> 
                                         </h:outputText>
                                     </div>                                
@@ -210,10 +273,10 @@
 
                                 <div style="display: table-row">
                                     <div class="celda" style="padding-left: 25px">
-                                        <h:outputText value="Diferencia" styleClass="#{(sesionTPVBean.diferencia != 0 ? 'rojo':'titulo')}"/>
+                                        <h:outputText value="Diferencia" styleClass="#{(cierreBean.diferencia != 0 ? 'rojo':'titulo')}"/>
                                     </div>
                                     <div class="celda derecha">
-                                        <h:outputText value="#{sesionTPVBean.diferencia}" styleClass="#{(sesionTPVBean.diferencia != 0 ? 'rojo':'moonto')}">
+                                        <h:outputText value="#{cierreBean.diferencia}" styleClass="#{(cierreBean.diferencia != 0 ? 'rojo':'monto')}">
                                             <f:convertNumber currencySymbol="PYG"/> 
                                         </h:outputText>
                                     </div>                                
@@ -236,33 +299,33 @@
 
         <ui:define name="dialogos">
 
-            <p:dialog id="dlgPagos" header="Transacciones" widgetVar="dialogPagos"  resizable="false" modal="true">
+            <p:dialog id="dlgPagos" header="Transacciones" widgetVar="dialogPagos" resizable="true" modal="true" style="width: 80%">
 
                 <h:form id="dialogPagosForm" styleClass="dialogPagosForm">
 
 
 
-                    <p:dataTable value="#{sesionTPVBean.detalleTrasacciones}" var="p">
-                        <p:column headerText="Fecha">
+                    <p:dataTable value="#{cierreBean.detalleTrasacciones}" var="p" style="font-size: 8pt">
+                        <p:column headerText="Fecha" style="font-size: 8pt">
                             <h:outputText value="#{p.transaccion.fecha}">
                                 <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFechaHora}" timeZone="America/Asuncion"/>
                             </h:outputText>
                         </p:column>
-                        <p:column headerText="Operación">
+                        <p:column headerText="Operación" style="font-size: 8pt">
                             <h:outputText value="#{p.transaccion.tipoTransaccionCaja.descripcion}"/>
                         </p:column>
-                        <p:column headerText="Forma Pago">
+                        <p:column headerText="Forma Pago" style="font-size: 8pt">
                             <h:outputText value="#{p.descripcion}"/>
                         </p:column>
-                        <p:column headerText="Descripción">
+                        <p:column headerText="Descripción" style="font-size: 8pt">
                             <h:outputText value="#{p.transaccion.descripcion}"/>
                         </p:column>
-                        <p:column headerText="Ingreso">
+                        <p:column headerText="Ingreso" style="font-size: 8pt">
                             <h:outputText value="#{(p.transaccion.tipoTransaccion == 'ENTRADA' ? p.monto : 0)}">
                                 <f:convertNumber locale="#{formato.locale}"/>
                             </h:outputText>
                         </p:column>
-                        <p:column headerText="Egreso">
+                        <p:column headerText="Egreso" style="font-size: 8pt">
                             <h:outputText value="#{(p.transaccion.tipoTransaccion == 'SALIDA' ? p.monto : 0)}">
                                 <f:convertNumber locale="#{formato.locale}"/>
                             </h:outputText>

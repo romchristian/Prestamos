@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-04-15T09:16:36 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteTesoreria" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="381bdd1c-9759-431a-81d2-a98bbf843c12">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="229"/>
 	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -17,6 +15,13 @@
 	<parameter name="totalTransacciones" class="java.math.BigDecimal"/>
 	<parameter name="saldoCierre" class="java.math.BigDecimal"/>
 	<parameter name="diferencia" class="java.math.BigDecimal"/>
+	<parameter name="TCC" class="java.math.BigDecimal"/>
+	<parameter name="TCCEfe" class="java.math.BigDecimal"/>
+	<parameter name="TCCCh" class="java.math.BigDecimal"/>
+	<parameter name="EV" class="java.math.BigDecimal"/>
+	<parameter name="DE" class="java.math.BigDecimal"/>
+	<parameter name="SV" class="java.math.BigDecimal"/>
+	<parameter name="totalTransaccionesEfe" class="java.math.BigDecimal"/>
 	<queryString>
 		<![CDATA[select t.fecha, tt.descripcion as operacion,
  t.descripcion as descripcion,
@@ -39,7 +44,7 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="186" splitType="Stretch">
+		<band height="304" splitType="Stretch">
 			<staticText>
 				<reportElement x="4" y="6" width="547" height="27" uuid="f3a7bcee-9573-430d-a1cc-145912870fc9"/>
 				<textElement textAlignment="Center">
@@ -55,44 +60,44 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 				<textFieldExpression><![CDATA["ID de Sesión: "+$P{idSesionTPV}+" - Cajero: "+$P{cajero}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="184" width="555" height="1" uuid="33ae63e3-59cd-4ab2-a208-d6cb650a77b4"/>
+				<reportElement x="0" y="298" width="555" height="1" uuid="33ae63e3-59cd-4ab2-a208-d6cb650a77b4"/>
 			</line>
 			<textField evaluationTime="Auto" pattern="MMMM d, yyyy">
 				<reportElement x="384" y="39" width="167" height="20" uuid="ecae97ee-3312-4d08-9966-113e2c4a7d81"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤#,##0.##;¤-#,##0.##">
-				<reportElement x="79" y="98" width="146" height="20" uuid="3b8cb960-2488-4afe-bfb7-679cb254aea7"/>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="102" y="98" width="146" height="20" uuid="3b8cb960-2488-4afe-bfb7-679cb254aea7"/>
 				<textFieldExpression><![CDATA[$P{saldoInicial}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="7" y="98" width="70" height="20" uuid="73d603df-baca-433c-8f4b-2bebdd958422"/>
-				<text><![CDATA[Saldo Inicial:]]></text>
+				<reportElement x="7" y="98" width="93" height="20" uuid="73d603df-baca-433c-8f4b-2bebdd958422"/>
+				<text><![CDATA[Saldo Inicio día:]]></text>
 			</staticText>
-			<textField pattern="¤ #,##0">
-				<reportElement x="79" y="118" width="146" height="20" uuid="ec827671-f0f3-47d7-91dd-bb1661ad3ef2"/>
-				<textFieldExpression><![CDATA[$P{totalTransacciones}]]></textFieldExpression>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="102" y="118" width="146" height="20" uuid="ec827671-f0f3-47d7-91dd-bb1661ad3ef2"/>
+				<textFieldExpression><![CDATA[$P{TCC}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="7" y="118" width="70" height="20" uuid="ab8d19df-a613-4c3e-bfb7-144cb8cfd842"/>
-				<text><![CDATA[Transacciones:]]></text>
+				<reportElement x="7" y="118" width="93" height="20" uuid="ab8d19df-a613-4c3e-bfb7-144cb8cfd842"/>
+				<text><![CDATA[Cobros Cuotas (+):]]></text>
 			</staticText>
-			<textField pattern="¤#,##0.##;¤-#,##0.##">
-				<reportElement x="79" y="138" width="146" height="20" uuid="70ae139b-0443-45a2-af74-bbda4dabd637"/>
-				<textFieldExpression><![CDATA[$P{saldoCierre}]]></textFieldExpression>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="102" y="138" width="146" height="20" uuid="70ae139b-0443-45a2-af74-bbda4dabd637"/>
+				<textFieldExpression><![CDATA[$P{TCCEfe}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤#,##0.##;¤-#,##0.##">
-				<reportElement x="79" y="158" width="146" height="20" uuid="5bd6c821-63c2-40a5-a90d-4446e81c67be"/>
-				<textFieldExpression><![CDATA[$P{diferencia}]]></textFieldExpression>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="102" y="158" width="146" height="20" uuid="5bd6c821-63c2-40a5-a90d-4446e81c67be"/>
+				<textFieldExpression><![CDATA[$P{TCCCh}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="7" y="138" width="70" height="20" uuid="2818c97a-e412-470d-953a-dda067c81424"/>
-				<text><![CDATA[Saldo Cierre:]]></text>
+				<reportElement x="29" y="138" width="70" height="20" uuid="2818c97a-e412-470d-953a-dda067c81424"/>
+				<text><![CDATA[Efectivo (+):]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="7" y="158" width="70" height="20" uuid="1b6aad24-58e8-4f57-86c4-a876e6fe75af"/>
-				<text><![CDATA[Diferencia:]]></text>
+				<reportElement x="29" y="158" width="70" height="20" uuid="1b6aad24-58e8-4f57-86c4-a876e6fe75af"/>
+				<text><![CDATA[Cheques (+):]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="8" y="73" width="70" height="20" uuid="136c6975-c755-4048-b61a-5c4a13e365aa"/>
@@ -104,6 +109,62 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 			<line>
 				<reportElement x="0" y="60" width="555" height="1" uuid="98514b50-db23-4b1b-ba5f-e373212818e9"/>
 			</line>
+			<staticText>
+				<reportElement x="7" y="180" width="93" height="20" uuid="3c5725c8-1430-46b1-b684-4c3762ff4d20"/>
+				<text><![CDATA[Entradas Varias (+):]]></text>
+			</staticText>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="102" y="180" width="146" height="20" uuid="b1f38e0a-759b-4354-b3cb-35cca8f55925"/>
+				<textFieldExpression><![CDATA[$P{EV}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="201" width="93" height="20" uuid="ba79d370-09d4-4f3c-9d4f-2932dfeb600b"/>
+				<text><![CDATA[Desembolsos (-):]]></text>
+			</staticText>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="102" y="201" width="146" height="20" uuid="bfd80ade-7364-4349-9472-d10993bc729e"/>
+				<textFieldExpression><![CDATA[$P{DE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="221" width="93" height="20" uuid="dada0429-26bd-42e2-85c0-00bc2ecc6404"/>
+				<text><![CDATA[Salidas Varias (-):]]></text>
+			</staticText>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="102" y="221" width="146" height="20" uuid="aa7e9dfd-a4d9-411a-a4c0-dfa8612a1a85"/>
+				<textFieldExpression><![CDATA[$P{SV}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="354" y="98" width="146" height="20" uuid="ef974d47-73d9-4c76-91c4-51908b93aac4"/>
+				<textFieldExpression><![CDATA[$P{totalTransaccionesEfe}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="259" y="98" width="93" height="20" uuid="bc56f85a-6502-40f9-bbeb-d33aa5ac879e"/>
+				<text><![CDATA[Saldo Cierre Efe.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="259" y="142" width="93" height="20" uuid="dd6c5cca-ee8d-43b0-a1a7-fc49d9d60c29"/>
+				<text><![CDATA[Diferencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="259" y="121" width="93" height="20" uuid="b1f42245-e361-4423-9b88-8cfcaebeb0f0"/>
+				<text><![CDATA[Saldo Cierre Chq.:]]></text>
+			</staticText>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="354" y="186" width="146" height="20" uuid="5985443c-6ba9-4848-97bd-b2b2fe9f02a5"/>
+				<textFieldExpression><![CDATA[$P{totalTransacciones}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="259" y="186" width="93" height="20" uuid="c943a2eb-3b4b-4103-b1b6-ec1303a3263e"/>
+				<text><![CDATA[Total Transacciones:]]></text>
+			</staticText>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="354" y="142" width="146" height="20" uuid="f266a4fe-e4e8-47d3-9e57-e6682592d86d"/>
+				<textFieldExpression><![CDATA[$P{diferencia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="354" y="121" width="146" height="20" uuid="85841497-9163-4b5b-87ea-46247b17d607"/>
+				<textFieldExpression><![CDATA[$P{TCCCh}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -173,12 +234,12 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 				<reportElement x="100" y="0" width="242" height="20" uuid="9415e753-7c7d-4092-8f2e-321669a617ba"/>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤#,##0.##;¤-#,##0.##">
+			<textField pattern="#,##0;-#,##0">
 				<reportElement x="352" y="0" width="100" height="20" uuid="c1fa6db9-9749-483e-880f-aad8e6bf6187"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{ingreso}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤#,##0.##;¤-#,##0.##">
+			<textField pattern="#,##0;-#,##0">
 				<reportElement x="455" y="0" width="100" height="20" uuid="d8b94433-0a71-4aa3-8e67-09222532e4b3"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{egreso}]]></textFieldExpression>
@@ -202,7 +263,7 @@ join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontp
 					<text><![CDATA[FIRMA CAJERO:.....................................................]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="290" y="35" width="240" height="20" uuid="a8bc7f5a-c3ab-4ab5-b1a3-f9ab845c5e67"/>
+					<reportElement x="261" y="35" width="240" height="20" uuid="a8bc7f5a-c3ab-4ab5-b1a3-f9ab845c5e67"/>
 					<text><![CDATA[FIRMA TESORERO:...............................................]]></text>
 				</staticText>
 			</frame>

@@ -34,6 +34,7 @@ public class TreeCierre {
     private String styleClass;
     private String tipoConsulta;
     private Long bancoId;
+    private boolean confirmado;
     
     private TreeNode padre;
 
@@ -69,6 +70,16 @@ public class TreeCierre {
         this.bancoId = bancoId;
     }
 
+    public void setConfirmado(boolean confirmado) {
+        this.confirmado = confirmado;
+    }
+
+    public boolean isConfirmado() {
+        return confirmado;
+    }
+
+    
+    
     public TreeCierre() {
     }
 
