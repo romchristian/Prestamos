@@ -6,6 +6,7 @@
 package py.gestionpymes.prestamos.tesoreria.dao;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 
 /**
@@ -19,6 +20,12 @@ public class VistaGrafico {
     private BigDecimal salidas;
     private BigDecimal disponible;
 
+    public VistaGrafico() {
+        this.saldo = new BigDecimal(BigInteger.ZERO);
+        this.entradas = new BigDecimal(BigInteger.ZERO);
+        this.salidas = new BigDecimal(BigInteger.ZERO);
+        this.disponible = new BigDecimal(BigInteger.ZERO);
+    }
     public VistaGrafico(Object[] obj) {
         this.saldo = (BigDecimal) obj[0];
         this.entradas = (BigDecimal) obj[1];

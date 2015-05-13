@@ -7,15 +7,12 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
 
-    <ui:decorate template="/plantillaListado.xhtml">
-        <ui:param name="modulo" value="tesoreria"/>
-        <ui:param name="titulo" value="Sesiones"/>
+    <ui:decorate template="/plantillaDashboard.xhtml">
 
 
 
-        <ui:define name="title">
-            Sesiones de Caja
-        </ui:define>
+
+
 
         <ui:define name="body">
             <h:form>
@@ -58,10 +55,7 @@
                                 type: 'column'
                             },
                             title: {
-                                text: 'CREDI PYMES S.A.'
-                            },
-                            subtitle: {
-                                text: 'Disponibilidad a la fecha'
+                                text: ''
                             },
                             xAxis: {
                                 categories: [
@@ -74,7 +68,7 @@
                                 title: {
                                     text: 'Monto (guaranies)'
                                 }
-                                
+
                             },
                             tooltip: {
                                 headerFormat: '<span style="font-size:10px">{point.key}</span><table width="250px">',
@@ -83,7 +77,6 @@
                                 footerFormat: '</table>',
                                 shared: true,
                                 useHTML: true,
-                               
                             },
                             plotOptions: {
                                 column: {
@@ -141,50 +134,63 @@
 
 
 
-                <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-                <!--                <p:chart type="bar" model="{controlTesoreriaBean.barModel}" style="height:300px" responsive="true"/>-->
+                <h:form>
 
-                <p:dataTable value="#{misSesiones}" var="m" styleClass="resultado" style="font-size: 9pt">
-                    <f:facet name="header">
-                        <p:commandButton action="#{sesionTPVBean.preparaCreacion()}" 
-                                         value="Crear"
-                                         icon="ui-icon-plus"
-                                         styleClass="botonVerde flotaIzquierda"/>
-                        <p:spacer/>
+                    <div class="caja">
 
-                    </f:facet>                                
-                    <p:column headerText="Nombre" style="font-size: 9pt">
-                        <h:outputText value="#{m.puntoVenta.nombre}/#{m.usuario.nombre}/ #{m.id}"/>
-                    </p:column>
-                    <p:column headerText="Fecha Arpertura" style="font-size: 9pt">
-                        <h:outputText value="#{m.fechaApertura}">
-                            <f:convertDateTime  pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion"/>
-                        </h:outputText>
-                    </p:column>
-                    <p:column headerText="Fecha Cierre" style="font-size: 9pt">
-                        <h:outputText value="#{m.fechaCierre}">
-                            <f:convertDateTime  pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion"/>
-                        </h:outputText>
-                    </p:column>
-                    <p:column headerText="Saldo Inicial" style="font-size: 9pt">
-                        <h:outputText value="#{m.saldoInicial}">
-                            <f:convertNumber locale="#{formato.locale}"/>
-                        </h:outputText>
-                    </p:column>               
-                    <p:column headerText="Saldo Cierre" style="font-size: 9pt">
-                        <h:outputText value="#{m.saldoCierre}">
-                            <f:convertNumber locale="#{formato.locale}"/>
-                        </h:outputText>
-                    </p:column>
+                        <div class="ui-grid ui-grid-responsive">
+
+                            <div class="ui-grid-row">
+                                <div class="ui-grid-col-6">
+
+                                    <div style="display: table;width: 100%">
+                                        <div style="display: table-cell;vertical-align: middle;width: 50%">
+                                            <h3>Cheques Recibidos</h3>
+                                        </div>
+                                        <div style="display: table-cell;text-align: right;vertical-align: middle;width: 50%">
+                                            <p:commandButton styleClass="btnCheques" value="Mes" action="#{controlTesoreriaBean.buscaChequesMes()}" update="cheques"/>
+                                            <p:commandButton styleClass="btnCheques" value="Semana" action="#{controlTesoreriaBean.buscaChequesSemana()}" update="cheques"/>
+                                            <p:commandButton styleClass="btnCheques" value="Hoy" action="#{controlTesoreriaBean.buscaChequesHoy()}" update="cheques"/>
+                                        </div>
+                                    </div>
+
+                                    <br/>
+                                    <hr/>
+                                    <br/>
+                                    <br/>
+                                    <p:blockUI block="cheques" trigger="@(.btnCheques)">
+                                        <p:graphicImage library="img" name="loading_bar.gif" width="128" style="background: transparent"/>
+
+                                    </p:blockUI>
+                                    <p:dataTable value="#{controlTesoreriaBean.cheques}" var="c" id="cheques">
+                                        <p:column headerText="Banco" style="font-size: 9pt">
+                                            <h:outputText value="#{c.banco.nombre}"/>
+                                        </p:column>
+                                        <p:column headerText="Vencimiento" style="font-size: 9pt">
+                                            <h:outputText value="#{c.vencimiento}">
+                                                <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Desc" style="font-size: 9pt">
+                                            <h:outputText value="#{c.descripcion}"/>
+                                        </p:column>
+                                        <p:column headerText="Monto" style="font-size: 9pt">
+                                            <h:outputText value="#{c.monto}">
+                                                <f:convertNumber locale="#{formato.locale}"/>
+                                            </h:outputText>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </h:form>
 
 
-                    <p:column headerText="Acciones" style="font-size: 9pt">
-                        <!--                    <h:commandButton action="{sesionTPVBean.preparaEdicion(m)}" value="Editar" rendered="{autorizador.hayPermisoAccion('EditaOrdenCompra')}"/>-->
-                        <p:commandButton action="#{sesionTPVBean.iniciaSesion(m)}" value="Comenzar" rendered="#{(m.estado != 'CERRADA')}"/>
-                        <p:commandButton action="#{sesionTPVBean.imprimeReporteCajaCierre(m)}" value="Imprimir Reporte" rendered="#{(m.estado == 'CERRADA')}" ajax="false"/>
-
-                    </p:column>
-                </p:dataTable>
             </h:form>
 
 

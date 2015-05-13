@@ -6,6 +6,8 @@
 package py.gestionpymes.prestamos.tesoreria.web;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
@@ -14,6 +16,7 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import py.gestionpymes.prestamos.contabilidad.persistencia.ChequeRecibido;
 import py.gestionpymes.prestamos.tesoreria.dao.TransaccionDAO;
 import py.gestionpymes.prestamos.tesoreria.dao.VistaGrafico;
 
@@ -29,6 +32,40 @@ public class ControlTesoreriaBean implements Serializable {
     private TransaccionDAO transaccionDAO;
 
     private VistaGrafico vistaGrafico;
+
+    private Date fecha = new Date();
+    private List<ChequeRecibido> cheques;
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public List<ChequeRecibido> getCheques() {
+        if (cheques == null) {
+            buscaChequesHoy();
+        }
+        return cheques;
+    }
+
+    public void setCheques(List<ChequeRecibido> cheques) {
+        this.cheques = cheques;
+    }
+
+    public void buscaChequesHoy() {
+        cheques = transaccionDAO.getCheques(fecha);
+    }
+    
+    public void buscaChequesMes() {
+        cheques = transaccionDAO.getChequesMes(fecha);
+    }
+    
+     public void buscaChequesSemana() {
+        cheques = transaccionDAO.getChequesSemana(fecha);
+    }
 
     public VistaGrafico getVistaGrafico() {
         if (vistaGrafico == null) {
@@ -58,7 +95,7 @@ public class ControlTesoreriaBean implements Serializable {
     }
 
     private void createBarModel() {
-      
+
         barModel.setTitle("Disponibilidades en cajas");
         barModel.setLegendPosition("ne");
 
@@ -71,5 +108,4 @@ public class ControlTesoreriaBean implements Serializable {
 //        yAxis.setMax(200);
     }
 
- 
 }

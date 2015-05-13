@@ -313,6 +313,7 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         params.put("totalTransaccionesEfe", (s.getTotalTransacciones() == null ? new BigDecimal(BigInteger.ZERO) : s.getTotalTransacciones().subtract(transaccionDAO.getTotalCobrosCuotasCh(s))).setScale(0, RoundingMode.HALF_EVEN));
         params.put("saldoCierre", (s.getSaldoCierre() == null ? new BigDecimal(BigInteger.ZERO) : s.getSaldoCierre().setScale(0, RoundingMode.HALF_EVEN)));
         params.put("diferencia", (s.getDiferencia() == null ? new BigDecimal(BigInteger.ZERO) : s.getDiferencia().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("diferencia", s.getFechaApertura() );
         
         reporteController.generaPDF(params, "reportes/tesoreria/ReporteTesoreria.jasper", "cierre_caja" + s.getPuntoVenta().getNombre());
     }
