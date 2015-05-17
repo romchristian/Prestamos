@@ -255,23 +255,43 @@ public class TransaccionDAO extends AbstractDAO<Transaccion> {
         return findSumPago(s, dtype, tipo, pagoDtype);
     }
 
-    public VistaGrafico obtVistaGrafico() {
+    public VistaGrafico obtVistaGrafico(PuntoVenta p) {
         LocalDate date = new LocalDate();
         VistaGrafico R;
         String sdate = date.getYear() + "-" + date.getMonthOfYear() + "-" + date.getDayOfMonth();
         try {
+            String consulta;
+
+            if (p == null) {
+                consulta = "select coalesce(sum(p.saldo),0) as saldo, coalesce(sum(t.entrada),0) as entrada, coalesce(sum(t.salida),0) as salida\n"
+                        + " from \n"
+                        + "(select id as puntoventa_id, sum(saldo) as saldo from puntoventa\n"
+                        + "  group by 1) p\n"
+                        + "left join\n"
+                        + "(select  puntoventa_id, \n"
+                        + "        sum(case when tipotransaccion = 'ENTRADA' then monto else 0 end) as entrada,\n"
+                        + "        sum(case when tipotransaccion = 'SALIDA' then monto else 0 end) as salida\n"
+                        + "  from transaccion where tipotransaccion in ('ENTRADA','SALIDA') and fecha::date =  '" + sdate + "'\n"
+                        + "  group by 1) t\n"
+                        + "  on p.puntoventa_id = t.puntoventa_id ";
+
+            } else {
+                consulta = "select coalesce(sum(p.saldo),0) as saldo, coalesce(sum(t.entrada),0) as entrada, coalesce(sum(t.salida),0) as salida\n"
+                        + " from \n"
+                        + "(select id as puntoventa_id, sum(saldo) as saldo from puntoventa\n"
+                        + "  group by 1) p\n"
+                        + "left join\n"
+                        + "(select  puntoventa_id, \n"
+                        + "        sum(case when tipotransaccion = 'ENTRADA' then monto else 0 end) as entrada,\n"
+                        + "        sum(case when tipotransaccion = 'SALIDA' then monto else 0 end) as salida\n"
+                        + "  from transaccion where tipotransaccion in ('ENTRADA','SALIDA') and fecha::date =  '" + sdate + "'\n"
+                        + "  group by 1) t\n"
+                        + "  on p.puntoventa_id = t.puntoventa_id "
+                        + "  where p.puntoventa_id = " + p.getId();
+            }
+
             Object[] obj = (Object[]) abmService.getEM()
-                    .createNativeQuery("select coalesce(sum(p.saldo),0) as saldo, coalesce(sum(t.entrada),0) as entrada, coalesce(sum(t.salida),0) as salida\n"
-                            + " from \n"
-                            + "(select id as puntoventa_id, sum(saldo) as saldo from puntoventa\n"
-                            + "  group by 1) p\n"
-                            + "left join\n"
-                            + "(select  puntoventa_id, \n"
-                            + "        sum(case when tipotransaccion = 'ENTRADA' then monto else 0 end) as entrada,\n"
-                            + "        sum(case when tipotransaccion = 'SALIDA' then monto else 0 end) as salida\n"
-                            + "  from transaccion where tipotransaccion in ('ENTRADA','SALIDA') and fecha::date =  '" + sdate + "'\n"
-                            + "  group by 1) t\n"
-                            + "  on p.puntoventa_id = t.puntoventa_id")
+                    .createNativeQuery(consulta)
                     .getSingleResult();
 
             R = new VistaGrafico(obj);
@@ -283,41 +303,171 @@ public class TransaccionDAO extends AbstractDAO<Transaccion> {
         return R;
     }
 
-    public List<ChequeRecibido> getCheques(Date fecha) {
-        GregorianCalendar  gc = new GregorianCalendar();
-        gc.setTime(fecha);
-        
-        LocalDate localDate = new LocalDate(gc.get(Calendar.YEAR),gc.get(Calendar.MONTH)+1, gc.get(Calendar.DAY_OF_MONTH));
-        return abmService.getEM()
-                .createQuery("SELECT c FROM ChequeRecibido c WHERE c.fecha = :fecha")
-                .setParameter("fecha", localDate.toDate())
-                .getResultList();
+    public List<ChequeRecibido> getChequesDelDia(PuntoVenta p) {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(new Date());
+
+        LocalDate localDate = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.get(Calendar.DAY_OF_MONTH));
+
+        List<ChequeRecibido> R;
+        if (p == null) {
+            R = getChequesPorRango(localDate.toDate(), localDate.toDate());
+        } else {
+            R = getChequesPorRango(localDate.toDate(), localDate.toDate(), p);
+        }
+
+        return R;
+
     }
-    
-    
-    public List<ChequeRecibido> getChequesMes(Date fecha) {
-        GregorianCalendar  gc = new GregorianCalendar();
-        gc.setTime(fecha);
-        
-        LocalDate localDateInicio = new LocalDate(gc.get(Calendar.YEAR),gc.get(Calendar.MONTH)+1, gc.getMinimum(Calendar.DAY_OF_MONTH));
-        LocalDate localDateFin = new LocalDate(gc.get(Calendar.YEAR),gc.get(Calendar.MONTH)+1, gc.getMaximum(Calendar.DAY_OF_MONTH));
+
+    public List<ChequeRecibido> getChequesMes(PuntoVenta p) {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(new Date());
+
+        LocalDate localDateInicio = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.getMinimum(Calendar.DAY_OF_MONTH));
+        LocalDate localDateFin = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.getMaximum(Calendar.DAY_OF_MONTH));
+
+        List<ChequeRecibido> R;
+
+        if (p == null) {
+            R = getChequesPorRango(localDateInicio.toDate(), localDateFin.toDate());
+        } else {
+            R = getChequesPorRango(localDateInicio.toDate(), localDateFin.toDate(), p);
+        }
+
+        return R;
+
+    }
+
+    public List<ChequeRecibido> getChequesSemana(PuntoVenta p) {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(new Date());
+
+        LocalDate localDateInicio = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.getMinimum(Calendar.DAY_OF_WEEK));
+        LocalDate localDateFin = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.getMaximum(Calendar.DAY_OF_WEEK));
+        List<ChequeRecibido> R;
+
+        if (p == null) {
+            R = getChequesPorRango(localDateInicio.toDate(), localDateFin.toDate());
+        } else {
+            R = getChequesPorRango(localDateInicio.toDate(), localDateFin.toDate(), p);
+        }
+
+        return R;
+    }
+
+    public List<ChequeRecibido> getChequesPorRango(Date inicio, Date fin) {
+
         return abmService.getEM()
                 .createQuery("SELECT c FROM ChequeRecibido c WHERE c.fecha BETWEEN :inicio and :fin ")
-                .setParameter("inicio", localDateInicio.toDate())
-                .setParameter("fin", localDateFin.toDate())
+                .setParameter("inicio", inicio)
+                .setParameter("fin", fin)
                 .getResultList();
+    }
+
+    public List<ChequeRecibido> getChequesPorRango(Date inicio, Date fin, PuntoVenta p) {
+
+        return abmService.getEM()
+                .createQuery("SELECT c FROM ChequeRecibido c WHERE c.fecha BETWEEN :inicio and :fin and c.transaccion.puntoVenta = :puntoVenta")
+                .setParameter("inicio", inicio)
+                .setParameter("fin", fin)
+                .setParameter("puntoVenta", p)
+                .getResultList();
+    }
+
+    
+    
+    public List<Transaccion> getTransaccionesDelDia(PuntoVenta p) {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(new Date());
+
+        LocalDate localDate = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.get(Calendar.DAY_OF_MONTH));
+
+        List<Transaccion> R;
+        if (p == null) {
+            R = getTransaccionesPorRango(localDate.toDate(), localDate.toDate());
+        } else {
+            R = getTransaccionesPorRango(localDate.toDate(), localDate.toDate(), p);
+        }
+
+        return R;
+
+    }
+
+    public List<Transaccion> getTransaccionesMes(PuntoVenta p) {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(new Date());
+
+        LocalDate localDateInicio = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.getMinimum(Calendar.DAY_OF_MONTH));
+        LocalDate localDateFin = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.getMaximum(Calendar.DAY_OF_MONTH));
+
+        List<Transaccion> R;
+
+        if (p == null) {
+            R = getTransaccionesPorRango(localDateInicio.toDate(), localDateFin.toDate());
+        } else {
+            R = getTransaccionesPorRango(localDateInicio.toDate(), localDateFin.toDate(), p);
+        }
+
+        return R;
+
+    }
+
+    public List<Transaccion> getTransaccionesSemana(PuntoVenta p) {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(new Date());
+
+        LocalDate localDateInicio = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.getMinimum(Calendar.DAY_OF_WEEK));
+        LocalDate localDateFin = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.getMaximum(Calendar.DAY_OF_WEEK));
+        List<Transaccion> R;
+
+        if (p == null) {
+            R = getTransaccionesPorRango(localDateInicio.toDate(), localDateFin.toDate());
+        } else {
+            R = getTransaccionesPorRango(localDateInicio.toDate(), localDateFin.toDate(), p);
+        }
+
+        return R;
     }
     
-     public List<ChequeRecibido> getChequesSemana(Date fecha) {
-        GregorianCalendar  gc = new GregorianCalendar();
-        gc.setTime(fecha);
-        
-        LocalDate localDateInicio = new LocalDate(gc.get(Calendar.YEAR),gc.get(Calendar.MONTH)+1, gc.getMinimum(Calendar.DAY_OF_WEEK));
-        LocalDate localDateFin = new LocalDate(gc.get(Calendar.YEAR),gc.get(Calendar.MONTH)+1, gc.getMaximum(Calendar.DAY_OF_WEEK));
-        return abmService.getEM()
-                .createQuery("SELECT c FROM ChequeRecibido c WHERE c.fecha BETWEEN :inicio and :fin ")
-                .setParameter("inicio", localDateInicio.toDate())
-                .setParameter("fin", localDateFin.toDate())
-                .getResultList();
+    public List<Transaccion> getTransaccionesPorRango(Date inicio, Date fin) {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(inicio);
+
+        LocalDate localDateInicio = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.get(Calendar.DAY_OF_MONTH));
+        gc.setTime(fin);
+        LocalDate localDateFin = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.get(Calendar.DAY_OF_MONTH));
+
+        String sdateInicio = localDateInicio.getYear() + "-" + localDateInicio.getMonthOfYear() + "-" + localDateInicio.getDayOfMonth();
+        String sdateFin = localDateFin.getYear() + "-" + localDateFin.getMonthOfYear() + "-" + localDateFin.getDayOfMonth();
+        List<Transaccion> R = abmService
+                .getEM()
+                .createNativeQuery("select * from transaccion "
+                        + " where fecha between '" + sdateInicio +"' and '" + sdateFin +"' "
+                        + " order by  tipotransaccion, dtype "
+                        , Transaccion.class).getResultList();
+        return R;
+
     }
+    
+     public List<Transaccion> getTransaccionesPorRango(Date inicio, Date fin,PuntoVenta p) {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(inicio);
+
+        LocalDate localDateInicio = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.get(Calendar.DAY_OF_MONTH));
+        gc.setTime(fin);
+        LocalDate localDateFin = new LocalDate(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1, gc.get(Calendar.DAY_OF_MONTH));
+
+        String sdateInicio = localDateInicio.getYear() + "-" + localDateInicio.getMonthOfYear() + "-" + localDateInicio.getDayOfMonth();
+        String sdateFin = localDateFin.getYear() + "-" + localDateFin.getMonthOfYear() + "-" + localDateFin.getDayOfMonth();
+        List<Transaccion> R = abmService
+                .getEM()
+                .createNativeQuery("select * from transaccion  "
+                        + " where fecha between '" + sdateInicio +"' and '" + sdateFin +"' and puntoventa_id = " + p.getId()
+                        + " order by  tipotransaccion, dtype "
+                        , Transaccion.class).getResultList();
+        return R;
+
+    }
+
 }

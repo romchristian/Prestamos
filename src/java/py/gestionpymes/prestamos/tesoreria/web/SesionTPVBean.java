@@ -300,20 +300,26 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         setActual(s);
 
         Map<String, Object> params = new HashMap<String, Object>();
+        
+         BigDecimal totalCheques = transaccionDAO.getTotalCobrosCuotasCh(s);
+          
         params.put("idSesionTPV", s.getId());//nf.format(selected.getId())
         params.put("TCC", transaccionDAO.getTotalCobroCuotas(s));
         params.put("TCCEfe", transaccionDAO.getTotalCobrosCuotasEfe(s));
-        params.put("TCCCh", transaccionDAO.getTotalCobrosCuotasCh(s));
+        params.put("TCCCh",totalCheques == null?new BigDecimal(BigInteger.ZERO): totalCheques);
         params.put("EV", transaccionDAO.getTotalEntradasVarias(s));
         params.put("DE", transaccionDAO.getTotalDesembolsos(s));
         params.put("SV", transaccionDAO.getTotalSalidasVarias(s));
         params.put("cajero", credencial.getUsuario().getNombre() + " " + credencial.getUsuario().getApellido());
         params.put("saldoInicial", (s.getSaldoInicial() == null ? new BigDecimal(BigInteger.ZERO) : s.getSaldoInicial().setScale(0, RoundingMode.HALF_EVEN)));
         params.put("totalTransacciones", (s.getTotalTransacciones() == null ? new BigDecimal(BigInteger.ZERO) : s.getTotalTransacciones().setScale(0, RoundingMode.HALF_EVEN)));
-        params.put("totalTransaccionesEfe", (s.getTotalTransacciones() == null ? new BigDecimal(BigInteger.ZERO) : s.getTotalTransacciones().subtract(transaccionDAO.getTotalCobrosCuotasCh(s))).setScale(0, RoundingMode.HALF_EVEN));
+        
+       
+        
+        params.put("totalTransaccionesEfe", (s.getSaldoCierre() == null ? new BigDecimal(BigInteger.ZERO) : s.getSaldoCierre().subtract(totalCheques== null?new BigDecimal(BigInteger.ZERO):totalCheques)).setScale(0, RoundingMode.HALF_EVEN));
         params.put("saldoCierre", (s.getSaldoCierre() == null ? new BigDecimal(BigInteger.ZERO) : s.getSaldoCierre().setScale(0, RoundingMode.HALF_EVEN)));
         params.put("diferencia", (s.getDiferencia() == null ? new BigDecimal(BigInteger.ZERO) : s.getDiferencia().setScale(0, RoundingMode.HALF_EVEN)));
-        params.put("diferencia", s.getFechaApertura() );
+        params.put("fecha", s.getFechaApertura());
         
         reporteController.generaPDF(params, "reportes/tesoreria/ReporteTesoreria.jasper", "cierre_caja" + s.getPuntoVenta().getNombre());
     }

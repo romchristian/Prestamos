@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteTesoreria" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="381bdd1c-9759-431a-81d2-a98bbf843c12">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="337"/>
+	<property name="ireport.y" value="481"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
@@ -26,14 +26,17 @@
 	<queryString>
 		<![CDATA[select p.monto as monto,p.vencimiento as vencimiento,b.nombre as banco,p.descripcion as descripcion
 from pago p inner join banco b
-on p.banco_id = b.id and fecha=$P{fecha}
+on p.banco_id = b.id
+join transaccion t
+on t.id = p.transaccion_id
+where
+t.sesiontpv_id = $P{idSesionTPV}
 order by b.nombre]]>
 	</queryString>
-	<field name="fecha" class="java.util.Date"/>
+	<field name="monto" class="java.math.BigDecimal"/>
+	<field name="vencimiento" class="java.sql.Date"/>
 	<field name="banco" class="java.lang.String"/>
 	<field name="descripcion" class="java.lang.String"/>
-	<field name="monto" class="java.math.BigDecimal"/>
-	<field name="vencimiento" class="java.util.Date"/>
 	<variable name="fecha" class="java.util.Date">
 		<variableExpression><![CDATA[new Date()]]></variableExpression>
 	</variable>
@@ -62,7 +65,7 @@ order by b.nombre]]>
 			<textField evaluationTime="Auto" pattern="MMMM d, yyyy">
 				<reportElement x="384" y="39" width="167" height="20" uuid="ecae97ee-3312-4d08-9966-113e2c4a7d81"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0;-#,##0">
 				<reportElement x="102" y="98" width="146" height="20" uuid="3b8cb960-2488-4afe-bfb7-679cb254aea7"/>
@@ -231,7 +234,7 @@ order by b.nombre]]>
 				<textFieldExpression><![CDATA[$F{vencimiento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="100" y="0" width="242" height="20" uuid="9415e753-7c7d-4092-8f2e-321669a617ba"/>
+				<reportElement stretchType="RelativeToBandHeight" x="100" y="0" width="242" height="20" uuid="9415e753-7c7d-4092-8f2e-321669a617ba"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>

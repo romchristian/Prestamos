@@ -8,7 +8,7 @@
 
 
 
-    <ui:decorate template="/plantillaModulo2.xhtml">
+    <ui:decorate template="/plantillaModuloDashboard.xhtml">
         <ui:define name="menuModulos">
             <div style="display: table">
                 <div style="display: table-cell;width: 80%;font-size: 12pt; color: white">
@@ -19,61 +19,17 @@
         </ui:define>
 
         <ui:define name="logout">
-            <p:clock/>
+            
         </ui:define>
 
 
         <ui:define name="title">
-            #{titulo}
+            <ui:insert name="title"/>
         </ui:define>
         <ui:define name="body">
-
-            <style type="text/css">
-
-                h3{
-                    font-family: 'Exo', sans-serif;
-                    font-size: 14pt;
-                    color:#444444;
-                }
-
-                .caja{
-                    width: 97%;
-                    padding: 1% 1.5%;
-                    margin: 8px auto;
-                    overflow: hidden;
-                    float: left;
-
-                    background-color: #FFFFFF/*#F1F6F9*/;
-                    //background-color: #F6FAFC/*#F1F6F9*/;
-                    border-radius: 3px;
-                    -webkit-border-radius: 3px;
-                    -moz-border-radius: 3px;
-                    -webkit-box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
-                    -moz-box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
-                    box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
-                }
-
-
-                .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-                    background: none;
-                    background-color: #71CC8D;
-                    -moz-box-shadow: inset 0px 0px 0px #fff;
-                    -webkit-box-shadow: inset 0px 0px 0px #fff; 
-                    box-shadow: inset 0px 0px 0px #fff; 
-                    padding: 10px;
-                }
-            </style>
-
-
-
-
             <div style="padding: 20px;">
                 <ui:insert name="body"/>
             </div>
-
-
-
-
         </ui:define>
 
 

@@ -296,19 +296,27 @@ public class CierreBean implements Serializable {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("idSesionTPV", getActual().getId());//nf.format(selected.getId())
+        params.put("TCC", transaccionDAO.getTotalCobroCuotas(getActual()));
+        params.put("TCCEfe", transaccionDAO.getTotalCobrosCuotasEfe(getActual()));
+        params.put("TCCCh", transaccionDAO.getTotalCobrosCuotasCh(getActual()));
+        params.put("EV", transaccionDAO.getTotalEntradasVarias(getActual()));
+        params.put("DE", transaccionDAO.getTotalDesembolsos(getActual()));
+        params.put("SV", transaccionDAO.getTotalSalidasVarias(getActual()));
         params.put("cajero", credencial.getUsuario().getNombre() + " " + credencial.getUsuario().getApellido());
         params.put("saldoInicial", (getActual().getSaldoInicial() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getSaldoInicial().setScale(0, RoundingMode.HALF_EVEN)));
         params.put("totalTransacciones", (getActual().getTotalTransacciones() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getTotalTransacciones().setScale(0, RoundingMode.HALF_EVEN)));
+        params.put("totalTransaccionesEfe", (getActual().getTotalTransacciones() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getTotalTransacciones().subtract(transaccionDAO.getTotalCobrosCuotasCh(getActual()))).setScale(0, RoundingMode.HALF_EVEN));
         params.put("saldoCierre", (getActual().getSaldoCierre() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getSaldoCierre().setScale(0, RoundingMode.HALF_EVEN)));
         params.put("diferencia", (getActual().getDiferencia() == null ? new BigDecimal(BigInteger.ZERO) : getActual().getDiferencia().setScale(0, RoundingMode.HALF_EVEN)));
-
+        params.put("fecha", getActual().getFechaApertura() );
+        
         reporteController.generaPDF(params, "reportes/tesoreria/ReporteTesoreria.jasper", "cierre_caja" + getActual().getPuntoVenta().getNombre());
     }
 
     public void abreDetalleTransaccion(TreeCierre t) {
-        System.out.println("Empieza_2: " + new Date());
+        //System.out.println("Empieza_2: " + new Date());
         detalleTrasacciones = transaccionDAO.findPagosDetalle(getActual(), t);
-        System.out.println("Empieza_2: " + new Date());
+        //System.out.println("Empieza_2: " + new Date());
 
     }
 

@@ -2,200 +2,196 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
+                template="/templateDashboard.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
                 xmlns:f="http://java.sun.com/jsf/core">
 
 
-    <ui:decorate template="/plantillaDashboard.xhtml">
+
+    <ui:param name="modulo" value="tesoreria"/>
+
+
+    <ui:define name="atras">
+        <h:commandLink action="/tesoreria/sesionTPV/listado.xhtml">
+            <p:graphicImage library="img" name="atras.png" width="24" height="24"/>
+        </h:commandLink>
+
+    </ui:define>
+
+
+    <ui:define name="title">
+        DASHBOARD - TESORERIA
+    </ui:define>
+
+    <ui:define name="filtroGlobal">
+        <h:panelGrid columns="2" style="float: right;color: inherit">
+            <h:outputText value="CAJA" style="margin-right: 15px"/>
+            <p:selectOneMenu value="#{controlTesoreriaBean.puntoVentaSeleccionado}" styleClass="global">
+                <p:ajax event="change" listener="#{controlTesoreriaBean.siCambiaPuntoVenta}"
+                        process="@this" update="todo"/>
+                <f:selectItems value="#{puntoVentaBean.itemsAvailableSelectOne}"/>
+            </p:selectOneMenu>
+        </h:panelGrid>
+    </ui:define>
 
 
 
 
-
-
-        <ui:define name="body">
-            <h:form>
+    <ui:define name="body">
 
 
 
-                <h:outputScript library="js" name="highcharts.js"/>
-                <h:outputScript library="js" name="exporting.js"/>
+        <p:blockUI block="todo" trigger="@(.global)">
+            <p:graphicImage library="img" name="loading_bar.gif" width="128" style="background: transparent"/>
+        </p:blockUI>
 
-                <script type="text/javascript">
+        <p:outputPanel id="todo">
+            <div class="caja">
 
-                    var formatNumber = {
-                        separador: ".", // separador para los miles
-                        sepDecimal: ',', // separador para los decimales
-                        formatear: function (num) {
-                            num += '';
-                            var splitStr = num.split('.');
-                            var splitLeft = splitStr[0];
-                            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                            var regx = /(\d+)(\d{3})/;
-                            while (regx.test(splitLeft)) {
-                                splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                            }
-                            return this.simbol + splitLeft + splitRight;
-                        },
-                        new : function (num, simbol) {
-                            this.simbol = simbol || '';
-                            return this.formatear(num);
-                        }
-                    }
+                <div class="ui-grid ui-grid-responsive">
 
-                    var $ = jQuery;
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-6" style="padding-right: 5px">
 
-
-                    Highcharts.numberFormat(this.value, 0, '.', ',');
-
-                    $(function () {
-                        $('#container').highcharts({
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: ''
-                            },
-                            xAxis: {
-                                categories: [
-                                    'Del Dia'
-                                ],
-                                crosshair: true,
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Monto (guaranies)'
-                                }
-
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table width="250px">',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                        '<td style="padding:0"><b>{point.y} Gs</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true,
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                    name: 'Saldo',
-                                    data: [#{controlTesoreriaBean.vistaGrafico.saldo}],
-                                    dataLabels: {
-                                        enabled: true,
-                                        style: {
-                                            fontSize: '10pt'
-                                        }
-                                    }
-
-                                }, {
-                                    name: 'Entradas',
-                                    data: [#{controlTesoreriaBean.vistaGrafico.entradas}],
-                                    dataLabels: {
-                                        enabled: true,
-                                        format: '{y:,.0f}',
-                                        style: {
-                                            fontSize: '10pt'
-                                        }
-                                    }
-
-                                }, {
-                                    name: 'Salidas',
-                                    data: [#{controlTesoreriaBean.vistaGrafico.salidas}],
-                                    dataLabels: {
-                                        enabled: true,
-                                        format: formatNumber.new('{y:.0f}'),
-                                        style: {
-                                            fontSize: '10pt'
-                                        }
-                                    }
-
-                                }, {
-                                    name: 'Disponible',
-                                    data: [#{controlTesoreriaBean.vistaGrafico.disponible}],
-                                    dataLabels: {
-                                        enabled: true,
-                                        format: '{y:,.0f}',
-                                        style: {
-                                            fontSize: '10pt'
-                                        }
-                                    }
-
-                                }]
-                        });
-                    });
-                </script>
-
-
-
-                <h:form>
-
-                    <div class="caja">
-
-                        <div class="ui-grid ui-grid-responsive">
-
-                            <div class="ui-grid-row">
-                                <div class="ui-grid-col-6">
-
-                                    <div style="display: table;width: 100%">
-                                        <div style="display: table-cell;vertical-align: middle;width: 50%">
-                                            <h3>Cheques Recibidos</h3>
-                                        </div>
-                                        <div style="display: table-cell;text-align: right;vertical-align: middle;width: 50%">
-                                            <p:commandButton styleClass="btnCheques" value="Mes" action="#{controlTesoreriaBean.buscaChequesMes()}" update="cheques"/>
-                                            <p:commandButton styleClass="btnCheques" value="Semana" action="#{controlTesoreriaBean.buscaChequesSemana()}" update="cheques"/>
-                                            <p:commandButton styleClass="btnCheques" value="Hoy" action="#{controlTesoreriaBean.buscaChequesHoy()}" update="cheques"/>
-                                        </div>
-                                    </div>
-
-                                    <br/>
-                                    <hr/>
-                                    <br/>
-                                    <br/>
-                                    <p:blockUI block="cheques" trigger="@(.btnCheques)">
-                                        <p:graphicImage library="img" name="loading_bar.gif" width="128" style="background: transparent"/>
-
-                                    </p:blockUI>
-                                    <p:dataTable value="#{controlTesoreriaBean.cheques}" var="c" id="cheques">
-                                        <p:column headerText="Banco" style="font-size: 9pt">
-                                            <h:outputText value="#{c.banco.nombre}"/>
-                                        </p:column>
-                                        <p:column headerText="Vencimiento" style="font-size: 9pt">
-                                            <h:outputText value="#{c.vencimiento}">
-                                                <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
-                                            </h:outputText>
-                                        </p:column>
-                                        <p:column headerText="Desc" style="font-size: 9pt">
-                                            <h:outputText value="#{c.descripcion}"/>
-                                        </p:column>
-                                        <p:column headerText="Monto" style="font-size: 9pt">
-                                            <h:outputText value="#{c.monto}">
-                                                <f:convertNumber locale="#{formato.locale}"/>
-                                            </h:outputText>
-                                        </p:column>
-                                    </p:dataTable>
+                            <div style="display: table;width: 100%;height: 45px">
+                                <div style="display: table-cell;vertical-align: middle;width: 50%">
+                                    <h3>Cheques Recibidos</h3>
                                 </div>
-                                <div class="ui-grid-col-6">
-                                    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                                <div style="display: table-cell;text-align: right;vertical-align: middle;width: 50%">
+                                    <p:commandButton styleClass="btnCheques" value="Mes" action="#{controlTesoreriaBean.buscaChequesMes()}" update="@(.btnCheques) cheques" 
+                                                     style="#{controlTesoreriaBean.botonSeleccionado == 'mes'?'background-color:#5882FA;color:white':'background-color: #71CC8D;color:#444444'}}"/>
+                                    <p:commandButton styleClass="btnCheques" value="Semana" action="#{controlTesoreriaBean.buscaChequesSemana()}" update="@(.btnCheques) cheques"
+                                                     style="#{controlTesoreriaBean.botonSeleccionado == 'semana'?'background-color:#5882FA;color:white;':'background-color: #71CC8D;color:#444444'}}"/>
+                                    <p:commandButton styleClass="btnCheques" value="Hoy" action="#{controlTesoreriaBean.buscaChequesHoy()}" update="@(.btnCheques) cheques"
+                                                     style="#{controlTesoreriaBean.botonSeleccionado == 'hoy'?'background-color:#5882FA;color:white;':'background-color: #71CC8D;color:#444444'}}"/>
                                 </div>
                             </div>
+
+
+                            <hr/>
+                            <br/>
+                            <br/>
+
+                            <p:blockUI block="cheques" trigger="@(.btnCheques)">
+                                <p:graphicImage library="img" name="loading_bar.gif" width="128" style="background: transparent"/>
+                            </p:blockUI>
+
+
+                            <p:dataTable value="#{controlTesoreriaBean.cheques}" var="c" 
+                                         id="cheques"
+                                         styleClass="cheques"
+                                         paginator="true"
+                                         paginatorAlwaysVisible="false"
+                                         paginatorPosition="bottom">
+
+                                <p:column headerText="Banco" style="font-size: 9pt" sortBy="#{c.banco.nombre}">
+                                    <h:outputText value="#{c.banco.nombre}"/>
+                                </p:column>
+                                <p:column headerText="Vencimiento" style="font-size: 9pt" sortBy="#{c.vencimiento}">
+                                    <h:outputText value="#{c.vencimiento}">
+                                        <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Desc" style="font-size: 9pt" sortBy="#{c.descripcion}">
+                                    <h:outputText value="#{c.descripcion}"/>
+                                </p:column>
+                                <p:column headerText="Monto" style="font-size: 9pt" sortBy="#{c.monto}">
+                                    <h:outputText value="#{c.monto}">
+                                        <f:convertNumber locale="#{formato.locale}"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+
+
+                        </div>
+
+
+                        <div class="ui-grid-col-6" style="padding-left: 5px">
+                            <div style="display: table;width: 100%;height: 45px">
+                                <div style="display: table-cell;vertical-align: middle;width: 50%">
+
+                                    <h3>Disponibilidad a la fecha</h3>
+                                </div>
+                                <div style="display: table-cell;text-align: right;vertical-align: middle;width: 50%;">
+
+
+                                </div>
+                            </div>
+
+
+                            <hr/>
+                            <br/>
+                            <br/>
+
+
+
+                            <ui:include src="graficoDisponibilidad.xhtml"/>
+
                         </div>
                     </div>
-
-                </h:form>
-
-
-            </h:form>
+                </div>
+            </div>
 
 
+            <div class="caja">
+                <div class="ui-grid ui-grid-responsive">
+
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-12">
+                            <div style="display: table;width: 100%;height: 45px">
+                                <div style="display: table-cell;vertical-align: middle;width: 50%">
+                                    <h3>Transacciones</h3>
+                                </div>
+                                <div style="display: table-cell;text-align: right;vertical-align: middle;width: 50%">
+                                    <p:commandButton styleClass="btnTransacciones" value="Mes" action="#{controlTesoreriaBean.buscaTransaccionesMes()}" update="@(.btnTransacciones) transacciones" 
+                                                     style="#{controlTesoreriaBean.botonSeleccionadoT == 'mes'?'background-color:#5882FA;color:white':'background-color: #71CC8D;color:#444444'}}"/>
+                                    <p:commandButton styleClass="btnTransacciones" value="Semana" action="#{controlTesoreriaBean.buscaTransaccionesSemana()}" update="@(.btnTransacciones) transacciones"
+                                                     style="#{controlTesoreriaBean.botonSeleccionadoT == 'semana'?'background-color:#5882FA;color:white;':'background-color: #71CC8D;color:#444444'}}"/>
+                                    <p:commandButton styleClass="btnTransacciones" value="Hoy" action="#{controlTesoreriaBean.buscaTransaccionesHoy()}" update="@(.btnTransacciones) transacciones"
+                                                     style="#{controlTesoreriaBean.botonSeleccionadoT == 'hoy'?'background-color:#5882FA;color:white;':'background-color: #71CC8D;color:#444444'}}"/>
+                                </div>
+                            </div>
 
 
-        </ui:define>
-    </ui:decorate>
+                            <hr/>
+                            <br/>
+                            <br/>
+
+                            <p:dataTable value="#{controlTesoreriaBean.transacciones}" var="t" 
+                                         id="transacciones"
+                                         paginator="true"
+                                         paginatorAlwaysVisible="false"
+                                         rows="15"
+                                         paginatorPosition="bottom">
+                                <p:column headerText="Fecha" style="font-size: 9pt;width:10%;text-align:center;" sortBy="#{t.fecha}">
+                                    <h:outputText value="#{t.fecha}">
+                                        <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Tipo" style="font-size: 9pt;width:10%;text-align:center;" sortBy="#{t.tipoTransaccion}">
+                                    <h:outputText value="#{t.tipoTransaccion}"/>
+                                </p:column>
+                                <p:column headerText="Desc" style="font-size: 9pt;width:65%" sortBy="#{t.descripcion}">
+                                    <h:outputText value="#{t.descripcion}"/>
+                                </p:column>
+                                <p:column headerText="Monto" style="font-size: 9pt;width:15%;text-align:right;font-weight:bold" sortBy="#{t.monto}">
+                                    <h:outputText value="#{t.monto}">
+                                        <f:convertNumber locale="#{formato.locale}"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </p:outputPanel>
+
+
+
+    </ui:define>
+
 </ui:composition>

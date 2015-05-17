@@ -76,7 +76,7 @@ group by operacion,tipo]]>
 	<detail>
 		<band height="21" splitType="Stretch">
 			<textField>
-				<reportElement x="98" y="0" width="261" height="20" uuid="f0fe4a92-d377-49fc-87d3-6635f1e7d739"/>
+				<reportElement stretchType="RelativeToBandHeight" x="98" y="0" width="261" height="20" uuid="f0fe4a92-d377-49fc-87d3-6635f1e7d739"/>
 				<textFieldExpression><![CDATA[$F{operacion}]]></textFieldExpression>
 			</textField>
 			<textField>

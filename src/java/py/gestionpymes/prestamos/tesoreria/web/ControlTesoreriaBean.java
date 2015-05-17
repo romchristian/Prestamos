@@ -10,15 +10,19 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.ChartSeries;
 import py.gestionpymes.prestamos.contabilidad.persistencia.ChequeRecibido;
 import py.gestionpymes.prestamos.tesoreria.dao.TransaccionDAO;
 import py.gestionpymes.prestamos.tesoreria.dao.VistaGrafico;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.PuntoVenta;
+import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
 
 /**
  *
@@ -28,6 +32,14 @@ import py.gestionpymes.prestamos.tesoreria.dao.VistaGrafico;
 @ViewScoped
 public class ControlTesoreriaBean implements Serializable {
 
+    private final String HOY = "hoy";
+    private final String SEMANA = "semana";
+    private final String MES = "mes";
+
+    private final String HOY_T = "hoy";
+    private final String SEMANA_T = "semana";
+    private final String MES_T = "mes";
+
     @EJB
     private TransaccionDAO transaccionDAO;
 
@@ -35,6 +47,45 @@ public class ControlTesoreriaBean implements Serializable {
 
     private Date fecha = new Date();
     private List<ChequeRecibido> cheques;
+    private List<Transaccion> transacciones;
+    private PuntoVenta puntoVentaSeleccionado;
+    private String botonSeleccionado;
+    private String botonSeleccionadoT;
+
+    public List<Transaccion> getTransacciones() {
+         if (transacciones == null) {
+            buscaTransaccionesHoy();
+        }
+        return transacciones;
+    }
+
+    public void setTransacciones(List<Transaccion> transacciones) {
+        this.transacciones = transacciones;
+    }
+
+    public String getBotonSeleccionadoT() {
+        return botonSeleccionadoT;
+    }
+
+    public void setBotonSeleccionadoT(String botonSeleccionadoT) {
+        this.botonSeleccionadoT = botonSeleccionadoT;
+    }
+
+    public String getBotonSeleccionado() {
+        return botonSeleccionado;
+    }
+
+    public void setBotonSeleccionado(String botonSeleccionado) {
+        this.botonSeleccionado = botonSeleccionado;
+    }
+
+    public PuntoVenta getPuntoVentaSeleccionado() {
+        return puntoVentaSeleccionado;
+    }
+
+    public void setPuntoVentaSeleccionado(PuntoVenta puntoVentaSeleccionado) {
+        this.puntoVentaSeleccionado = puntoVentaSeleccionado;
+    }
 
     public Date getFecha() {
         return fecha;
@@ -56,20 +107,38 @@ public class ControlTesoreriaBean implements Serializable {
     }
 
     public void buscaChequesHoy() {
-        cheques = transaccionDAO.getCheques(fecha);
+        cheques = transaccionDAO.getChequesDelDia(puntoVentaSeleccionado);
+        botonSeleccionado = HOY;
     }
-    
+
     public void buscaChequesMes() {
-        cheques = transaccionDAO.getChequesMes(fecha);
+        cheques = transaccionDAO.getChequesMes(puntoVentaSeleccionado);
+        botonSeleccionado = MES;
     }
-    
-     public void buscaChequesSemana() {
-        cheques = transaccionDAO.getChequesSemana(fecha);
+
+    public void buscaChequesSemana() {
+        cheques = transaccionDAO.getChequesSemana(puntoVentaSeleccionado);
+        botonSeleccionado = SEMANA;
+    }
+
+    public void buscaTransaccionesHoy() {
+        transacciones = transaccionDAO.getTransaccionesDelDia(puntoVentaSeleccionado);
+        botonSeleccionadoT = HOY;
+    }
+
+    public void buscaTransaccionesMes() {
+        transacciones = transaccionDAO.getTransaccionesMes(puntoVentaSeleccionado);
+        botonSeleccionadoT = MES;
+    }
+
+    public void buscaTransaccionesSemana() {
+        transacciones = transaccionDAO.getTransaccionesSemana(puntoVentaSeleccionado);
+        botonSeleccionadoT = SEMANA;
     }
 
     public VistaGrafico getVistaGrafico() {
         if (vistaGrafico == null) {
-            vistaGrafico = transaccionDAO.obtVistaGrafico();
+            vistaGrafico = transaccionDAO.obtVistaGrafico(puntoVentaSeleccionado);
         }
         return vistaGrafico;
     }
@@ -108,4 +177,34 @@ public class ControlTesoreriaBean implements Serializable {
 //        yAxis.setMax(200);
     }
 
+    public void siCambiaPuntoVenta() {
+        vistaGrafico = null;
+
+        switch (botonSeleccionado) {
+            case HOY:
+                cheques = transaccionDAO.getChequesDelDia(puntoVentaSeleccionado);
+                
+                break;
+            case SEMANA:
+                cheques = transaccionDAO.getChequesSemana(puntoVentaSeleccionado);
+                break;
+            case MES:
+                cheques = transaccionDAO.getChequesMes(puntoVentaSeleccionado);
+                break;
+        }
+        
+        
+        switch (botonSeleccionadoT) {
+            case HOY_T:
+                transacciones = transaccionDAO.getTransaccionesDelDia(puntoVentaSeleccionado);
+                
+                break;
+            case SEMANA_T:
+                transacciones = transaccionDAO.getTransaccionesSemana(puntoVentaSeleccionado);
+                break;
+            case MES_T:
+                transacciones = transaccionDAO.getTransaccionesMes(puntoVentaSeleccionado);
+                break;
+        }
+    }
 }

@@ -1,0 +1,420 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <title><ui:insert name="title">Default Title</ui:insert></title>
+        </f:facet>
+
+
+
+
+        <h:outputStylesheet library="css" name="default.css"/>
+
+        <h:outputStylesheet library="css" name="jsfcrud.css"/>
+        <h:outputScript library="js" name="jsfcrud.js"/>
+        <h:outputScript library="js" name="highcharts.js"/>
+        <h:outputScript library="js" name="exporting.js"/>
+
+        <style type="text/css">
+
+            @font-face {
+                font-family: 'Exo';
+                font-style: normal;
+                font-weight: 100;
+                src: local('Exo Thin'), local('Exo-Thin'), url(#{resource['font/bSEuBfAK9i16rKak_EdKNA.woff2']}) format('woff2'), url(#{resource['font/qyfp0OSqk7TET2opvcMBmw.woff']}) format('woff');
+            }
+            @font-face {
+                font-family: 'Exo';
+                font-style: normal;
+                font-weight: 200;
+                src: local('Exo ExtraLight'), local('Exo-ExtraLight'), url(#{resource['font/lA-XzkxvFbAS7qSN5Rm7dw.woff2']}) format('woff2'), url(#{resource['font/z1hPnoJcXaXYata_d2utlw.woff']}) format('woff');
+            }
+            @font-face {
+                font-family: 'Exo';
+                font-style: normal;
+                font-weight: 400;
+                src: local('Exo Regular'), local('Exo-Regular'), url(#{resource['font/kA_pX0U45Eb7PbHijV1x2w.woff2']}) format('woff2'), url(#{resource['font/wocyXRLWPo2Av-yUTmmbTA.woff']}) format('woff');
+            }
+
+            *{
+                margin:0;padding:0;
+            }
+            html,body,.container, .sideBar, .content
+            {
+                height: 100%;
+
+            }
+
+            .bar
+            {
+
+
+                background: rgba(31,29,89,1);
+                background: -moz-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(31,29,89,1) 100%);
+                background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(31,29,89,1)), color-stop(100%, rgba(31,29,89,1)));
+                background: -webkit-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(31,29,89,1) 100%);
+                background: -o-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(31,29,89,1) 100%);
+                background: -ms-linear-gradient(-45deg, rgba(31,29,89,1) 0%, rgba(31,29,89,1) 100%);
+                background: linear-gradient(135deg, rgba(31,29,89,1) 0%, rgba(31,29,89,1) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f1d59', endColorstr='#1f1d59', GradientType=1 );
+                height: 35px;
+                line-height: 35px;
+
+            }
+            .container
+            {
+
+
+                margin-top: -45px;
+                padding-top: 45px;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+
+            }
+            .sideBar
+            {
+
+                float:left;
+                width: 250px;
+                background: rgba(254,254,254,1);
+                background: -moz-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                background: -webkit-gradient(left top, right top, color-stop(0%, rgba(254,254,254,1)), color-stop(72%, rgba(219,219,219,0.9)), color-stop(99%, rgba(209,209,209,0.86)), color-stop(100%, rgba(226,226,226,0.86)));
+                background: -webkit-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                background: -o-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                background: -ms-linear-gradient(left, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                background: linear-gradient(to right, rgba(254,254,254,1) 0%, rgba(219,219,219,0.9) 72%, rgba(209,209,209,0.86) 99%, rgba(226,226,226,0.86) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e2e2e2', GradientType=1 );
+                border-right: 1px solid #aaa;
+                overflow:hidden;
+            }
+            .content
+            {
+
+
+
+
+            }
+            .program{
+                font-family: 'Exo', sans-serif;
+                color: #fff;
+                font-size: 20px;
+                font-weight: bold;
+                padding-left:  15px
+            }
+
+            .program div span{
+                color: #33ccFF !important;
+            }
+            .title{
+                vertical-align: middle;
+                color: #444;
+                font-size: 16pt;
+
+            }
+
+
+
+            .ui-widget {
+                font-size: 12px!important;
+            }
+
+            /* Base Styles */
+            #cssmenu ul,
+            #cssmenu li,
+            #cssmenu a {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                border: 0;
+                line-height: 1;
+                font-family: 'Exo', sans-serif;
+            }
+            #cssmenu {
+                border: 1px solid #133e40;
+                -webkit-border-radius: 0px;
+                -moz-border-radius: 0px;
+                -ms-border-radius: 0px;
+                -o-border-radius: 0px;
+                border-radius: 0px;
+                width: auto;
+            }
+            #cssmenu ul {
+                zoom: 1;
+
+                padding: 5px 10px;
+                -webkit-border-radius: 0px;
+                -moz-border-radius: 0px;
+                -ms-border-radius: 0px;
+                -o-border-radius: 0px;
+                border-radius: 0px;
+            }
+            #cssmenu ul:before {
+                content: '';
+                display: block;
+            }
+            #cssmenu ul:after {
+                content: '';
+                display: table;
+                clear: both;
+            }
+            #cssmenu li {
+                float: left;
+                margin: 0 5px 0 0;
+                border: 1px solid transparent;
+            }
+            #cssmenu li a {
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                -ms-border-radius: 5px;
+                -o-border-radius: 5px;
+                border-radius: 5px;
+                padding: 2px 10px 2px 10px;
+                display: block;
+                text-decoration: none;
+                color: #ffffff;
+                border: 1px solid transparent;
+                font-size: 12px!important;
+            }
+            #cssmenu li.active {
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                -ms-border-radius: 5px;
+                -o-border-radius: 5px;
+                border-radius: 5px;
+                border: 1px solid #3b679e;
+            }
+            #cssmenu li.active a {
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                -ms-border-radius: 5px;
+                -o-border-radius: 5px;
+                border-radius: 5px;
+                display: block;
+                background: rgb(109,179,242); /* Old browsers */
+                background: -moz-linear-gradient(top,  rgba(109,179,242,1) 0%, rgba(84,163,238,1) 50%, rgba(54,144,240,1) 51%, rgba(30,105,222,1) 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(109,179,242,1)), color-stop(50%,rgba(84,163,238,1)), color-stop(51%,rgba(54,144,240,1)), color-stop(100%,rgba(30,105,222,1))); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%); /* Chrome10+,Safari5.1+ */
+                background: -o-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%); /* Opera 11.10+ */
+                background: -ms-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%); /* IE10+ */
+                background: linear-gradient(to bottom,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%); /* W3C */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', endColorstr='#1e69de',GradientType=0 ); /* IE6-9 */
+
+
+
+                border: 1px solid #3b679e;
+                -moz-box-shadow: inset 0 5px 10px #3b679e;
+                -webkit-box-shadow: inset 0 5px 10px #3b679e;
+                box-shadow: inset 0 5px 10px #3b679e;
+            }
+            #cssmenu li:hover {
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                -ms-border-radius: 5px;
+                -o-border-radius: 5px;
+                border-radius: 5px;
+                border: 1px solid #3b679e;
+            }
+            #cssmenu li:hover a {
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                -ms-border-radius: 5px;
+                -o-border-radius: 5px;
+                border-radius: 5px;
+                display: block;
+                background: rgb(109,179,242); /* Old browsers */
+                background: -moz-linear-gradient(top,  rgba(109,179,242,1) 0%, rgba(84,163,238,1) 50%, rgba(54,144,240,1) 51%, rgba(30,105,222,1) 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(109,179,242,1)), color-stop(50%,rgba(84,163,238,1)), color-stop(51%,rgba(54,144,240,1)), color-stop(100%,rgba(30,105,222,1))); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%); /* Chrome10+,Safari5.1+ */
+                background: -o-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%); /* Opera 11.10+ */
+                background: -ms-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%); /* IE10+ */
+                background: linear-gradient(to bottom,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%); /* W3C */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', endColorstr='#1e69de',GradientType=0 ); /* IE6-9 */
+
+                border: 1px solid #3b679e;
+                -moz-box-shadow: inset 0 5px 10px #3b679e;
+                -webkit-box-shadow: inset 0 5px 10px #3b679e;
+                box-shadow: inset 0 5px 10px #3b679e;
+            }
+
+
+            h3{
+                font-family: 'Exo', sans-serif;
+                font-size: 14pt;
+                color:#444444;
+            }
+
+            .caja{
+                width: 97%;
+                padding: 1% 1.5%;
+                margin: 8px auto;
+                overflow: hidden;
+                float: left;
+
+                background-color: #FFFFFF/*#F1F6F9*/;
+                //background-color: #F6FAFC/*#F1F6F9*/;
+                border-radius: 3px;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                -webkit-box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
+                -moz-box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
+                box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
+            }
+
+
+            .cajaTitulo{
+
+                padding: 1% 1.5%;
+                margin: 8px auto;
+                overflow: hidden;
+                float: left;
+
+
+                background-color: #71CC8D;
+                //background-color: #F6FAFC/*#F1F6F9*/;
+                border-radius: 3px;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                -webkit-box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
+
+                position: absolute; top:30px;z-index: 2; width: 92%; 
+                height: 30px;left: calc(5% - 40px);
+
+
+                color: white;
+
+                -webkit-box-shadow: 0px 1px 0px 0px rgba(70,145,91,0.8);
+                -moz-box-shadow: 0px 1px 0px 0px rgba(70,145,91,0.8);
+
+
+            }
+
+            .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+                background: none;
+                background-color: #71CC8D;
+                -moz-box-shadow: inset 0px 0px 0px #fff;
+                -webkit-box-shadow: inset 0px 0px 0px #fff; 
+                box-shadow: inset 0px 0px 0px #fff; 
+                text-shadow: 0px 0px 0px rgba(255,255,255,0.7);
+
+            } 
+            body{
+                background-image: url("#{resource['img/bg_dashboard.png']}");;
+                background-repeat: repeat;
+                background-position: center;
+                background-color: #C3CCD5;
+                background-attachment: fixed;
+
+            }
+        </style>
+
+    </h:head>
+
+    <h:body style="padding: 0;margin: 0;" id="paginaEntera">
+
+
+        <h:form style="padding: 0;margin: 0;">
+            <p:growl id="growl" life="3000" autoUpdate="true"/>
+
+
+
+            <div class="container" style="padding-bottom: 100px">    
+
+
+                <div style="position: relative;">
+                    <div class="bar" style="display: table;width: 100%;min-height: 60px;position: absolute; top:0px;left: 0px;z-index: 1">
+                        <div class="program" style="vertical-align: top; display: table-cell;width: 20%;border: none;">
+                            <div>Ideas<span>Pymes - </span> <span style="color: #1fcf5f!important;">Préstamos</span></div>
+                        </div>
+                        <div id='cssmenu' style="margin: 0;padding: 0;display: table-cell;width: 60%; vertical-align: top;border: none;text-align: left">
+                            <ul>
+
+                                <ui:include src="/modulos.xhtml">
+                                    <ui:param name="modulo" value="#{modulo}"/>
+                                </ui:include>
+
+                            </ul>
+                        </div>
+                        <div class="program" style="display: table-cell;vertical-align: top;text-align: right;padding-right: 20px;font-size: 12pt">
+                            Bienvenido #{request.userPrincipal}
+                        </div>
+                    </div>
+
+
+                    <div class="cajaTitulo">
+                        <div style="display: table;width: 100%">
+                            <div style="display: table-cell;width: 3%;text-align: left;vertical-align: middle">
+                                <ui:insert name="atras"></ui:insert>
+
+                            </div>
+                            <div style="display: table-cell;width: 47%;text-align: left;vertical-align: middle">
+                                <h3 style="color: white"><ui:insert name="title">Default Title</ui:insert></h3>
+                            </div>
+                            <div style="display: table-cell;width: 50%;text-align: right;vertical-align: middle">
+                                <ui:insert name="filtroGlobal"></ui:insert>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="content" style="padding-top:  80px;">
+
+                    <ui:include src="idleMonitor.xhtml"/>
+
+                    <div style="padding:  20px;">
+                        <ui:insert name="body"/>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+        </h:form>
+
+        <script type="text/javascript">
+
+            PrimeFaces.locales['es'] = {
+                closeText: 'Cerrar',
+                prevText: 'Anterior',
+                nextText: 'Siguiente',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Sólo hora',
+                timeText: 'Tiempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                currentText: 'Fecha actual',
+                ampm: false,
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día',
+                allDayText: 'Todo el día'
+            };
+
+        </script>
+
+    </h:body>
+
+</html>
