@@ -8,13 +8,14 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.TipoDocumento;
+import py.gestionpymes.prestamos.seguridad.persistencia.Auditable;
 
 /**
  *
  * @author christian
  */
 @Entity
-public class Persona implements Serializable {
+public class Persona implements Serializable , Auditable{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -33,6 +34,7 @@ public class Persona implements Serializable {
     @Enumerated(EnumType.STRING)
     private Estado estado;
 
+    @Override
     public Long getId() {
         return id;
     }

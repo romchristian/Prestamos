@@ -5,15 +5,23 @@
  */
 package py.gestionpymes.prestamos.adm.dao;
 
+import java.util.Date;
 import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import py.gestionpymes.prestamos.adm.web.util.Credencial;
+import py.gestionpymes.prestamos.seguridad.persistencia.Auditable;
+import py.gestionpymes.prestamos.seguridad.persistencia.Auditoria;
 
 /**
  *
  * @author Acer
  */
 public abstract class AbstractFacade<T> {
+
     private Class<T> entityClass;
+    @Inject
+    private Credencial credencial;
 
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
@@ -23,13 +31,20 @@ public abstract class AbstractFacade<T> {
 
     public void create(T entity) {
         getEntityManager().persist(entity);
+        getEntityManager().flush();
+        getEntityManager().refresh(entity);
+        preparaRegistro(entity, "CREATE");
     }
 
     public void edit(T entity) {
         getEntityManager().merge(entity);
+        getEntityManager().flush();
+        getEntityManager().refresh(entity);
+        preparaRegistro(entity, "CREATE/UPDATE");
     }
 
     public void remove(T entity) {
+        preparaRegistro(entity, "REMOVE");
         getEntityManager().remove(getEntityManager().merge(entity));
     }
 
@@ -59,5 +74,20 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
+
+    public void preparaRegistro(Object obj, String tipoOperacion) {
+        if (obj instanceof Auditable) {
+            Auditable a = (Auditable) obj;
+            registrar(a, tipoOperacion);
+        }
+    }
+
+    public void registrar(Auditable a, String tipoOperacion) {
+        Auditoria aud = new Auditoria();
+        aud.setFecha(new Date());
+        aud.setTablaAfectada(a.getClass().getSimpleName() + ": id = " + a.getId());
+        aud.setTipoOperacion(tipoOperacion);
+        aud.setUsuarioLogeado(credencial.getUsuario() == null ? "" : credencial.getUsuario().getUsuario());
+        getEntityManager().persist(aud);
+    }
 }

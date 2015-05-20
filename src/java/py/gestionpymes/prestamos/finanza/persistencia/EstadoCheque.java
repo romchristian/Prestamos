@@ -3,32 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.gestionpymes.prestamos.seguridad.persistencia;
-
+package py.gestionpymes.prestamos.finanza.persistencia;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
 
 /**
  *
  * @author Acer
  */
 @Entity
-public class Auditoria implements Serializable {
+public class EstadoCheque implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date fecha;
-    private String tipoOperacion;
-    private String tablaAfectada;
-    private String usuarioLogeado;
+    private String nombre;
 
     public Long getId() {
         return id;
@@ -38,38 +31,15 @@ public class Auditoria implements Serializable {
         this.id = id;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
-
-    public String getTipoOperacion() {
-        return tipoOperacion;
-    }
-
-    public void setTipoOperacion(String tipoOperacion) {
-        this.tipoOperacion = tipoOperacion;
-    }
-
-   
-    public String getTablaAfectada() {
-        return tablaAfectada;
-    }
-
-    public void setTablaAfectada(String tablaAfectada) {
-        this.tablaAfectada = tablaAfectada;
-    }
-
-    public String getUsuarioLogeado() {
-        return usuarioLogeado;
-    }
-
-    public void setUsuarioLogeado(String usuarioLogeado) {
-        this.usuarioLogeado = usuarioLogeado;
-    }
+    
+    
 
     @Override
     public int hashCode() {
@@ -81,10 +51,10 @@ public class Auditoria implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Auditoria)) {
+        if (!(object instanceof EstadoCheque)) {
             return false;
         }
-        Auditoria other = (Auditoria) object;
+        EstadoCheque other = (EstadoCheque) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -93,7 +63,7 @@ public class Auditoria implements Serializable {
 
     @Override
     public String toString() {
-        return "py.gestionpymes.prestamos.seguridad.persistencia.auditoria[ id=" + id + " ]";
+        return "py.gestionpymes.prestamos.finanza.EstadoCheque[ id=" + id + " ]";
     }
     
 }

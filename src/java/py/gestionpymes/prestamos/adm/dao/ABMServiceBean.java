@@ -5,6 +5,7 @@
 package py.gestionpymes.prestamos.adm.dao;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,10 +14,14 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import py.gestionpymes.prestamos.adm.web.util.Credencial;
+import py.gestionpymes.prestamos.seguridad.persistencia.Auditable;
+import py.gestionpymes.prestamos.seguridad.persistencia.Auditoria;
 
 /**
  *
@@ -27,6 +32,8 @@ import javax.persistence.Query;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ABMServiceBean implements ABMService {
 
+    @Inject
+    private Credencial credencial;
     @PersistenceContext(unitName = "PrestamosPU")
     EntityManager em;
 
@@ -40,11 +47,15 @@ public class ABMServiceBean implements ABMService {
         this.em.persist(t);
         this.em.flush();
         this.em.refresh(t);
+
+        preparaRegistro(t, "CREATE");
+
         return t;
     }
 
     @Override
     public void delete(Object t) {
+        preparaRegistro(t, "REMOVE");
         this.em.merge(t);
         this.em.remove(t);
     }
@@ -53,6 +64,9 @@ public class ABMServiceBean implements ABMService {
     public <T> T update(T t) {
         try {
             t = this.em.merge(t);
+            this.em.flush();
+            this.em.refresh(t);
+            preparaRegistro(t, "CREATE/UPDATE");
 
         } catch (OptimisticLockException e) {
             return null;
@@ -168,5 +182,21 @@ public class ABMServiceBean implements ABMService {
         } else {
             return R instanceof BigDecimal ? ((BigDecimal) R).doubleValue() : R instanceof Double ? (Double) R : R instanceof Long ? (Long) R : (Double) R;
         }
+    }
+
+    public void preparaRegistro(Object obj, String tipoOperacion) {
+        if (obj instanceof Auditable) {
+            Auditable a = (Auditable) obj;
+            registrar(a, tipoOperacion);
+        }
+    }
+
+    public void registrar(Auditable a, String tipoOperacion) {
+        Auditoria aud = new Auditoria();
+        aud.setFecha(new Date());
+        aud.setTablaAfectada(a.getClass().getSimpleName()+": id = " + a.getId());
+        aud.setTipoOperacion(tipoOperacion);
+        aud.setUsuarioLogeado(credencial.getUsuario() == null ? "" : credencial.getUsuario().getUsuario());
+        em.persist(aud);
     }
 }
