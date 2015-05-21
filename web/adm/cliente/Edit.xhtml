@@ -157,7 +157,7 @@
                                         </p:selectOneMenu>
 
                                         <p:outputLabel value="#{bundle.CreateDireccionLabel_direccion}" for="direccion" />
-                                        <p:inputText id="direccion" value="#{clienteController.direccionSeleccionada.direccion}" title="#{bundle.CreateDireccionTitle_direccion}" style="text-transform: uppercase"/>
+                                        <p:inputText id="direccion"  value="#{clienteController.direccionSeleccionada.direccion}"  title="#{bundle.CreateDireccionTitle_direccion}" style="text-transform: uppercase;"/>
 
                                         <p:outputLabel value="#{bundle.CreateDireccionLabel_nrocasa}" for="nrocasa" />
                                         <p:inputText id="nrocasa" value="#{clienteController.direccionSeleccionada.nrocasa}" title="#{bundle.CreateDireccionTitle_nrocasa}" style="text-transform: uppercase"/>
@@ -174,25 +174,25 @@
                                         <p:commandButton value="Agregar" update="@(.panelDirecciones)" action="#{clienteController.agregaDireccion()}"/>
                                     </p:panelGrid>   
                                     <p:dataTable value="#{clienteController.selected.direcciones}" var="d" id="tablaDireccciones">
-                                        <p:column headerText="TIPO">
+                                        <p:column headerText="TIPO" resizable="true" width="80">
                                             #{d.tipo}
                                         </p:column>
-                                        <p:column headerText="DIRECCION">
-                                            <p:inputText value="#{d.direccion}"/> 
+                                        <p:column headerText="DIRECCION" resizable="true" width="200" >
+                                            <p:inputTextarea value="#{d.direccion}" rows="3" style="width: 95% !important;" autoResize="false"/> 
                                         </p:column>
-                                        <p:column headerText="NRO">
-                                            <p:inputText value="#{d.nrocasa}"/> 
+                                        <p:column headerText="NRO" resizable="true" width="40">
+                                            <p:inputText value="#{d.nrocasa}" style="width: 95% !important;"/> 
                                         </p:column>
-                                        <p:column headerText="BARRIO">
-                                            <p:inputText value="#{d.barrio}"/> 
+                                        <p:column headerText="BARRIO" resizable="true" width="100">
+                                            <p:inputText value="#{d.barrio}" style="width: 95% !important;"/> 
                                         </p:column>
-                                        <p:column headerText="CIUDAD">
-                                            <p:inputText value="#{d.ciudad}"/> 
+                                        <p:column headerText="CIUDAD" resizable="true" width="100">
+                                            <p:inputText value="#{d.ciudad}" style="width: 95% !important;"/> 
                                         </p:column>
-                                        <p:column headerText="PAÍS">
-                                            <p:inputText value="#{d.pais}"/> 
+                                        <p:column headerText="PAÍS" resizable="true" width="100">
+                                            <p:inputText value="#{d.pais}" style="width: 95% !important;"/> 
                                         </p:column>
-                                        <p:column headerText="ACCION">
+                                        <p:column headerText="ACCION" resizable="true" width="40">
                                             <p:commandButton value="X" action="#{clienteController.removerDireccion(d)}" update="@(.panelDirecciones)"/>
                                         </p:column>
                                     </p:dataTable>
