@@ -303,6 +303,7 @@ public class PrestamoController implements Serializable {
         params.put("empresa", selected.getEmpresa() == null ? " " : selected.getEmpresa().getRazonSocial());
         params.put("sucursal", selected.getSucursal() == null ? " " : selected.getSucursal().getNombre());
         params.put("vendedor", selected.getVendedor() == null ? " " : selected.getVendedor().devuelveNombreCompleto());
+        params.put("nroDocumento", selected.getCliente() == null ? " " : selected.getCliente().getNroDocumento());
         params.put("nombreCliente", selected.getCliente() == null ? " " : selected.getCliente().devuelveNombreCompleto());
         params.put("codeudor", selected.getCodeudor() == null ? "" : selected.getCodeudor().devuelveNombreCompleto());
         params.put("montoPrestamo", nf.format(selected.getMontoPrestamo()));

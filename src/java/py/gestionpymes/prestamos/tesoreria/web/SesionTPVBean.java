@@ -301,7 +301,7 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
 
         Map<String, Object> params = new HashMap<String, Object>();
         
-         BigDecimal totalCheques = transaccionDAO.getTotalCobrosCuotasCh(s);
+        BigDecimal totalCheques = transaccionDAO.getTotalCobrosCuotasCh(s);
           
         params.put("idSesionTPV", s.getId());//nf.format(selected.getId())
         params.put("TCC", transaccionDAO.getTotalCobroCuotas(s));
@@ -313,13 +313,10 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         params.put("cajero", credencial.getUsuario().getNombre() + " " + credencial.getUsuario().getApellido());
         params.put("saldoInicial", (s.getSaldoInicial() == null ? new BigDecimal(BigInteger.ZERO) : s.getSaldoInicial().setScale(0, RoundingMode.HALF_EVEN)));
         params.put("totalTransacciones", (s.getTotalTransacciones() == null ? new BigDecimal(BigInteger.ZERO) : s.getTotalTransacciones().setScale(0, RoundingMode.HALF_EVEN)));
-        
-       
-        
         params.put("totalTransaccionesEfe", (s.getSaldoCierre() == null ? new BigDecimal(BigInteger.ZERO) : s.getSaldoCierre().subtract(totalCheques== null?new BigDecimal(BigInteger.ZERO):totalCheques)).setScale(0, RoundingMode.HALF_EVEN));
         params.put("saldoCierre", (s.getSaldoCierre() == null ? new BigDecimal(BigInteger.ZERO) : s.getSaldoCierre().setScale(0, RoundingMode.HALF_EVEN)));
         params.put("diferencia", (s.getDiferencia() == null ? new BigDecimal(BigInteger.ZERO) : s.getDiferencia().setScale(0, RoundingMode.HALF_EVEN)));
-        params.put("fecha", s.getFechaApertura());
+        params.put("fecha", s.getFechaCierre());
         
         reporteController.generaPDF(params, "reportes/tesoreria/ReporteTesoreria.jasper", "cierre_caja" + s.getPuntoVenta().getNombre());
     }

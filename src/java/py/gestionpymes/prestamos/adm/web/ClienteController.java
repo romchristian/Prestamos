@@ -188,7 +188,17 @@ public class ClienteController implements Serializable {
     }
 
     public void removerDireccion(Direccion d) {
-        selected.getDirecciones().remove(d);
+        //ajustado para remover la direccion seleccionada en la lista y no la ultima agregada!
+        int indice = 0;
+        String o2 = d.getDireccion();
+        for (Direccion da : selected.getDirecciones()) {
+            String o1 = da.getDireccion();
+            if (o1.equals(o2)){
+                break;
+            }
+            indice++;
+        }
+        selected.getDirecciones().remove(indice);
     }
 
     public ClienteController() {
