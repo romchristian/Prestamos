@@ -22,13 +22,14 @@ import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVentaDetalle;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoDetPrestamo;
 import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
+import py.gestionpymes.prestamos.seguridad.persistencia.Auditable;
 
 /**
  *
  * @author christian
  */
 @Entity
-public class DetPrestamo implements Serializable {
+public class DetPrestamo implements Serializable ,Auditable{
 
     private static final long serialVersionUID = 1L;
     @Id

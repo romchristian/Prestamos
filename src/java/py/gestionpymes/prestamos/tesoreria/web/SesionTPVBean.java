@@ -273,7 +273,7 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         //getActual().setUsuario("");
         getActual().setEstado("CREADO");
 
-        return "nuevo.xhtml";
+        return "nuevo.xhtml?faces-redirect=true";
     }
 
     public String iniciaSesion(SesionTPV s) {

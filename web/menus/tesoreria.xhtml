@@ -6,29 +6,30 @@
 
 
     <h:outputText value="Caja" style="font-size: 10pt; position: relative;left: 15px;font-weight: bold;margin-bottom: 20px"
-                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria_caja'))}"/>
+                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria_sesiontpv_listado'))}"/>
     <br/>   
     
      <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 30px;font-size: 9pt">
         <h:commandLink  value="Sesión de Caja" action="/tesoreria/sesionTPV/listado" 
-                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}"/>
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria_sesiontpv_listado'))}"/>
         
 
     </h:panelGrid>
 
     <h:outputText value="Tesoreria" style="font-size: 10pt; position: relative;left: 15px;font-weight: bold;margin-bottom: 20px"
-                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}"/>
+                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria_configuracion'))}"/>
     <br/>   
 
     <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 30px;font-size: 9pt">
         <h:commandLink  value="Control Sesiones" action="/tesoreria/admin/listado" 
-                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}"/>
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria_configuracion'))}"/>
         <h:commandLink  value="Secuencia" action="/tesoreria/secuencia/listado" 
-                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}"/>
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria_configuracion'))}"/>
         <h:commandLink  value="Métodos de Pago" action="/tesoreria/metodopago/listado" 
-                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}"/>
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria_configuracion'))}"/>
         <h:commandLink  value="Cajas Operativas" action="/tesoreria/terminal/listado" 
-                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria'))}"/>
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('tesoreria_configuracion'))}"/>
+        
 
     </h:panelGrid>
 

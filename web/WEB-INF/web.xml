@@ -42,6 +42,14 @@
             <role-name>prestamos_desembolsa</role-name>
             <role-name>cobro_cuota</role-name>
             <role-name>configuraciones</role-name>
+            <role-name>tesoreria_configuracion</role-name>
+            <role-name>tesoreria_cobracuota</role-name>
+            <role-name>tesoreria_desembolsa</role-name>
+            <role-name>tesoreria_cierre</role-name>
+            <role-name>tesoreria_transferencia</role-name>
+            <role-name>tesoreria_sesiontpv_listado</role-name>
+            <role-name>tesoreria_sesiontpv_edita</role-name>
+            <role-name>tesoreria_sesiontpv_nuevo</role-name>
         </auth-constraint>
     </security-constraint>
     <security-constraint>
@@ -305,6 +313,46 @@
             <role-name>prestamos_aplicar_descuentos</role-name>
         </auth-constraint>
     </security-constraint>
+    <security-constraint>
+        <display-name>Constraint_tesoreria_sesionTPV_listado</display-name>
+        <web-resource-collection>
+            <web-resource-name>recurso_tesoreria_sesionTPV_listado</web-resource-name>
+            <description/>
+            <url-pattern>/tesoreria/sesionTPV/listado.xhtml</url-pattern>
+            <url-pattern>/tesoreria/sesionTPV/terminalCaja.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>tesoreria_sesiontpv_listado</role-name>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Constraint_tesoreria_cierre</display-name>
+        <web-resource-collection>
+            <web-resource-name>recurso_tesoreria_cierre</web-resource-name>
+            <description/>
+            <url-pattern>/tesoreria/sesionTPV/cierre.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>tesoreria_cierre</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Constraint_tesoreria_sesionTPV_nuevo</display-name>
+        <web-resource-collection>
+            <web-resource-name>recurso_tesoreria_sesionTPV_nuevo</web-resource-name>
+            <description/>
+            <url-pattern>/tesoreria/sesionTPV/nuevo.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>tesoreria_sesiontpv_nuevo</role-name>
+        </auth-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>prestamosJDBC</realm-name>
@@ -412,5 +460,37 @@
     <security-role>
         <description/>
         <role-name>prestamos_aplicar_descuentos</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>tesoreria_sesiontpv_listado</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>tesoreria_sesiontpv_edita</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>tesoreria_sesiontpv_nuevo</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>tesoreria_configuracion</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>tesoreria_cobracuota</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>tesoreria_desembolsa</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>tesoreria_cierre</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>tesoreria_transferencia</role-name>
     </security-role>
 </web-app>

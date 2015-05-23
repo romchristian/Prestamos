@@ -123,3 +123,14 @@ INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUE
 --   ADD CONSTRAINT fk_facturaventadetalle_prestamo_id FOREIGN KEY (prestamo_id)
 --       REFERENCES prestamo (id) MATCH SIMPLE
 --       ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+
+insert into rol (nombre, estado, version) values ('tesoreria_sesionTPV_listado','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesionTPV_edita','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesionTPV_nuevo','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_configuracion','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_cobracuota','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_desembolsa','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_cierre','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_transferencia','ACTIVO',1);
+

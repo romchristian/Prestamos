@@ -7,17 +7,21 @@
       xmlns:p="http://primefaces.org/ui">
 
 
-    <ui:composition template="/template.xhtml">
-        
 
-        <ui:define name="title">
-            <h:outputText value="No tienes permisos necesarios"></h:outputText>
-        </ui:define>
+    <body>
+        <div style=" position: absolute;
+             top: calc(50% - 100x);
+             left: calc(50% - 180px);text-align: center">
+            <p:graphicImage library="img" name="sinpermiso.png"/>
+            <h1>Acceso denegado!</h1>
+            <h4>No tiene los permisos suficientes para acceder a esta página</h4>
+            <h4>Contacte con el administrador</h4>
+            <p:button value="Ir al inicio" outcome="/home/home"/>
+        </div>
 
-        <ui:define name="body">
-            <p:graphicImage library="img" name="logo.png" style="margin: 0 auto 0 auto"/>
+    </body>
 
-        </ui:define>
-    </ui:composition>
+
+
 
 </html>

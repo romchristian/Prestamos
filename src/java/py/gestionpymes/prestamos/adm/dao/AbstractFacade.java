@@ -33,18 +33,21 @@ public abstract class AbstractFacade<T> {
         getEntityManager().persist(entity);
         getEntityManager().flush();
         getEntityManager().refresh(entity);
-        preparaRegistro(entity, "CREATE");
+        Object id = getEntityManager().getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(entity);
+        preparaRegistro(entity, "CREATE",id);
     }
 
     public void edit(T entity) {
-        getEntityManager().merge(entity);
-        getEntityManager().flush();
-        getEntityManager().refresh(entity);
-        preparaRegistro(entity, "CREATE/UPDATE");
+       getEntityManager().merge(entity);
+        //getEntityManager().flush();
+       // getEntityManager().refresh(entity);
+       
+        Object id = getEntityManager().getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(entity);
+        preparaRegistro(entity, "CREATE/UPDATE",id);
     }
 
     public void remove(T entity) {
-        preparaRegistro(entity, "REMOVE");
+        //preparaRegistro(entity, "REMOVE");
         getEntityManager().remove(getEntityManager().merge(entity));
     }
 
@@ -75,17 +78,21 @@ public abstract class AbstractFacade<T> {
         return ((Long) q.getSingleResult()).intValue();
     }
 
-    public void preparaRegistro(Object obj, String tipoOperacion) {
+    public void preparaRegistro(Object obj, String tipoOperacion,Object id) {
         if (obj instanceof Auditable) {
             Auditable a = (Auditable) obj;
-            registrar(a, tipoOperacion);
+            registrar(a, tipoOperacion,id);
         }
     }
 
-    public void registrar(Auditable a, String tipoOperacion) {
+    public void registrar(Auditable a, String tipoOperacion, Object id) {
         Auditoria aud = new Auditoria();
+        
+     
+        
         aud.setFecha(new Date());
-        aud.setTablaAfectada(a.getClass().getSimpleName() + ": id = " + a.getId());
+        
+        aud.setTablaAfectada(a.getClass().getSimpleName() + ": id = " + id);
         aud.setTipoOperacion(tipoOperacion);
         aud.setUsuarioLogeado(credencial.getUsuario() == null ? "" : credencial.getUsuario().getUsuario());
         getEntityManager().persist(aud);

@@ -9,11 +9,11 @@
     <br/>
 
     <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 30px;font-size: 9pt">
-        <h:commandLink  value="Datos de Clientes" action="/adm/cliente/List" 
+        <h:commandLink  value="Clientes" action="/adm/cliente/List" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_lectura'))}"/>
         
-        <h:commandLink  value="Listado Clientes" action="/adm/cliente/ListaDeClientes" 
-                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_lectura'))}"/>
+<!--        <h:commandLink  value="Listado Clientes" action="/adm/cliente/ListaDeClientes" 
+                 rendered="{(request.isUserInRole('admin') or request.isUserInRole('cliente_lectura'))}"/>-->
         
         <h:commandLink  value="Prestamos" action="/prestamos/prestamo/List" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_lectura'))}"/>
@@ -22,9 +22,9 @@
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_historico'))}"/>
         
         
-        
+<!--        
         <h:commandLink  value="Agenda de Cobros" action="/prestamos/prestamo/agendaCobros" 
-                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('agenda_cobro'))}"/>
+                 rendered="{(request.isUserInRole('admin') or request.isUserInRole('agenda_cobro'))}"/>-->
 
     </h:panelGrid>
 

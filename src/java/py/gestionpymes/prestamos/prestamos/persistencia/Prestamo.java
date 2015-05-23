@@ -24,6 +24,7 @@ import py.gestionpymes.prestamos.adm.persistencia.Empresa;
 import py.gestionpymes.prestamos.adm.persistencia.Moneda;
 import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
 import py.gestionpymes.prestamos.adm.persistencia.Vendedor;
+import py.gestionpymes.prestamos.seguridad.persistencia.Auditable;
 
 /**
  *
@@ -33,7 +34,7 @@ import py.gestionpymes.prestamos.adm.persistencia.Vendedor;
 @NamedQueries({
     @NamedQuery(name = Prestamo.TODOS, query = "select p from Prestamo p"),
     @NamedQuery(name = Prestamo.POR_CLIENTE, query = "select p from Prestamo p where p.cliente = :cliente")})
-public class Prestamo implements Serializable {
+public class Prestamo implements Serializable , Auditable{
 
     public static final String TODOS = "py.gestionpymes.jpa.prestamos.Prestamo.TODOS";
     public static final String POR_CLIENTE = "py.gestionpymes.jpa.prestamos.Prestamo.POR_CLIENTE";
