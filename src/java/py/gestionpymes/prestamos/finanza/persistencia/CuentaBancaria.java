@@ -39,15 +39,26 @@ public class CuentaBancaria implements Serializable , Auditable{
     private Banco banco;
     private String numero;
     private String denominacion;
+    
     @ManyToOne
     private Moneda moneda;
     private BigDecimal saldoTeorico;
     private BigDecimal saldoReal;
+    
     @Enumerated(EnumType.STRING)
     private Estado estado;
+    private TipoCuentaBancaria tipo;
     private boolean borrado;
+
+    public TipoCuentaBancaria getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoCuentaBancaria tipo) {
+        this.tipo = tipo;
+    }
     
-    
+    @Override
     public Long getId() {
         return id;
     }
@@ -126,9 +137,7 @@ public class CuentaBancaria implements Serializable , Auditable{
 
     public void setBorrado(boolean borrado) {
         this.borrado = borrado;
-    }
-
-    
+    }  
     
     @Override
     public int hashCode() {

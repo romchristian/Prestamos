@@ -142,12 +142,12 @@
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_detalle_cliente'))}"/>
 
 
-                                            <p:commandButton id="confirmarButton" action="#{prestamoController.confirmaPagare()}" value="Confirmar Firma" update="datalist"
+                                            <p:commandButton id="confirmarButton" action="#{prestamoController.confirmaPagare()}" value="Confirmar Prestamo" update="datalist"
                                                              disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_confirma_pagare'))}"/>
 
 
-                                            <p:commandButton id="cancelarButton" action="#{prestamoController.anulaConfimacion()}" value="Cancelar Pagare" update="datalist"
+                                            <p:commandButton id="cancelarButton" action="#{prestamoController.anulaConfimacion()}" value="Desconfirmar Prestamo" update="datalist"
                                                              disabled="#{prestamoController.selected.estado == 'EN_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_cancela_pagare'))}"/>
 

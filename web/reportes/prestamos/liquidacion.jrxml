@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="liquidacion" pageWidth="595" pageHeight="842" columnWidth="483" leftMargin="70" rightMargin="42" topMargin="42" bottomMargin="42" uuid="fb8f5e3e-6726-4eac-bd67-118853b8ac0c">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="635"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="nombreCliente" class="java.lang.String"/>
 	<parameter name="fechaOperacion" class="java.lang.String"/>
@@ -26,6 +26,10 @@
 	<parameter name="firmaConyugeCodeudor" class="java.lang.String"/>
 	<parameter name="nroOperacion" class="java.lang.String"/>
 	<parameter name="fechaPrimerVencimiento" class="java.lang.String"/>
+	<parameter name="nroDocumento" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
 	<field name="empresa" class="java.lang.String"/>
 	<field name="sucursal" class="java.lang.String"/>
 	<field name="vendedor" class="java.lang.String"/>
@@ -167,6 +171,10 @@
 			<textField>
 				<reportElement x="2" y="246" width="234" height="20" uuid="b91d1af9-bf56-4a59-afdb-1606d6cc52f5"/>
 				<textFieldExpression><![CDATA["Primer Vencimiento: "+$P{fechaPrimerVencimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="247" y="50" width="234" height="20" uuid="653ac331-fdba-4b7c-b368-710018bd96e1"/>
+				<textFieldExpression><![CDATA["CI Titular: " + $P{nroDocumento}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

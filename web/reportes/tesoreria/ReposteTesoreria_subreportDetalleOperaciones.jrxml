@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReposteTesoreria_subreportDetalleOperaciones" language="groovy" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1cd046ff-f898-461f-8cde-ce16ca77d1a8">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idSesionTPV" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select t.fecha, tt.descripcion as operacion,
+ t.descripcion as descripcion,
+ t.tipotransaccion as tipo,
+ case when t.tipotransaccion = 'ENTRADA' then t.monto else 0 end as ingreso,
+ case when t.tipotransaccion = 'SALIDA' then t.monto else 0 end as egreso
+ from transaccion t
+join tipotransaccioncaja tt on t.tipotransaccioncaja_id = tt.id where t.sesiontpv_id = $P{idSesionTPV}
+ORDER BY t.tipotransaccion,tt.descripcion, t.descripcion]]>
+	</queryString>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="operacion" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="ingreso" class="java.lang.String"/>
+	<field name="egreso" class="java.lang.String"/>
+	<pageHeader>
+		<band height="17" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="157" height="17" uuid="c61bc481-d929-4590-863a-7523f54a50fe"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LISTADO DE TRANSACCIONES]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="86" height="20" uuid="d99ed8b5-32f6-4f04-81cc-d18488e9a4f4"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="87" y="1" width="88" height="20" uuid="d84f375b-8918-468b-a249-7a029a934b4e"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Operación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="1" width="236" height="20" uuid="11884602-eb0a-46f6-a905-782b9d8a593c"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="412" y="1" width="86" height="20" uuid="02870b44-b6f5-4fee-91c5-86b70ebf0bd7"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Ingreso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="499" y="1" width="89" height="20" uuid="62e37403-6a5d-479e-a1b1-fb9a37c94eac"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Egreso]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="86" height="29" uuid="b3c8712c-6c6d-4353-a5ab-cf0e188dfdbf"/>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="174" y="0" width="236" height="29" uuid="f8bc1a49-b9ee-4ce6-9bd7-3ede25246328"/>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="86" y="0" width="88" height="29" uuid="1330f376-d7ee-4b5e-ae8f-7c07200dda6c"/>
+				<textFieldExpression><![CDATA[$F{operacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="412" y="0" width="87" height="29" uuid="dde124e6-9cb4-4fe9-ba3c-f8030d873f6c"/>
+				<textFieldExpression><![CDATA[$F{ingreso}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="501" y="0" width="87" height="29" uuid="20bbc6b7-f59b-4185-a02d-1bc7ee5b4a2c"/>
+				<textFieldExpression><![CDATA[$F{egreso}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

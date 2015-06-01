@@ -10,6 +10,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import py.gestionpymes.prestamos.finanza.persistencia.BoletaDeposito;
 import py.gestionpymes.prestamos.tesoreria.persisitencia.Banco;
 
 /**
@@ -26,6 +27,8 @@ public class ChequeRecibido extends Pago{
     private Date vencimiento;
     @Enumerated(EnumType.STRING)
     private EstadoCheque estadoCheque;
+    @ManyToOne
+    private BoletaDeposito boletaDeposito;
 
     public Banco getBanco() {
         return banco;
@@ -65,6 +68,14 @@ public class ChequeRecibido extends Pago{
 
     public void setEstadoCheque(EstadoCheque estadoCheque) {
         this.estadoCheque = estadoCheque;
+    }
+
+    public BoletaDeposito getBoletaDeposito() {
+        return boletaDeposito;
+    }
+
+    public void setBoletaDeposito(BoletaDeposito boletaDeposito) {
+        this.boletaDeposito = boletaDeposito;
     }
     
     

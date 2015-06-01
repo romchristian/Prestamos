@@ -117,6 +117,147 @@ INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUE
 --   ADD CONSTRAINT fk_pago_transaccion_id FOREIGN KEY (transaccion_id)
 --       REFERENCES transaccion (id) MATCH SIMPLE
 --       ON UPDATE NO ACTION ON DELETE NO ACTION;
+-- 
+-- 14/05/2015
+-- Table: auditoria
+
+-- DROP TABLE auditoria;
+
+-- CREATE TABLE auditoria
+-- (
+--   id serial NOT NULL,
+--   fecha timestamp without time zone,
+--   tablaafectada character varying(255),
+--   tipooperacion character varying(255),
+--   usuariologeado character varying(255),
+--   CONSTRAINT auditoria_pkey PRIMARY KEY (id)
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- ALTER TABLE auditoria
+--   OWNER TO postgres;
+-- 
+-- -- Table: banco
+-- 
+-- -- DROP TABLE banco;
+-- 
+-- CREATE TABLE banco
+-- (
+--   id serial NOT NULL,
+--   nombre character varying(255),
+--   CONSTRAINT banco_pkey PRIMARY KEY (id)
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- ALTER TABLE banco
+--   OWNER TO postgres;
+-- 
+-- -- Table: estadocheque
+-- 
+-- -- DROP TABLE estadocheque;
+-- 
+-- CREATE TABLE estadocheque
+-- (
+--   id serial NOT NULL,
+--   nombre character varying(255),
+--   CONSTRAINT estadocheque_pkey PRIMARY KEY (id)
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- ALTER TABLE estadocheque
+--   OWNER TO postgres;
+
+-- 
+-- -- Table: cheque
+-- 
+-- -- DROP TABLE cheque;
+-- 
+-- CREATE TABLE cheque
+-- (
+--   id serial NOT NULL,
+--   emision date,
+--   monto numeric(38,0),
+--   numero character varying(255),
+--   tipocheque character varying(255),
+--   vencimiento date,
+--   banco_id bigint,
+--   estado_id bigint,
+--   moneda_id bigint,
+--   CONSTRAINT cheque_pkey PRIMARY KEY (id),
+--   CONSTRAINT fk_cheque_banco_id FOREIGN KEY (banco_id)
+--       REFERENCES banco (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_cheque_estado_id FOREIGN KEY (estado_id)
+--       REFERENCES estadocheque (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_cheque_moneda_id FOREIGN KEY (moneda_id)
+--       REFERENCES moneda (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- ALTER TABLE cheque
+--   OWNER TO postgres;
+--   
+-- -- Table: cuentabancaria
+-- 
+-- -- DROP TABLE cuentabancaria;
+-- 
+-- CREATE TABLE cuentabancaria
+-- (
+--   id serial NOT NULL,
+--   borrado boolean,
+--   creacion timestamp without time zone,
+--   denominacion character varying(255),
+--   estado character varying(255),
+--   numero character varying(255),
+--   saldoreal numeric(38,0),
+--   saldoteorico numeric(38,0),
+--   banco_id bigint,
+--   moneda_id bigint,
+--   CONSTRAINT cuentabancaria_pkey PRIMARY KEY (id),
+--   CONSTRAINT fk_cuentabancaria_banco_id FOREIGN KEY (banco_id)
+--       REFERENCES banco (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_cuentabancaria_moneda_id FOREIGN KEY (moneda_id)
+--       REFERENCES moneda (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- ALTER TABLE cuentabancaria
+--   OWNER TO postgres;
+
+-- ALTER TABLE pago ADD COLUMN estadocheque character varying(255);
+-- ALTER TABLE pago ADD COLUMN librador character varying(255);
+-- ALTER TABLE pago ADD COLUMN numero character varying(255);
+-- ALTER TABLE pago ADD COLUMN vencimiento date;
+-- ALTER TABLE pago ADD COLUMN banco_id bigint;
+-- ALTER TABLE pago ADD COLUMN cambio numeric(38,0);
+-- ALTER TABLE pago ADD COLUMN montopagado numeric(38,0);
+-- 
+-- -- Foreign Key: fk_pago_banco_id
+-- 
+-- -- ALTER TABLE pago DROP CONSTRAINT fk_pago_banco_id;
+-- 
+-- ALTER TABLE pago
+--   ADD CONSTRAINT fk_pago_banco_id FOREIGN KEY (banco_id)
+--       REFERENCES banco (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION;
+-- 
+-- -- Foreign Key: fk_pago_transaccion_id
+-- 
+-- -- ALTER TABLE pago DROP CONSTRAINT fk_pago_transaccion_id;
+-- 
+-- ALTER TABLE pago
+--   ADD CONSTRAINT fk_pago_transaccion_id FOREIGN KEY (transaccion_id)
+--       REFERENCES transaccion (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 -- ALTER TABLE facturaventadetalle ADD COLUMN prestamo_id bigint;
 -- ALTER TABLE facturaventadetalle
@@ -124,13 +265,250 @@ INSERT INTO tipotransaccioncaja(descripcion,estado,tipotransaccion,oculto) VALUE
 --       REFERENCES prestamo (id) MATCH SIMPLE
 --       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+-- -- Foreign Key: fk_transaccion_tipotransaccioncaja_id
+-- 
+-- -- ALTER TABLE transaccion DROP CONSTRAINT fk_transaccion_tipotransaccioncaja_id;
+-- 
+-- ALTER TABLE transaccion
+--   ADD CONSTRAINT fk_transaccion_tipotransaccioncaja_id FOREIGN KEY (tipotransaccioncaja_id)
+--       REFERENCES tipotransaccioncaja (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-insert into rol (nombre, estado, version) values ('tesoreria_sesionTPV_listado','ACTIVO',1);
-insert into rol (nombre, estado, version) values ('tesoreria_sesionTPV_edita','ACTIVO',1);
-insert into rol (nombre, estado, version) values ('tesoreria_sesionTPV_nuevo','ACTIVO',1);
+-- -- Column: totalpagado
+-- 
+-- -- ALTER TABLE facturaventa DROP COLUMN totalpagado;
+-- 
+-- ALTER TABLE facturaventa ADD COLUMN totalpagado numeric(38,0);
+-- 
+-- -- Foreign Key: fk_puntoventa_usuario_id
+-- 
+-- -- ALTER TABLE puntoventa DROP CONSTRAINT fk_puntoventa_usuario_id;
+-- 
+-- ALTER TABLE puntoventa
+--   ADD CONSTRAINT fk_puntoventa_usuario_id FOREIGN KEY (usuario_id)
+--       REFERENCES persona (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION;
+
 insert into rol (nombre, estado, version) values ('tesoreria_configuracion','ACTIVO',1);
 insert into rol (nombre, estado, version) values ('tesoreria_cobracuota','ACTIVO',1);
 insert into rol (nombre, estado, version) values ('tesoreria_desembolsa','ACTIVO',1);
 insert into rol (nombre, estado, version) values ('tesoreria_cierre','ACTIVO',1);
 insert into rol (nombre, estado, version) values ('tesoreria_transferencia','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_canal_create','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_canal_edit','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_canal_list','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_canal_list_accion_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_canal_list_accion_editar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_canal_list_accion_ver','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_categoria_create','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_categoria_edit','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_categoria_list','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_categoria_view','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_categoria_list_accion_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_categoria_list_accion_editar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_categoria_list_accion_ver','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_categoria_list_accion_eliminar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cliente_create','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cliente_edit','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cliente_list','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cliente_view','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cliente_list_accion_crea','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cliente_list_accion_ver','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cliente_list_accion_editar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cliente_view_accion_imprimeregistrofirma','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cobrador_create','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cobrador_edit','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cobrador_view','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cobrador_list','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cobrador_list_accion_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cobrador_list_accion_ver','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_cobrador_list_accion_editar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_empresa_create','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_empresa_edit','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_empresa_list','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_empresa_view','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_empresa_list_accion_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_empresa_list_accion_ver','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_empresa_list_accion_editar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_plangastos_create','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_plangastos_edit','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_plangastos_list','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_plangastos_view','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_plangastos_list_accion_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_plangastos_list_accion_ver','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_plangastos_list_accion_editar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_sucursal_create','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_sucursal_edit','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_sucursal_list','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_sucursal_view','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_sucursal_list_accion_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_sucursal_list_accion_ver','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_sucursal_list_accion_editar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_tipotransaccioncaja_edita','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_tipotransaccioncaja_listado','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_tipotransaccioncaja_nuevo','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_tipotransaccioncaja_listado_accion_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_usuario_cambiarclave','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_usuario_create','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_usuario_edit','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_usuario_list','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_usuario_list_accion_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_usuario_list_accion_ver','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_usuario_list_accion_editar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_vendedor_create','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_vendedor_edit','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_vendedor_list','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_vendedor_view','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_vendedor_list_accion_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_vendedor_list_accion_ver','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('adm_vendedor_list_accion_editar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('cobracuota_cobracuota','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('cobracuota_creafactura','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('cobracuota_formacancelacion','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('contabilidad_diario_edita','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('contabilidad_diario_listado','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('contabilidad_diario_nuevo','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('contabilidad_diario_listado_accion_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('contabilidad_facturaventa_create','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('contabilidad_facturaventa_list','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('contabilidad_facturaventa_edit','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('contabilidad_facturaventa_view','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('desembolsa_creafactura','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('desembolsa_desembolsa','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('desembolsa_resumen','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('finanzas_cuentabancaria_cuerpo','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('finanzas_cuentabancaria_edita','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('finanzas_cuentabancaria_listado','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('finanzas_cuentabancaria_nuevo','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('home_home','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('menus_configuracion','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('menus_contabilidad','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('menus_finanza','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('menus_informe','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('menus_prestamo','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('menus_puntoventa','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('menus_terminalcaja','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('menus_tesoreria','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_informes_listadopresamo','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_create','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_desembolsar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_edit','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_editdescuento','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_list','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_agendacobros','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_estadocuenta','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_create_accion_ajustar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_edit_accion_ajustar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_list_accion_editar','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_list_accion_aplicardescuento','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_list_accion_imprimirpagare','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_list_accion_imprimirliqprestamo','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_list_accion_imprimirdetcliente','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_list_accion_pasaraendesembolso','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('prestamos_prestamo_list_accion_pasarapendientedesembolso','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_admin_graficodisponibilidad','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_admin_listado','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_metodopago_edita','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_metodopago_listado','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_metodopago_nuevo','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_metodopago_listado_accion_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_metodopago_listado_accion_edita','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_secuencia_edita','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_secuencia_listado','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_secuencia_nuevo','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_secuencia_listado_accion_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesiontpv_cierre','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesiontpv_edita','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesiontpv_listado','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesiontpv_nuevo','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesiontpv_terminalcaja','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesiontpv_transferencia','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesiontpv_listado_accion_iniciosesion','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesiontpv_listado_accion_imprimirreportecajacierre','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesiontpv_listado_accion_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesiontpv_terminalcaja_accion_desembolsa','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesiontpv_terminalcaja_accion_cobracuota','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesiontpv_terminalcaja_accion_transferencia','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_sesiontpv_terminalcaja_accion_cierre','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_terminal_edita','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_terminal_listado','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_terminal_nuevo','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_terminal_listado_crear','ACTIVO',1);
+insert into rol (nombre, estado, version) values ('tesoreria_terminal_listado_edita','ACTIVO',1);
 
+--29/05/2015
+--ChequeRecibido
+--agregar chequeRecibido
+--CuentaBancaria
+--BoletaDeposito
+--TransaccionBancaria //Padre
+--TranssaccionDepositoEfectivo extiende a Padre
+
+-- -- Table: transaccionbancaria
+-- 
+-- -- DROP TABLE transaccionbancaria;
+-- 
+-- CREATE TABLE transaccionbancaria
+-- (
+--   id serial NOT NULL,
+--   dtype character varying(31),
+--   borrado boolean,
+--   codref character varying(255),
+--   descripcion character varying(255),
+--   fecha timestamp without time zone,
+--   monto numeric(38,0),
+--   tipo integer,
+--   usuario character varying(255),
+--   cotizacion_id bigint,
+--   cuentabancaria_id bigint,
+--   moneda_id bigint,
+--   comprobante character varying(255),
+--   CONSTRAINT transaccionbancaria_pkey PRIMARY KEY (id),
+--   CONSTRAINT fk_transaccionbancaria_cotizacion_id FOREIGN KEY (cotizacion_id)
+--       REFERENCES cotizacion (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_transaccionbancaria_cuentabancaria_id FOREIGN KEY (cuentabancaria_id)
+--       REFERENCES cuentabancaria (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_transaccionbancaria_moneda_id FOREIGN KEY (moneda_id)
+--       REFERENCES moneda (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- ALTER TABLE transaccionbancaria
+--   OWNER TO postgres;
+
+-- -- Table: cheque
+-- 
+-- -- DROP TABLE cheque;
+-- 
+-- CREATE TABLE cheque
+-- (
+--   id serial NOT NULL,
+--   emision date,
+--   monto numeric(38,0),
+--   numero character varying(255),
+--   tipocheque character varying(255),
+--   vencimiento date,
+--   banco_id bigint,
+--   estado_id bigint,
+--   moneda_id bigint,
+--   CONSTRAINT cheque_pkey PRIMARY KEY (id),
+--   CONSTRAINT fk_cheque_banco_id FOREIGN KEY (banco_id)
+--       REFERENCES banco (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_cheque_estado_id FOREIGN KEY (estado_id)
+--       REFERENCES estadocheque (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_cheque_moneda_id FOREIGN KEY (moneda_id)
+--       REFERENCES moneda (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- ALTER TABLE cheque
+--   OWNER TO postgres;
+-- 
