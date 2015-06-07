@@ -10,7 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.ValorMoneda;
+import py.gestionpymes.prestamos.tesoreria.modelo.ValorMoneda;
 import py.gestionpymes.prestamos.tesoreria.dao.ValorMonedaDAO;
 
 

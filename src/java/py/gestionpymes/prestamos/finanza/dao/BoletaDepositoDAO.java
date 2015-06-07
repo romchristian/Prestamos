@@ -14,9 +14,11 @@ import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.dao.QueryParameter;
 import py.gestionpymes.prestamos.adm.web.util.Credencial;
-import py.gestionpymes.prestamos.finanza.persistencia.BoletaDeposito;
-import py.gestionpymes.prestamos.finanza.persistencia.TransaccionDepositoEfectivo;
-import py.gestionpymes.prestamos.finanza.persistencia.BoletaDeposito;
+import py.gestionpymes.prestamos.finanza.modelo.BoletaDeposito;
+import py.gestionpymes.prestamos.finanza.modelo.TransaccionDepositoEfectivo;
+import py.gestionpymes.prestamos.finanza.modelo.BoletaDeposito;
+import py.gestionpymes.prestamos.finanza.modelo.TransaccionReversionDepositoEfe;
+import py.gestionpymes.prestamos.finanza.modelo.enums.EstadoBoletaDeposito;
 
 /**
  *
@@ -25,7 +27,7 @@ import py.gestionpymes.prestamos.finanza.persistencia.BoletaDeposito;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class BoletaDepositoDAO extends AbstractDAO<BoletaDeposito> {
-
+   
     @EJB(beanName = "ABMServiceBean")
     private ABMService abmService;
     @EJB
@@ -61,5 +63,31 @@ public class BoletaDepositoDAO extends AbstractDAO<BoletaDeposito> {
     @Override
     public List<BoletaDeposito> findAll(String query, QueryParameter params) {
         return abmService.findByQuery(query, params.parameters());
+    }
+    
+      public BoletaDeposito revertir(BoletaDeposito boleta) throws TransaccionBancariaNoCreadaException {
+        
+
+        if (boleta.getTotalEfectivo() != null) {
+
+            try {
+                TransaccionReversionDepositoEfe t = new TransaccionReversionDepositoEfe("ITAU-DEP-"+boleta.getNroComprobante(),
+                        boleta.getNroComprobante(),
+                        boleta.getCuentaBancaria(),
+                        boleta.getMoneda(),
+                        boleta.getCotizacion(),
+                        credencial.getUsuario().getUsuario(),
+                        boleta.getTotalEfectivo());
+
+                transaccionBancariaDAO.create(t);
+                boleta.setEstado(EstadoBoletaDeposito.PENDIENTE);
+                
+                edit(boleta);
+            } catch (Exception e) {
+                throw new TransaccionBancariaNoCreadaException(e.getMessage());
+            }
+
+        }
+        return boleta;
     }
 }

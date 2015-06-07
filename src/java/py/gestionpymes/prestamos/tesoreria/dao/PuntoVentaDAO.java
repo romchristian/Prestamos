@@ -15,13 +15,13 @@ import javax.ejb.TransactionAttributeType;
 import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.dao.QueryParameter;
-import py.gestionpymes.prestamos.adm.persistencia.Moneda;
-import py.gestionpymes.prestamos.adm.persistencia.Usuario;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.PuntoVenta;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccion;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccionCaja;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.TransaccionCobraCuota;
+import py.gestionpymes.prestamos.adm.modelo.Moneda;
+import py.gestionpymes.prestamos.adm.modelo.Usuario;
+import py.gestionpymes.prestamos.tesoreria.modelo.PuntoVenta;
+import py.gestionpymes.prestamos.tesoreria.modelo.TipoTransaccion;
+import py.gestionpymes.prestamos.tesoreria.modelo.TipoTransaccionCaja;
+import py.gestionpymes.prestamos.tesoreria.modelo.Transaccion;
+import py.gestionpymes.prestamos.tesoreria.modelo.TransaccionCobraCuota;
 
 /**
  *

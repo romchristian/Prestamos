@@ -1,6 +1,6 @@
 package py.gestionpymes.prestamos.adm.web;
 
-import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVenta;
+import py.gestionpymes.prestamos.contabilidad.modelo.FacturaVenta;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
 import py.gestionpymes.prestamos.adm.dao.FacturaVentaFacade;

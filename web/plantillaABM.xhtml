@@ -21,6 +21,23 @@
         <ui:define name="body">
 
             <style type="text/css">
+
+                .caja{
+                    width: 97%;
+                    padding: 1% 1.5%;
+                    margin: 8px auto;
+                    overflow: hidden;
+                    float: left;
+
+                    background-color: #FFFFFF/*#F1F6F9*/;
+                    //background-color: #F6FAFC/*#F1F6F9*/;
+                    border-radius: 3px;
+                    -webkit-border-radius: 3px;
+                    -moz-border-radius: 3px;
+                    -webkit-box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
+                    -moz-box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
+                    box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
+                }
                 .raised {
                     -webkit-box-shadow: 0px 7px 30px 0px rgba(50, 50, 50, 0.75);
                     -moz-box-shadow:    0px 7px 30px 0px rgba(50, 50, 50, 0.75);
@@ -120,7 +137,7 @@
                     box-shadow:         0px 2px 1px rgba(50, 50, 50, 0.75);
                 }
 
-               
+
 
             </style>
             <h:form enctype="#{enctype}" id="formABM">
@@ -148,7 +165,7 @@
                 </div>
 
                 <div style="padding: 20px;">
-                    <div class="raised">
+                    <div class="caja">
 
                         <p:panel id="panelControles" styleClass="panelControles" style="margin: 0; padding: 0; background: none; border: none">
                             <div class="ui-grid ui-grid-responsive">
@@ -176,11 +193,11 @@
                 </div>
 
             </h:form>
-            
-            
-            
+
+
+
             <ui:insert name="dialogos"/>
-            
+
         </ui:define>
     </ui:decorate>
 

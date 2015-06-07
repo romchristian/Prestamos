@@ -8,8 +8,8 @@ package py.gestionpymes.prestamos.adm.dao;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import py.gestionpymes.prestamos.adm.persistencia.Rol;
-import py.gestionpymes.prestamos.adm.persistencia.Usuario;
+import py.gestionpymes.prestamos.adm.modelo.Rol;
+import py.gestionpymes.prestamos.adm.modelo.Usuario;
 
 /**
  *

@@ -11,7 +11,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.dao.ClienteFacade;
-import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
+import py.gestionpymes.prestamos.prestamos.modelo.Cliente;
 
 
 /**

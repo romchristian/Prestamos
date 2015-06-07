@@ -5,7 +5,7 @@
  */
 package py.gestionpymes.prestamos.prestamos.web;
 
-import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
+import py.gestionpymes.prestamos.prestamos.modelo.Cliente;
 
 /**
  *

@@ -12,7 +12,9 @@ import javax.ejb.TransactionAttributeType;
 import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.dao.QueryParameter;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.Secuencia;
+import py.gestionpymes.prestamos.finanza.modelo.CuentaBancaria;
+import py.gestionpymes.prestamos.tesoreria.modelo.Secuencia;
+import py.gestionpymes.prestamos.tesoreria.modelo.TipoSecuencia;
 
 
 /**
@@ -48,7 +50,22 @@ public class SecuenciaDAO extends AbstractDAO<Secuencia> {
 
     @Override
     public List<Secuencia> findAll() {
-        return abmService.getEM().createQuery("select obj from Secuencia obj").getResultList();
+        return abmService.getEM().createQuery("select obj from Secuencia obj WHERE OBJ.tipoSecuencia <> :tipo")
+                .setParameter("tipo", TipoSecuencia.CHEQUE)
+                .getResultList();
+    }
+    
+    public List<Secuencia> findAllChequeras() {
+        return abmService.getEM().createQuery("select obj from Secuencia obj WHERE OBJ.tipoSecuencia = :tipo")
+                .setParameter("tipo", TipoSecuencia.CHEQUE)
+                .getResultList();
+    }
+    
+    public List<Secuencia> findAllChequeras(CuentaBancaria cuentaBancaria) {
+        return abmService.getEM().createQuery("select obj from Secuencia obj WHERE OBJ.tipoSecuencia = :tipo and OBJ.cuentaBancaria = :cuenta")
+                .setParameter("tipo", TipoSecuencia.CHEQUE)
+                .setParameter("cuenta", cuentaBancaria)
+                .getResultList();
     }
 
     @Override

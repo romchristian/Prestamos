@@ -1,6 +1,6 @@
 package py.gestionpymes.prestamos.adm.web;
 
-import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
+import py.gestionpymes.prestamos.prestamos.modelo.Cliente;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
 import py.gestionpymes.prestamos.adm.dao.ClienteFacade;
@@ -21,10 +21,10 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
-import py.gestionpymes.prestamos.adm.persistencia.Direccion;
-import py.gestionpymes.prestamos.prestamos.persistencia.ActividadLaboral;
-import py.gestionpymes.prestamos.prestamos.persistencia.ContactoTelefonico;
-import py.gestionpymes.prestamos.prestamos.persistencia.ReferenciaCliente;
+import py.gestionpymes.prestamos.adm.modelo.Direccion;
+import py.gestionpymes.prestamos.prestamos.modelo.ActividadLaboral;
+import py.gestionpymes.prestamos.prestamos.modelo.ContactoTelefonico;
+import py.gestionpymes.prestamos.prestamos.modelo.ReferenciaCliente;
 import py.gestionpymes.prestamos.prestamos.web.AutoCompleteCliente;
 import py.gestionpymes.prestamos.prestamos.web.RegistroFirma;
 import py.gestionpymes.prestamos.reportes.jasper.ReporteController;

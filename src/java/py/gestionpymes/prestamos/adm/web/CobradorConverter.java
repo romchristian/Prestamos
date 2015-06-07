@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import py.gestionpymes.prestamos.adm.persistencia.Cobrador;
+import py.gestionpymes.prestamos.adm.modelo.Cobrador;
 
 /**
  *

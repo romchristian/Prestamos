@@ -8,7 +8,7 @@ package py.gestionpymes.prestamos.adm.dao;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import py.gestionpymes.prestamos.adm.persistencia.Persona;
+import py.gestionpymes.prestamos.adm.modelo.Persona;
 
 /**
  *

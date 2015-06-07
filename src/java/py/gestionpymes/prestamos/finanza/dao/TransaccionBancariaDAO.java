@@ -13,7 +13,7 @@ import javax.ejb.TransactionAttributeType;
 import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.dao.QueryParameter;
-import py.gestionpymes.prestamos.finanza.persistencia.TransaccionBancaria;
+import py.gestionpymes.prestamos.finanza.modelo.TransaccionBancaria;
 
 
 

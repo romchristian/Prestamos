@@ -9,7 +9,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import py.gestionpymes.prestamos.contabilidad.persistencia.Diario;
+import py.gestionpymes.prestamos.contabilidad.modelo.Diario;
 import py.gestionpymes.prestamos.contabilidad.web.DiarioBean;
 
 

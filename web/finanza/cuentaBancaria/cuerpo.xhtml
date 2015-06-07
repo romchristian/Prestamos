@@ -13,7 +13,12 @@
         <ui:param name="listado" value="Cuentas Bancarias"/>
 
         <ui:define name="acciones">
-            <p:commandLink value="Guardar" action="#{cuentaBancariaBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
+            <p:link value="Editar" outcome="edita"  styleClass="botonRojo flotaIzquierda"
+                    rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('finanza_cuentabancaria_vista_accion_edita')))}">
+                <f:param name="id" value="#{cuentaBancariaBean.actual.id}"/>
+            </p:link>
+            <p:commandLink value="Guardar" action="#{cuentaBancariaBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           rendered="#{(not(contexto == 'vista') and (request.isUserInRole('admin') or request.isUserInRole('finanza_cuentabancaria_vista_accion_guardar')))}"/>
             <p:button value="Cancelar" outcome="listado"/>
         </ui:define>
 
@@ -23,22 +28,34 @@
             <p:outputPanel styleClass="panelControles">
 
 
-                <p:inputText id="numero" value="#{cuentaBancariaBean.actual.numero}" styleClass="descripcionPrincipal" required="true"/>
+                <p:inputText id="numero" value="#{cuentaBancariaBean.actual.numero}" styleClass="descripcionPrincipal" required="true"
+                             rendered="#{not(contexto == 'vista')}"/>
                 <p:watermark for="numero" value="Numero" id="watermark"/>
+                <h:outputText value="#{cuentaBancariaBean.actual.numero}" style="font-size: 18pt;font-weight: bold;"
+                              rendered="#{(contexto == 'vista')}"/>
                 <br/>
                 <br/>
                 <h:panelGrid columns="2">
                     
                     <p:outputLabel value="Banco" for="banco"/>
-                    <h:selectOneMenu value="#{cuentaBancariaBean.actual.banco}" id="banco">
+                    <h:selectOneMenu value="#{cuentaBancariaBean.actual.banco}" id="banco" rendered="#{not(contexto == 'vista')}">
                         <f:selectItems value="#{bancoBean.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
+                    <h:outputText value="#{cuentaBancariaBean.actual.banco != null ? cuentaBancariaBean.actual.banco.nombre:''}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+                    
                     <p:outputLabel value="Denominacion" for="denominacion"/>
-                    <p:inputText value="#{cuentaBancariaBean.actual.denominacion}" id="denominacion"/>
+                    <p:inputText value="#{cuentaBancariaBean.actual.denominacion}" id="denominacion" rendered="#{not(contexto == 'vista')}"/>
+                    <h:outputText value="#{cuentaBancariaBean.actual.denominacion}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+                    
                     <p:outputLabel value="Moneda" for="moneda"/>
-                    <h:selectOneMenu value="#{cuentaBancariaBean.actual.moneda}" id="moneda">
+                    <h:selectOneMenu value="#{cuentaBancariaBean.actual.moneda}" id="moneda" rendered="#{not(contexto == 'vista')}">
                         <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
+                    <h:outputText value="#{cuentaBancariaBean.actual.moneda != null ? cuentaBancariaBean.actual.moneda.nombre:''}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+                    
                     
                 </h:panelGrid>
             </p:outputPanel>

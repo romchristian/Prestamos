@@ -11,14 +11,14 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import py.gestionpymes.prestamos.adm.dao.AbstractFacade;
-import py.gestionpymes.prestamos.adm.persistencia.Empresa;
-import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
-import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
-import py.gestionpymes.prestamos.prestamos.persistencia.CuentaCliente;
-import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
-import py.gestionpymes.prestamos.prestamos.persistencia.OperacionDesembolsoPrestamo;
-import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
-import py.gestionpymes.prestamos.prestamos.persistencia.PrestamoHistorico;
+import py.gestionpymes.prestamos.adm.modelo.Empresa;
+import py.gestionpymes.prestamos.adm.modelo.Sucursal;
+import py.gestionpymes.prestamos.prestamos.modelo.Cliente;
+import py.gestionpymes.prestamos.prestamos.modelo.CuentaCliente;
+import py.gestionpymes.prestamos.prestamos.modelo.enums.EstadoPrestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.OperacionDesembolsoPrestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.Prestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.PrestamoHistorico;
 
 /**
  *
@@ -26,7 +26,7 @@ import py.gestionpymes.prestamos.prestamos.persistencia.PrestamoHistorico;
  */
 @Stateless
 
-public class PrestamoHistoricoDAO extends AbstractFacade<py.gestionpymes.prestamos.prestamos.persistencia.PrestamoHistorico> {
+public class PrestamoHistoricoDAO extends AbstractFacade<py.gestionpymes.prestamos.prestamos.modelo.PrestamoHistorico> {
 
     @PersistenceContext(unitName = "PrestamosPU")
     private EntityManager em;

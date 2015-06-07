@@ -11,13 +11,13 @@ import java.text.NumberFormat;
 import java.util.Date;
 import java.util.Locale;
 import org.primefaces.model.TreeNode;
-import py.gestionpymes.prestamos.adm.persistencia.Cotizacion;
-import py.gestionpymes.prestamos.adm.persistencia.Empresa;
-import py.gestionpymes.prestamos.adm.persistencia.Moneda;
-import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
-import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
-import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
-import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoDetPrestamo;
+import py.gestionpymes.prestamos.adm.modelo.Cotizacion;
+import py.gestionpymes.prestamos.adm.modelo.Empresa;
+import py.gestionpymes.prestamos.adm.modelo.Moneda;
+import py.gestionpymes.prestamos.adm.modelo.Sucursal;
+import py.gestionpymes.prestamos.prestamos.modelo.DetPrestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.Prestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.enums.EstadoDetPrestamo;
 
 
 /**

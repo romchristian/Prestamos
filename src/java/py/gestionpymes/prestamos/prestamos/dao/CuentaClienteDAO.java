@@ -13,10 +13,10 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import py.gestionpymes.prestamos.adm.dao.AbstractFacade;
-import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
-import py.gestionpymes.prestamos.prestamos.persistencia.CuentaCliente;
-import py.gestionpymes.prestamos.prestamos.persistencia.DetCuentaCliente;
-import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoCuenta;
+import py.gestionpymes.prestamos.prestamos.modelo.Cliente;
+import py.gestionpymes.prestamos.prestamos.modelo.CuentaCliente;
+import py.gestionpymes.prestamos.prestamos.modelo.DetCuentaCliente;
+import py.gestionpymes.prestamos.prestamos.modelo.enums.EstadoCuenta;
 
 /**
  *

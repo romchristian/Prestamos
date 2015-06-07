@@ -10,8 +10,8 @@ import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
-import py.gestionpymes.prestamos.adm.persistencia.Usuario;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
+import py.gestionpymes.prestamos.adm.modelo.Usuario;
+import py.gestionpymes.prestamos.tesoreria.modelo.SesionTPV;
 
 
 

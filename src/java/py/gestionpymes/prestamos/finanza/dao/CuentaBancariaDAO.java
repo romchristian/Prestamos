@@ -14,9 +14,10 @@ import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.dao.QueryParameter;
 import py.gestionpymes.prestamos.adm.web.util.Credencial;
-import py.gestionpymes.prestamos.finanza.persistencia.CuentaBancaria;
-import py.gestionpymes.prestamos.finanza.persistencia.TransaccionDepositoEfectivo;
-import py.gestionpymes.prestamos.finanza.persistencia.BoletaDeposito;
+import py.gestionpymes.prestamos.finanza.modelo.CuentaBancaria;
+import py.gestionpymes.prestamos.finanza.modelo.TransaccionDepositoEfectivo;
+import py.gestionpymes.prestamos.finanza.modelo.BoletaDeposito;
+import py.gestionpymes.prestamos.finanza.modelo.enums.EstadoBoletaDeposito;
 
 /**
  *
@@ -69,9 +70,8 @@ public class CuentaBancariaDAO extends AbstractDAO<CuentaBancaria> {
         if (boleta.getTotalEfectivo() != null) {
 
             try {
-                TransaccionDepositoEfectivo t = new TransaccionDepositoEfectivo("ITAU-EFE-01",
+                TransaccionDepositoEfectivo t = new TransaccionDepositoEfectivo("ITAU-DEP-"+boleta.getNroComprobante(),
                         boleta.getNroComprobante(),
-                        boleta.getFecha(),
                         boleta.getCuentaBancaria(),
                         boleta.getMoneda(),
                         boleta.getCotizacion(),
@@ -79,6 +79,12 @@ public class CuentaBancariaDAO extends AbstractDAO<CuentaBancaria> {
                         boleta.getTotalEfectivo());
 
                 transaccionBancariaDAO.create(t);
+                
+                
+                boleta.setEstado(EstadoBoletaDeposito.CONFIRMADO);
+                abmService.getEM().merge(boleta);
+                
+                
                 R = true;
             } catch (Exception e) {
                 throw new TransaccionBancariaNoCreadaException(e.getMessage());

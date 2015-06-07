@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:decorate template="/plantillaListado.xhtml">
+        <ui:param name="modulo" value="configuracion"/>
+
+
+
+        <ui:define name="title">
+            Bancos
+        </ui:define>
+
+        <ui:define name="body">
+
+            <h:form>
+
+
+                <p:dataTable value="#{bancoBean.findAll()}" var="b" styleClass="resultado">
+
+                    <f:facet name="header">
+                        
+                        <p:commandButton action="#{bancoBean.preparaCreacion()}" 
+                                         value="Crear"
+                                         icon="ui-icon-plus" 
+                                         styleClass="botonVerde flotaIzquierda"/>
+                        
+                    </f:facet>
+
+                    <p:column headerText="Nombre">
+                        <h:link value="#{b.nombre}" outcome="vista">
+                            <f:param name="id" value="#{b.id}"/>
+                        </h:link>
+                    </p:column>
+                    <p:column headerText="Estado">
+                        <h:outputText value="#{b.estado}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:decorate>
+</ui:composition>

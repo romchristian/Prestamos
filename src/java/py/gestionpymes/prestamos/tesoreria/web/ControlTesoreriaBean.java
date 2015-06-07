@@ -18,11 +18,11 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
-import py.gestionpymes.prestamos.contabilidad.persistencia.ChequeRecibido;
+import py.gestionpymes.prestamos.contabilidad.modelo.ChequeRecibido;
 import py.gestionpymes.prestamos.tesoreria.dao.TransaccionDAO;
 import py.gestionpymes.prestamos.tesoreria.dao.VistaGrafico;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.PuntoVenta;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
+import py.gestionpymes.prestamos.tesoreria.modelo.PuntoVenta;
+import py.gestionpymes.prestamos.tesoreria.modelo.Transaccion;
 
 /**
  *

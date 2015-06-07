@@ -17,7 +17,7 @@ import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import py.gestionpymes.prestamos.adm.dao.UsuarioFacade;
-import py.gestionpymes.prestamos.adm.persistencia.Usuario;
+import py.gestionpymes.prestamos.adm.modelo.Usuario;
 
 /**
  *

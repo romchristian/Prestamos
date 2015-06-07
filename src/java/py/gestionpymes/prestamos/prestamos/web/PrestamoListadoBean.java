@@ -34,15 +34,15 @@ import org.joda.time.LocalTime;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import py.gestionpymes.prestamos.adm.dao.MonedaFacade;
-import py.gestionpymes.prestamos.adm.persistencia.Empresa;
-import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
+import py.gestionpymes.prestamos.adm.modelo.Empresa;
+import py.gestionpymes.prestamos.adm.modelo.Sucursal;
 import py.gestionpymes.prestamos.contabilidad.servicio.CobranzaDAO;
 import py.gestionpymes.prestamos.prestamos.dao.PagoExcedidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
-import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
-import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
-import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
-import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.Cliente;
+import py.gestionpymes.prestamos.prestamos.modelo.DetPrestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.enums.EstadoPrestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.Prestamo;
 
 /**
  *

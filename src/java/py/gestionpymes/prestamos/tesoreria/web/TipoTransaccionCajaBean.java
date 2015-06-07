@@ -11,7 +11,7 @@ import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
 import py.gestionpymes.prestamos.tesoreria.dao.TipoTransaccionCajaDAO;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccionCaja;
+import py.gestionpymes.prestamos.tesoreria.modelo.TipoTransaccionCaja;
 
 
 /**

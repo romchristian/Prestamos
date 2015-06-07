@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:decorate template="/plantillaListado.xhtml">
+        <ui:param name="modulo" value="finanza"/>
+
+
+
+        <ui:define name="title">
+            Cheques Emitidos
+        </ui:define>
+
+        <ui:define name="body">
+
+            <h:form>
+
+
+                <p:dataTable value="#{chequeEmitidoBean.findAll()}" var="c" styleClass="resultado">
+
+                    <f:facet name="header">
+                        
+                        <p:commandButton action="#{chequeEmitidoBean.preparaCreacion()}" 
+                                         value="Crear"
+                                         icon="ui-icon-plus" 
+                                         styleClass="botonVerde flotaIzquierda"/>
+                        
+                    </f:facet>
+
+
+                    <p:column headerText="Cuenta Bancaria">
+                        <h:outputText value="#{c.cuentaBancaria!= null?c.cuentaBancaria.denominacion:''}"/>
+                    </p:column>
+                    <p:column headerText="Secuencia">
+                        <h:outputText value="#{c.secuencia != null?c.secuencia.nombre:''}"/>
+                    </p:column>
+                    <p:column headerText="Numero">
+                        <h:link value="#{c.numero}" outcome="vista">
+                            <f:param name="id" value="#{c.id}"/>
+                        </h:link>
+                    </p:column>
+                    <p:column headerText="Beneficiario">
+                        <h:outputText value="#{c.beneficiario}"/>
+                    </p:column>
+                    
+                    
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:decorate>
+</ui:composition>

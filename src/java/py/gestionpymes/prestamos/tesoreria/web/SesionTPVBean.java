@@ -26,24 +26,24 @@ import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
 import py.gestionpymes.prestamos.adm.web.util.Credencial;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
-import py.gestionpymes.prestamos.contabilidad.persistencia.ChequeRecibido;
-import py.gestionpymes.prestamos.contabilidad.persistencia.MetodoPago;
-import py.gestionpymes.prestamos.contabilidad.persistencia.Pago;
+import py.gestionpymes.prestamos.contabilidad.modelo.ChequeRecibido;
+import py.gestionpymes.prestamos.contabilidad.modelo.MetodoPago;
+import py.gestionpymes.prestamos.contabilidad.modelo.Pago;
 import py.gestionpymes.prestamos.contabilidad.servicio.MetodoPagoDAO;
 import py.gestionpymes.prestamos.reportes.jasper.ReporteController;
 import py.gestionpymes.prestamos.tesoreria.dao.PuntoVentaDAO;
 import py.gestionpymes.prestamos.tesoreria.dao.ResumenTransaccion;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.PuntoVenta;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoMetodoPago;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoValorEfectivo;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.ValorEfectivo;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.ValorMoneda;
+import py.gestionpymes.prestamos.tesoreria.modelo.PuntoVenta;
+import py.gestionpymes.prestamos.tesoreria.modelo.SesionTPV;
+import py.gestionpymes.prestamos.tesoreria.modelo.TipoMetodoPago;
+import py.gestionpymes.prestamos.tesoreria.modelo.TipoValorEfectivo;
+import py.gestionpymes.prestamos.tesoreria.modelo.ValorEfectivo;
+import py.gestionpymes.prestamos.tesoreria.modelo.ValorMoneda;
 
 import py.gestionpymes.prestamos.tesoreria.dao.SesionTPVDAO;
 import py.gestionpymes.prestamos.tesoreria.dao.TransaccionDAO;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccion;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
+import py.gestionpymes.prestamos.tesoreria.modelo.TipoTransaccion;
+import py.gestionpymes.prestamos.tesoreria.modelo.Transaccion;
 
 /**
  *
@@ -295,13 +295,43 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
 
     }
 
-    public void imprimeReporteCajaCierre(SesionTPV s) {
+    public void imprimeReporteCajaCierre(SesionTPV s) { 
 
         setActual(s);
 
         Map<String, Object> params = new HashMap<String, Object>();
         
         BigDecimal totalCheques = transaccionDAO.getTotalCobrosCuotasCh(s);
+        
+        BigDecimal totalIngresos = new BigDecimal(BigInteger.ZERO);
+        BigDecimal totalEgresos= new BigDecimal(BigInteger.ZERO);
+        BigDecimal ingresosEfectivo = new BigDecimal(BigInteger.ZERO);
+        BigDecimal ingresosCheque = new BigDecimal(BigInteger.ZERO);
+        BigDecimal egresosEfectivo = new BigDecimal(BigInteger.ZERO);
+        BigDecimal egresosCheque = new BigDecimal(BigInteger.ZERO);
+        
+        BigDecimal TCC = transaccionDAO.getTotalCobroCuotas(s)==null?new BigDecimal(BigInteger.ZERO):transaccionDAO.getTotalCobroCuotas(s);
+        System.out.println("Total Cobra Cuotas: " + TCC);
+        BigDecimal TCCEfe = transaccionDAO.getTotalCobrosCuotasEfe(s)==null?new BigDecimal(BigInteger.ZERO):transaccionDAO.getTotalCobrosCuotasEfe(s);
+        System.out.println("Total Cobra Coutas Efe: " + TCCEfe);;
+        BigDecimal TCCCh = transaccionDAO.getTotalCobrosCuotasCh(s)==null?new BigDecimal(BigInteger.ZERO):transaccionDAO.getTotalCobrosCuotasCh(s);
+        System.out.println("Total Cobra Cuotas Chq: " + TCCCh);
+        BigDecimal EV = transaccionDAO.getTotalEntradasVarias(s)==null?new BigDecimal(BigInteger.ZERO):transaccionDAO.getTotalEntradasVarias(s);
+        System.out.println("Entradas Varias: "+ EV);
+        BigDecimal DE = transaccionDAO.getTotalDesembolsos(s)==null?new BigDecimal(BigInteger.ZERO):transaccionDAO.getTotalDesembolsos(s);
+        System.out.println("Total Desembolsos: "+ DE);
+        BigDecimal SV = transaccionDAO.getTotalSalidasVarias(s)==null?new BigDecimal(BigInteger.ZERO):transaccionDAO.getTotalSalidasVarias(s);
+        System.out.println("Salidas Varias: "+SV);
+        
+        ingresosEfectivo = ingresosEfectivo.add(TCCEfe.add(EV));
+        ingresosCheque = ingresosCheque.add(TCCCh);
+        egresosEfectivo = egresosEfectivo.add(DE.add(SV));
+        
+        totalIngresos = totalIngresos.add(TCC.add(EV));
+        System.out.println("Total ingresos: "+totalIngresos);
+        totalEgresos = totalEgresos.add(DE.add(SV));
+        System.out.println("Total egresos: "+totalEgresos);
+        
           
         params.put("idSesionTPV", s.getId());//nf.format(selected.getId())
         params.put("TCC", transaccionDAO.getTotalCobroCuotas(s));
@@ -317,6 +347,11 @@ public class SesionTPVBean extends BeanGenerico<SesionTPV> implements Serializab
         params.put("saldoCierre", (s.getSaldoCierre() == null ? new BigDecimal(BigInteger.ZERO) : s.getSaldoCierre().setScale(0, RoundingMode.HALF_EVEN)));
         params.put("diferencia", (s.getDiferencia() == null ? new BigDecimal(BigInteger.ZERO) : s.getDiferencia().setScale(0, RoundingMode.HALF_EVEN)));
         params.put("fecha", s.getFechaCierre());
+         params.put("totalIngresos", totalIngresos);
+        params.put("totalEgresos", totalEgresos);
+        params.put("ingresosEfectivo", ingresosEfectivo);
+        params.put("ingresosCheque", ingresosCheque);
+        params.put("egresosEfectivo", egresosEfectivo);
         
         reporteController.generaPDF(params, "reportes/tesoreria/ReporteTesoreria.jasper", "cierre_caja" + s.getPuntoVenta().getNombre());
     }

@@ -33,7 +33,7 @@
                             <p:spacer/>
 
                             <p:commandButton value="Buscar" action="#{clienteController.buscarPorFiltro()}" update="datalist"
-                                             rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion'))}">
+                                             rendered="#{(request.isUserInRole('admin') or request.isUserInRole('cliente_edicion')) or request.isUserInRole('adm_cliente_list_accion_buscar')}">
                             </p:commandButton>
 
                         </h:panelGrid>

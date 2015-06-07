@@ -512,3 +512,52 @@ insert into rol (nombre, estado, version) values ('tesoreria_terminal_listado_ed
 -- ALTER TABLE cheque
 --   OWNER TO postgres;
 -- 
+-- 02-06-2015
+--ALTER TABLE boletadeposito ADD COLUMN estado integer;
+
+
+--06-06-2015
+
+-- DROP TABLE cheque;
+-- CREATE TABLE chequeemitido
+-- (
+--   id serial NOT NULL,
+--   beneficiario character varying(255),
+--   emision date,
+--   monto numeric(38,0),
+--   numero character varying(255),
+--   tipocheque character varying(255),
+--   vencimiento date,
+--   cuentabancaria_id bigint,
+--   estado_id bigint,
+--   moneda_id bigint,
+--   secuencia_id bigint,
+--   CONSTRAINT chequeemitido_pkey PRIMARY KEY (id),
+--   CONSTRAINT fk_chequeemitido_cuentabancaria_id FOREIGN KEY (cuentabancaria_id)
+--       REFERENCES cuentabancaria (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_chequeemitido_estado_id FOREIGN KEY (estado_id)
+--       REFERENCES estadocheque (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_chequeemitido_moneda_id FOREIGN KEY (moneda_id)
+--       REFERENCES moneda (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_chequeemitido_secuencia_id FOREIGN KEY (secuencia_id)
+--       REFERENCES secuencia (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- ALTER TABLE chequeemitido
+--   OWNER TO postgres;
+-- 
+-- 
+-- ALTER TABLE secuencia ADD COLUMN serie character varying(255);
+-- ALTER TABLE secuencia ADD COLUMN cuentabancaria_id bigint;
+-- ALTER TABLE secuencia
+--   ADD CONSTRAINT fk_secuencia_cuentabancaria_id FOREIGN KEY (cuentabancaria_id)
+--       REFERENCES cuentabancaria (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+--ALTER TABLE banco ADD COLUMN estado character varying(255);

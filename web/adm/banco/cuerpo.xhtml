@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui">
+
+
+    <ui:decorate template="/plantillaABM.xhtml">
+        <ui:param name="modulo" value="configuracion"/>
+        <ui:param name="titulo" value="Banco"/>
+        <ui:param name="listado" value="Bancos"/>
+
+        <ui:define name="acciones">
+            <p:link value="Editar" outcome="edita"  styleClass="botonRojo flotaIzquierda"
+                    rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('adm_banco_vista_accion_edita')))}">
+                <f:param name="id" value="#{bancoBean.actual.id}"/>
+            </p:link>
+
+            <p:commandLink value="Guardar" action="#{bancoBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           rendered="#{(not(contexto == 'vista') and (request.isUserInRole('admin') or request.isUserInRole('adm_banco_vista_accion_guardar')))}"/>
+
+
+            <p:button value="Cancelar" outcome="listado"/>
+        </ui:define>
+
+        <ui:define name="cabecera">
+
+        </ui:define>
+
+        <ui:define name="col1">
+
+            <p:outputPanel styleClass="panelControles">
+
+                <p:inputText id="nombre" value="#{bancoBean.actual.nombre}" styleClass="descripcionPrincipal" required="true"
+                             rendered="#{not(contexto == 'vista')}"/>
+                <p:watermark for="nombre" value="Nombre" id="watermark"/>
+
+                <h:outputText value="#{bancoBean.actual.nombre}" style="font-size: 18pt;font-weight: bold;"
+                              rendered="#{(contexto == 'vista')}"/>
+
+                <br/>
+                <br/>
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Estado" for="estado" rendered="#{not(contexto == 'creacion')}"/>
+                    <p:selectOneMenu value="#{bancoBean.actual.estado}" rendered="#{not(contexto == 'creacion' or contexto == 'vista')}" id="estado">
+                        <f:selectItems value="#{productorEnums.obtEstados()}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="#{bancoBean.actual.estado}" rendered="#{(contexto == 'vista')}" style="font-weight: bold"/>
+                </h:panelGrid>
+
+
+
+            </p:outputPanel>
+
+
+
+        </ui:define>
+
+    </ui:decorate>
+
+
+</ui:composition>
+

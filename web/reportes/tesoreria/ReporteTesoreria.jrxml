@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteTesoreria" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="381bdd1c-9759-431a-81d2-a98bbf843c12">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="480"/>
+	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
@@ -23,6 +23,11 @@
 	<parameter name="SV" class="java.math.BigDecimal"/>
 	<parameter name="totalTransaccionesEfe" class="java.math.BigDecimal"/>
 	<parameter name="fecha" class="java.util.Date"/>
+	<parameter name="totalIngresos" class="java.math.BigDecimal"/>
+	<parameter name="totalEgresos" class="java.math.BigDecimal"/>
+	<parameter name="ingresosEfectivo" class="java.math.BigDecimal"/>
+	<parameter name="ingresosCheque" class="java.math.BigDecimal"/>
+	<parameter name="egresosEfectivo" class="java.math.BigDecimal"/>
 	<queryString>
 		<![CDATA[select p.monto as monto,p.vencimiento as vencimiento,b.nombre as banco,p.descripcion as descripcion
 from pago p inner join banco b
@@ -44,7 +49,7 @@ order by b.nombre]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="304" splitType="Stretch">
+		<band height="297" splitType="Stretch">
 			<staticText>
 				<reportElement x="4" y="6" width="547" height="27" uuid="f3a7bcee-9573-430d-a1cc-145912870fc9"/>
 				<textElement textAlignment="Center">
@@ -60,7 +65,7 @@ order by b.nombre]]>
 				<textFieldExpression><![CDATA["ID de Sesión: "+$P{idSesionTPV}+" - Cajero: "+$P{cajero}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="298" width="555" height="1" uuid="33ae63e3-59cd-4ab2-a208-d6cb650a77b4"/>
+				<reportElement x="0" y="227" width="555" height="1" uuid="33ae63e3-59cd-4ab2-a208-d6cb650a77b4"/>
 			</line>
 			<textField evaluationTime="Auto" pattern="MMMM d, yyyy">
 				<reportElement x="384" y="39" width="167" height="20" uuid="ecae97ee-3312-4d08-9966-113e2c4a7d81"/>
@@ -76,31 +81,31 @@ order by b.nombre]]>
 				<text><![CDATA[Saldo Inicio día:]]></text>
 			</staticText>
 			<textField pattern="#,##0;-#,##0">
-				<reportElement x="102" y="118" width="146" height="20" uuid="ec827671-f0f3-47d7-91dd-bb1661ad3ef2"/>
-				<textFieldExpression><![CDATA[$P{TCC}]]></textFieldExpression>
+				<reportElement x="102" y="119" width="146" height="20" uuid="ec827671-f0f3-47d7-91dd-bb1661ad3ef2"/>
+				<textFieldExpression><![CDATA[$P{totalIngresos}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="7" y="118" width="93" height="20" uuid="ab8d19df-a613-4c3e-bfb7-144cb8cfd842"/>
-				<text><![CDATA[Cobros Cuotas (+):]]></text>
+				<reportElement x="7" y="119" width="93" height="20" uuid="ab8d19df-a613-4c3e-bfb7-144cb8cfd842"/>
+				<text><![CDATA[Total Ingresos:]]></text>
 			</staticText>
 			<textField pattern="#,##0;-#,##0">
-				<reportElement x="102" y="138" width="146" height="20" uuid="70ae139b-0443-45a2-af74-bbda4dabd637"/>
-				<textFieldExpression><![CDATA[$P{TCCEfe}]]></textFieldExpression>
+				<reportElement x="102" y="139" width="146" height="20" uuid="70ae139b-0443-45a2-af74-bbda4dabd637"/>
+				<textFieldExpression><![CDATA[$P{ingresosEfectivo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0;-#,##0">
-				<reportElement x="102" y="158" width="146" height="20" uuid="5bd6c821-63c2-40a5-a90d-4446e81c67be"/>
-				<textFieldExpression><![CDATA[$P{TCCCh}]]></textFieldExpression>
+				<reportElement x="102" y="159" width="146" height="20" uuid="5bd6c821-63c2-40a5-a90d-4446e81c67be"/>
+				<textFieldExpression><![CDATA[$P{ingresosCheque}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="29" y="138" width="70" height="20" uuid="2818c97a-e412-470d-953a-dda067c81424"/>
+				<reportElement x="29" y="139" width="70" height="20" uuid="2818c97a-e412-470d-953a-dda067c81424"/>
 				<text><![CDATA[Efectivo (+):]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="29" y="158" width="70" height="20" uuid="1b6aad24-58e8-4f57-86c4-a876e6fe75af"/>
+				<reportElement x="29" y="159" width="70" height="20" uuid="1b6aad24-58e8-4f57-86c4-a876e6fe75af"/>
 				<text><![CDATA[Cheques (+):]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="8" y="73" width="70" height="20" uuid="136c6975-c755-4048-b61a-5c4a13e365aa"/>
+				<reportElement x="8" y="71" width="70" height="20" uuid="136c6975-c755-4048-b61a-5c4a13e365aa"/>
 				<textElement>
 					<font isUnderline="true"/>
 				</textElement>
@@ -110,43 +115,27 @@ order by b.nombre]]>
 				<reportElement x="0" y="60" width="555" height="1" uuid="98514b50-db23-4b1b-ba5f-e373212818e9"/>
 			</line>
 			<staticText>
-				<reportElement x="7" y="180" width="93" height="20" uuid="3c5725c8-1430-46b1-b684-4c3762ff4d20"/>
-				<text><![CDATA[Entradas Varias (+):]]></text>
+				<reportElement x="7" y="181" width="93" height="20" uuid="3c5725c8-1430-46b1-b684-4c3762ff4d20"/>
+				<text><![CDATA[Total Egresos:]]></text>
 			</staticText>
 			<textField pattern="#,##0;-#,##0">
-				<reportElement x="102" y="180" width="146" height="20" uuid="b1f38e0a-759b-4354-b3cb-35cca8f55925"/>
-				<textFieldExpression><![CDATA[$P{EV}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="7" y="201" width="93" height="20" uuid="ba79d370-09d4-4f3c-9d4f-2932dfeb600b"/>
-				<text><![CDATA[Desembolsos (-):]]></text>
-			</staticText>
-			<textField pattern="#,##0;-#,##0">
-				<reportElement x="102" y="201" width="146" height="20" uuid="bfd80ade-7364-4349-9472-d10993bc729e"/>
-				<textFieldExpression><![CDATA[$P{DE}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="7" y="221" width="93" height="20" uuid="dada0429-26bd-42e2-85c0-00bc2ecc6404"/>
-				<text><![CDATA[Salidas Varias (-):]]></text>
-			</staticText>
-			<textField pattern="#,##0;-#,##0">
-				<reportElement x="102" y="221" width="146" height="20" uuid="aa7e9dfd-a4d9-411a-a4c0-dfa8612a1a85"/>
-				<textFieldExpression><![CDATA[$P{SV}]]></textFieldExpression>
+				<reportElement x="102" y="181" width="146" height="20" uuid="b1f38e0a-759b-4354-b3cb-35cca8f55925"/>
+				<textFieldExpression><![CDATA[$P{totalEgresos}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0;-#,##0">
-				<reportElement x="377" y="123" width="146" height="20" uuid="ef974d47-73d9-4c76-91c4-51908b93aac4"/>
+				<reportElement x="377" y="119" width="146" height="20" uuid="ef974d47-73d9-4c76-91c4-51908b93aac4"/>
 				<textFieldExpression><![CDATA[$P{totalTransaccionesEfe}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="282" y="123" width="93" height="20" uuid="bc56f85a-6502-40f9-bbeb-d33aa5ac879e"/>
+				<reportElement x="282" y="119" width="93" height="20" uuid="bc56f85a-6502-40f9-bbeb-d33aa5ac879e"/>
 				<text><![CDATA[Saldo Cierre Efe.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="259" y="170" width="93" height="20" uuid="dd6c5cca-ee8d-43b0-a1a7-fc49d9d60c29"/>
+				<reportElement x="259" y="162" width="93" height="20" uuid="dd6c5cca-ee8d-43b0-a1a7-fc49d9d60c29"/>
 				<text><![CDATA[Diferencia]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="282" y="146" width="93" height="20" uuid="b1f42245-e361-4423-9b88-8cfcaebeb0f0"/>
+				<reportElement x="282" y="141" width="93" height="20" uuid="b1f42245-e361-4423-9b88-8cfcaebeb0f0"/>
 				<text><![CDATA[Saldo Cierre Chq.:]]></text>
 			</staticText>
 			<textField pattern="#,##0;-#,##0">
@@ -158,125 +147,118 @@ order by b.nombre]]>
 				<text><![CDATA[Saldo Cierre del día:]]></text>
 			</staticText>
 			<textField pattern="#,##0;-#,##0">
-				<reportElement x="354" y="170" width="146" height="20" uuid="f266a4fe-e4e8-47d3-9e57-e6682592d86d"/>
+				<reportElement x="354" y="162" width="146" height="20" uuid="f266a4fe-e4e8-47d3-9e57-e6682592d86d"/>
 				<textFieldExpression><![CDATA[$P{diferencia}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0;-#,##0">
-				<reportElement x="377" y="146" width="146" height="20" uuid="85841497-9163-4b5b-87ea-46247b17d607"/>
+				<reportElement x="377" y="141" width="146" height="20" uuid="85841497-9163-4b5b-87ea-46247b17d607"/>
 				<textFieldExpression><![CDATA[$P{TCCCh}]]></textFieldExpression>
 			</textField>
-		</band>
-	</title>
-	<pageHeader>
-		<band height="149">
-			<subreport>
-				<reportElement x="4" y="3" width="548" height="142" uuid="3962bd1a-bf51-484a-b662-ab92a634a4f7"/>
-				<subreportParameter name="idSesionTPV">
-					<subreportParameterExpression><![CDATA[$P{idSesionTPV}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReposteTesoreria_subreportDetalleOperaciones.jasper"]]></subreportExpression>
-			</subreport>
-		</band>
-	</pageHeader>
-	<columnHeader>
-		<band height="50" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Transparent" x="0" y="27" width="100" height="20" uuid="eababb16-918a-49ba-b74b-6b2ed125ca54"/>
-				<textElement textAlignment="Center">
-					<font isBold="true" isUnderline="false"/>
+				<reportElement x="4" y="233" width="184" height="17" uuid="5a823168-fd87-4b5b-afcc-7215b6569f4e"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
 				</textElement>
-				<text><![CDATA[VENCIMIENTO]]></text>
+				<text><![CDATA[Listado de Cheques]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="27" width="242" height="20" uuid="7324948c-ba27-40f9-bcba-49d841ee910d"/>
+				<reportElement x="100" y="252" width="242" height="20" uuid="7324948c-ba27-40f9-bcba-49d841ee910d"/>
 				<textElement textAlignment="Center">
 					<font isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[DESCRIPCION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="352" y="27" width="100" height="20" uuid="fe9a1175-3266-4a06-891d-4fd652866688"/>
+				<reportElement x="343" y="252" width="100" height="20" uuid="fe9a1175-3266-4a06-891d-4fd652866688"/>
 				<textElement textAlignment="Center">
 					<font isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[BANCO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="455" y="27" width="100" height="20" uuid="f762c864-fc22-4742-a09d-3cffce9fc779"/>
+				<reportElement x="447" y="252" width="100" height="20" uuid="f762c864-fc22-4742-a09d-3cffce9fc779"/>
 				<textElement textAlignment="Center">
 					<font isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[MONTO]]></text>
 			</staticText>
-			<line>
-				<reportElement x="1" y="48" width="555" height="1" uuid="e0e76033-0084-48ec-a77b-68ce6338b50d"/>
-			</line>
-			<line>
-				<reportElement x="4" y="24" width="184" height="1" uuid="0635196b-f0c0-49c5-9eda-46a1a392f576"/>
-			</line>
-			<staticText>
-				<reportElement x="4" y="7" width="184" height="17" uuid="5a823168-fd87-4b5b-afcc-7215b6569f4e"/>
-				<textElement>
-					<font fontName="Times New Roman" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Listado de Cheques]]></text>
-			</staticText>
-		</band>
-	</columnHeader>
-	<detail>
-		<band height="20" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="0" y="0" width="100" height="20" uuid="c021842f-3515-4075-8a04-aee108d59c3c"/>
+				<reportElement x="2" y="274" width="98" height="20" uuid="c021842f-3515-4075-8a04-aee108d59c3c"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{vencimiento}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{vencimiento}==null?"":$F{vencimiento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="100" y="0" width="242" height="20" uuid="9415e753-7c7d-4092-8f2e-321669a617ba"/>
+				<reportElement stretchType="RelativeToBandHeight" x="101" y="274" width="244" height="20" uuid="9415e753-7c7d-4092-8f2e-321669a617ba"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{descripcion}==null?"":$F{descripcion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="352" y="0" width="100" height="20" uuid="c1fa6db9-9749-483e-880f-aad8e6bf6187"/>
-				<textElement textAlignment="Right">
+				<reportElement x="347" y="274" width="100" height="20" uuid="c1fa6db9-9749-483e-880f-aad8e6bf6187"/>
+				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{banco}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{banco}==null?"":$F{banco}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0;-#,##0">
-				<reportElement x="455" y="0" width="100" height="20" uuid="d8b94433-0a71-4aa3-8e67-09222532e4b3"/>
+				<reportElement x="449" y="274" width="100" height="20" uuid="d8b94433-0a71-4aa3-8e67-09222532e4b3"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{monto}==null?0:$F{monto}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="252" width="100" height="20" uuid="eababb16-918a-49ba-b74b-6b2ed125ca54"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[VENCIMIENTO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="3" y="-144" width="184" height="1" uuid="0635196b-f0c0-49c5-9eda-46a1a392f576"/>
+			</line>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="102" y="202" width="146" height="20" uuid="600bc559-4f07-4894-8ddc-51c541b3f485"/>
+				<textFieldExpression><![CDATA[$P{egresosEfectivo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="29" y="202" width="70" height="20" uuid="1ecc3be5-f395-4015-af1f-2a0d86963f45"/>
+				<text><![CDATA[Efectivo (-):]]></text>
+			</staticText>
 		</band>
-	</detail>
+	</title>
 	<pageFooter>
-		<band height="29">
+		<band height="122">
+			<staticText>
+				<reportElement x="4" y="61" width="245" height="20" uuid="f2cb4bae-6a52-493a-aeb4-9599b72b43ab"/>
+				<text><![CDATA[FIRMA CAJERO:.....................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="61" width="240" height="20" uuid="a8bc7f5a-c3ab-4ab5-b1a3-f9ab845c5e67"/>
+				<text><![CDATA[FIRMA TESORERO:...............................................]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="452" y="5" width="100" height="20" uuid="5f7dd897-da4c-4c43-85ba-8083fa111306"/>
+				<reportElement x="455" y="102" width="100" height="20" uuid="5f7dd897-da4c-4c43-85ba-8083fa111306"/>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="65" splitType="Stretch">
-			<frame>
-				<reportElement x="2" y="0" width="530" height="55" uuid="2059d890-7570-4369-a143-289fe0af090c"/>
-				<staticText>
-					<reportElement x="5" y="35" width="245" height="20" uuid="f2cb4bae-6a52-493a-aeb4-9599b72b43ab"/>
-					<text><![CDATA[FIRMA CAJERO:.....................................................]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="261" y="35" width="240" height="20" uuid="a8bc7f5a-c3ab-4ab5-b1a3-f9ab845c5e67"/>
-					<text><![CDATA[FIRMA TESORERO:...............................................]]></text>
-				</staticText>
-			</frame>
+		<band height="68" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="551" height="1" uuid="e0e76033-0084-48ec-a77b-68ce6338b50d"/>
+			</line>
+			<subreport>
+				<reportElement isPrintRepeatedValues="false" x="3" y="4" width="547" height="53" isPrintWhenDetailOverflows="true" uuid="3962bd1a-bf51-484a-b662-ab92a634a4f7"/>
+				<subreportParameter name="idSesionTPV">
+					<subreportParameterExpression><![CDATA[$P{idSesionTPV}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReposteTesoreria_subreportDetalleOperaciones.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</summary>
 </jasperReport>

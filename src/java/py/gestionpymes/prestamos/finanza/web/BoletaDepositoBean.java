@@ -13,7 +13,7 @@ import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.finanza.dao.BoletaDepositoDAO;
 import py.gestionpymes.prestamos.finanza.dao.CuentaBancariaDAO;
 import py.gestionpymes.prestamos.finanza.dao.TransaccionBancariaNoCreadaException;
-import py.gestionpymes.prestamos.finanza.persistencia.BoletaDeposito;
+import py.gestionpymes.prestamos.finanza.modelo.BoletaDeposito;
 
 /**
  *
@@ -37,16 +37,52 @@ public class BoletaDepositoBean extends BeanGenerico<BoletaDeposito> {
     public BoletaDeposito getNuevo() {
         return new BoletaDeposito();
     }
-    
-      public void deposita(){
+
+    public void deposita() {
         try {
-            
+
             ejbCuenta.deposita(getActual());
-            
+            JsfUtil.addSuccessMessage("Se confirmó existosamente!");
         } catch (TransaccionBancariaNoCreadaException ex) {
             JsfUtil.addErrorMessage(ex.getMessage());
-            
+
         }
     }
 
+    public void revertir() {
+        try {
+
+            BoletaDeposito b = ejb.revertir(getActual());
+            setActual(b);
+            JsfUtil.addSuccessMessage("Se revirtió exitosamente!");
+        } catch (TransaccionBancariaNoCreadaException ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+
+        }
+    }
+
+    @Override
+    public String create() {
+        BoletaDeposito b = getEjb().create(getActual());
+        if (b != null) {
+            JsfUtil.addSuccessMessage("Se creó exitosamente!");
+            setActual(null);
+            return "vista.xhtml?faces-redirect=true&id=" + b.getId();
+        } else {
+            return null;
+        }
+
+    }
+
+    @Override
+    public String edit() {
+        if (getEjb().edit(getActual()) == null) {
+            JsfUtil.addErrorMessage("Otro usuario realizó una modificación sobre el mismo dato,y pruebe de nuevo");
+            return null;
+        }
+
+        JsfUtil.addSuccessMessage("Se guardó exitosamente!");
+        //setActual(null);
+        return "vista.xhtml?faces-redirect=true&id=" + getActual().getId();
+    }
 }

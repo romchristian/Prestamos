@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui">
+
+
+    <ui:decorate template="/plantillaABM.xhtml">
+        <ui:param name="modulo" value="tesoreria"/>
+        <ui:param name="titulo" value="Secuencia"/>
+        <ui:param name="listado" value="Secuencias"/>
+
+        <ui:define name="acciones">
+            <p:link value="Editar" outcome="edita"  styleClass="botonRojo flotaIzquierda"
+                    rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('tesoreria_secuencia_vista_accion_edita')))}">
+                <f:param name="id" value="#{secuenciaBean.actual.id}"/>
+            </p:link>
+            
+            <p:commandLink value="Guardar" action="#{secuenciaBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           rendered="#{(not(contexto == 'vista') and (request.isUserInRole('admin') or request.isUserInRole('tesoreria_secuencia_vista_accion_guardar')))}"/>
+            
+            
+            <p:button value="Cancelar" outcome="listado"/>
+        </ui:define>
+
+        <ui:define name="cabecera">
+
+        </ui:define>
+
+        <ui:define name="col1">
+
+            <p:outputPanel styleClass="panelControles">
+
+                <p:inputText id="nombre" value="#{secuenciaBean.actual.nombre}" styleClass="descripcionPrincipal" required="true"
+                             rendered="#{not(contexto == 'vista')}"/>
+                <p:watermark for="nombre" value="Nombre" id="watermark"/>
+                
+                <h:outputText value="#{secuenciaBean.actual.nombre}" style="font-size: 18pt;font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+                <br/>
+                <br/>
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Tipo" for="tipo"/>
+                    <h:selectOneMenu value="#{secuenciaBean.actual.tipoSecuencia}" id="tipo" rendered="#{not(contexto == 'vista')}">
+                        <p:ajax update="@(.panelControles)"/>
+                        <f:selectItems value="#{productorEnums.obtTiposSecuencias()}"/>
+                    </h:selectOneMenu>
+                    <h:outputText value="#{secuenciaBean.actual.tipoSecuencia}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Timbrado" for="timbrado" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                    <p:inputText value="#{secuenciaBean.actual.timbrado}" id="timbrado" rendered="#{(secuenciaBean.actual.tipoSecuencia == 'FACTURA' and not(contexto == 'vista'))}"
+                                 />
+                    <h:outputText value="#{secuenciaBean.actual.timbrado}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+                    
+                    
+                    <p:outputLabel value="Establecimiento" for="est" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                    <p:inputText value="#{secuenciaBean.actual.establecimiento}" id="est" rendered="#{(secuenciaBean.actual.tipoSecuencia == 'FACTURA'  and not(contexto == 'vista'))}"/>
+                    <h:outputText value="#{secuenciaBean.actual.establecimiento}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+                    
+                    <p:outputLabel value="Punto Expedicion" for="pex" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                    <p:inputText value="#{secuenciaBean.actual.puntoExpedicion}" id="pex" rendered="#{(secuenciaBean.actual.tipoSecuencia == 'FACTURA'  and not(contexto == 'vista'))}"/>
+                    <h:outputText value="#{secuenciaBean.actual.puntoExpedicion}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+                    
+                    
+                    
+                    
+                    <p:outputLabel value="Vencimiento" for="venc" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                    <p:calendar value="#{secuenciaBean.actual.vencimiento}" id="venc" rendered="#{(secuenciaBean.actual.tipoSecuencia == 'FACTURA'  and not(contexto == 'vista'))}"
+                                pattern="#{formato.patronFecha}" locale="es" lang="es"/>
+                    <h:outputText value="#{secuenciaBean.actual.vencimiento}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}">
+                         <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                    </h:outputText>
+
+                    <p:outputLabel value="Valor Inicial" for="inicio"/>
+                    <p:inputText value="#{secuenciaBean.actual.valorInicial}" id="inicio"
+                                 rendered="#{not(contexto == 'vista')}"/>
+                    <h:outputText value="#{secuenciaBean.actual.valorInicial}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+                    
+                    <p:outputLabel value="Valor Máximo" for="maximo" rendered="#{secuenciaBean.actual.tipoSecuencia == 'FACTURA'}"/>
+                    <p:inputText value="#{secuenciaBean.actual.valorFinal}" id="maximo" rendered="#{(secuenciaBean.actual.tipoSecuencia == 'FACTURA'  and not(contexto == 'vista'))}"
+                                 />
+                    <h:outputText value="#{secuenciaBean.actual.valorFinal}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+                    
+                </h:panelGrid>
+
+            </p:outputPanel>
+
+
+
+        </ui:define>
+
+    </ui:decorate>
+
+
+</ui:composition>
+

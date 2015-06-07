@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.Locale;
 import org.joda.time.DateTime;
 import py.gestionpymes.prestamos.adm.web.util.NumeroALetras;
-import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.Prestamo;
 
 /**
  *

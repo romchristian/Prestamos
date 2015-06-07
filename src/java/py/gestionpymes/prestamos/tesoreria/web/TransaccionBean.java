@@ -13,7 +13,7 @@ import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.tesoreria.dao.TransaccionDAO;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
+import py.gestionpymes.prestamos.tesoreria.modelo.Transaccion;
 
 
 /**

@@ -8,7 +8,7 @@ package py.gestionpymes.prestamos.tesoreria.web;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
+import py.gestionpymes.prestamos.tesoreria.modelo.SesionTPV;
 
 /**
  *

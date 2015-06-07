@@ -11,9 +11,9 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import py.gestionpymes.prestamos.prestamos.dao.CuentaClienteDAO;
-import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
-import py.gestionpymes.prestamos.prestamos.persistencia.CuentaCliente;
-import py.gestionpymes.prestamos.prestamos.persistencia.DetCuentaCliente;
+import py.gestionpymes.prestamos.prestamos.modelo.Cliente;
+import py.gestionpymes.prestamos.prestamos.modelo.CuentaCliente;
+import py.gestionpymes.prestamos.prestamos.modelo.DetCuentaCliente;
 
 /**
  *

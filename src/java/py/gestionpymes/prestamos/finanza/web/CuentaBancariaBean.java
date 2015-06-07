@@ -11,7 +11,7 @@ import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
 import py.gestionpymes.prestamos.finanza.dao.CuentaBancariaDAO;
-import py.gestionpymes.prestamos.finanza.persistencia.CuentaBancaria;
+import py.gestionpymes.prestamos.finanza.modelo.CuentaBancaria;
 
 
 

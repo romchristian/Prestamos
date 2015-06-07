@@ -1,6 +1,6 @@
 package py.gestionpymes.prestamos.adm.web;
 
-import py.gestionpymes.prestamos.adm.persistencia.ImpuestoIVA;
+import py.gestionpymes.prestamos.adm.modelo.ImpuestoIVA;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
 import py.gestionpymes.prestamos.adm.dao.ImpuestoIVAFacade;

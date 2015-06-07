@@ -12,7 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import py.gestionpymes.prestamos.adm.web.ClienteFiltro;
 import py.gestionpymes.prestamos.prestamos.dao.CuentaClienteDAO;
-import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
+import py.gestionpymes.prestamos.prestamos.modelo.Cliente;
 
 /**
  *

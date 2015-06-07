@@ -8,7 +8,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import py.gestionpymes.prestamos.adm.dao.AbstractFacade;
-import py.gestionpymes.prestamos.contabilidad.persistencia.Pago;
+import py.gestionpymes.prestamos.contabilidad.modelo.Pago;
 
 /**
  *

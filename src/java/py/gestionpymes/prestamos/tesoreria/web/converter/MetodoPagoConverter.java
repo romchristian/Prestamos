@@ -8,7 +8,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import py.gestionpymes.prestamos.contabilidad.persistencia.MetodoPago;
+import py.gestionpymes.prestamos.contabilidad.modelo.MetodoPago;
 import py.gestionpymes.prestamos.contabilidad.web.MetodoPagoBean;
 
 

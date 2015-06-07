@@ -11,9 +11,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
-import py.gestionpymes.prestamos.contabilidad.persistencia.MetodoPago;
+import py.gestionpymes.prestamos.contabilidad.modelo.MetodoPago;
 import py.gestionpymes.prestamos.contabilidad.servicio.MetodoPagoDAO;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.ValorMoneda;
+import py.gestionpymes.prestamos.tesoreria.modelo.ValorMoneda;
 
 /**
  *

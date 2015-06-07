@@ -8,7 +8,7 @@ package py.gestionpymes.prestamos.adm.dao;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVenta;
+import py.gestionpymes.prestamos.contabilidad.modelo.FacturaVenta;
 
 /**
  *

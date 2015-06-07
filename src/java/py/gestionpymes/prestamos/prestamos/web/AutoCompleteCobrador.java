@@ -12,7 +12,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.dao.CobradorFacade;
-import py.gestionpymes.prestamos.adm.persistencia.Cobrador;
+import py.gestionpymes.prestamos.adm.modelo.Cobrador;
 
 
 /**

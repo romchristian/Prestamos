@@ -8,7 +8,7 @@ package py.gestionpymes.prestamos.prestamos.dao;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import py.gestionpymes.prestamos.prestamos.persistencia.PlanGastos;
+import py.gestionpymes.prestamos.prestamos.modelo.PlanGastos;
 
 /**
  *

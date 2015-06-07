@@ -22,12 +22,12 @@ import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.dao.QueryParameter;
 import py.gestionpymes.prestamos.adm.web.util.Credencial;
-import py.gestionpymes.prestamos.contabilidad.persistencia.ChequeRecibido;
-import py.gestionpymes.prestamos.contabilidad.persistencia.Pago;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.Banco;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.PuntoVenta;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
+import py.gestionpymes.prestamos.contabilidad.modelo.ChequeRecibido;
+import py.gestionpymes.prestamos.contabilidad.modelo.Pago;
+import py.gestionpymes.prestamos.adm.modelo.Banco;
+import py.gestionpymes.prestamos.tesoreria.modelo.PuntoVenta;
+import py.gestionpymes.prestamos.tesoreria.modelo.SesionTPV;
+import py.gestionpymes.prestamos.tesoreria.modelo.Transaccion;
 import py.gestionpymes.prestamos.tesoreria.web.TreeCierre;
 
 /**

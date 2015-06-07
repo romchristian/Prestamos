@@ -8,8 +8,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.Banco;
-import py.gestionpymes.prestamos.tesoreria.web.BancoBean;
+import py.gestionpymes.prestamos.adm.modelo.Banco;
+import py.gestionpymes.prestamos.adm.web.BancoBean;
 
 
 /**

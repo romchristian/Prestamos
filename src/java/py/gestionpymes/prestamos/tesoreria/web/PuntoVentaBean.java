@@ -13,9 +13,9 @@ import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.dao.MonedaFacade;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
-import py.gestionpymes.prestamos.contabilidad.persistencia.MetodoPago;
+import py.gestionpymes.prestamos.contabilidad.modelo.MetodoPago;
 
-import py.gestionpymes.prestamos.tesoreria.persisitencia.PuntoVenta;
+import py.gestionpymes.prestamos.tesoreria.modelo.PuntoVenta;
 import py.gestionpymes.prestamos.tesoreria.dao.PuntoVentaDAO;
 
 /**

@@ -14,8 +14,8 @@ import static java.util.Collections.list;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Temporal;
-import py.gestionpymes.prestamos.prestamos.persistencia.DetPrestamo;
-import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.DetPrestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.Prestamo;
 
 /**
  *

@@ -1,6 +1,6 @@
 package py.gestionpymes.prestamos.prestamos.web;
 
-import py.gestionpymes.prestamos.prestamos.persistencia.PlanGastos;
+import py.gestionpymes.prestamos.prestamos.modelo.PlanGastos;
 import py.gestionpymes.prestamos.prestamos.web.util.JsfUtil;
 import py.gestionpymes.prestamos.prestamos.web.util.JsfUtil.PersistAction;
 import py.gestionpymes.prestamos.prestamos.dao.PlanGastosFacade;
@@ -20,7 +20,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.view.ViewScoped;
 
-import py.gestionpymes.prestamos.prestamos.persistencia.DetPlanGastos;
+import py.gestionpymes.prestamos.prestamos.modelo.DetPlanGastos;
 
 @Named("planGastosController")
 @ViewScoped

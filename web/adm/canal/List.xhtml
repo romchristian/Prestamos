@@ -53,9 +53,12 @@
                             <h:outputText value="#{item.estado}"/>
                         </p:column>
                         <f:facet name="header">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{canalController.prepareCreate}" update=":CanalCreateForm" oncomplete="PF('CanalCreateDialog').show()"/>
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":CanalViewForm" oncomplete="PF('CanalViewDialog').show()" disabled="#{empty canalController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":CanalEditForm" oncomplete="PF('CanalEditDialog').show()" disabled="#{empty canalController.selected}"/>
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{canalController.prepareCreate}" update=":CanalCreateForm" oncomplete="PF('CanalCreateDialog').show()"
+                                             rendered="#{(request.isUserInRole('admin')) or (request.isUserInRole('adm_canal_list_accion_crear'))}"  />                      
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":CanalViewForm" oncomplete="PF('CanalViewDialog').show()" disabled="#{empty canalController.selected}"
+                                             rendered="#{(request.isUserInRole('admin')) or (request.isUserInRole('adm_canal_list_accion_ver'))}" />
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":CanalEditForm" oncomplete="PF('CanalEditDialog').show()" disabled="#{empty canalController.selected}"
+                                             rendered="#{(request.isUserInRole('admin')) or (request.isUserInRole('adm_canal_list_accion_editar'))}" />
 
                         </f:facet>
                     </p:dataTable>

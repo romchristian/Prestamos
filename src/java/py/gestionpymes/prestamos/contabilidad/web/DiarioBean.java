@@ -10,7 +10,7 @@ import javax.inject.Named;
 import py.gestion.contabilidad.servicio.DiarioDAO;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
-import py.gestionpymes.prestamos.contabilidad.persistencia.Diario;
+import py.gestionpymes.prestamos.contabilidad.modelo.Diario;
 
 /**
  *

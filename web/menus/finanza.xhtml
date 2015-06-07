@@ -12,6 +12,10 @@
      <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 30px;font-size: 9pt">
         <h:commandLink  value="Cuenta Bancaria" action="/finanza/cuentaBancaria/listado" 
                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('finanza_cuentabancaria_listado'))}"/>
+        <h:commandLink  value="Chequera" action="/finanza/chequera/listado" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('finanza_chequera_listado'))}"/>
+        <h:commandLink  value="Cheques Emitidos" action="/finanza/chequeEmitido/listado" 
+                        rendered="#{(request.isUserInRole('admin') or request.isUserInRole('finanza_chequeemitido_listado'))}"/>
         <h:commandLink  value="Boletas de Depósito" action="/finanza/boletaDeposito/listado" 
                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('finanza_boletadeposito_listado'))}"/>
         

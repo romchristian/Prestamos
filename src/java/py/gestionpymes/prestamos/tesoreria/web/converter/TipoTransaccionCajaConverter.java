@@ -8,7 +8,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccionCaja;
+import py.gestionpymes.prestamos.tesoreria.modelo.TipoTransaccionCaja;
 import py.gestionpymes.prestamos.tesoreria.web.TipoTransaccionCajaBean;
 
 

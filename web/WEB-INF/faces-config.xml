@@ -11,20 +11,20 @@
  
     <converter>
         <converter-id>clienteConverter</converter-id>
-        <converter-for-class>py.gestionpymes.prestamos.prestamos.persistencia.Cliente</converter-for-class>
+        <converter-for-class>py.gestionpymes.prestamos.prestamos.modelo.Cliente</converter-for-class>
         <converter-class>py.gestionpymes.prestamos.prestamos.web.ClienteConverter</converter-class>
     </converter>
     
     
     <converter>
         <converter-id>cobradorConverter</converter-id>
-        <converter-for-class>py.gestionpymes.prestamos.adm.persistencia.Cobrador</converter-for-class>
+        <converter-for-class>py.gestionpymes.prestamos.adm.modelo.Cobrador</converter-for-class>
         <converter-class>py.gestionpymes.prestamos.adm.web.CobradorConverter</converter-class>
     </converter>
     
     <converter>
         <converter-id>vendedorConverter</converter-id>
-        <converter-for-class>py.gestionpymes.prestamos.adm.persistencia.Vendedor</converter-for-class>
+        <converter-for-class>py.gestionpymes.prestamos.adm.modelo.Vendedor</converter-for-class>
         <converter-class>py.gestionpymes.prestamos.adm.web.VendedorConverter</converter-class>
     </converter>
     

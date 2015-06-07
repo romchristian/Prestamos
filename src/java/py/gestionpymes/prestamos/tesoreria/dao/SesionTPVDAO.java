@@ -17,12 +17,12 @@ import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.dao.QueryParameter;
-import py.gestionpymes.prestamos.adm.persistencia.Usuario;
+import py.gestionpymes.prestamos.adm.modelo.Usuario;
 import py.gestionpymes.prestamos.adm.web.util.Credencial;
 import py.gestionpymes.prestamos.adm.web.util.MisSesiones;
 import py.gestionpymes.prestamos.adm.web.util.UsuarioLogueado;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.PuntoVenta;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
+import py.gestionpymes.prestamos.tesoreria.modelo.PuntoVenta;
+import py.gestionpymes.prestamos.tesoreria.modelo.SesionTPV;
 
 /**
  *

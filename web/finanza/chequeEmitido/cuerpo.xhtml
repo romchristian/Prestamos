@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+
+    <ui:decorate template="/plantillaABM.xhtml">
+        <ui:param name="modulo" value="finanza"/>
+        <ui:param name="titulo" value="Cheque Emitido"/>
+        <ui:param name="listado" value="Cheques Emitidos"/>
+
+        <ui:define name="acciones">
+            <p:link value="Editar" outcome="edita"  styleClass="botonRojo flotaIzquierda"
+                    rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('finanza_chequeemitido_vista_accion_edita')))}">
+                <f:param name="id" value="#{chequeEmitidoBean.actual.id}"/>
+            </p:link>
+            <p:commandLink value="Guardar" action="#{chequeEmitidoBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           rendered="#{(not(contexto == 'vista') and (request.isUserInRole('admin') or request.isUserInRole('finanza_chequeemitido_vista_accion_guardar')))}"/>
+            <p:button value="Cancelar" outcome="listado"/>
+        </ui:define>
+
+
+        <ui:define name="col1">
+
+            <p:outputPanel styleClass="panelControles">
+
+
+
+                <h:panelGrid columns="2">
+
+                    <p:outputLabel value="Cuenta bancaria" for="cuenta"/>
+                    <h:selectOneMenu value="#{chequeEmitidoBean.actual.cuentaBancaria}" id="cuenta" rendered="#{not(contexto == 'vista')}">
+                        <p:ajax event="change" process="@this" update="chequera moneda" listener="#{chequeEmitidoBean.siCambiaCuenta()}"/>
+                        <f:selectItems value="#{cuentaBancariaBean.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputText value="#{chequeEmitidoBean.actual.cuentaBancaria != null ? chequeEmitidoBean.actual.cuentaBancaria.denominacion:''}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+
+
+                    <p:outputLabel value="Moneda" for="moneda"/>
+                    <h:outputText value="#{chequeEmitidoBean.actual.moneda != null? chequeEmitidoBean.actual.moneda.nombre:''}" style="font-weight: bold;" id="moneda"/>
+
+                    <p:outputLabel value="Chequera" for="chequera"/>
+                    <h:selectOneMenu value="#{chequeEmitidoBean.actual.secuencia}" id="chequera" rendered="#{not(contexto == 'vista')}">
+                        <p:ajax event="change" process="@this" update="numero" listener="#{chequeEmitidoBean.siCambiaChequera()}"/>
+                        <f:selectItems value="#{secuenciaBean.obtItemsAvailableSelectOne(chequeEmitidoBean.actual.cuentaBancaria)}"/>
+                    </h:selectOneMenu>
+                    <h:outputText value="#{chequeEmitidoBean.actual.secuencia != null ? chequeEmitidoBean.actual.secuencia.nombre:''}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+
+                    <p:outputLabel value="Numero" for="numero"/>
+                    <p:inputText value="#{chequeEmitidoBean.actual.numero}" id="numero" rendered="#{not(contexto == 'vista')}"/>
+                    <h:outputText value="#{chequeEmitidoBean.actual.numero}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+
+                    <p:outputLabel value="Beneficiario" for="beneficiario"/>
+                    <p:inputText value="#{chequeEmitidoBean.actual.beneficiario}" id="beneficiario" rendered="#{not(contexto == 'vista')}"/>
+                    <h:outputText value="#{chequeEmitidoBean.actual.beneficiario}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+
+                    <p:outputLabel value="Emisión" for="emision"/>
+                    <p:calendar value="#{chequeEmitidoBean.actual.emision}" id="emision" rendered="#{not(contexto == 'vista')}"
+                                locale="es"/>
+                    <h:outputText value="#{chequeEmitidoBean.actual.emision}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}">
+                        <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                    </h:outputText>
+
+                    <p:outputLabel value="Vencimiento" for="vencimiento"/>
+                    <p:calendar value="#{chequeEmitidoBean.actual.vencimiento}" id="vencimiento" rendered="#{not(contexto == 'vista')}"
+                                locale="es"/>
+                    <h:outputText value="#{chequeEmitidoBean.actual.vencimiento}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}">
+                        <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                    </h:outputText>
+
+
+
+                    <p:outputLabel value="Monto" for="monto"/>
+                    <p:inputText value="#{chequeEmitidoBean.actual.monto}" id="monto" rendered="#{not(contexto == 'vista')}">
+                        <f:convertNumber locale="#{formato.locale}"/>
+                    </p:inputText>
+
+                    <h:outputText value="#{chequeEmitidoBean.actual.monto}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}">
+                        <f:convertNumber locale="#{formato.locale}"/>
+                    </h:outputText>
+
+
+                </h:panelGrid>
+            </p:outputPanel>
+
+
+
+        </ui:define>
+
+    </ui:decorate>
+
+
+</ui:composition>
+

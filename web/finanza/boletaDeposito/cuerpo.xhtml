@@ -3,51 +3,128 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui">
 
-   
-    
-     <ui:decorate template="/plantillaABM.xhtml">
+
+
+    <ui:decorate template="/plantillaABM.xhtml">
         <ui:param name="modulo" value="finanza"/>
         <ui:param name="titulo" value="Boleta de Depósito"/>
         <ui:param name="listado" value="Boletas de Depósitos"/>
 
         <ui:define name="acciones">
-            <p:commandLink value="Guardar" action="#{boletaDepositoBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"/>
-            <p:commandLink value="Deposita" action="#{boletaDepositoBean.deposita()}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
-                           rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('finanza_boletadeposito_vista_accion_deposita')))}"/>
+            <o:importConstants type="py.gestionpymes.prestamos.finanza.modelo.enums.EstadoBoletaDeposito" />
+
+            <p:link value="Editar" outcome="edita"  styleClass="botonRojo flotaIzquierda"
+                    disabled="#{boletaDepositoBean.actual.estado == EstadoBoletaDeposito.CONFIRMADO}"
+                    rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('finanza_boletadeposito_vista_accion_edita')))}">
+                <f:param name="id" value="#{boletaDepositoBean.actual.id}"/>
+            </p:link>
+
             
+            <p:commandLink value="Guardar" action="#{boletaDepositoBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles" ajax="false"
+                           rendered="#{(not(contexto == 'vista') and (request.isUserInRole('admin') or request.isUserInRole('finanza_boletadeposito_vista_accion_guardar')))}">
+                <f:param name="id" value="#{boletaDepositoBean.actual.id}"/>
+            </p:commandLink>
+            
+            <p:commandLink value="Revertir" action="#{boletaDepositoBean.revertir()}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           disabled="#{boletaDepositoBean.actual.estado == EstadoBoletaDeposito.PENDIENTE}" ajax="false"
+                           rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('finanza_boletadeposito_vista_accion_revertir')))}">
+                <f:param name="id" value="#{boletaDepositoBean.actual.id}"/>
+            </p:commandLink>
+            
+            <p:commandLink value="Confirmar" action="#{boletaDepositoBean.deposita()}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           disabled="#{boletaDepositoBean.actual.estado == EstadoBoletaDeposito.CONFIRMADO}" ajax="false"
+                           rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('finanza_boletadeposito_vista_accion_confirmar')))}">
+                <f:param name="id" value="#{boletaDepositoBean.actual.id}"/>
+            </p:commandLink>
+
             <p:button value="Cancelar" outcome="listado"/>
         </ui:define>
 
+        <ui:define name="cabecera">
+            <div style="display: table;width: 30%;height: 50px;padding: 5px;float: right">
+                
+                <div style="display: table-cell;">
+                    <div class="caja" style="padding: 5px;text-align: center">
+                        <h:outputText value="PENDIENTE" style="color: red;font-weight: bold" rendered="#{boletaDepositoBean.actual.estado == EstadoBoletaDeposito.PENDIENTE}"/>
+                        <h:outputText value="PENDIENTE" rendered="#{not(boletaDepositoBean.actual.estado == EstadoBoletaDeposito.PENDIENTE)}"/>
+                    </div>
+                </div>
+                <div style="display: table-cell;">
+                    <div class="caja" style="padding: 5px;text-align: center;margin-left: 10px">
+                        <h:outputText value="CONFIRMADO" style="color: #0044cc;font-weight: bold" rendered="#{boletaDepositoBean.actual.estado == EstadoBoletaDeposito.CONFIRMADO}"/>
+                        <h:outputText value="CONFIRMADO" rendered="#{not(boletaDepositoBean.actual.estado == EstadoBoletaDeposito.CONFIRMADO)}"/>
+                        
+                    </div>
+                </div>
+
+            </div>
+
+        </ui:define>
 
         <ui:define name="col1">
 
             <p:outputPanel styleClass="panelControles">
 
+                <h:panelGrid columns="1" style="width: 100%">
+                    <p:outputLabel value="Nro Comprobante" for="numero"/>
+                    <p:inputText id="numero" value="#{boletaDepositoBean.actual.nroComprobante}" styleClass="descripcionPrincipal" required="true"
+                                 rendered="#{not(contexto == 'vista')}"/>
+                    <p:watermark for="numero" value="Nro Comprobante de Depísito" id="watermark"
+                                 rendered="#{not(contexto == 'vista')}"/>
+                    <h:outputText value="#{boletaDepositoBean.actual.nroComprobante}" style="font-size: 18pt;font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+                </h:panelGrid>
 
-                <p:inputText id="numero" value="#{boletaDepositoBean.actual.nroComprobante}" styleClass="descripcionPrincipal" required="true"/>
-                <p:watermark for="numero" value="Numero" id="watermark"/>
+
                 <br/>
                 <br/>
                 <h:panelGrid columns="2">
-                    
-                    <p:outputLabel value="Cuenta" for="cuenta"/>
-                    <h:selectOneMenu value="#{boletaDepositoBean.actual.cuentaBancaria}" id="cuenta">
+
+                    <p:outputLabel value="Cuenta: " for="cuenta"/>
+                    <h:outputText value="#{boletaDepositoBean.actual.cuentaBancaria.denominacion}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+                    <h:selectOneMenu value="#{boletaDepositoBean.actual.cuentaBancaria}" id="cuenta"
+                                     rendered="#{not(contexto == 'vista')}">
                         <f:selectItems value="#{cuentaBancariaBean.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
-                    
-                    <p:outputLabel value="Moneda" for="moneda"/>
-                    <h:selectOneMenu value="#{boletaDepositoBean.actual.moneda}" id="moneda">
+
+                    <p:outputLabel value="Fecha: " for="fecha"/>
+                    <h:outputText value="#{boletaDepositoBean.actual.fecha}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}">
+                        <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                    </h:outputText>
+
+                    <p:calendar id="fecha" value="#{boletaDepositoBean.actual.fecha}"
+                                rendered="#{not(contexto == 'vista')}"/>
+
+                    <p:outputLabel value="Moneda: " for="moneda"/>
+                    <h:outputText value="#{boletaDepositoBean.actual.moneda.nombre}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}"/>
+                    <h:selectOneMenu value="#{boletaDepositoBean.actual.moneda}" id="moneda" 
+                                     rendered="#{not(contexto == 'vista')}">
                         <f:selectItems value="#{monedaController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
-                    
-                    <p:outputLabel value="Efectivo" for="totalEfectivo"/>
-                    <p:inputText value="#{boletaDepositoBean.actual.totalEfectivo}" id="totalEfectivo"/>
-                    
-                    <p:outputLabel value="Total" for="total"/>
-                    <p:inputText value="#{boletaDepositoBean.actual.total}" id="total"/>
-                    
+
+                    <p:outputLabel value="Efectivo:" for="totalEfectivo"/>
+                    <h:outputText value="#{boletaDepositoBean.actual.totalEfectivo}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}">
+                        <f:convertNumber locale="#{formato.locale}"/>
+                    </h:outputText>
+                    <p:inputText value="#{boletaDepositoBean.actual.totalEfectivo}" id="totalEfectivo"
+                                 rendered="#{not(contexto == 'vista')}"/>
+
+                    <p:outputLabel value="Total:" for="total"/>
+                    <h:outputText value="#{boletaDepositoBean.actual.total}" style="font-weight: bold;"
+                                  rendered="#{(contexto == 'vista')}">
+                        <f:convertNumber locale="#{formato.locale}"/>
+                    </h:outputText>
+
+                    <p:inputText value="#{boletaDepositoBean.actual.total}" id="total"
+                                 rendered="#{not(contexto == 'vista')}"/>
+
                 </h:panelGrid>
             </p:outputPanel>
 
@@ -56,7 +133,7 @@
         </ui:define>
 
     </ui:decorate>
-    
-    
+
+
 </ui:composition>
 

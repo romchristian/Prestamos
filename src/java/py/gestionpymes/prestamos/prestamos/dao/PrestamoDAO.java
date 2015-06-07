@@ -14,21 +14,21 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import py.gestionpymes.prestamos.adm.dao.ABMService;
 import py.gestionpymes.prestamos.adm.dao.AbstractFacade;
-import py.gestionpymes.prestamos.adm.persistencia.Empresa;
-import py.gestionpymes.prestamos.adm.persistencia.Sucursal;
-import py.gestionpymes.prestamos.contabilidad.persistencia.FacturaVenta;
-import py.gestionpymes.prestamos.prestamos.persistencia.Cliente;
-import py.gestionpymes.prestamos.prestamos.persistencia.CuentaCliente;
-import py.gestionpymes.prestamos.prestamos.persistencia.enums.EstadoPrestamo;
-import py.gestionpymes.prestamos.prestamos.persistencia.OperacionDesembolsoPrestamo;
-import py.gestionpymes.prestamos.prestamos.persistencia.Prestamo;
+import py.gestionpymes.prestamos.adm.modelo.Empresa;
+import py.gestionpymes.prestamos.adm.modelo.Sucursal;
+import py.gestionpymes.prestamos.contabilidad.modelo.FacturaVenta;
+import py.gestionpymes.prestamos.prestamos.modelo.Cliente;
+import py.gestionpymes.prestamos.prestamos.modelo.CuentaCliente;
+import py.gestionpymes.prestamos.prestamos.modelo.enums.EstadoPrestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.OperacionDesembolsoPrestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.Prestamo;
 import py.gestionpymes.prestamos.tesoreria.dao.TransaccionDAO;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.Secuencia;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.SesionTPV;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccion;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccionCaja;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.Transaccion;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.TransaccionDesembolso;
+import py.gestionpymes.prestamos.tesoreria.modelo.Secuencia;
+import py.gestionpymes.prestamos.tesoreria.modelo.SesionTPV;
+import py.gestionpymes.prestamos.tesoreria.modelo.TipoTransaccion;
+import py.gestionpymes.prestamos.tesoreria.modelo.TipoTransaccionCaja;
+import py.gestionpymes.prestamos.tesoreria.modelo.Transaccion;
+import py.gestionpymes.prestamos.tesoreria.modelo.TransaccionDesembolso;
 
 /**
  *
@@ -36,7 +36,7 @@ import py.gestionpymes.prestamos.tesoreria.persisitencia.TransaccionDesembolso;
  */
 @Stateless
 
-public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.prestamos.persistencia.Prestamo> {
+public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.prestamos.modelo.Prestamo> {
 
     @PersistenceContext(unitName = "PrestamosPU")
     private EntityManager em;

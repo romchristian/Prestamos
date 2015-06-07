@@ -7,8 +7,8 @@ package py.gestionpymes.prestamos.tesoreria.web;
 
 import java.math.BigDecimal;
 import org.primefaces.model.TreeNode;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.Banco;
-import py.gestionpymes.prestamos.tesoreria.persisitencia.TipoTransaccion;
+import py.gestionpymes.prestamos.adm.modelo.Banco;
+import py.gestionpymes.prestamos.tesoreria.modelo.TipoTransaccion;
 
 /**
  *
