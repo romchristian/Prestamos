@@ -561,3 +561,41 @@ insert into rol (nombre, estado, version) values ('tesoreria_terminal_listado_ed
 --       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 --ALTER TABLE banco ADD COLUMN estado character varying(255);
+
+
+-- 08-06-2015
+-- 
+-- CREATE TABLE historial
+-- (
+--   id serial NOT NULL,
+--   dtype character varying(31),
+--   descripcion character varying(255),
+--   fecha timestamp without time zone,
+--   operacion character varying(255),
+--   usuario_id bigint,
+--   chequeemitido_id bigint,
+--   CONSTRAINT historial_pkey PRIMARY KEY (id),
+--   CONSTRAINT fk_historial_chequeemitido_id FOREIGN KEY (chequeemitido_id)
+--       REFERENCES chequeemitido (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_historial_usuario_id FOREIGN KEY (usuario_id)
+--       REFERENCES persona (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- ALTER TABLE historial
+--   OWNER TO postgres;
+-- 
+-- ALTER TABLE chequeemitido DROP CONSTRAINT fk_chequeemitido_estado_id;
+-- ALTER TABLE chequeemitido DROP COLUMN estado;
+-- ALTER TABLE chequeemitido ADD COLUMN estado character varying(255);
+-- 
+-- ALTER TABLE transaccionbancaria ADD COLUMN chequeemitido_id bigint;
+-- 
+-- 
+-- ALTER TABLE transaccionbancaria
+--   ADD CONSTRAINT fk_transaccionbancaria_chequeemitido_id FOREIGN KEY (chequeemitido_id)
+--       REFERENCES chequeemitido (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION;

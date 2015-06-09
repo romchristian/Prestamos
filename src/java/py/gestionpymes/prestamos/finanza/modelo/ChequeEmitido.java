@@ -5,17 +5,21 @@
  */
 package py.gestionpymes.prestamos.finanza.modelo;
 
+import py.gestionpymes.prestamos.finanza.modelo.enums.EstadoChequeEmitido;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import py.gestionpymes.prestamos.adm.modelo.Moneda;
 import py.gestionpymes.prestamos.tesoreria.modelo.Secuencia;
@@ -25,7 +29,8 @@ import py.gestionpymes.prestamos.tesoreria.modelo.Secuencia;
  * @author Acer
  */
 @Entity
-public class ChequeEmitido implements Serializable{
+public class ChequeEmitido implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,35 +49,11 @@ public class ChequeEmitido implements Serializable{
     @ManyToOne
     private Moneda moneda;
     private BigDecimal monto;
-    @ManyToOne
-    private EstadoCheque estado;//BORRADOR,AUTORIZADO,ENTREGADO,COBRADO,ANULADO
+    @Enumerated(EnumType.STRING)
+    private EstadoChequeEmitido estado;//BORRADOR,AUTORIZADO,ENTREGADO,COBRADO,ANULADO
+    @OneToMany(mappedBy = "chequeEmitido")
+    private List<HistorialCheque> historialCheques;
 
-    public CuentaBancaria getCuentaBancaria() {
-        return cuentaBancaria;
-    }
-
-    public void setCuentaBancaria(CuentaBancaria cuentaBancaria) {
-        this.cuentaBancaria = cuentaBancaria;
-    }
-
-    public Secuencia getSecuencia() {
-        return secuencia;
-    }
-
-    public void setSecuencia(Secuencia secuencia) {
-        this.secuencia = secuencia;
-    }
-
-    public String getBeneficiario() {
-        return beneficiario;
-    }
-
-    public void setBeneficiario(String beneficiario) {
-        this.beneficiario = beneficiario;
-    }
-    
-    
-    
     public ChequeEmitido() {
     }
 
@@ -84,7 +65,6 @@ public class ChequeEmitido implements Serializable{
         this.id = id;
     }
 
-    
     public String getNumero() {
         return numero;
     }
@@ -133,16 +113,45 @@ public class ChequeEmitido implements Serializable{
         this.monto = monto;
     }
 
-    public EstadoCheque getEstado() {
+    public EstadoChequeEmitido getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoCheque estado) {
+    public void setEstado(EstadoChequeEmitido estado) {
         this.estado = estado;
     }
-    
-    
-    
+
+    public CuentaBancaria getCuentaBancaria() {
+        return cuentaBancaria;
+    }
+
+    public void setCuentaBancaria(CuentaBancaria cuentaBancaria) {
+        this.cuentaBancaria = cuentaBancaria;
+    }
+
+    public Secuencia getSecuencia() {
+        return secuencia;
+    }
+
+    public void setSecuencia(Secuencia secuencia) {
+        this.secuencia = secuencia;
+    }
+
+    public String getBeneficiario() {
+        return beneficiario;
+    }
+
+    public void setBeneficiario(String beneficiario) {
+        this.beneficiario = beneficiario;
+    }
+
+    public List<HistorialCheque> getHistorialCheques() {
+        return historialCheques;
+    }
+
+    public void setHistorialCheques(List<HistorialCheque> historialCheques) {
+        this.historialCheques = historialCheques;
+    }
 
     @Override
     public int hashCode() {
@@ -165,7 +174,5 @@ public class ChequeEmitido implements Serializable{
         }
         return true;
     }
-    
-    
-    
+
 }

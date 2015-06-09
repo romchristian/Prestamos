@@ -3,7 +3,8 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui">
 
 
 
@@ -12,16 +13,97 @@
         <ui:param name="titulo" value="Cheque Emitido"/>
         <ui:param name="listado" value="Cheques Emitidos"/>
 
+        <o:importConstants type="py.gestionpymes.prestamos.finanza.modelo.enums.EstadoChequeEmitido" />
+
         <ui:define name="acciones">
             <p:link value="Editar" outcome="edita"  styleClass="botonRojo flotaIzquierda"
                     rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('finanza_chequeemitido_vista_accion_edita')))}">
                 <f:param name="id" value="#{chequeEmitidoBean.actual.id}"/>
             </p:link>
+            <p:commandLink value="Guardar" action="#{chequeEmitidoBean.create}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           rendered="#{((contexto == 'creacion') and (request.isUserInRole('admin') or request.isUserInRole('finanza_chequeemitido_vista_accion_guardar')))}"/>
+
             <p:commandLink value="Guardar" action="#{chequeEmitidoBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
-                           rendered="#{(not(contexto == 'vista') and (request.isUserInRole('admin') or request.isUserInRole('finanza_chequeemitido_vista_accion_guardar')))}"/>
+                           rendered="#{((contexto == 'edicion') and (request.isUserInRole('admin') or request.isUserInRole('finanza_chequeemitido_vista_accion_guardar')))}"/>
+
+            <p:commandLink value="Autorizar" action="#{chequeEmitidoBean.autoriza()}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           disabled="#{chequeEmitidoBean.actual.estado == EstadoChequeEmitido.BORRADOR}" ajax="false"
+                           rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('finanza_chequeemitido_vista_accion_autorizar')))}">
+                <f:param name="id" value="#{chequeEmitidoBean.actual.id}"/>
+            </p:commandLink>
+
+
+            <p:commandLink value="Comprometer" action="#{chequeEmitidoBean.compromete()}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           disabled="#{chequeEmitidoBean.actual.estado == EstadoChequeEmitido.AUTORIZADO}" ajax="false"
+                           rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('finanza_chequeemitido_vista_accion_comprometer')))}">
+                <f:param name="id" value="#{chequeEmitidoBean.actual.id}"/>
+            </p:commandLink>
+
+
+            <p:commandLink value="Confirmar Cobro" action="#{chequeEmitidoBean.cobra()}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           disabled="#{chequeEmitidoBean.actual.estado == EstadoChequeEmitido.COMPROMETIDO}" ajax="false"
+                           rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('finanza_chequeemitido_vista_accion_confirmarcobro')))}">
+                <f:param name="id" value="#{chequeEmitidoBean.actual.id}"/>
+            </p:commandLink>
+
+
+            <p:commandLink value="Anular" action="#{chequeEmitidoBean.anula()}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           disabled="#{not(chequeEmitidoBean.actual.estado == EstadoChequeEmitido.COBRADO)}" ajax="false"
+                           rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('finanza_chequeemitido_vista_accion_anular')))}">
+                <f:param name="id" value="#{chequeEmitidoBean.actual.id}"/>
+            </p:commandLink>
+
+
+            <p:commandLink value="Reversar" action="#{chequeEmitidoBean.reversar()}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           disabled="#{chequeEmitidoBean.actual.estado == EstadoChequeEmitido.COBRADO}" ajax="false"
+                           rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('finanza_chequeemitido_vista_accion_reversar')))}">
+                <f:param name="id" value="#{chequeEmitidoBean.actual.id}"/>
+            </p:commandLink>
+
             <p:button value="Cancelar" outcome="listado"/>
         </ui:define>
 
+
+        <ui:define name="cabecera">
+
+
+
+            <div style="display: table;width: 30%;height: 50px;padding: 5px;float: right">
+
+                <div style="display: table-cell;">
+                    <div class="caja" style="padding: 5px;text-align: center">
+                        <h:outputText value="BORRADOR" style="color: #0044cc;font-weight: bold" rendered="#{chequeEmitidoBean.actual.estado == EstadoChequeEmitido.BORRADOR}"/>
+                        <h:outputText value="BORRADOR" rendered="#{not(chequeEmitidoBean.actual.estado == EstadoChequeEmitido.BORRADOR)}"/>
+                    </div>
+                </div>
+                <div style="display: table-cell;">
+                    <div class="caja" style="padding: 5px;text-align: center;margin-left: 10px">
+                        <h:outputText value="AUTORIZADO" style="color: #0044cc;font-weight: bold" rendered="#{chequeEmitidoBean.actual.estado == EstadoChequeEmitido.AUTORIZADO}"/>
+                        <h:outputText value="AUTORIZADO" rendered="#{not(chequeEmitidoBean.actual.estado == EstadoChequeEmitido.AUTORIZADO)}"/>
+                    </div>
+                </div>
+                <div style="display: table-cell;">
+                    <div class="caja" style="padding: 5px;text-align: center;margin-left: 10px">
+                        <h:outputText value="COMPROMETIDO" style="color: #0044cc;font-weight: bold" rendered="#{chequeEmitidoBean.actual.estado == EstadoChequeEmitido.COMPROMETIDO}"/>
+                        <h:outputText value="COMPROMETIDO" rendered="#{not(chequeEmitidoBean.actual.estado == EstadoChequeEmitido.COMPROMETIDO)}"/>
+                    </div>
+                </div>
+                <div style="display: table-cell;">
+                    <div class="caja" style="padding: 5px;text-align: center;margin-left: 10px">
+                        <h:outputText value="COBRADO" style="color: #0044cc;font-weight: bold" rendered="#{chequeEmitidoBean.actual.estado == EstadoChequeEmitido.COBRADO}"/>
+                        <h:outputText value="COBRADO" rendered="#{not(chequeEmitidoBean.actual.estado == EstadoChequeEmitido.COBRADO)}"/>
+                    </div>
+                </div>
+                <div style="display: table-cell;">
+                    <div class="caja" style="padding: 5px;text-align: center;margin-left: 10px">
+                        <h:outputText value="ANULADO" style="color: red;font-weight: bold" rendered="#{chequeEmitidoBean.actual.estado == EstadoChequeEmitido.ANULADO}"/>
+                        <h:outputText value="ANULADO" rendered="#{not(chequeEmitidoBean.actual.estado == EstadoChequeEmitido.ANULADO)}"/>
+                    </div>
+                </div>
+
+            </div>
+
+        </ui:define>
 
         <ui:define name="col1">
 
@@ -91,9 +173,33 @@
 
 
                 </h:panelGrid>
+
+                <h:panelGrid columns="1">
+                    <p:outputLabel value="Comentario" for="comentario"/>
+                    <p:inputTextarea rows="4" cols="50" id="comentario" value="#{chequeEmitidoBean.descripcionOperacion}"/>
+                </h:panelGrid>
+
+
+                <p:dataGrid value="#{chequeEmitidoBean.actual.historialCheques}" var="h">
+                    <h:panelGrid columns="2">
+                        <h:outputText value="#{h.fecha}">
+                            <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFechaHora}"/>
+                            <h:panelGrid columns="1">
+                                <h:outputText value="#{h.operacion}" style="font-weight: bold"/>
+                                <h:outputText value="#{h.descripcion}"/>
+                                <h:outputText value="#{h.usuario.usuario}"/>
+                            </h:panelGrid>
+                        </h:outputText>
+                    </h:panelGrid>    
+                </p:dataGrid>
+
             </p:outputPanel>
 
 
+
+        </ui:define>
+
+        <ui:define name="pie">
 
         </ui:define>
 

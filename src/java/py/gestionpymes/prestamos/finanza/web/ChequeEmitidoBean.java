@@ -4,12 +4,15 @@
  */
 package py.gestionpymes.prestamos.finanza.web;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
+import py.gestionpymes.prestamos.finanza.dao.CambioEstadoChequeEmitidoException;
 import py.gestionpymes.prestamos.finanza.dao.ChequeEmitidoDAO;
 import py.gestionpymes.prestamos.finanza.modelo.ChequeEmitido;
 import py.gestionpymes.prestamos.tesoreria.dao.SecuenciaDAO;
@@ -27,6 +30,9 @@ public class ChequeEmitidoBean extends BeanGenerico<ChequeEmitido> {
     private ChequeEmitidoDAO ejb;
     @EJB
     private SecuenciaDAO ejbSecuencia;
+    
+    private String descripcionOperacion;
+    
 
     @Override
     public AbstractDAO<ChequeEmitido> getEjb() {
@@ -38,6 +44,17 @@ public class ChequeEmitidoBean extends BeanGenerico<ChequeEmitido> {
         return new ChequeEmitido();
     }
 
+    public String getDescripcionOperacion() {
+        return descripcionOperacion;
+    }
+
+    public void setDescripcionOperacion(String descripcionOperacion) {
+        this.descripcionOperacion = descripcionOperacion;
+    }
+
+    
+    
+    
     public void siCambiaChequera() {
         if (getActual() != null && getActual().getSecuencia() != null) {
             getActual().setNumero(getActual().getSecuencia().obtSiguienteNumero() + "");
@@ -66,4 +83,61 @@ public class ChequeEmitidoBean extends BeanGenerico<ChequeEmitido> {
         return R;
     }
 
+    
+    public void autoriza(){
+        try {
+            ChequeEmitido ch = ejb.autorizar(getActual(), descripcionOperacion);
+            descripcionOperacion=null;
+        } catch (CambioEstadoChequeEmitidoException ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+        }
+    }
+    
+    
+    public void compromete(){
+        try {
+            ChequeEmitido ch = ejb.comprometer(getActual(), descripcionOperacion);
+            descripcionOperacion=null;
+        } catch (CambioEstadoChequeEmitidoException ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+        }
+    }
+    
+    public void cobra(){
+        try {
+            ChequeEmitido ch = ejb.cobrar(getActual(), descripcionOperacion);
+            descripcionOperacion=null;
+        } catch (CambioEstadoChequeEmitidoException ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+        }
+    }
+    
+    
+    public void anula(){
+        try {
+            ChequeEmitido ch = ejb.anular(getActual(), descripcionOperacion);
+            descripcionOperacion=null;
+        } catch (CambioEstadoChequeEmitidoException ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+        }
+    }
+    
+    public void reversar(){
+        try {
+            ChequeEmitido ch = ejb.revesar(getActual(), descripcionOperacion);
+            descripcionOperacion=null;
+        } catch (CambioEstadoChequeEmitidoException ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+        }
+    }
+    
+    
+    public void comentario(){
+        try {
+            ChequeEmitido ch = ejb.comentario(getActual(), descripcionOperacion);
+            descripcionOperacion=null;
+        } catch (CambioEstadoChequeEmitidoException ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+        }
+    }
 }

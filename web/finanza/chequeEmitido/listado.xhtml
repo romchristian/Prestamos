@@ -39,7 +39,7 @@
                     <p:column headerText="Secuencia">
                         <h:outputText value="#{c.secuencia != null?c.secuencia.nombre:''}"/>
                     </p:column>
-                    <p:column headerText="Numero">
+                    <p:column headerText="Numero" style="alignment-adjust: auto">
                         <h:link value="#{c.numero}" outcome="vista">
                             <f:param name="id" value="#{c.id}"/>
                         </h:link>
@@ -47,7 +47,19 @@
                     <p:column headerText="Beneficiario">
                         <h:outputText value="#{c.beneficiario}"/>
                     </p:column>
-                    
+                    <p:column headerText="Monto">
+                        <h:outputText value="#{c.monto}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Vencimiento">
+                        <h:outputText value="#{c.vencimiento}">
+                            <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Estado">
+                        <h:outputText value="#{c.estado}"/>
+                    </p:column>
                     
                 </p:dataTable>
             </h:form>
