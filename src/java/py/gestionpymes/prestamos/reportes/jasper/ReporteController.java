@@ -28,6 +28,7 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.poi.ss.usermodel.Workbook;
 import py.gestionpymes.prestamos.prestamos.web.Pagare;
 
 /**
@@ -127,13 +128,34 @@ public class ReporteController implements Serializable {
             init(parametros, detalles, archivoPath, context);
 
             HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
-            response.setHeader("Content-Disposition", "attachment;filename=" + nombre + ".xls");
+            response.setHeader("Content-Disposition", "attachment;filename=" + nombre + ".xlsx");
             ServletOutputStream outputStream = response.getOutputStream();
             JasperExportManager.exportReportToXmlStream(jasperPrint, outputStream);
             context.responseComplete();
 
         } catch (JRException ex) {
             throw new RuntimeException(ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ReporteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    
+     public void generaExcel(Workbook libro, String nombre) {
+        try {
+
+            FacesContext context = FacesContext.getCurrentInstance();
+            
+
+            HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+            response.setHeader("Content-Disposition", "attachment;filename=" + nombre + ".xls");
+            ServletOutputStream outputStream = response.getOutputStream();
+            libro.write(outputStream);
+            outputStream.flush();
+            outputStream.close();
+            context.responseComplete();
+
         } catch (IOException ex) {
             Logger.getLogger(ReporteController.class.getName()).log(Level.SEVERE, null, ex);
         }

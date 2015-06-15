@@ -12,6 +12,7 @@ import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 import javax.persistence.*;
 import org.joda.time.DateTime;
@@ -66,6 +67,8 @@ public class DetPrestamo implements Serializable ,Auditable{
     private float interesMoratorio;//Es la misma tasa del prestamo
     private float interesPunitorio;//Interes punitorio es el 20% del interes moratorio
     private BigDecimal impuestoIvaCuota = new BigDecimal(BigInteger.ZERO);
+    @OneToMany(mappedBy = "detPrestamo")
+    private List<DescuentoCuota> descuentoCuotas;
 
     public DetPrestamo() {
         this.estado = EstadoDetPrestamo.PENDIENTE;

@@ -28,7 +28,7 @@
                                 <div class="ui-grid-col-12">
 
 
-                                    <p:fieldset legend="Busqueda Avanzada" collapsed="true" toggleable="true">
+                                    <p:fieldset legend="Busqueda Avanzada" collapsed="false" toggleable="true">
 
 
                                         <h:panelGrid columns="4">
@@ -110,44 +110,47 @@
                                                  rows="10"
                                                  rowsPerPageTemplate="10,20,30,40,50">
 
-                                        <p:ajax event="rowSelect"   update="createButton editButton imprimirButton confirmarButton cancelarButton imprimirLiqButton imprimirDetClieButton aplicarDescButton"/>
-                                        <p:ajax event="rowUnselect" update="createButton editButton imprimirButton confirmarButton cancelarButton imprimirLiqButton imprimirDetClieButton aplicarDescButton"/>
+                                        <p:ajax event="rowSelect"   update="createButton editButton imprimirButton confirmarButton cancelarButton imprimirLiqButton imprimirDetClieButton aplicarDescButton imprimirExButton"/>
+                                        <p:ajax event="rowUnselect" update="createButton editButton imprimirButton confirmarButton cancelarButton imprimirLiqButton imprimirDetClieButton aplicarDescButton imprimirExButton"/>
 
                                         <f:facet name="header">
-                                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" action="#{prestamoController.prepareCreate}" 
+                                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" action="#{prestamoController.prepareCreate}" style="font-size: 10pt"
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_edicion'))}"/>
 
-                                            <p:button id="editButton" value="#{bundle.Edit}"  outcome="Edit.xhtml"
+                                            <p:button id="editButton" value="#{bundle.Edit}"  outcome="Edit.xhtml" style="font-size: 10pt"
                                                       disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion() ? 'false':'true'}"
                                                       rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_edicion'))}">
                                                 <f:param name="id" value="#{prestamoController.selected.id == null ? 0:prestamoController.selected.id }"/>
                                             </p:button>
 
-                                            <p:button id="aplicarDescButton" value="Aplicar Descuento"  outcome="EditDescuento.xhtml"
+                                            <p:button id="aplicarDescButton" value="Descuento"  outcome="AplicaDescuento.xhtml" style="font-size: 10pt"
                                                       disabled="#{prestamoController.selected.estado == 'VIGENTE' and prestamoController.haySeleccion() ? 'false':'true'}"
                                                       rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_aplicar_descuentos'))}">
                                                 <f:param name="id" value="#{prestamoController.selected.id == null ? 0:prestamoController.selected.id }"/>
                                             </p:button>
+                                            <p:commandButton id="imprimirExButton" action="#{prestamoController.imprimeExtracto()}" value="Extracto" ajax="false" style="font-size: 10pt"
+                                                             disabled="#{prestamoController.selected.estado == 'VIGENTE' and prestamoController.haySeleccion()? 'false':'true'}"
+                                                             rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_extracto_prestamo'))}"/>
 
-                                            <p:commandButton id="imprimirButton" action="#{prestamoController.imprimePagare()}" value="Imprimir Pagare" ajax="false"
+                                            <p:commandButton id="imprimirButton" action="#{prestamoController.imprimePagare()}" value="Pagare" ajax="false" style="font-size: 10pt"
                                                              disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_pagare'))}"/>
 
-                                            <p:commandButton id="imprimirLiqButton" action="#{prestamoController.imprimeLiquidacionPrestamo()}" value="Imprimir Liq. Prestamo" ajax="false" update="datalist"
+                                            <p:commandButton id="imprimirLiqButton" action="#{prestamoController.imprimeLiquidacionPrestamo()}" value="Liq. Prestamo" ajax="false" update="datalist" style="font-size: 10pt"
                                                              disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_liquididacion'))}"/>
 
-                                            <p:commandButton id="imprimirDetClieButton" action="#{prestamoController.imprimeDetalleParaCliente()}" value="Imprimir Det. Cliente" ajax="false" update="datalist"
+                                            <p:commandButton id="imprimirDetClieButton" action="#{prestamoController.imprimeDetalleParaCliente()}" value="Det. Cliente" ajax="false" update="datalist" style="font-size: 10pt"
                                                              disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_detalle_cliente'))}"/>
 
 
-                                            <p:commandButton id="confirmarButton" action="#{prestamoController.confirmaPagare()}" value="Confirmar Prestamo" update="datalist"
+                                            <p:commandButton id="confirmarButton" action="#{prestamoController.confirmaPagare()}" value="Confirmar" update="datalist" style="font-size: 10pt"
                                                              disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_confirma_pagare'))}"/>
 
 
-                                            <p:commandButton id="cancelarButton" action="#{prestamoController.anulaConfimacion()}" value="Desconfirmar Prestamo" update="datalist"
+                                            <p:commandButton id="cancelarButton" action="#{prestamoController.anulaConfimacion()}" value="Desconfirmar" update="datalist" style="font-size: 10pt"
                                                              disabled="#{prestamoController.selected.estado == 'EN_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_cancela_pagare'))}"/>
 
@@ -155,13 +158,13 @@
 
                                         </f:facet>
 
-                                        <p:column style="font-size: 12px">
+                                        <p:column style="font-size: 8pt">
                                             <f:facet name="header">
-                                                Descripción
+                                                Préstamo
                                             </f:facet>
-                                            <h:outputText value="Prestamo nro: #{p.id}"/>
+                                            <h:outputText value="Nro.#{p.id}"/>
                                         </p:column>
-                                        <p:column style="font-size: 12px">
+                                        <p:column style="font-size: 8pt">
                                             <f:facet name="header">
                                                 Fecha
                                             </f:facet>
@@ -169,13 +172,13 @@
                                                 <f:convertDateTime pattern="#{formato.patronFecha}"/>
                                             </h:outputText>
                                         </p:column>                    
-                                        <p:column style="font-size: 12px">
+                                        <p:column style="font-size: 8pt">
                                             <f:facet name="header">
                                                 Cliente
                                             </f:facet>
                                             <h:outputText value="#{p.cliente.devuelveNombreCompleto()}"/>
                                         </p:column>
-                                        <p:column style="font-size: 12px">
+                                        <p:column style="font-size: 8pt">
                                             <f:facet name="header">
                                                 Monto
                                             </f:facet>
@@ -183,20 +186,45 @@
                                                 <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                                             </h:outputText>
                                         </p:column>
-                                        <p:column style="font-size: 12px">
+                                        <p:column style="font-size: 8pt">
+                                            <f:facet name="header">
+                                                Total Op.
+                                            </f:facet>
+                                            <h:outputText value="#{p.totalOperacion}">
+                                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column style="font-size: 8pt">
+                                            <f:facet name="header">
+                                                Cuota
+                                            </f:facet>
+                                            <h:outputText value="#{p.montoCuota}">
+                                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column style="font-size: 8pt">
+                                            <f:facet name="header">
+                                                Plazo
+                                            </f:facet>
+                                            <h:outputText value="#{p.plazo}">
+                                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column style="font-size: 8pt">
+                                            <f:facet name="header">
+                                                Saldo Préstamo
+                                            </f:facet>
+                                            <h:outputText value="#{p.devuelveSaldoPrestamo()}">
+                                                <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column style="font-size: 8pt">
                                             <f:facet name="header">
                                                 Estado
                                             </f:facet>
-                                            <h:outputText value="#{p.estado}"/>
+                                            <h:outputText value="#{p.estado}" />
                                         </p:column>
-                                        <p:column style="font-size: 12px">
-                                            <f:facet name="header">
-                                                Pagare Firmado
-                                            </f:facet>
-                                            <h:outputText value="#{p.firmaPagare == true ? 'SI': 'NO'}"/>
-                                        </p:column>
-
-
+                                        
                                     </p:dataTable>
                                 </div>
                             </div>

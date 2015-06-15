@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ExtractoDePrestamo" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="38a4cb93-8ac7-4607-968f-921fe1abd867">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="prestamo_id" class="java.lang.Long"/>
+	<parameter name="cliente" class="java.lang.String"/>
+	<parameter name="nroDocumento" class="java.lang.String"/>
+	<parameter name="montoPrestamo" class="java.math.BigDecimal"/>
+	<parameter name="plazo" class="java.lang.Integer"/>
+	<parameter name="periodicidad" class="java.lang.String"/>
+	<parameter name="saldo" class="java.math.BigDecimal"/>
+	<parameter name="fechaOperacion" class="java.util.Date"/>
+	<parameter name="fechaPrimerVencimiento" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="nroCuota" class="java.lang.Integer"/>
+	<field name="fechaVencimiento" class="java.util.Date"/>
+	<field name="saldoCapital" class="java.math.BigDecimal"/>
+	<field name="cuotaCapital" class="java.math.BigDecimal"/>
+	<field name="cuotaInteres" class="java.math.BigDecimal"/>
+	<field name="montoCuota" class="java.math.BigDecimal"/>
+	<field name="diasMora" class="java.lang.Integer"/>
+	<field name="moraMoratorio" class="java.math.BigDecimal"/>
+	<field name="montoPago" class="java.math.BigDecimal"/>
+	<field name="descuento" class="java.math.BigDecimal"/>
+	<field name="saldoCuota" class="java.math.BigDecimal"/>
+	<field name="ultimoPago" class="java.util.Date"/>
+	<field name="estado" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="168" splitType="Stretch">
+			<textField pattern="#,##0">
+				<reportElement x="0" y="20" width="100" height="20" uuid="078a6abf-07c8-4aa6-811a-9dd8e400bc25"/>
+				<textFieldExpression><![CDATA[$P{prestamo_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="310" height="20" uuid="eb354933-a496-42a2-8ca3-7bb32cdddd6f"/>
+				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="0" width="166" height="20" uuid="8590b4bd-3dda-4008-944f-37a10a19d3c4"/>
+				<textFieldExpression><![CDATA[$P{nroDocumento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="490ba77d-f91d-4ceb-8693-107f4ec06b5a"/>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="47" height="20" uuid="fe30ead1-356d-47cd-abb7-7ce8713be5ea"/>
+				<text><![CDATA[nroCuota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="47" y="0" width="100" height="20" uuid="4ba3e67e-73bf-4fa0-96ba-a24b387f7d13"/>
+				<text><![CDATA[fechaVencimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="147" y="0" width="100" height="20" uuid="51a4310b-d2dd-4527-905c-98bbce52c5ec"/>
+				<text><![CDATA[cuotaCapital]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="247" y="0" width="100" height="20" uuid="6310a25e-06b6-479e-837d-35c29abc8c41"/>
+				<text><![CDATA[cuotaInteres]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="0" width="100" height="20" uuid="4c6e75df-c600-47ed-bdc4-c9ecda123a21"/>
+				<text><![CDATA[montoCuota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="447" y="0" width="44" height="20" uuid="69af70a9-4349-424d-95d4-b6eccdd18829"/>
+				<text><![CDATA[diasMora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="491" y="0" width="28" height="20" uuid="f83bd1fd-de75-40ee-9ac8-a820a55dbba1"/>
+				<text><![CDATA[moraMoratorio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="521" y="0" width="32" height="20" uuid="abd74fab-2d54-4c2c-9587-8421cb784cf0"/>
+				<text><![CDATA[descuento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="553" y="0" width="37" height="20" uuid="7df04da0-780e-4fb7-9641-3799c00d7c20"/>
+				<text><![CDATA[montoPago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="590" y="0" width="41" height="20" uuid="609e4267-52d0-45da-90bf-1ce5bbc38ffb"/>
+				<text><![CDATA[saldoCuota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="631" y="0" width="62" height="20" uuid="b78c131a-d83a-419f-832a-32c5a1e1aa38"/>
+				<text><![CDATA[ultimoPago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="693" y="0" width="100" height="20" uuid="9e2c989c-ae03-4b6e-b7ea-4e1209f2d6c4"/>
+				<text><![CDATA[estado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="47" height="20" uuid="c13b1efe-084b-42fc-8d98-5ec04c057479"/>
+				<textFieldExpression><![CDATA[$F{nroCuota}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="47" y="0" width="100" height="20" uuid="b3792ddc-1cd6-4068-b09c-91fe7b1e55c1"/>
+				<textFieldExpression><![CDATA[$F{fechaVencimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="147" y="0" width="100" height="20" uuid="50e43f88-e1d0-43d5-89db-42021266d534"/>
+				<textFieldExpression><![CDATA[$F{cuotaCapital}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="247" y="0" width="100" height="20" uuid="5c58aa98-2442-48dd-b67c-127dc552d6ed"/>
+				<textFieldExpression><![CDATA[$F{cuotaInteres}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="347" y="0" width="100" height="20" uuid="6736396d-7c2a-4be2-a74b-22a2d82dd73c"/>
+				<textFieldExpression><![CDATA[$F{montoCuota}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="447" y="0" width="44" height="20" uuid="8dc9e1c3-f021-4a5a-a30c-9a08d52677bf"/>
+				<textFieldExpression><![CDATA[$F{diasMora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="491" y="0" width="28" height="20" uuid="1a6e0d92-4bc1-430d-8a70-9212843faa4a"/>
+				<textFieldExpression><![CDATA[$F{moraMoratorio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="521" y="0" width="32" height="20" uuid="80d6931f-2f27-44f9-9c4d-3a3ffa04cb23"/>
+				<textFieldExpression><![CDATA[$F{descuento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="553" y="0" width="37" height="20" uuid="3d9d2ac9-72c4-4fda-88bd-1166b23c3540"/>
+				<textFieldExpression><![CDATA[$F{montoPago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="590" y="0" width="41" height="20" uuid="6039f07d-99d8-4662-b786-ca791dfccc7a"/>
+				<textFieldExpression><![CDATA[$F{saldoCuota}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="631" y="0" width="62" height="20" uuid="ddbdd087-b3a5-4966-bfd1-8e52adceb0c1"/>
+				<textFieldExpression><![CDATA[$F{ultimoPago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="693" y="0" width="100" height="20" uuid="80010af6-8db0-4049-90e4-ed2ea53f1fc1"/>
+				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:o="http://omnifaces.org/ui">
+
+
+    <ui:decorate template="/plantillaABM.xhtml">
+
+        <f:metadata>
+            <f:viewParam name="id" value="#{aplicaDescuentoBean.id}"/>
+            <f:viewAction action="#{aplicaDescuentoBean.cargaDatos()}"/>
+        </f:metadata>
+
+        <ui:param name="modulo" value="prestamo"/>
+        <ui:param name="titulo" value="Aplica Descuentos"/>
+        <ui:param name="listado" value="Chequeras"/>
+
+        <ui:define name="acciones">
+
+            <p:commandLink value="Guardar" action="#{aplicaDescuentoBean.guardar()}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           rendered="#{((request.isUserInRole('admin') or request.isUserInRole('prestamos_prestamo_aplicadescuento_accion_guardar')))}"/>
+            <p:button value="Cancelar" outcome="List"/>
+        </ui:define>
+
+        <ui:define name="cabecera">
+            <o:importConstants type="py.gestionpymes.prestamos.prestamos.modelo.enums.EstadoDetPrestamo" />
+
+            <p:panelGrid>
+                <p:row>
+                    <p:column>
+                        <h:outputText value="Empresa:" style="font-size: 10pt;font-weight: bold"/> 
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{aplicaDescuentoBean.actual.empresa.razonSocial}" style="font-size: 10pt;"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="Sucursal: "
+                                      style="font-size: 10pt;font-weight: bold"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{aplicaDescuentoBean.actual.sucursal.nombre}"
+                                      style="font-size: 10pt"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="Fecha de Operación: "
+                                      style="font-size: 10pt;font-weight: bold"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{aplicaDescuentoBean.actual.fechaInicioOperacion}">
+                            <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="Nro Operación: "
+                                      style="font-size: 10pt;font-weight: bold"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{aplicaDescuentoBean.actual.id}"
+                                      style="font-size: 10pt"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column><h:outputText value="Titular"
+                                            style="font-size: 10pt; vertical-align: top;font-weight: bold"/></p:column>
+                    <p:column colspan="5"><h:outputText value="#{aplicaDescuentoBean.actual.cliente.devuelveNombreCompleto()}"
+                                                        style="font-size: 10pt; vertical-align: top"/></p:column>
+                    <p:column><h:outputText value="Nro Documento: "
+                                            style="font-size: 10pt;font-weight: bold"/></p:column>
+                    <p:column><h:outputText value="#{aplicaDescuentoBean.actual.cliente.nroDocumento}"
+                                            style="font-size: 10pt"/></p:column>
+                </p:row>
+
+
+                <p:row>
+                    <p:column><h:outputText value="Moneda" style="font-weight: bold"/></p:column>
+                    <p:column><h:outputText value="#{aplicaDescuentoBean.actual.moneda.nombre}"/></p:column>
+                    <p:column><h:outputText value="Periodicidad de Pago" style="font-weight: bold"/></p:column>
+                    <p:column><h:outputText value="#{aplicaDescuentoBean.actual.periodoPago}"/></p:column>
+                    <p:column><h:outputText value="Plazo" style="font-weight: bold"/></p:column>
+                    <p:column colspan="3"><h:outputText value="#{aplicaDescuentoBean.actual.plazo}"/></p:column>
+
+                </p:row>
+
+
+                <p:row>
+                    <p:column><h:outputText value="Monto Préstamo" style="font-weight: bold"/></p:column>
+                    <p:column>
+                        <h:outputText value="#{aplicaDescuentoBean.actual.montoPrestamo}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column><h:outputText value="Monto Cuota" style="font-weight: bold"/></p:column>
+                    <p:column><h:outputText value="#{aplicaDescuentoBean.actual.montoCuota}">
+                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                        </h:outputText></p:column>
+                    <p:column><h:outputText value="Total Operacion" style="font-weight: bold"/></p:column>
+                    <p:column><h:outputText value="#{aplicaDescuentoBean.actual.totalOperacion}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText></p:column>
+                    <p:column><h:outputText value="Saldo Prestamo" style="font-weight: bold"/></p:column>
+                    <p:column><h:outputText value="#{aplicaDescuentoBean.actual.devuelveSaldoPrestamo()}">
+                            <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                        </h:outputText>
+                    </p:column>
+
+                </p:row>
+
+
+
+            </p:panelGrid>
+            <br/>
+            <br/>
+
+            <p:dataTable value="#{aplicaDescuentoBean.cuotasPedientes}" var="d" id="tablaDetalles" styleClass="tablaDetalles"
+                         style="font-size: 8pt!important"
+                         selection="#{aplicaDescuentoBean.selecccionado}"
+                         selectionMode="single"
+                         rowKey="#{d.id}">
+
+                <p:ajax event="rowSelect" listener="#{aplicaDescuentoBean.onRowSelect}" update="formABM:nuevoDescuento" />
+
+
+                <p:column headerText="#" style="width: 30px;font-size: 9pt!important">
+                    <h:outputText value="#{d.nroCuota}" />
+                </p:column>
+
+                <p:column headerText="Monto cuota" style="width: 15%;font-size: 9pt!important">
+                    <h:outputText value="#{d.montoCuota}" >
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Vencimiento" style="font-size: 9pt!important">
+                    <h:outputText value="#{d.fechaVencimiento}" >
+                        <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Cuota Capital" style="width: 15%;font-size: 9pt!important">
+                    <h:outputText value="#{d.cuotaCapital}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Cuota Interes" style="width: 15%;font-size: 9pt!important">
+                    <h:outputText value="#{d.cuotaInteres}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Moratorio" style="font-size: 9pt!important">
+                    <h:outputText value="#{d.calculaSaldoMoratorio()}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Punitorio" style="font-size: 9pt!important">
+                    <h:outputText value="#{d.calculaSaldoPunitorio()}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+
+
+            </p:dataTable>
+            <br/>
+            <p:outputPanel id="nuevoDescuento">
+
+
+                <p:panelGrid style="float: right">
+                    <p:row>
+                        <p:column></p:column>
+
+                        <p:column>
+                            <p:selectBooleanCheckbox itemLabel="Aplica a Mora?" value="#{aplicaDescuentoBean.descuentoTemp.aplicaDescuentoMora}"
+                                                     style="font-weight: bold">
+                                <p:ajax event="change" process="@this nuevoDescuento" update="nuevoDescuento"/>
+                            </p:selectBooleanCheckbox>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox itemLabel="Aplica a Cargo?" value="#{aplicaDescuentoBean.descuentoTemp.aplicaDescuentoCargo}"
+                                                     style="font-weight: bold">
+                                <p:ajax event="change" process="@this nuevoDescuento" update="nuevoDescuento"/>
+                            </p:selectBooleanCheckbox>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox itemLabel="Aplica a Interes?" value="#{aplicaDescuentoBean.descuentoTemp.aplicaDescuentoInteres}"
+                                                     style="font-weight: bold">
+                                <p:ajax event="change" process="@this nuevoDescuento" update="nuevoDescuento"/>
+                            </p:selectBooleanCheckbox>
+                        </p:column>
+                        <p:column><h:outputText value="Total Descuento" style="font-weight: bold"/></p:column>
+                        <p:column></p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="Agregar Descuento: #{aplicaDescuentoBean.descuentoTemp.nroCuota}"/></p:column>
+                        <p:column>
+                            <p:inputText value="#{aplicaDescuentoBean.descuentoTemp.descuentoMora}" 
+                                         rendered="#{aplicaDescuentoBean.descuentoTemp.aplicaDescuentoMora}"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText value="#{aplicaDescuentoBean.descuentoTemp.descuentoCargo}" 
+                                         rendered="#{aplicaDescuentoBean.descuentoTemp.aplicaDescuentoCargo}"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText value="#{aplicaDescuentoBean.descuentoTemp.descuentoInteres}" 
+                                         rendered="#{aplicaDescuentoBean.descuentoTemp.aplicaDescuentoInteres}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{aplicaDescuentoBean.descuentoTemp.total}">
+                                <f:convertNumber locale="#{formato.locale}"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column><p:commandButton value="Agregar"/></p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:outputPanel>
+        </ui:define>
+
+
+    </ui:decorate>
+
+</ui:composition>
+

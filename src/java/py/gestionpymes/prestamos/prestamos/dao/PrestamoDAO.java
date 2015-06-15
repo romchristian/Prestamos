@@ -4,7 +4,6 @@
  */
 package py.gestionpymes.prestamos.prestamos.dao;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,13 +18,14 @@ import py.gestionpymes.prestamos.adm.modelo.Sucursal;
 import py.gestionpymes.prestamos.contabilidad.modelo.FacturaVenta;
 import py.gestionpymes.prestamos.prestamos.modelo.Cliente;
 import py.gestionpymes.prestamos.prestamos.modelo.CuentaCliente;
+import py.gestionpymes.prestamos.prestamos.modelo.DetPrestamo;
 import py.gestionpymes.prestamos.prestamos.modelo.enums.EstadoPrestamo;
 import py.gestionpymes.prestamos.prestamos.modelo.OperacionDesembolsoPrestamo;
 import py.gestionpymes.prestamos.prestamos.modelo.Prestamo;
+import py.gestionpymes.prestamos.prestamos.modelo.enums.EstadoDetPrestamo;
 import py.gestionpymes.prestamos.tesoreria.dao.TransaccionDAO;
 import py.gestionpymes.prestamos.tesoreria.modelo.Secuencia;
 import py.gestionpymes.prestamos.tesoreria.modelo.SesionTPV;
-import py.gestionpymes.prestamos.tesoreria.modelo.TipoTransaccion;
 import py.gestionpymes.prestamos.tesoreria.modelo.TipoTransaccionCaja;
 import py.gestionpymes.prestamos.tesoreria.modelo.Transaccion;
 import py.gestionpymes.prestamos.tesoreria.modelo.TransaccionDesembolso;
@@ -207,4 +207,11 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
         return prestamo;
     }
 
+    
+    public List<DetPrestamo> findCuotasPendientes(Prestamo p){
+        return em.createQuery("SELECT dp from DetPrestamo dp WHERE dp.prestamo = :prestamo and dp.estado = :estado ORDER BY dp.nroCuota")
+                .setParameter("prestamo", p)
+                .setParameter("estado", EstadoDetPrestamo.PENDIENTE)
+                .getResultList();
+    }
 }

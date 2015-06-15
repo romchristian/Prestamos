@@ -73,6 +73,7 @@ public class PrestamoListadoBean implements Serializable {
     private Date inicio;
     private Date fin;
 
+    
     public boolean isBuscaPorCliente() {
         return buscaPorCliente;
     }
@@ -245,6 +246,7 @@ public class PrestamoListadoBean implements Serializable {
         
         
         cargaPrestamos();
+     
     }
 
     private void cargaPrestamos() {
@@ -281,6 +283,7 @@ public class PrestamoListadoBean implements Serializable {
                 }
             }
         }
+        
 
     }
 
