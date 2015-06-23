@@ -30,7 +30,9 @@ import javax.inject.Named;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import py.gestionpymes.prestamos.adm.dao.CargoPorMoraDAO;
 import py.gestionpymes.prestamos.adm.dao.MonedaFacade;
+import py.gestionpymes.prestamos.adm.modelo.CargoPorMora;
 import py.gestionpymes.prestamos.adm.modelo.Estado;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.contabilidad.modelo.ChequeRecibido;
@@ -67,6 +69,8 @@ public class CobraCuotaBean implements Serializable {
     private CobranzaDAO cobranzaDAO;
     @Inject
     private SesionTPVBean sesionTPVBean;
+    @EJB
+    private CargoPorMoraDAO cagoDAO;
 
     private TreeNode root = new DefaultTreeNode("prestamos", null);
     private Cliente cliente;
@@ -136,11 +140,10 @@ public class CobraCuotaBean implements Serializable {
         if (efectivo.getMontoPagado().compareTo(obtRestante()) < 0) {
             efectivo.setMonto(efectivo.getMontoPagado());
             efectivo.setCambio(new BigDecimal(BigInteger.ZERO));
-        }else{
+        } else {
             efectivo.setMonto(obtRestante());
         }
-        
-        
+
         efectivo.setFecha(facturaVenta.getFechaEmision());
         efectivo.setMoneda(facturaVenta.getMoneda());
         efectivo.setFacturaVenta(facturaVenta);
@@ -275,7 +278,7 @@ public class CobraCuotaBean implements Serializable {
         if (totalAPagar == null) {
             return new BigDecimal(BigInteger.ZERO);
         }
-        
+
         BigDecimal R = totalAPagar.subtract(obtTotalPagado());
         if (R.compareTo(new BigDecimal(BigInteger.ZERO)) < 0) {
             return new BigDecimal(BigInteger.ZERO);
@@ -600,6 +603,13 @@ public class CobraCuotaBean implements Serializable {
 
             int i = 0;
             for (DetPrestamo d : p.getDetalles()) {
+                System.out.println("detalle: " + d.getNroCuota());
+                CargoPorMora c = cagoDAO.findCargo(d.getDiasMora(), d.getPrestamo().getPeriodoPago());
+                System.out.println("Cargo: " + c);
+                if (c != null) {
+                    d.setPendienteCargo(c.getMonto());
+                }
+
                 TreeCuota cuota = new TreeCuota(d);
                 cuota.setPadre(nodoPrestamo);
                 TreeNode nodoCuota = new DefaultTreeNode(cuota, nodoPrestamo);
@@ -660,12 +670,11 @@ public class CobraCuotaBean implements Serializable {
                 CobraCuotaBean controller = (CobraCuotaBean) context.getApplication().getELResolver().
                         getValue(context.getELContext(), null, "cobraCuotaBean");
 
-                if (montoPago.compareTo(controller.getCuotaSeleccionada().getCuotaInteres().add(controller.getCuotaSeleccionada().getMontoMora()).subtract(controller.getCuotaSeleccionada().getDescuento())) < 0) {
-                    FacesMessage msg = new FacesMessage("Debe pagar por lo menos el minimo");
-                    throw new ValidatorException(msg);
-                }
-
-                if (montoPago.compareTo(controller.getCuotaSeleccionada().getSaldoCuota().add(controller.getCuotaSeleccionada().getMontoMora()).subtract(controller.getCuotaSeleccionada().getDescuento())) > 0) {
+//                if (montoPago.compareTo(controller.getCuotaSeleccionada().getCuotaInteres().add(controller.getCuotaSeleccionada().getMontoMora()).subtract(controller.getCuotaSeleccionada().getDescuento())) < 0) {
+//                    FacesMessage msg = new FacesMessage("Debe pagar por lo menos el minimo");
+//                    throw new ValidatorException(msg);
+//                }
+                if (montoPago.compareTo(controller.getCuotaSeleccionada().getSaldoCuota()) > 0) {
                     FacesMessage msg = new FacesMessage("El pago excede el monto de la cuota");
                     throw new ValidatorException(msg);
                 }

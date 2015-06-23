@@ -115,7 +115,7 @@ public class Prestamo implements Serializable , Auditable{
     }
 
     public Prestamo() {
-        this.estado = EstadoPrestamo.PENDIENTE_DESEMBOLSO;
+        this.estado = EstadoPrestamo.PENDIENTE_LIQUIDACION;
         this.sistemaAmortizacion = SistemaAmortizacion.FRANCES;
         this.tasa = new BigDecimal(BigInteger.ZERO);
     }

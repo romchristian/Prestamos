@@ -455,7 +455,7 @@ public class PrestamoController implements Serializable {
 
     public void anulaConfimacion() {
         selected.setFirmaPagare(false);
-        selected.setEstado(EstadoPrestamo.PENDIENTE_DESEMBOLSO);
+        selected.setEstado(EstadoPrestamo.PENDIENTE_LIQUIDACION);
         ejbFacade.edit(selected);
     }
 

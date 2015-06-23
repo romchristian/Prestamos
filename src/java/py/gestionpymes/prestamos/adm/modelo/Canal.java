@@ -5,15 +5,15 @@
 package py.gestionpymes.prestamos.adm.modelo;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.*;
+import py.gestionpymes.prestamos.seguridad.persistencia.Auditable;
 
 /**
  *
  * @author christian
  */
 @Entity
-public class Canal implements Serializable {
+public class Canal implements Serializable,Auditable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,6 +44,7 @@ public class Canal implements Serializable {
         this.estado = estado;
     }
 
+    @Override
     public Long getId() {
         return id;
     }

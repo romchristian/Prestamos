@@ -55,6 +55,7 @@ public class TreeCuota {
     private BigDecimal montoMoratorio;
     private BigDecimal montoPunitorio;
     private BigDecimal descuento;
+    private BigDecimal cargo;
     private boolean tieneDescuento;
     private boolean disabledPagar;
     private TreeNode padre;
@@ -85,8 +86,9 @@ public class TreeCuota {
         this.nroCuota = detPrestamo.getNroCuota();
         this.montoCuota = detPrestamo.getMontoCuota().setScale(0, RoundingMode.HALF_EVEN);
         this.diasMora = detPrestamo.getDiasMora();
+        this.cargo = detPrestamo.getPendienteCargo();
         
-        this.descuento = detPrestamo.getDescuento();
+        this.descuento = detPrestamo.getDescuentoAcumuladoTotalNoAplicado();
         this.montoMoratorio = detPrestamo.calculaSaldoMoratorio();
         this.montoPunitorio = detPrestamo.calculaSaldoPunitorio();
         this.cuotaCapital = detPrestamo.getCuotaCapital();
@@ -118,6 +120,16 @@ public class TreeCuota {
         return tieneDescuento;
     }
 
+    public BigDecimal getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(BigDecimal cargo) {
+        this.cargo = cargo;
+    }
+
+    
+    
     public String getCliente() {
         return cliente;
     }

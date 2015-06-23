@@ -599,3 +599,54 @@ insert into rol (nombre, estado, version) values ('tesoreria_terminal_listado_ed
 --   ADD CONSTRAINT fk_transaccionbancaria_chequeemitido_id FOREIGN KEY (chequeemitido_id)
 --       REFERENCES chequeemitido (id) MATCH SIMPLE
 --       ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+
+--19-06-2015
+
+-- Table: descuentocuota
+
+-- DROP TABLE descuentocuota;
+
+-- CREATE TABLE descuentocuota
+-- (
+--   id serial NOT NULL,
+--   aplicado boolean,
+--   fecha timestamp without time zone,
+--   monto numeric(38,0),
+--   tipo character varying(255),
+--   detprestamo_id bigint,
+--   usuario_id bigint,
+--   CONSTRAINT descuentocuota_pkey PRIMARY KEY (id),
+--   CONSTRAINT fk_descuentocuota_detprestamo_id FOREIGN KEY (detprestamo_id)
+--       REFERENCES detprestamo (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_descuentocuota_usuario_id FOREIGN KEY (usuario_id)
+--       REFERENCES persona (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- ALTER TABLE descuentocuota
+--   OWNER TO postgres;
+
+
+-- 22-06-2015
+-- 
+-- CREATE TABLE cargopormora
+-- (
+--   id serial NOT NULL,
+--   descripcion character varying(255),
+--   estado character varying(255),
+--   fechabaja date,
+--   fintramo integer,
+--   iniciotramo integer,
+--   monto numeric(38,0),
+--   tipo character varying(255),
+--   CONSTRAINT cargopormora_pkey PRIMARY KEY (id)
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- ALTER TABLE cargopormora
+--   OWNER TO postgres;

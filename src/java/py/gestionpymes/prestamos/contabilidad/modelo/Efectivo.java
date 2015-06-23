@@ -5,7 +5,6 @@
 package py.gestionpymes.prestamos.contabilidad.modelo;
 
 import java.math.BigDecimal;
-import py.gestionpymes.prestamos.contabilidad.modelo.Pago;
 import javax.persistence.Entity;
 
 /**
@@ -13,7 +12,7 @@ import javax.persistence.Entity;
  * @author christian
  */
 @Entity
-public class Efectivo extends Pago {
+public class Efectivo extends Pago{
 
     private BigDecimal montoPagado;
     private BigDecimal cambio;

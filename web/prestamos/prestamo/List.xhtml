@@ -118,7 +118,7 @@
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_edicion'))}"/>
 
                                             <p:button id="editButton" value="#{bundle.Edit}"  outcome="Edit.xhtml" style="font-size: 10pt"
-                                                      disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion() ? 'false':'true'}"
+                                                      disabled="#{prestamoController.selected.estado == 'PENDIENTE_LIQUIDACION' and prestamoController.haySeleccion() ? 'false':'true'}"
                                                       rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_edicion'))}">
                                                 <f:param name="id" value="#{prestamoController.selected.id == null ? 0:prestamoController.selected.id }"/>
                                             </p:button>
@@ -133,20 +133,20 @@
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_extracto_prestamo'))}"/>
 
                                             <p:commandButton id="imprimirButton" action="#{prestamoController.imprimePagare()}" value="Pagare" ajax="false" style="font-size: 10pt"
-                                                             disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
+                                                             disabled="#{prestamoController.selected.estado == 'PENDIENTE_LIQUIDACION' and prestamoController.haySeleccion()? 'false':'true'}"
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_pagare'))}"/>
 
                                             <p:commandButton id="imprimirLiqButton" action="#{prestamoController.imprimeLiquidacionPrestamo()}" value="Liq. Prestamo" ajax="false" update="datalist" style="font-size: 10pt"
-                                                             disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
+                                                             disabled="#{prestamoController.haySeleccion()? 'false':'true'}"
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_liquididacion'))}"/>
 
                                             <p:commandButton id="imprimirDetClieButton" action="#{prestamoController.imprimeDetalleParaCliente()}" value="Det. Cliente" ajax="false" update="datalist" style="font-size: 10pt"
-                                                             disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
+                                                             disabled="#{prestamoController.selected.estado == 'PENDIENTE_LIQUIDACION' and prestamoController.haySeleccion()? 'false':'true'}"
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_imprime_detalle_cliente'))}"/>
 
 
                                             <p:commandButton id="confirmarButton" action="#{prestamoController.confirmaPagare()}" value="Confirmar" update="datalist" style="font-size: 10pt"
-                                                             disabled="#{prestamoController.selected.estado == 'PENDIENTE_DESEMBOLSO' and prestamoController.haySeleccion()? 'false':'true'}"
+                                                             disabled="#{prestamoController.selected.estado == 'PENDIENTE_LIQUIDACION' and prestamoController.haySeleccion()? 'false':'true'}"
                                                              rendered="#{(request.isUserInRole('admin') or request.isUserInRole('prestamos_confirma_pagare'))}"/>
 
 

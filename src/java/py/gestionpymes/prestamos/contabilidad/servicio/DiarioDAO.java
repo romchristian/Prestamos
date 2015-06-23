@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.gestion.contabilidad.servicio;
+package py.gestionpymes.prestamos.contabilidad.servicio;
 
 import java.util.List;
 import javax.ejb.EJB;

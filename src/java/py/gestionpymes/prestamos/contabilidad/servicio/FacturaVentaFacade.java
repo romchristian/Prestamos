@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.gestionpymes.prestamos.adm.dao;
+package py.gestionpymes.prestamos.contabilidad.servicio;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import py.gestionpymes.prestamos.adm.dao.AbstractFacade;
 import py.gestionpymes.prestamos.contabilidad.modelo.FacturaVenta;
 
 /**

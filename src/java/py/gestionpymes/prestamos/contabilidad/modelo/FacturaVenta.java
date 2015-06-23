@@ -25,13 +25,14 @@ import py.gestionpymes.prestamos.adm.modelo.Empresa;
 import py.gestionpymes.prestamos.adm.modelo.Moneda;
 import py.gestionpymes.prestamos.adm.modelo.Sucursal;
 import py.gestionpymes.prestamos.prestamos.modelo.Cliente;
+import py.gestionpymes.prestamos.seguridad.persistencia.Auditable;
 
 /**
  *
  * @author Acer
  */
 @Entity
-public class FacturaVenta implements Serializable {
+public class FacturaVenta implements Serializable,Auditable {
     
     
 

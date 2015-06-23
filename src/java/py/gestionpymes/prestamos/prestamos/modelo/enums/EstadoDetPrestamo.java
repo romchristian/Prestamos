@@ -9,5 +9,5 @@ package py.gestionpymes.prestamos.prestamos.modelo.enums;
  * @author christian
  */
 public enum EstadoDetPrestamo {
- PENDIENTE, CANCELADO, VENCIDA;
+ PENDIENTE, CANCELADO, VENCIDA,ANULADO;
 }

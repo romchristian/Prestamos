@@ -122,7 +122,7 @@
                          selectionMode="single"
                          rowKey="#{d.id}">
 
-                <p:ajax event="rowSelect" listener="#{aplicaDescuentoBean.onRowSelect}" update="formABM:nuevoDescuento" />
+                <p:ajax event="rowSelect" listener="#{aplicaDescuentoBean.onRowSelect}" update="formABM:nuevoDescuento :formABM:detalles" />
 
 
                 <p:column headerText="#" style="width: 30px;font-size: 9pt!important">
@@ -177,19 +177,21 @@
 
                         <p:column>
                             <p:selectBooleanCheckbox itemLabel="Aplica a Mora?" value="#{aplicaDescuentoBean.descuentoTemp.aplicaDescuentoMora}"
-                                                     style="font-weight: bold">
+                                                     style="font-weight: bold"
+                                                     disabled="#{(aplicaDescuentoBean.descuentoTemp.descuentoMora == 0)}">
                                 <p:ajax event="change" process="@this nuevoDescuento" update="nuevoDescuento"/>
                             </p:selectBooleanCheckbox>
                         </p:column>
                         <p:column>
                             <p:selectBooleanCheckbox itemLabel="Aplica a Cargo?" value="#{aplicaDescuentoBean.descuentoTemp.aplicaDescuentoCargo}"
-                                                     style="font-weight: bold">
+                                                     style="font-weight: bold" disabled="#{(aplicaDescuentoBean.descuentoTemp.descuentoCargo == 0)}">
                                 <p:ajax event="change" process="@this nuevoDescuento" update="nuevoDescuento"/>
                             </p:selectBooleanCheckbox>
                         </p:column>
                         <p:column>
                             <p:selectBooleanCheckbox itemLabel="Aplica a Interes?" value="#{aplicaDescuentoBean.descuentoTemp.aplicaDescuentoInteres}"
-                                                     style="font-weight: bold">
+                                                     style="font-weight: bold"
+                                                     disabled="#{(aplicaDescuentoBean.descuentoTemp.descuentoInteres == 0)}">
                                 <p:ajax event="change" process="@this nuevoDescuento" update="nuevoDescuento"/>
                             </p:selectBooleanCheckbox>
                         </p:column>
@@ -215,12 +217,47 @@
                                 <f:convertNumber locale="#{formato.locale}"/>
                             </h:outputText>
                         </p:column>
-                        <p:column><p:commandButton value="Agregar"/></p:column>
+                        <p:column>
+                            <p:commandButton value="Agregar" actionListener="#{aplicaDescuentoBean.agregaDescuento()}" update=":formABM:detalles"/>
+                        </p:column>
                     </p:row>
                 </p:panelGrid>
+
             </p:outputPanel>
+
+            <br/>
+
         </ui:define>
 
+        <ui:define name="detalles">
+            <br/>
+            <br/>
+            <p:outputPanel id="detalles">
+
+
+                <p:dataTable value="#{aplicaDescuentoBean.selecccionado.descuentoCuotas}" var="d" rendered="#{(aplicaDescuentoBean.selecccionado != null)}">
+                    <p:column headerText="Fecha">
+                        <h:outputText value="#{d.fecha}">
+                            <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Descripcion">
+                        <h:outputText value="Descuesto a la cuota ##{d.detPrestamo.nroCuota}"/>
+                    </p:column>
+                    <p:column headerText="Tipo">
+                        <h:outputText value="#{d.tipo}"/>
+                    </p:column>
+                    <p:column headerText="Monto">
+                        <h:outputText value="#{d.monto}">
+                            <f:convertNumber locale="#{formato.locale}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column >
+                        <p:commandLink value="X" actionListener="#{aplicaDescuentoBean.removerDescuento(d)}" update=":formABM:detalles :formABM:nuevoDescuento"/>
+                    </p:column>
+                </p:dataTable>
+            </p:outputPanel>
+        </ui:define>
 
     </ui:decorate>
 

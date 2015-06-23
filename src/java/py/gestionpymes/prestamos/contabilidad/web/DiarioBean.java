@@ -7,10 +7,10 @@ package py.gestionpymes.prestamos.contabilidad.web;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import py.gestion.contabilidad.servicio.DiarioDAO;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
 import py.gestionpymes.prestamos.contabilidad.modelo.Diario;
+import py.gestionpymes.prestamos.contabilidad.servicio.DiarioDAO;
 
 /**
  *

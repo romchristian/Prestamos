@@ -12,13 +12,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import py.gestionpymes.prestamos.seguridad.persistencia.Auditable;
 
 /**
  *
  * @author Acer
  */
 @Entity
-public class Diario implements Serializable {
+public class Diario implements Serializable,Auditable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,6 +43,7 @@ public class Diario implements Serializable {
     
     
 
+    @Override
     public Long getId() {
         return id;
     }

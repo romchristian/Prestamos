@@ -30,7 +30,7 @@ import py.gestionpymes.prestamos.seguridad.persistencia.Auditable;
  * @author christian
  */
 @Entity
-public class DetPrestamo implements Serializable ,Auditable{
+public class DetPrestamo implements Serializable, Auditable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -69,9 +69,64 @@ public class DetPrestamo implements Serializable ,Auditable{
     private BigDecimal impuestoIvaCuota = new BigDecimal(BigInteger.ZERO);
     @OneToMany(mappedBy = "detPrestamo")
     private List<DescuentoCuota> descuentoCuotas;
+    @Transient
+    private BigDecimal pendienteCargo;
 
     public DetPrestamo() {
         this.estado = EstadoDetPrestamo.PENDIENTE;
+    }
+
+    public List<DescuentoCuota> getDescuentoCuotas() {
+        return descuentoCuotas;
+    }
+
+    public BigDecimal getPendienteCargo() {
+        return pendienteCargo;
+    }
+
+    public void setPendienteCargo(BigDecimal pendienteCargo) {
+        this.pendienteCargo = pendienteCargo;
+    }
+
+    public BigDecimal getDescuentoAcumulado(TipoDescuento tipo) {
+        BigDecimal R = BigDecimal.ZERO;
+        if (getDescuentoCuotas() != null) {
+            for (DescuentoCuota d : getDescuentoCuotas()) {
+                if (d.getTipo() == tipo) {
+                    R = R.add(d.getMonto());
+                }
+            }
+        }
+
+        return R;
+    }
+
+    public BigDecimal getDescuentoAcumuladoTotal() {
+        BigDecimal R = BigDecimal.ZERO;
+        if (getDescuentoCuotas() != null) {
+            for (DescuentoCuota d : getDescuentoCuotas()) {
+                R = R.add(d.getMonto());
+            }
+        }
+
+        return R;
+    }
+
+    public BigDecimal getDescuentoAcumuladoTotalNoAplicado() {
+        BigDecimal R = BigDecimal.ZERO;
+        if (getDescuentoCuotas() != null) {
+            for (DescuentoCuota d : getDescuentoCuotas()) {
+                if (!d.isAplicado()) {
+                    R = R.add(d.getMonto());
+                }
+            }
+        }
+
+        return R;
+    }
+
+    public void setDescuentoCuotas(List<DescuentoCuota> descuentoCuotas) {
+        this.descuentoCuotas = descuentoCuotas;
     }
 
     public DetPrestamo(Prestamo prestamo, int nroCuota, BigDecimal cuotaCapital, BigDecimal cuotaInteres, BigDecimal saldoCapital) {
@@ -388,12 +443,26 @@ public class DetPrestamo implements Serializable ,Auditable{
 
     public BigDecimal getSaldoCuota() {
         if (estado == EstadoDetPrestamo.PENDIENTE) {
-            if (tieneDescuento) {
-                saldoCuota = calculaMontoPorDiasMoratorio().add(calculaMontoPorDiasPunitorio()).add(getMontoCuota()).subtract(getMontoPago()).setScale(8, RoundingMode.HALF_EVEN);
-                saldoCuota = saldoCuota.subtract(descuento);
-            } else {
-                saldoCuota = calculaMontoPorDiasMoratorio().add(calculaMontoPorDiasPunitorio()).add(getMontoCuota()).subtract(getMontoPago()).setScale(8, RoundingMode.HALF_EVEN);
+//            if (tieneDescuento) {
+            BigDecimal pendienteMora = calculaMontoPorDiasMoratorio();
+            pendienteMora = pendienteMora.add(calculaMontoPorDiasPunitorio());
+            pendienteMora = pendienteMora.subtract(getDescuentoAcumulado(TipoDescuento.MORA));
+
+            saldoCuota = getMontoCuota();
+
+            saldoCuota = saldoCuota.add(pendienteMora);
+            if (pendienteCargo != null) {
+                saldoCuota = saldoCuota.add(pendienteCargo);
             }
+            saldoCuota = saldoCuota.subtract(getDescuentoAcumulado(TipoDescuento.INTERES));
+            saldoCuota = saldoCuota.subtract(getDescuentoAcumulado(TipoDescuento.CARGOS));
+            
+            saldoCuota = saldoCuota.subtract(getMontoPago());
+            //calculaMontoPorDiasMoratorio().add(calculaMontoPorDiasPunitorio()).add();
+            //saldoCuota = saldoCuota.subtract(descuento);
+//            } else {
+//                saldoCuota = calculaMontoPorDiasMoratorio().add(calculaMontoPorDiasPunitorio()).add(getMontoCuota()).subtract(getMontoPago()).setScale(8, RoundingMode.HALF_EVEN);
+//            }
 
         }
         return saldoCuota;
@@ -413,18 +482,18 @@ public class DetPrestamo implements Serializable ,Auditable{
 
     public boolean afectaSaldoCuota(BigDecimal monto, String refMonto) {
         boolean R = false;
-        saldoCuota = saldoCuota.setScale(0, RoundingMode.HALF_EVEN);
-        monto =monto.setScale(0, RoundingMode.HALF_EVEN);
+        saldoCuota = getSaldoCuota().setScale(0, RoundingMode.HALF_EVEN);
+        monto = monto.setScale(0, RoundingMode.HALF_EVEN);
         BigDecimal mora = devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
 
         System.out.println("SALDO CUOTA: " + saldoCuota);
         System.out.println("MORA: " + mora);
         System.out.println("DESCUENTO: " + descuento);
         System.out.println("MONTO: " + monto);
-        BigDecimal suma = saldoCuota.add(mora).add(descuento).setScale(0, RoundingMode.HALF_EVEN);
+        //BigDecimal suma = saldoCuota.add(mora).add(descuento).setScale(0, RoundingMode.HALF_EVEN);
 
-        System.out.println("SUMA: " + suma);
-        if (suma.compareTo(monto) >= 0) {
+        System.out.println("SUMA: " + saldoCuota);
+        if (saldoCuota.compareTo(monto) >= 0) {
 
             montoPago = montoPago.add(monto);
             saldoCuota = saldoCuota.subtract(monto);

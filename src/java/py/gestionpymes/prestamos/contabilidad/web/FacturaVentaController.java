@@ -1,9 +1,9 @@
-package py.gestionpymes.prestamos.adm.web;
+package py.gestionpymes.prestamos.contabilidad.web;
 
 import py.gestionpymes.prestamos.contabilidad.modelo.FacturaVenta;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil;
 import py.gestionpymes.prestamos.adm.web.util.JsfUtil.PersistAction;
-import py.gestionpymes.prestamos.adm.dao.FacturaVentaFacade;
+import py.gestionpymes.prestamos.contabilidad.servicio.FacturaVentaFacade;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class FacturaVentaController implements Serializable {
 
     @EJB
-    private py.gestionpymes.prestamos.adm.dao.FacturaVentaFacade ejbFacade;
+    private py.gestionpymes.prestamos.contabilidad.servicio.FacturaVentaFacade ejbFacade;
     private List<FacturaVenta> items = null;
     private FacturaVenta selected;
 

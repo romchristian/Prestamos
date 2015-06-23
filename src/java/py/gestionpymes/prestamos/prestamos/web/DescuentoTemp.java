@@ -7,6 +7,7 @@ package py.gestionpymes.prestamos.prestamos.web;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import py.gestionpymes.prestamos.prestamos.modelo.DetPrestamo;
 
 /**
  *
@@ -22,13 +23,25 @@ public class DescuentoTemp {
     private boolean aplicaDescuentoInteres;
     private BigDecimal descuentoInteres;
     private BigDecimal total;
+    private DetPrestamo detPrestamo;
 
+    
+    
     public DescuentoTemp() {
         descuentoMora = new BigDecimal(BigInteger.ZERO);
         descuentoCargo = new BigDecimal(BigInteger.ZERO);
         descuentoInteres = new BigDecimal(BigInteger.ZERO);
     }
 
+    public DetPrestamo getDetPrestamo() {
+        return detPrestamo;
+    }
+
+    public void setDetPrestamo(DetPrestamo detPrestamo) {
+        this.detPrestamo = detPrestamo;
+    }
+
+    
     public Integer getNroCuota() {
         return nroCuota;
     }

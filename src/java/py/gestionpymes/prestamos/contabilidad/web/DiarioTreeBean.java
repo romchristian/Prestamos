@@ -10,11 +10,11 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import py.gestion.contabilidad.servicio.DiarioDAO;
 import py.gestionpymes.prestamos.adm.dao.AbstractDAO;
 import py.gestionpymes.prestamos.adm.web.util.BeanGenerico;
 import py.gestionpymes.prestamos.contabilidad.modelo.Diario;
 import py.gestionpymes.prestamos.contabilidad.modelo.TipoDiario;
+import py.gestionpymes.prestamos.contabilidad.servicio.DiarioDAO;
 
 
 /**

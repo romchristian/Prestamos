@@ -10,19 +10,22 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import py.gestionpymes.prestamos.adm.modelo.Usuario;
+import py.gestionpymes.prestamos.seguridad.persistencia.Auditable;
 
 /**
  *
  * @author Acer
  */
 @Entity
-public class DescuentoCuota implements Serializable {
+public class DescuentoCuota implements Serializable, Auditable{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -34,8 +37,18 @@ public class DescuentoCuota implements Serializable {
     private Usuario usuario;
     @ManyToOne
     private DetPrestamo detPrestamo;
+    @Enumerated(EnumType.STRING)
+    private TipoDescuento tipo;
     private BigDecimal monto;
     private boolean aplicado;
+
+    public TipoDescuento getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoDescuento tipo) {
+        this.tipo = tipo;
+    }
 
     public DescuentoCuota() {
         this.fecha = new Date();

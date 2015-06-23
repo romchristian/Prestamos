@@ -14,13 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import py.gestionpymes.prestamos.prestamos.modelo.DetPrestamo;
 import py.gestionpymes.prestamos.prestamos.modelo.Prestamo;
+import py.gestionpymes.prestamos.seguridad.persistencia.Auditable;
 
 /**
  *
  * @author Acer
  */
 @Entity
-public class FacturaVentaDetalle implements Serializable {
+public class FacturaVentaDetalle implements Serializable,Auditable {
 
     public final static String MONTO_CUOTA = "monto_cuota";
     public final static String MONTO_MORATORIO = "monto_moratorio";

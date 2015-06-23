@@ -11,18 +11,13 @@ import java.util.Date;
 import javax.persistence.*;
 import py.gestionpymes.prestamos.adm.modelo.Cotizacion;
 import py.gestionpymes.prestamos.adm.modelo.Moneda;
-import py.gestionpymes.prestamos.contabilidad.modelo.FacturaVenta;
+import py.gestionpymes.prestamos.seguridad.persistencia.Auditable;
 import py.gestionpymes.prestamos.tesoreria.modelo.Transaccion;
-import py.gestionpymes.prestamos.tesoreria.modelo.TransaccionCobraCuota;
 
-/**
- *
- * @author christian
- */
 
 
 @Entity
-public abstract class Pago implements Serializable {
+public abstract class Pago implements Serializable,Auditable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,6 +75,7 @@ public abstract class Pago implements Serializable {
         this.cotizacion = cotizacion;
     }
     
+    @Override
     public Long getId() {
         return id;
     }
