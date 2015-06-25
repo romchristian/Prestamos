@@ -50,6 +50,7 @@ public class Pagare {
     private int mesNumero;
     private String mesLetra;
     private int anio;
+    private long prestamo_id;
 
     public Pagare() {
 
@@ -90,6 +91,7 @@ public class Pagare {
             setCoDeudorConyuge(this.prestamo.getCodeudor().getConyuge() == null ? null : this.prestamo.getCodeudor().getConyuge().devuelveNombreCompleto());
             setCoDeudorConyugeDoc(this.prestamo.getCodeudor().getConyuge() == null ? null : this.prestamo.getCodeudor().getConyuge().getNroDocumento());
         }
+        setPrestamo_id(this.prestamo.getId()==null?null:this.prestamo.getId());
     }
 
     public Prestamo getPrestamo() {
@@ -307,5 +309,14 @@ public class Pagare {
         System.out.println("");
         return new NumeroALetras().Convertir(num.intValue() + "", true);
     }
+
+    public long getPrestamo_id() {
+        return prestamo_id;
+    }
+
+    public void setPrestamo_id(long prestamo_id) {
+        this.prestamo_id = prestamo_id;
+    }
+    
 
 }
