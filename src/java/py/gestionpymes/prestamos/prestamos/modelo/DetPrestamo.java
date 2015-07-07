@@ -69,11 +69,21 @@ public class DetPrestamo implements Serializable, Auditable {
     private BigDecimal impuestoIvaCuota = new BigDecimal(BigInteger.ZERO);
     @OneToMany(mappedBy = "detPrestamo")
     private List<DescuentoCuota> descuentoCuotas;
+    @OneToMany(mappedBy = "detPrestamo")
+    private List<AplicacionPagoCuota> aplicacionesPago;
     @Transient
     private BigDecimal pendienteCargo;
 
     public DetPrestamo() {
         this.estado = EstadoDetPrestamo.PENDIENTE;
+    }
+
+    public List<AplicacionPagoCuota> getAplicacionesPago() {
+        return aplicacionesPago;
+    }
+
+    public void setAplicacionesPago(List<AplicacionPagoCuota> aplicacionesPago) {
+        this.aplicacionesPago = aplicacionesPago;
     }
 
     public List<DescuentoCuota> getDescuentoCuotas() {
@@ -456,7 +466,7 @@ public class DetPrestamo implements Serializable, Auditable {
             }
             saldoCuota = saldoCuota.subtract(getDescuentoAcumulado(TipoDescuento.INTERES));
             saldoCuota = saldoCuota.subtract(getDescuentoAcumulado(TipoDescuento.CARGOS));
-            
+
             saldoCuota = saldoCuota.subtract(getMontoPago());
             //calculaMontoPorDiasMoratorio().add(calculaMontoPorDiasPunitorio()).add();
             //saldoCuota = saldoCuota.subtract(descuento);

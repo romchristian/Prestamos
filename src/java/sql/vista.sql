@@ -650,3 +650,28 @@ insert into rol (nombre, estado, version) values ('tesoreria_terminal_listado_ed
 -- );
 -- ALTER TABLE cargopormora
 --   OWNER TO postgres;
+
+
+--06-07-2015
+
+-- CREATE TABLE aplicacionpagocuota
+-- (
+--   id serial NOT NULL,
+--   fecha date,
+--   monto numeric(38,0),
+--   tipo character varying(255),
+--   detprestamo_id bigint,
+--   facturaventadetalle_id bigint,
+--   CONSTRAINT aplicacionpagocuota_pkey PRIMARY KEY (id),
+--   CONSTRAINT fk_aplicacionpagocuota_detprestamo_id FOREIGN KEY (detprestamo_id)
+--       REFERENCES detprestamo (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_aplicacionpagocuota_facturaventadetalle_id FOREIGN KEY (facturaventadetalle_id)
+--       REFERENCES facturaventadetalle (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- ALTER TABLE aplicacionpagocuota
+--   OWNER TO postgres;

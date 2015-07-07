@@ -29,6 +29,7 @@ import py.gestionpymes.prestamos.prestamos.dao.DetCuentaClienteDAO;
 import py.gestionpymes.prestamos.prestamos.dao.MontoCancelacionIncorrectoException;
 import py.gestionpymes.prestamos.prestamos.dao.NumeroInvalidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PagoExcedidoException;
+import py.gestionpymes.prestamos.prestamos.modelo.AplicacionPagoCuota;
 import py.gestionpymes.prestamos.prestamos.modelo.Prestamo;
 import py.gestionpymes.prestamos.prestamos.modelo.PrestamoHistorico;
 import py.gestionpymes.prestamos.prestamos.web.TreeCuota;
@@ -60,18 +61,15 @@ public class CobranzaDAO {
     public void creaFactura(FacturaVenta f) {
         em.persist(f);
     }
+    
+    public void creaAplicacionesPago(List<AplicacionPagoCuota> aplicacionPagoCuotas){
+        for(AplicacionPagoCuota a: aplicacionPagoCuotas){
+            em.merge(a);
+        }
+    }
 
-    public FacturaVenta create(FacturaVenta f, SesionTPV s) throws PagoExcedidoException, NumeroInvalidoException, MontoCancelacionIncorrectoException {
-        // Creo el medio de pago Efectivo por defecto
-//        Efectivo efe = new Efectivo();
-//        efe.setFecha(new Date());
-//        efe.setMoneda(f.getMoneda());
-//        efe.setMonto(f.getTotal());
-//        efe.setFacturaVenta(f);
-//        f.setPagos(new ArrayList<Pago>());
-//        f.getPagos().add(efe);
-        
-        BigDecimal totalPagado = new BigDecimal(BigInteger.ZERO);
+    public FacturaVenta paga(FacturaVenta f, SesionTPV s)throws PagoExcedidoException, NumeroInvalidoException, MontoCancelacionIncorrectoException{
+                BigDecimal totalPagado = new BigDecimal(BigInteger.ZERO);
         for(Pago p: f.getPagos()){
             totalPagado = totalPagado.add(p.getMonto());
         }
@@ -218,6 +216,16 @@ public class CobranzaDAO {
         
         
         return f;
+    }
+    
+    public FacturaVenta create(FacturaVenta f, SesionTPV s, List<AplicacionPagoCuota> lista) throws PagoExcedidoException, NumeroInvalidoException, MontoCancelacionIncorrectoException {
+        FacturaVenta R = paga(f, s);
+        creaAplicacionesPago(lista);
+        return R;
+    }
+    
+    public FacturaVenta create(FacturaVenta f, SesionTPV s) throws PagoExcedidoException, NumeroInvalidoException, MontoCancelacionIncorrectoException {
+        return paga(f, s);
     }
 
     public CobroCuota create(TreeCuota t) throws PagoExcedidoException {

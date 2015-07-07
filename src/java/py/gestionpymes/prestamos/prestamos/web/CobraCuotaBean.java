@@ -42,10 +42,12 @@ import py.gestionpymes.prestamos.contabilidad.modelo.FacturaVentaDetalle;
 import py.gestionpymes.prestamos.contabilidad.modelo.Pago;
 import py.gestionpymes.prestamos.contabilidad.modelo.TipoPago;
 import py.gestionpymes.prestamos.contabilidad.servicio.CobranzaDAO;
+import py.gestionpymes.prestamos.contabilidad.web.ProductorFacturaPagoCuota;
 import py.gestionpymes.prestamos.prestamos.dao.MontoCancelacionIncorrectoException;
 import py.gestionpymes.prestamos.prestamos.dao.NumeroInvalidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PagoExcedidoException;
 import py.gestionpymes.prestamos.prestamos.dao.PrestamoDAO;
+import py.gestionpymes.prestamos.prestamos.modelo.AplicacionPagoCuota;
 import py.gestionpymes.prestamos.prestamos.modelo.Cliente;
 import py.gestionpymes.prestamos.prestamos.modelo.DetPrestamo;
 import py.gestionpymes.prestamos.prestamos.modelo.enums.EstadoPrestamo;
@@ -76,6 +78,7 @@ public class CobraCuotaBean implements Serializable {
     private Cliente cliente;
     private List<TreeCuota> seleccionados = new ArrayList<TreeCuota>();
     private List<TreeCuota> disponibles = new ArrayList<TreeCuota>();
+    List<AplicacionPagoCuota> aplicacionPagoCuotas = new ArrayList<>();
     private BigDecimal totalAPagar;
     private TreeCuota cuotaSeleccionada;
     private BigDecimal montoActual;
@@ -320,6 +323,71 @@ public class CobraCuotaBean implements Serializable {
     }
 
     public String generaFactura() {
+        if (sesionTPVBean.getActual() == null) {
+            return null;
+        }
+
+        Secuencia secuencia = sesionTPVBean.getActual().getPuntoVenta().getSecuencia();
+        if (secuencia.getEstado() == Estado.INACTIVO) {
+            JsfUtil.addErrorMessage("Se agotó su talonario!");
+            return null;
+        }
+
+        ProductorFacturaPagoCuota productorFactura = new ProductorFacturaPagoCuota(cuotaSeleccionada.getSucursal(),
+                cliente,
+                secuencia,
+                cuotaSeleccionada.getMoneda(),
+                seleccionados);
+
+        facturaVenta = productorFactura.generaCabecera();
+        List<FacturaVentaDetalle> detalles = productorFactura.generaDetalles();
+        facturaVenta.setDetalles(detalles);
+        aplicacionPagoCuotas = productorFactura.generaAplicacionPagoCuota();
+
+        BigDecimal totalexento = new BigDecimal(BigInteger.ZERO);
+        BigDecimal totalgravada05 = new BigDecimal(BigInteger.ZERO);
+        BigDecimal totalgravada10 = new BigDecimal(BigInteger.ZERO);
+        
+        
+        for (FacturaVentaDetalle fd : facturaVenta.getDetalles()) {
+            if (fd.getExenta() != null) {
+                totalexento = totalexento.add(fd.getExenta());
+            }
+            if (fd.getGravada05() != null) {
+                totalgravada05 = totalgravada05.add(fd.getGravada05());
+            }
+
+            if (fd.getGravada10() != null) {
+                totalgravada10 = totalgravada10.add(fd.getGravada10());
+            }
+
+        }
+
+        BigDecimal total = totalgravada10.add(totalgravada05).add(totalexento);
+        BigDecimal iva05 = new BigDecimal(BigInteger.ZERO);
+        BigDecimal iva10 = new BigDecimal(BigInteger.ZERO);
+        if (totalgravada10.compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
+            iva10 = totalgravada10.divide(new BigDecimal(11), 0, RoundingMode.HALF_EVEN);
+        }
+        if (totalgravada05.compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
+            iva05 = totalgravada05.divide(new BigDecimal(21), 0, RoundingMode.HALF_EVEN);
+        }
+
+        BigDecimal ivatotal = iva05.add(iva10);
+
+        facturaVenta.setTotalExento(totalexento.setScale(0, RoundingMode.HALF_EVEN));
+        facturaVenta.setTotalGravada05(totalgravada05.setScale(0, RoundingMode.HALF_EVEN));
+        facturaVenta.setTotalGravada10(totalgravada10.setScale(0, RoundingMode.HALF_EVEN));
+        facturaVenta.setTotal(total.setScale(0, RoundingMode.HALF_EVEN));
+        facturaVenta.setIva05(iva05.setScale(0, RoundingMode.HALF_EVEN));
+        facturaVenta.setIva10(iva10.setScale(0, RoundingMode.HALF_EVEN));
+        facturaVenta.setTotalIva(ivatotal.setScale(0, RoundingMode.HALF_EVEN));
+
+        limpia();
+        return "/cobraCuota/creaFactura";
+    }
+
+    public String generaFactura2() {
 
         if (sesionTPVBean.getActual() == null) {
             return null;
@@ -520,12 +588,14 @@ public class CobraCuotaBean implements Serializable {
         }
         montoActual = new BigDecimal(BigInteger.ZERO);
         seleccionados.clear();
+        //aplicacionPagoCuotas.clear();
         //cuotaSeleccionada = null;
     }
 
     public String paga() {
         try {
-            cobranzaDAO.create(facturaVenta, sesionTPVBean.getActual());
+            //cobranzaDAO.create(facturaVenta, sesionTPVBean.getActual());
+            cobranzaDAO.create(facturaVenta, sesionTPVBean.getActual(), aplicacionPagoCuotas);
             limpia();
             cargaPrestamos();
             sesionTPVBean.actualizaTotalTransacciones();
