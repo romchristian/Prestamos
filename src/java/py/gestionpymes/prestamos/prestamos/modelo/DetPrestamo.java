@@ -98,7 +98,7 @@ public class DetPrestamo implements Serializable, Auditable {
         this.pendienteCargo = pendienteCargo;
     }
 
-    public BigDecimal getDescuentoAcumulado(TipoDescuento tipo) {
+    public BigDecimal obtDescuentoAcumulado(TipoDescuento tipo) {
         BigDecimal R = BigDecimal.ZERO;
         if (getDescuentoCuotas() != null) {
             for (DescuentoCuota d : getDescuentoCuotas()) {
@@ -109,6 +109,24 @@ public class DetPrestamo implements Serializable, Auditable {
         }
 
         return R;
+    }
+
+    public BigDecimal obtDescuentoAcumulado(String tipo) {
+        TipoDescuento t;
+        switch (tipo) {
+            case "MORA":
+                t = TipoDescuento.MORA;
+                break;
+            case "INTERES":
+                t = TipoDescuento.INTERES;
+                break;
+            case "CARGOS":
+                t = TipoDescuento.CARGOS;
+                break;
+            default:
+                t = TipoDescuento.MORA;
+        }
+        return obtDescuentoAcumulado(t);
     }
 
     public BigDecimal getDescuentoAcumuladoTotal() {
@@ -341,6 +359,11 @@ public class DetPrestamo implements Serializable, Auditable {
         return cuotaInteres;
     }
 
+    public BigDecimal obtCuotaInteresConIva() {
+        BigDecimal capital = cuotaCapital != null ? cuotaCapital : BigDecimal.ZERO;
+        return montoCuota != null ? montoCuota.subtract(capital) : BigDecimal.ZERO;
+    }
+
     public void setCuotaInteres(BigDecimal cuotaInteres) {
         this.cuotaInteres = cuotaInteres;
     }
@@ -456,7 +479,7 @@ public class DetPrestamo implements Serializable, Auditable {
 //            if (tieneDescuento) {
             BigDecimal pendienteMora = calculaMontoPorDiasMoratorio();
             pendienteMora = pendienteMora.add(calculaMontoPorDiasPunitorio());
-            pendienteMora = pendienteMora.subtract(getDescuentoAcumulado(TipoDescuento.MORA));
+            pendienteMora = pendienteMora.subtract(obtDescuentoAcumulado(TipoDescuento.MORA));
 
             saldoCuota = getMontoCuota();
 
@@ -464,8 +487,8 @@ public class DetPrestamo implements Serializable, Auditable {
             if (pendienteCargo != null) {
                 saldoCuota = saldoCuota.add(pendienteCargo);
             }
-            saldoCuota = saldoCuota.subtract(getDescuentoAcumulado(TipoDescuento.INTERES));
-            saldoCuota = saldoCuota.subtract(getDescuentoAcumulado(TipoDescuento.CARGOS));
+            saldoCuota = saldoCuota.subtract(obtDescuentoAcumulado(TipoDescuento.INTERES));
+            saldoCuota = saldoCuota.subtract(obtDescuentoAcumulado(TipoDescuento.CARGOS));
 
             saldoCuota = saldoCuota.subtract(getMontoPago());
             //calculaMontoPorDiasMoratorio().add(calculaMontoPorDiasPunitorio()).add();
@@ -490,31 +513,19 @@ public class DetPrestamo implements Serializable, Auditable {
         this.ultimoPago = ultimoPago;
     }
 
-    public boolean afectaSaldoCuota(BigDecimal monto, String refMonto) {
+    public boolean afectaSaldoCuota(BigDecimal monto) {
         boolean R = false;
         saldoCuota = getSaldoCuota().setScale(0, RoundingMode.HALF_EVEN);
         monto = monto.setScale(0, RoundingMode.HALF_EVEN);
-        BigDecimal mora = devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
 
+        System.out.println("MONTO DETALLE FACTURA: " + monto);
         System.out.println("SALDO CUOTA: " + saldoCuota);
-        System.out.println("MORA: " + mora);
-        System.out.println("DESCUENTO: " + descuento);
-        System.out.println("MONTO: " + monto);
-        //BigDecimal suma = saldoCuota.add(mora).add(descuento).setScale(0, RoundingMode.HALF_EVEN);
+        System.out.println("COMPARACION (MONTO EXCEDE AL SALDO): " + (saldoCuota.compareTo(monto) >= 0));
 
-        System.out.println("SUMA: " + saldoCuota);
         if (saldoCuota.compareTo(monto) >= 0) {
 
             montoPago = montoPago.add(monto);
             saldoCuota = saldoCuota.subtract(monto);
-
-            if (refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0) {
-                moraMoratorio = moraMoratorio.add(monto);
-
-            } else if (refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_PUNITORIO) == 0) {
-                moraPunitorio = moraPunitorio.add(monto);
-
-            }
 
             ultimoPago = new Date();
 
@@ -533,6 +544,22 @@ public class DetPrestamo implements Serializable, Auditable {
             }
 
         }
+        return R;
+    }
+
+    public boolean afectaMora(BigDecimal monto, String refMonto) {
+        boolean R = false;
+
+        if (refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_MORATORIO) == 0) {
+            moraMoratorio = moraMoratorio.add(monto);
+            R = true;
+        } else if (refMonto.compareToIgnoreCase(FacturaVentaDetalle.MONTO_PUNITORIO) == 0) {
+            moraPunitorio = moraPunitorio.add(monto);
+            R = true;
+        }
+
+        ultimoPago = new Date();
+
         return R;
     }
 

@@ -73,6 +73,8 @@ public class CobraCuotaBean implements Serializable {
     private SesionTPVBean sesionTPVBean;
     @EJB
     private CargoPorMoraDAO cagoDAO;
+    @Inject
+    private ProductorFacturaPagoCuota productorFactura;
 
     private TreeNode root = new DefaultTreeNode("prestamos", null);
     private Cliente cliente;
@@ -333,55 +335,14 @@ public class CobraCuotaBean implements Serializable {
             return null;
         }
 
-        ProductorFacturaPagoCuota productorFactura = new ProductorFacturaPagoCuota(cuotaSeleccionada.getSucursal(),
+        facturaVenta = productorFactura.genera(cuotaSeleccionada.getSucursal(),
                 cliente,
                 secuencia,
                 cuotaSeleccionada.getMoneda(),
                 seleccionados);
-
-        facturaVenta = productorFactura.generaCabecera();
-        List<FacturaVentaDetalle> detalles = productorFactura.generaDetalles();
-        facturaVenta.setDetalles(detalles);
-        aplicacionPagoCuotas = productorFactura.generaAplicacionPagoCuota();
-
-        BigDecimal totalexento = new BigDecimal(BigInteger.ZERO);
-        BigDecimal totalgravada05 = new BigDecimal(BigInteger.ZERO);
-        BigDecimal totalgravada10 = new BigDecimal(BigInteger.ZERO);
         
-        
-        for (FacturaVentaDetalle fd : facturaVenta.getDetalles()) {
-            if (fd.getExenta() != null) {
-                totalexento = totalexento.add(fd.getExenta());
-            }
-            if (fd.getGravada05() != null) {
-                totalgravada05 = totalgravada05.add(fd.getGravada05());
-            }
+        aplicacionPagoCuotas = productorFactura.getAplicacionesPagoCuotas();
 
-            if (fd.getGravada10() != null) {
-                totalgravada10 = totalgravada10.add(fd.getGravada10());
-            }
-
-        }
-
-        BigDecimal total = totalgravada10.add(totalgravada05).add(totalexento);
-        BigDecimal iva05 = new BigDecimal(BigInteger.ZERO);
-        BigDecimal iva10 = new BigDecimal(BigInteger.ZERO);
-        if (totalgravada10.compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
-            iva10 = totalgravada10.divide(new BigDecimal(11), 0, RoundingMode.HALF_EVEN);
-        }
-        if (totalgravada05.compareTo(new BigDecimal(BigInteger.ZERO)) > 0) {
-            iva05 = totalgravada05.divide(new BigDecimal(21), 0, RoundingMode.HALF_EVEN);
-        }
-
-        BigDecimal ivatotal = iva05.add(iva10);
-
-        facturaVenta.setTotalExento(totalexento.setScale(0, RoundingMode.HALF_EVEN));
-        facturaVenta.setTotalGravada05(totalgravada05.setScale(0, RoundingMode.HALF_EVEN));
-        facturaVenta.setTotalGravada10(totalgravada10.setScale(0, RoundingMode.HALF_EVEN));
-        facturaVenta.setTotal(total.setScale(0, RoundingMode.HALF_EVEN));
-        facturaVenta.setIva05(iva05.setScale(0, RoundingMode.HALF_EVEN));
-        facturaVenta.setIva10(iva10.setScale(0, RoundingMode.HALF_EVEN));
-        facturaVenta.setTotalIva(ivatotal.setScale(0, RoundingMode.HALF_EVEN));
 
         limpia();
         return "/cobraCuota/creaFactura";

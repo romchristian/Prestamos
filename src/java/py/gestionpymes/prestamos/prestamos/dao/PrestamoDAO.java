@@ -43,7 +43,7 @@ import py.gestionpymes.prestamos.tesoreria.modelo.TransaccionDesembolso;
 @Stateless
 
 public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.prestamos.modelo.Prestamo> {
-    
+
     @PersistenceContext(unitName = "PrestamosPU")
     private EntityManager em;
     @EJB
@@ -55,29 +55,29 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
     private Credencial credencial;
     @EJB
     private CargoPorMoraDAO cagoDAO;
-    
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     public PrestamoDAO() {
         super(Prestamo.class);
     }
-    
+
     public List<Prestamo> findAll(Cliente cliente) {
         return em.createQuery("SELECT p from Prestamo p where p.cliente = :cliente").setParameter("cliente", cliente).getResultList();
     }
-    
+
     public List<Prestamo> findAllClienteEstado(Cliente cliente, EstadoPrestamo estado) {
         return em.createQuery("SELECT p from Prestamo p where p.cliente = :cliente and p.estado = :estado")
                 .setParameter("cliente", cliente)
                 .setParameter("estado", estado)
                 .getResultList();
     }
-    
+
     public List<Prestamo> findAllPorEmpresaFechaEstado(Empresa e, Sucursal s, EstadoPrestamo estado, Date inicio, Date fin) {
-        
+
         return em.createQuery("SELECT p from Prestamo p where p.empresa = :emp and p.sucursal = :suc and p.fechaInicioOperacion BETWEEN :inicio and :fin and p.estado = :estado")
                 .setParameter("emp", e)
                 .setParameter("suc", s)
@@ -86,9 +86,9 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
                 .setParameter("estado", estado)
                 .getResultList();
     }
-    
+
     public List<Prestamo> findAllPorEmpresaFechaEstadoCliente(Empresa e, Sucursal s, EstadoPrestamo estado, Date inicio, Date fin, Cliente cliente) {
-        
+
         return em.createQuery("SELECT p from Prestamo p where p.empresa = :emp and p.sucursal = :suc and p.fechaInicioOperacion BETWEEN :inicio and :fin and p.estado = :estado and p.cliente = :cliente")
                 .setParameter("emp", e)
                 .setParameter("suc", s)
@@ -98,22 +98,22 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
                 .setParameter("cliente", cliente)
                 .getResultList();
     }
-    
+
     public List<Prestamo> findAllPorEmpresa(Empresa e, Sucursal s, EstadoPrestamo estado) {
         return em.createQuery("SELECT p from Prestamo p where p.empresa = :emp and p.sucursal = :suc")
                 .setParameter("emp", e)
                 .setParameter("suc", s)
                 .getResultList();
     }
-    
+
     public List<Prestamo> findAllEstado(EstadoPrestamo estado) {
         return em.createQuery("SELECT p from Prestamo p where  p.estado = :estado")
                 .setParameter("estado", estado)
                 .getResultList();
     }
-    
+
     public List<ListadoMora> listadoMora() {
-        
+
         String consuta = "select c.nrodocumento, c.primernombre, "
                 + "c.segundonombre, c.primerapellido, c.segundoapellido,"
                 + " p.id as operacionnro, dp.nrocuota, p.fechainiciooperacion, "
@@ -123,119 +123,138 @@ public class PrestamoDAO extends AbstractFacade<py.gestionpymes.prestamos.presta
                 + "from persona as c, prestamo as p, detprestamo as dp "
                 + "where p.id = dp.prestamo_id and p.cliente_id = c.id and "
                 + "diasmora > 0 order by c.id, p.id, dp.nrocuota";
-        
+
         List<Object[]> lista = abmService.getEM().createNativeQuery(consuta).getResultList();
-        
+
         List<ListadoMora> R = new ArrayList<>();
         for (int i = 0; i < lista.size(); i++) {
-            
+
             R.add(new ListadoMora(lista.get(i)));
         }
         return R;
     }
-    
+
     public Prestamo desembolsa(Prestamo prestamo) {
-        
+
         OperacionDesembolsoPrestamo op = new OperacionDesembolsoPrestamo(prestamo);
-        
+
         CuentaCliente cc = (CuentaCliente) em.createQuery("select c from CuentaCliente c where c.cliente = :cliente")
                 .setParameter("cliente", prestamo.getCliente()).getSingleResult();
-        
+
         Integer ultmoid = 0;
         try {
             ultmoid = (Integer) em.createQuery("SELECT MAX(r.id) FROM Recibo r").getSingleResult();
         } catch (Exception e) {
         }
-        
+
         op.setCuentaCliente(cc);
         //HACER: La fecha del desembolso debe ser igual a la fechade inicio del prestamo
         op.setFecha(prestamo.getFechaInicioOperacion());
-        
+
         detCuentaClienteDAO.create(op);
-        
+
         prestamo.setEstado(EstadoPrestamo.VIGENTE);
         edit(prestamo);
-        
+
         return prestamo;
     }
-    
+
     public Prestamo desembolsa(Prestamo prestamo, FacturaVenta f, SesionTPV s) throws NumeroInvalidoException {
-        
+
         OperacionDesembolsoPrestamo op = new OperacionDesembolsoPrestamo(prestamo);
-        
+
         CuentaCliente cc = (CuentaCliente) em.createQuery("select c from CuentaCliente c where c.cliente = :cliente")
                 .setParameter("cliente", prestamo.getCliente()).getSingleResult();
-        
+
         Integer ultmoid = 0;
         try {
             ultmoid = (Integer) em.createQuery("SELECT MAX(r.id) FROM Recibo r").getSingleResult();
         } catch (Exception e) {
         }
-        
+
         op.setCuentaCliente(cc);
         //HACER: La fecha del desembolso debe ser igual a la fecha del prestamo
         op.setFecha(prestamo.getFechaInicioOperacion());
-        
+
         detCuentaClienteDAO.create(op);
-        
+
         prestamo.setEstado(EstadoPrestamo.VIGENTE);
         edit(prestamo);
-        
+
         em.persist(f);
-        
+
         Long numeroFactura = null;
         try {
             numeroFactura = Long.parseLong(f.getNumero());
         } catch (Exception e) {
             throw new NumeroInvalidoException("El numero de la factura es invalido");
         }
-        
+
         Secuencia secuencia = s.getPuntoVenta().getSecuencia();
-        secuencia.setUltimoNumero(numeroFactura);        
+        secuencia.setUltimoNumero(numeroFactura);
         em.merge(secuencia);
-        
+
         TipoTransaccionCaja ttc = null;
         try {
             ttc = (TipoTransaccionCaja) em.createQuery("select t from TipoTransaccionCaja t where t.descripcion= ?1")
                     .setParameter(1, "DESEMBOLSO PRESTAMO").getSingleResult();
         } catch (Exception e) {
         }
-        
+
         Transaccion t = new TransaccionDesembolso(f, prestamo, s,
                 "Desembolso de  prestamo: Prestamo #" + prestamo.getId() + " - " + prestamo.getCliente().devuelveNombreCompleto(), prestamo.getMontoPrestamo(),
                 f.getMoneda());
-        
+
         if (ttc != null) {
             t.setTipoTransaccionCaja(ttc);
         }
-        
+
         transaccionDAO.create(t);
         //em.persist(t);
 
         return prestamo;
     }
-    
+
     public List<DetPrestamo> findCuotasPendientes(Prestamo p) {
         List<DetPrestamo> R = em.createQuery("SELECT dp from DetPrestamo dp WHERE dp.prestamo = :prestamo and dp.estado = :estado ORDER BY dp.nroCuota")
                 .setParameter("prestamo", p)
                 .setParameter("estado", EstadoDetPrestamo.PENDIENTE)
                 .getResultList();
-        
-        for(DetPrestamo dt: R){
+
+        for (DetPrestamo dt : R) {
             CargoPorMora c = cagoDAO.findCargo(dt.getDiasMora(), dt.getPrestamo().getPeriodoPago());
-            if(c != null){
+            if (c != null) {
                 dt.setPendienteCargo(c.getMonto());
             }
         }
-        
+
         return R;
     }
-    
+
     public void guardarDescuentos(List<DetPrestamo> cuotas) {
         for (DetPrestamo d : cuotas) {
+
+            em.createQuery("DELETE FROM DescuentoCuota d WHERE d.detPrestamo = :detprestamo")
+                    .setParameter("detprestamo", d).executeUpdate();
+
             for (DescuentoCuota dc : d.getDescuentoCuotas()) {
-                dc.setUsuario(credencial.getUsuario());
-                em.merge(dc);
+                if (dc.getId() != null) {
+                    DescuentoCuota dcCopy = new DescuentoCuota();
+                    dcCopy.setDetPrestamo(dc.getDetPrestamo());
+                    dcCopy.setTipo(dc.getTipo());
+                    dcCopy.setAplicado(dc.isAplicado());
+                    dcCopy.setFecha(dc.getFecha());
+                    dcCopy.setUsuario(dc.getUsuario() == null ? credencial.getUsuario() : dc.getUsuario());
+                    dcCopy.setMonto(dc.getMonto());
+
+                    em.merge(dcCopy);
+
+                }
+                else{
+                    dc.setUsuario(credencial.getUsuario());
+                    em.merge(dc);
+                }
+
             }
             em.merge(d);
         }

@@ -89,8 +89,8 @@ public class TreeCuota {
         this.cargo = detPrestamo.getPendienteCargo();
         
         this.descuento = detPrestamo.getDescuentoAcumuladoTotalNoAplicado();
-        this.montoMoratorio = detPrestamo.calculaSaldoMoratorio();
-        this.montoPunitorio = detPrestamo.calculaSaldoPunitorio();
+        this.montoMoratorio = detPrestamo.calculaMontoPorDiasMoratorio();//detPrestamo.calculaSaldoMoratorio();
+        this.montoPunitorio = detPrestamo.calculaMontoPorDiasPunitorio();//detPrestamo.calculaSaldoPunitorio();
         this.cuotaCapital = detPrestamo.getCuotaCapital();
         this.cuotaInteres = this.montoCuota.subtract(this.cuotaCapital);
         
@@ -98,7 +98,7 @@ public class TreeCuota {
         if(detPrestamo.getEstado() == EstadoDetPrestamo.CANCELADO){
             this.montoMora = detPrestamo.getMoraMoratorio().add(detPrestamo.getMoraPunitorio());
         }else{
-            this.montoMora = detPrestamo.devuelveMontoMora().setScale(0, RoundingMode.HALF_EVEN);
+            this.montoMora = this.montoMoratorio.add(this.montoPunitorio).setScale(0, RoundingMode.HALF_EVEN);
         }
         
         this.montoPago = detPrestamo.getMontoPago().setScale(0, RoundingMode.HALF_EVEN);

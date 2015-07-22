@@ -114,11 +114,13 @@ public class AplicaDescuentoBean implements Serializable {
             agregaDescuentoGenenrico(TipoDescuento.CARGOS, descuentoTemp.getDescuentoCargo());
         }
 
+        descuentoTemp = null;
+        
     }
 
     public void agregaDescuentoGenenrico(TipoDescuento tipo, BigDecimal monto) {
 
-        BigDecimal descuentoAcumulado = selecccionado.getDescuentoAcumulado(tipo).add(monto);
+        BigDecimal descuentoAcumulado = selecccionado.obtDescuentoAcumulado(tipo).add(monto);
         BigDecimal cargoActual = BigDecimal.ZERO;
 
         switch (tipo) {
@@ -126,7 +128,7 @@ public class AplicaDescuentoBean implements Serializable {
                 cargoActual = selecccionado.calculaSaldoMoratorio().add(selecccionado.calculaSaldoPunitorio());
                 break;
             case INTERES:
-                cargoActual = selecccionado.getCuotaInteres();
+                cargoActual = selecccionado.obtCuotaInteresConIva();
                 break;
             case CARGOS:
                 cargoActual = selecccionado.getPendienteCargo();
@@ -154,14 +156,20 @@ public class AplicaDescuentoBean implements Serializable {
 
     }
 
+    
+     public void onRowUnSelect(SelectEvent event) {
+        selecccionado = null;
+        descuentoTemp = null;
+    }
     public void onRowSelect(SelectEvent event) {
         selecccionado = (DetPrestamo) event.getObject();
         descuentoTemp = new DescuentoTemp();
         descuentoTemp.setNroCuota(selecccionado.getNroCuota());
         BigDecimal mora = selecccionado.calculaSaldoMoratorio().add(selecccionado.calculaSaldoPunitorio());
-        descuentoTemp.setDescuentoMora(mora.subtract(selecccionado.getDescuentoAcumulado(TipoDescuento.MORA)));
+        descuentoTemp.setDescuentoMora(mora.subtract(selecccionado.obtDescuentoAcumulado(TipoDescuento.MORA)));
         descuentoTemp.setDescuentoCargo(selecccionado.getPendienteCargo());
-        descuentoTemp.setDescuentoInteres(selecccionado.getCuotaInteres().subtract(selecccionado.getDescuentoAcumulado(TipoDescuento.INTERES)));
+        descuentoTemp.setDescuentoInteres(selecccionado.obtCuotaInteresConIva().subtract(selecccionado.obtDescuentoAcumulado(TipoDescuento.INTERES)));
+        //descuentoTemp.setDescuentoInteres(selecccionado.obtCuotaInteresConIva().subtract(selecccionado.obtDescuentoAcumulado(TipoDescuento.INTERES)));
         descuentoTemp.setDetPrestamo(selecccionado);
     }
 

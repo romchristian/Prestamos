@@ -11,5 +11,5 @@ package py.gestionpymes.prestamos.prestamos.modelo.enums;
  */
 public enum TipoAplicacionPagoCuota {
 
-    MORATORIO, PUNITORIO, CARGO, CUOTA_CAPITAL, CUOTA_INTERES
+    MORATORIO, PUNITORIO, CARGO, CUOTA_CAPITAL, CUOTA_INTERES,DESCUENTO_MORA,DESCUENTO_INTERES,DESCUENTO_CARGO
 }

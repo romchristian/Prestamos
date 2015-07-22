@@ -29,6 +29,7 @@ public class FacturaVentaDetalle implements Serializable,Auditable {
     public final static String MONTO_DESCUENTO = "monto_descuento";
     public final static String MONTO_GASTOS = "monto_gastos";
     public final static String MONTO_COMISIONES = "monto_comisiones";
+    public final static String MONTO_CARGO = "monto_cargo";
 
     private static final long serialVersionUID = 1L;
     @Id

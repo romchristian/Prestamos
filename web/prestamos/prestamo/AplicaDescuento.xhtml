@@ -117,53 +117,109 @@
             <br/>
 
             <p:dataTable value="#{aplicaDescuentoBean.cuotasPedientes}" var="d" id="tablaDetalles" styleClass="tablaDetalles"
-                         style="font-size: 8pt!important"
+                         style="font-size: 8pt!important;width: 100%"
                          selection="#{aplicaDescuentoBean.selecccionado}"
                          selectionMode="single"
-                         rowKey="#{d.id}">
+                         rowKey="#{d.id}"
+                        >
 
                 <p:ajax event="rowSelect" listener="#{aplicaDescuentoBean.onRowSelect}" update="formABM:nuevoDescuento :formABM:detalles" />
+                <p:ajax event="rowUnselect" listener="#{aplicaDescuentoBean.onRowUnSelect}" update="formABM:nuevoDescuento :formABM:detalles" />
 
+
+                <f:facet name="header">
+                    <div style="display: table;width: 100%">
+                        <div style="display: table-cell; width: 90%;vertical-align: middle;text-align: left;padding-left: 20px">
+                            Cuotas Pendientes
+                        </div>
+                        <div style="display: table-cell; width: 10%;vertical-align: middle">
+                            <p:commandButton id="toggler" type="button" value="Columnas"  icon="ui-icon-calculator" />
+                            <p:columnToggler datasource="tablaDetalles" trigger="toggler" />
+                        </div>
+                    </div>
+
+
+                </f:facet>
 
                 <p:column headerText="#" style="width: 30px;font-size: 9pt!important">
                     <h:outputText value="#{d.nroCuota}" />
                 </p:column>
 
-                <p:column headerText="Monto cuota" style="width: 15%;font-size: 9pt!important">
-                    <h:outputText value="#{d.montoCuota}" >
-                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
-                    </h:outputText>
-                </p:column>
 
-                <p:column headerText="Vencimiento" style="font-size: 9pt!important">
+
+                <p:column headerText="Vencimiento" style="font-size: 9pt!important;width: 75px;">
                     <h:outputText value="#{d.fechaVencimiento}" >
                         <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="Cuota Capital" style="width: 15%;font-size: 9pt!important">
+                <p:column headerText="Cuota Capital" style="width: 80px;font-size: 9pt!important">
                     <h:outputText value="#{d.cuotaCapital}">
                         <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="Cuota Interes" style="width: 15%;font-size: 9pt!important">
-                    <h:outputText value="#{d.cuotaInteres}">
+                <p:column headerText="Cuota Interes" style="width: 80px;font-size: 9pt!important">
+                    <h:outputText value="#{d.obtCuotaInteresConIva()}">
                         <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="Moratorio" style="font-size: 9pt!important">
+                <p:column headerText="Cuota(+)" style="width: 75px;font-size: 9pt!important">
+                    <h:outputText value="#{d.montoCuota}" >
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Saldo" style="font-size: 9pt!important;width: 80px">
+                    <h:outputText value="#{d.saldoCuota}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Moratorio(+)" style="font-size: 9pt!important;width: 80px">
                     <h:outputText value="#{d.calculaSaldoMoratorio()}">
                         <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="Punitorio" style="font-size: 9pt!important">
+                <p:column headerText="Punitorio(+)" style="font-size: 9pt!important;width: 80px">
                     <h:outputText value="#{d.calculaSaldoPunitorio()}">
                         <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
                     </h:outputText>
                 </p:column>
+
+                <p:column headerText="Cargo(+)" style="font-size: 9pt!important;width: 80px">
+                    <h:outputText value="#{d.pendienteCargo}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Pagado(-)" style="font-size: 9pt!important;width: 80px">
+                    <h:outputText value="#{d.montoPago}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Desc.Mora.(-)" style="font-size: 9pt!important;width: 90px">
+                    <h:outputText value="#{d.obtDescuentoAcumulado('MORA')}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Desc.Cargos.(-)" style="font-size: 9pt!important;width: 120px">
+                    <h:outputText value="#{d.obtDescuentoAcumulado('CARGOS')}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Desc.Int.(-)" style="font-size: 9pt!important;width: 80px">
+                    <h:outputText value="#{d.obtDescuentoAcumulado('INTERES')}">
+                        <f:convertNumber locale="#{formato.locale}" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+
+                
 
 
             </p:dataTable>
@@ -179,20 +235,20 @@
                             <p:selectBooleanCheckbox itemLabel="Aplica a Mora?" value="#{aplicaDescuentoBean.descuentoTemp.aplicaDescuentoMora}"
                                                      style="font-weight: bold"
                                                      disabled="#{(aplicaDescuentoBean.descuentoTemp.descuentoMora == 0)}">
-                                <p:ajax event="change" process="@this nuevoDescuento" update="nuevoDescuento"/>
+                                <p:ajax event="change" process="@this" update="nuevoDescuento"/>
                             </p:selectBooleanCheckbox>
                         </p:column>
                         <p:column>
                             <p:selectBooleanCheckbox itemLabel="Aplica a Cargo?" value="#{aplicaDescuentoBean.descuentoTemp.aplicaDescuentoCargo}"
                                                      style="font-weight: bold" disabled="#{(aplicaDescuentoBean.descuentoTemp.descuentoCargo == 0)}">
-                                <p:ajax event="change" process="@this nuevoDescuento" update="nuevoDescuento"/>
+                                <p:ajax event="change" process="@this" update="nuevoDescuento"/>
                             </p:selectBooleanCheckbox>
                         </p:column>
                         <p:column>
                             <p:selectBooleanCheckbox itemLabel="Aplica a Interes?" value="#{aplicaDescuentoBean.descuentoTemp.aplicaDescuentoInteres}"
                                                      style="font-weight: bold"
                                                      disabled="#{(aplicaDescuentoBean.descuentoTemp.descuentoInteres == 0)}">
-                                <p:ajax event="change" process="@this nuevoDescuento" update="nuevoDescuento"/>
+                                <p:ajax event="change" process="@this" update="nuevoDescuento"/>
                             </p:selectBooleanCheckbox>
                         </p:column>
                         <p:column><h:outputText value="Total Descuento" style="font-weight: bold"/></p:column>
@@ -218,7 +274,7 @@
                             </h:outputText>
                         </p:column>
                         <p:column>
-                            <p:commandButton value="Agregar" actionListener="#{aplicaDescuentoBean.agregaDescuento()}" update=":formABM:detalles"/>
+                            <p:commandButton value="Agregar" actionListener="#{aplicaDescuentoBean.agregaDescuento()}" update=":formABM:detalles :formABM:tablaDetalles :formABM:nuevoDescuento"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
@@ -253,7 +309,9 @@
                         </h:outputText>
                     </p:column>
                     <p:column >
-                        <p:commandLink value="X" actionListener="#{aplicaDescuentoBean.removerDescuento(d)}" update=":formABM:detalles :formABM:nuevoDescuento"/>
+                        <p:commandLink value="X" actionListener="#{aplicaDescuentoBean.removerDescuento(d)}" update=":formABM:detalles :formABM:nuevoDescuento :formABM:tablaDetalles"
+                                       rendered="#{(not d.aplicado)}"/>
+                        <h:outputText value="Aplicado" style="font-style: italic" rendered="#{d.aplicado}"/>
                     </p:column>
                 </p:dataTable>
             </p:outputPanel>
