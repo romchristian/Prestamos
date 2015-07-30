@@ -512,6 +512,39 @@ insert into rol (nombre, estado, version) values ('tesoreria_terminal_listado_ed
 -- ALTER TABLE cheque
 --   OWNER TO postgres;
 -- 
+-- Table: boletadeposito
+
+-- DROP TABLE boletadeposito;
+
+-- CREATE TABLE boletadeposito
+-- (
+--   id serial NOT NULL,
+--   fecha date,
+--   nrocomprobante character varying(255),
+--   total numeric(38,0),
+--   totalcheque numeric(38,0),
+--   totalefectivo numeric(38,0),
+--   cotizacion_id bigint,
+--   cuentabancaria_id bigint,
+--   moneda_id bigint,
+--   estado integer,
+--   CONSTRAINT boletadeposito_pkey PRIMARY KEY (id),
+--   CONSTRAINT fk_boletadeposito_cotizacion_id FOREIGN KEY (cotizacion_id)
+--       REFERENCES cotizacion (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_boletadeposito_cuentabancaria_id FOREIGN KEY (cuentabancaria_id)
+--       REFERENCES cuentabancaria (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   CONSTRAINT fk_boletadeposito_moneda_id FOREIGN KEY (moneda_id)
+--       REFERENCES moneda (id) MATCH SIMPLE
+--       ON UPDATE NO ACTION ON DELETE NO ACTION
+-- )
+-- WITH (
+--   OIDS=FALSE
+-- );
+-- ALTER TABLE boletadeposito
+--   OWNER TO postgres;
+
 -- 02-06-2015
 --ALTER TABLE boletadeposito ADD COLUMN estado integer;
 
@@ -551,7 +584,7 @@ insert into rol (nombre, estado, version) values ('tesoreria_terminal_listado_ed
 -- );
 -- ALTER TABLE chequeemitido
 --   OWNER TO postgres;
--- 
+
 -- 
 -- ALTER TABLE secuencia ADD COLUMN serie character varying(255);
 -- ALTER TABLE secuencia ADD COLUMN cuentabancaria_id bigint;
@@ -560,10 +593,10 @@ insert into rol (nombre, estado, version) values ('tesoreria_terminal_listado_ed
 --       REFERENCES cuentabancaria (id) MATCH SIMPLE
 --       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
---ALTER TABLE banco ADD COLUMN estado character varying(255);
+-- ALTER TABLE banco ADD COLUMN estado character varying(255);
 
 
--- 08-06-2015
+-- --08-06-2015
 -- 
 -- CREATE TABLE historial
 -- (
@@ -606,7 +639,7 @@ insert into rol (nombre, estado, version) values ('tesoreria_terminal_listado_ed
 -- Table: descuentocuota
 
 -- DROP TABLE descuentocuota;
-
+-- 
 -- CREATE TABLE descuentocuota
 -- (
 --   id serial NOT NULL,

@@ -9,6 +9,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import py.gestionpymes.prestamos.adm.modelo.Estado;
+import py.gestionpymes.prestamos.adm.modelo.TipoCargo;
 import py.gestionpymes.prestamos.adm.modelo.TipoPersona;
 import py.gestionpymes.prestamos.contabilidad.modelo.CondicionVenta;
 import py.gestionpymes.prestamos.contabilidad.modelo.TipoDiario;
@@ -239,7 +240,7 @@ public class ProductorEnums implements Serializable {
         return R;
     }
     
-     public SelectItem[] obtTiposMetodosPagos() {
+    public SelectItem[] obtTiposMetodosPagos() {
         SelectItem[] R = new SelectItem[TipoMetodoPago.values().length];
         TipoMetodoPago[] lista = TipoMetodoPago.values();
         for (int i = 0; i < lista.length; i++) {
@@ -248,5 +249,17 @@ public class ProductorEnums implements Serializable {
         }
         return R;
     }
+    
+     public SelectItem[] obtTipoCargo() {
+        SelectItem[] R = new SelectItem[TipoCargo.values().length];
+        TipoCargo[] lista = TipoCargo.values();
+        for (int i = 0; i < lista.length; i++) {
+            TipoCargo tc = lista[i];
+            R[i] = new SelectItem(tc, tc.toString());
+        }
+        return R;
+    }
 
 }
+
+//TipoCargo

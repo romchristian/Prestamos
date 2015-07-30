@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui">
+
+
+    <ui:decorate template="/plantillaABM.xhtml">
+        <ui:param name="modulo" value="configuracion"/>
+        <ui:param name="titulo" value="Cargos por mora"/>
+        <ui:param name="listado" value="Cargos"/>
+
+        <ui:define name="acciones">
+            <p:link value="Editar" outcome="edita"  styleClass="botonRojo flotaIzquierda"
+                    rendered="#{(contexto == 'vista' and (request.isUserInRole('admin') or request.isUserInRole('adm_cargos_vista_accion_edita')))}">
+                <f:param name="id" value="#{cargoPorMoraBean.actual.id}"/>
+            </p:link>
+
+            <p:commandLink value="Guardar" action="#{cargoPorMoraBean.edit}"  styleClass="botonRojo flotaIzquierda" update="mensajes, panelControles"
+                           rendered="#{(not(contexto == 'vista') and (request.isUserInRole('admin') or request.isUserInRole('adm_cargos_vista_accion_guardar')))}"/>
+
+
+            <p:button value="Cancelar" outcome="listado"/>
+        </ui:define>
+
+        <ui:define name="cabecera">
+
+        </ui:define>
+
+        <ui:define name="col1">
+
+            <p:outputPanel styleClass="panelControles">
+
+                <p:inputText id="nombre" value="#{cargoPorMoraBean.actual.descripcion}" styleClass="descripcionPrincipal" required="true"
+                             rendered="#{not(contexto == 'vista')}"/>
+                <p:watermark for="nombre" value="Nombre" id="watermark"/>
+
+                <h:outputText value="#{cargoPorMoraBean.actual.descripcion}" style="font-size: 18pt;font-weight: bold;"
+                              rendered="#{(contexto == 'vista')}"/>
+
+                <br/>
+                <br/>
+                <h:panelGrid columns="2">
+                    
+                    <p:outputLabel value="Inicio tramo"  style="font-weight: bold" />
+                    <p:inputText id="inicio" value="#{cargoPorMoraBean.actual.inicioTramo}" rendered="#{not(contexto == 'vista')}" />
+                    <h:outputText value="#{cargoPorMoraBean.actual.inicioTramo}" rendered="#{(contexto == 'vista')}" style="font-weight: bold"/>
+                    
+                    <p:outputLabel value="fin tramo"  style="font-weight: bold" />
+                    <p:inputText id="fin" value="#{cargoPorMoraBean.actual.finTramo}" rendered="#{not(contexto == 'vista')}" />
+                    <h:outputText value="#{cargoPorMoraBean.actual.finTramo}" rendered="#{(contexto == 'vista')}" style="font-weight: bold"/>
+                    
+                    <p:outputLabel value="Monto"  style="font-weight: bold" />
+                    <p:inputText id="monto" value="#{cargoPorMoraBean.actual.monto}" rendered="#{not(contexto == 'vista')}" />
+                    <h:outputText value="#{cargoPorMoraBean.actual.monto}" rendered="#{(contexto == 'vista')}" style="font-weight: bold">
+                        <f:convertNumber locale="#{formato.locale}"/>
+                    </h:outputText>
+                    
+                    <p:outputLabel value="Tipo" for="tipo"  id="tipo"/>
+                    <p:selectOneMenu value="#{cargoPorMoraBean.actual.tipo}" rendered="#{not(contexto == 'vista')}" id="tipoCargo">
+                        <f:selectItems value="#{productorEnums.obtTipoCargo()}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="#{cargoPorMoraBean.actual.tipo}" rendered="#{(contexto == 'vista')}" style="font-weight: bold"/>
+                    
+                    <p:outputLabel value="Fecha Baja"  style="font-weight: bold" rendered="#{not(contexto == 'creacion')}" />
+                    <p:calendar id="baja" value="#{cargoPorMoraBean.actual.fechaBaja}" rendered="#{not(contexto == 'creacion' or contexto == 'vista')}" locale="es"
+                                                        pattern="#{formato.patronFecha}" />
+                    <h:outputText value="#{cargoPorMoraBean.actual.fechaBaja}" rendered="#{(contexto == 'creacion' or contexto == 'vista')}" style="font-weight: bold">
+                        <f:convertDateTime locale="es" pattern="#{formato.patronFecha}"/>
+                    </h:outputText>
+                                       
+                    <p:outputLabel value="Estado" for="estado" rendered="#{not(contexto == 'creacion')}" style="font-size: 14px"/>
+                    <p:selectOneMenu value="#{cargoPorMoraBean.actual.estado}" rendered="#{not(contexto == 'creacion' or contexto == 'vista')}" id="estado">
+                        <f:selectItems value="#{productorEnums.obtEstados()}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="#{cargoPorMoraBean.actual.estado}" rendered="#{(contexto == 'vista')}" style="font-weight: bold"/>
+                    
+                </h:panelGrid>
+
+
+
+            </p:outputPanel>
+
+
+
+        </ui:define>
+
+    </ui:decorate>
+
+
+</ui:composition>
+

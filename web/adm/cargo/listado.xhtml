@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:gp="http://java.sun.com/jsf/composite/gpymes"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:decorate template="/plantillaListado.xhtml">
+        <ui:param name="modulo" value="configuracion"/>
+
+
+
+        <ui:define name="title">
+            Cargos por mora
+        </ui:define>
+
+        <ui:define name="body">
+
+            <h:form>
+
+
+                <p:dataTable value="#{cargoPorMoraBean.findAll()}" var="c" styleClass="resultado">
+
+                    <f:facet name="header">
+                        
+                        <p:commandButton action="#{cargoPorMoraBean.preparaCreacion()}" 
+                                         value="Crear"
+                                         icon="ui-icon-plus" 
+                                         styleClass="botonVerde flotaIzquierda"
+                                         rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}" />
+                        
+                        
+                    </f:facet>
+
+                    <p:column headerText="Tramo">
+                        <h:link value="#{c.descripcion}" outcome="vista">
+                            <f:param name="id" value="#{c.id}"/>
+                        </h:link>
+                    </p:column>
+                     <p:column headerText="Inicio Tramo">
+                        <h:outputText value="#{c.inicioTramo}"/>
+                    </p:column>
+                     <p:column headerText="Fin Tramo">
+                        <h:outputText value="#{c.finTramo}"/>
+                    </p:column>
+                     <p:column headerText="Cargo Gs.">
+                         <h:outputText value="#{c.monto}">
+                             <f:convertNumber locale="#{formato.locale}"/>
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="Tipo">
+                         <h:outputText value="#{c.tipo}"/>
+                    </p:column>
+                    <p:column headerText="Fecha Baja">
+                        <h:outputText value="#{c.fechaBaja}">
+                            <f:convertDateTime locale="es" pattern="#{formato.patronFecha}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Estado">
+                        <h:outputText value="#{c.estado}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:decorate>
+</ui:composition>

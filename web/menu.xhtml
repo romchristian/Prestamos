@@ -81,6 +81,8 @@
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
         <h:commandLink  value="Canales de Venta" action="/adm/canal/List" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        <h:commandLink  value="Cargos por Mora" action="/adm/cargo/Listado" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
     </h:panelGrid>
 </ui:composition>
 
